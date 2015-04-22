@@ -1,0 +1,21 @@
+{
+    "version": "0.1",
+    "name": "Motor Vehicle",
+    "description": "The Motor vehicle management app",
+    "launch_path": "index.html",
+    "icons": {
+        "16": "/images/icon.jpg",
+        "48": "/images/icon.jpg",
+        "128": "/images/icon.jpg"
+    },
+    "developer": {
+        "name": "Kelvin Mbwilo",
+        "url": "https://launchpad.net/~kelvinmbwilo"
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": ".."
+        }
+    }
+}

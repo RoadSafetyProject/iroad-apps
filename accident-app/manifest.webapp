@@ -1,0 +1,8 @@
+{"version":"1.0",
+"name":"Accident App",
+"description":"Accident App is a Packaged App",
+"icons":{"16":"leaf.png","48":"leaf.png","128":"leaf.png"},
+"developer":{"url":"http://me.com","name":"Paul Peter","company":null,"email":null},
+"activities":{"dhis":{"href":"http://localhost:8080/demo"}},
+"folderName":null,"baseUrl":null,"launchUrl":null,"key":null,
+"launch_path":"/index.html","installs_allowed_from":null,"default_locale":"en"}

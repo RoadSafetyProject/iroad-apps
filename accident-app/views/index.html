@@ -1,0 +1,356 @@
+
+
+<div class="row" ng-controller="AccidentFormCtrl">
+
+<h3 class="panel-heading"  style="background-color: #ffffff;color: #000000;border: solid,#000000" ><center>TANZANIA ACCIDENT FORM SHEET (AFS)</center>  </h3>
+
+
+<form name="AccidentForm" novalidate >
+
+<div class="panel-body">
+
+    <table class="table table-bordered table-striped" >
+
+        <tbody>
+
+        <tr>
+            <td class="my_heading" style="border-width:0px">A : SCENE OF ACCIDENT & SEVERITY</td>
+            <td style="width:8.25%;background-color: #ffffff">Acc Register</td>
+            <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="accident.accident_reg_no" name="accident_no" required/> </td>
+            <td style="width:8.25%">Acc.Class</td>
+            <td style="width:8%">
+            <select ng-model="accident.class">
+                <option value="">Acc. Classification</option>
+                <option value="Fatal Accident">Fatal Accident</option>
+                <option value="Injure Accident">Injure Accident</option>
+                <option value="Ordinary Accident">Ordinary Accident</option>
+                <option value="Human Error Accident">Human Error Accident</option>
+                <option value="Not Human Error Accident or Unavoidable Accident">Not Human Error Accident or Unavoidable Accident</option>
+            </select>
+            </td>
+            <td  style="width:8.5%">O.C.S Check</td>
+            <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="accident.ocs_check" name="supervisor_check" required /> </td>
+            <td  style="width:8.5%">S.visor Check</td>
+            <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="accident.supervisor_check" name="supervisor_check" required /> </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+
+</div>
+
+<div class="panel-body">
+
+    <table class="table table-bordered table-striped">
+
+        <tbody>
+        <tr>
+            <td class="number" style="border-width:0px">1</td>
+            <td class="my_td"  style="width: 10%">Police Station</td>
+            <td style="width: 10%">
+                <input class="ingizo"  type="text" ng-model="accident.police_station" ng-name="police_station" required/></td>
+            <td class="my_td"  style="width: 10%"></td>
+            <td class="my_td"  style="width: 11%">Number</td>
+            <td class="my_td"  style="width: 11%">Name</td>
+            <td class="my_td"  style="width: 11%">Sign.Date</td>
+            <td class="my_td"  style="width: 8.5%"></td>
+            <td  style="width: 8.5%">Acc. Severity</td>
+            <td class="my_td"  style="width: 8.5%"></td>
+            <td class="my_td"  style="width: 8.5%"></td>
+
+        </tr>
+
+        <tr>
+            <td class="number" style="border-width:0px">2</td>
+            <td class="my_td" >Region</td>
+            <td><input class="ingizo"  type="text" name="accident.station_region" ng-model="accident.station_region" required ></td><td class="my_td"  style="width: 10%">Police Officer (1) </td>
+            <td style="width: 11%"><input class="ingizo" ng-model="accident.office1_rank_no" name="office1_rank_no" type="text" required  ng-mouseleave="getPolice()" /></td>
+            <td style="width: 11%"><input class="ingizo" ng-model="accident.office1_name" name="office1_name" type="text"required /></td>
+            <td style="width: 11%" ng-controller="DateController">
+                <p class="input-group" style="padding: 0px;border: 0px;margin: 0px">
+                    <input ui-date="dateOptions" ng-model="accident.dt" name="Date"  placeholder="sign. date">
+                </p>
+            </td>
+            <td style="width: 8.5%">Fatal(n)</td>
+            <td  style="width:8.5%"><input class="ingizo" ng-model="accident.fatal" name="accident_fatal"  type="text" required/></td>
+            <td  style="width: 8.5%">Simple(n)</td>
+            <td style="width: 8.5%"><input class="ingizo" ng-model="accident.simple" name="accident_simple"  type="text" required/></td>
+
+        </tr>
+
+        <tr>
+            <td class="number" style="border-width:0px">3</td>
+            <td class="my_td"  style="width: 10%">District </td>
+            <td style="width: 10%"><input class="ingizo"  type="text" ng-model="accident.station_district" name="station_district" required /></td>
+            <td class="my_td" >Acc.Cause </td>
+            <td>
+                <select style="width: 100%" ng-model="accident.cause">
+                    <option value="">Accident Cause</option>
+                    <option value="Dangerous Driving">Dangerous Driving</option>
+                    <option value="Careless Driver">Careless Driver</option>
+                    <option value="Mechanical Defects">Mechanical Defects</option>
+                    <option value="Fire">Fire</option>
+                    <option value="Excessive Speed">Excessive Speed</option>
+                    <option value="Lights">Lights</option>
+                    <option value="Animal Stray">Animal Stray</option>
+                    <option value="Overtaking">Overtaking</option>
+                    <option value="Level Crossing">Level Crossing</option>
+                    <option value="Obstruction">Obstruction</option>
+                    <option value="Bad-Road">Bad-Road</option>
+               </select>
+            </td>
+            <td class="my_td" >Weather </td>
+            <td>
+                <select style="width: 100%" ng-model="accident.weather">
+                    <option value="">Accident Weather</option>
+                    <option value="Wet">Wet</option>
+                    <option value="Rain">Rain</option>
+                    <option value="Dry">Dry</option>
+                    <option value="Fogg">Fogg</option>
+                    <option value="Slippery">Slippery</option>
+                </select>
+            </td>
+            <td class="my_td" >Severe Injury(n)</td>
+            <td><input class="ingizo"  type="text" ng-model="accident.severe" name="accident_severe" required/></td>
+            <td class="my_td" >Only Damage</td>
+            <td><input class="ingizo"  type="text" ng-model="accident.damage" name="accident_damage"  required/></td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="panel-body">
+
+    <table class="table table-bordered  table-striped">
+
+        <tbody>
+        <tr>
+            <td class="my_heading" style="border-width:0px">B : TIME AND LOCATION</td>
+            <td style="width:11%">Latitude</td>
+            <td style="width:11%"> <input class="ingizo"  type="text" ng-model="accident.latitude" name="latitude"  required /> </td>
+            <td style="width:11%">Longitude</td>
+            <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="accident.longitude" name="longitude"  required /> </td>
+            <td style="width:12.75%">Hit & Run</td>
+            <td style="width:12.75%"> <input style="margin: 0px ;border:0px " type="checkbox"  ng-model="accident.hit" name="hit" ng-true-value="'hit and run'" ng-false-value="'No'" required /> </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="row" style = "padding: 0px;margin: 0px;border: 0px">
+
+    <div class="col-md-9" style="width: 87.25%;padding: 0px">
+
+        <table class="table table-bordered table-striped" style="padding-right: 2px">
+
+            <tbody >
+            <td class="number" style="border-width:0px">1</td>
+            <td style="width: 15%" ng-controller="DateController">
+                <p class="input-group">
+                    <input ui-date="dateOptions" ng-model="accident.dt" name="Date"  placeholder="Accident date">
+                </p>
+            </td>
+            <td style="width: 15%">Accident Time</td>
+            <td class="my_td"  style="width: 33%">Area Of Accident </td>
+            <td class="my_td"  style="width: 8.5%">Road </td>
+            <td class="my_td"  style="width:12.75%">Intersection</td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <table class="table table-bordered table-striped">
+            <tbody>
+            <tr>
+                <td class="number" style="border-width:0px">2</td>
+                <td class="my_td"  style="width: 10%">Day</td>
+                <td style="width:5%"> <input class="ingizo"  type="text" /> </td>
+                <td style="width: 10%">Hour(24)</td>
+                <td style="width:5%"> <input class="ingizo"  type="text" /> </td>
+                <td class="my_td"  style="width: 11%">Area Name</td>
+                <td style="width:11%"> <input class="ingizo"  type="text" ng-model="accident.area_name" name="area_name"  required /> </td>
+                <td style="width: 11%">Name </td>
+                <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="accident.road_name" name="road_name"  required /> </td>
+                <td style="width:12.75%"> <input class="ingizo"  type="text" ng-model="accident.intersection_name" name="intersection_name"  required /> </td>
+            </tr>
+
+            <tr>
+                <td class="number" style="border-width:0px">3</td>
+                <td class="my_td"  >Month</td>
+                <td > <input class="ingizo"  type="text" /> </td>
+                <td >Min(60)</td>
+                <td> <input class="ingizo"  type="text" /> </td>
+                <td class="my_td" >City/Region</td>
+                <td> <input class="ingizo"  type="text"  ng-model="accident.region" name="region"  required/> </td>
+                <td>No </td>
+                <td> <input class="ingizo"  type="text" ng-model="accident.road_no" name="road_no"  required/> </td>
+                <td> <input class="ingizo"  type="text" ng-model="accident.intersection_no" name="intersection_no"  required /> </td>
+            </tr>
+
+
+            <tr>
+                <td class="number" style="border-width:0px">4</td>
+                <td class="my_td"  >Year</td>
+                <td > <input class="ingizo"  type="text" /> </td>
+                <td class="my_td" ></td>
+                <td> <input class="ingizo"  type="text" /> </td>
+                <td class="my_td" >District</td>
+                <td> <input class="ingizo"  type="text"  ng-model="accident.district" name="district"  required /> </td>
+                <td>Kilometer(Mark) </td>
+                <td> <input class="ingizo"  type="text"  ng-model="accident.road_mark" name="road_mark"  required /> </td>
+                <td> <input class="ingizo"  type="text"  ng-model="accident.intersection_mark" name="intersection_mark"  required /> </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="col-md-3" style="width: 12.75%">
+        <center><img src="img/logo.jpg" height="50%" width="50%"></center>
+    </div>
+
+    <div class="row" style = "padding: 0px;margin: 0px;border: 0px" >
+
+        <select style="width: 100%" ng-model="data.page">
+
+            <option value="">ACCIDENT TYPE CLASSIFICATION</option>
+            <optgroup label="Cat.1:Single Vehicle Accident">
+
+                <option value="112">Leave road to left corner</option>
+                <option value="113">Leave road to left corner</option>
+                <option value="121">Leave road to left corner</option>
+                <option value="122">Leave road to left corner</option>
+                <option value="123">Leave road to left corner</option>
+                <option value="141">Leave road to left corner</option>
+                <option value="151">Leave road to left corner</option>
+                <option value="161">Leave road to left corner</option>
+                <option value="172">Leave road to left corner</option>
+                <option value="181">Leave road to left corner</option>
+
+            </optgroup>
+
+            <optgroup label="Cat.2:Accidents between vehicles driving same travel direction.">
+
+                <option value="212">Leave road to left corner</option>
+                <option value="221">Leave road to left corner</option>
+                <option value="222">Leave road to left corner</option>
+                <option value="223">Leave road to left corner</option>
+                <option value="224">Leave road to left corner</option>
+                <option value="231">Leave road to left corner</option>
+                <option value="232">Leave road to left corner</option>
+                <option value="233"></option>
+                <option value="241"></option>
+                <option value="261"></option>
+                <option value="271"></option>
+                <option value="281"></option>
+                <option value="282"></option>
+
+            </optgroup>
+
+            <optgroup label="Cat.3:Accident Between vehicles driving opposite travel direction.">
+
+                <option value="312"></option>
+                <option value="313"></option>
+                <option value="321"></option>
+                <option value="322"></option>
+                <option value="323"></option>
+                <option value="324"></option>
+                <option value="325"></option>
+                <option value="331"></option>
+                <option value="341"></option>
+                <option value="342"></option>
+                <option value="361"></option>
+                <option value="362"></option>
+                <option value="363"></option>
+
+            </optgroup>
+
+            <optgroup label="Cat.4:Accidents at a junction turning in same or opposite direction.">
+
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+
+            </optgroup>
+
+
+            <optgroup label="Cat.5:Collision at a junction between two or more participants.">
+
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+
+            </optgroup>
+
+            <optgroup label="Cat.6:Accidents with parked vehicles.">
+
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+
+            </optgroup>
+
+
+            <optgroup label="Cat.7:Pedestrians,animals and other accidents.">
+
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+
+            </optgroup>
+
+
+        </select>
+
+    </div>
+
+    <div class="row" style = "padding: 0px;margin: 0px;border: 0px" ng-switch on="data.page">
+
+        <div  ng-switch-when="112" ng-show=" 112 == data.page">
+            <ng-include src="'views/partials/one_vehicle.html'"></ng-include>
+        </div>
+
+        <div  ng-switch-when="113">
+            <ng-include src="'views/partials/two_vehicle.html'"></ng-include>
+        </div>
+
+        <div  ng-switch-default>
+
+        </div>
+
+    </div>
+    <center>
+        <md-button style="padding-top: 5px" class="md-raised md-primary" ng-click="sendAccident(accident)" ng-disabled=""> Report This Accident</md-button>
+    </center>
+</div>
+</form>
+
+<!--saving messages-->
+<span class="pull-left" ng-if="accidentCurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+<span class="pull-left text-success" ng-if="accidentSavedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+<span class="pull-left text-danger" ng-if="accidentSavedFailure"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+
+</div>
+

@@ -1,0 +1,125 @@
+<div ng-controller="offenceReportController">
+	<form  accept-charset="UTF-8" class="form-horizontal" id="formms">
+		<input name="_token" type="hidden"
+			value="b706ikQaUK8WQWCRyblaQ63uPU9r6ucItLxfS56Y">
+		
+		<div class="form-group">
+			<div class="col-sm-2">
+				Show<br>
+				<select class="form-control" required="requiered" name="show" ng-model="criteria.show" ng-options="i.id as i.name for i in show">
+					<option style="display:none" value="">Select a Show</option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				Drivers Gender<br>
+				<select ng-model="criteria.gender" class="form-control" required name="vertical" 
+					ng-options="i.id as i.name for i in genders">
+					<option style="display:none" value="">Select a Gender</option>
+				</select>
+			</div>
+			<div class="col-sm-4">
+				Horizontal<br />
+				<select ng-model="criteria.horizontal" class="form-control" required name="horizontal" ng-options="i.id as i.name for i in horizontal">
+					
+				</select>
+			</div>
+			<div class="col-sm-4 year" style="display:{{display(criteria.horizontal== 'dates')}}">
+				<div class="col-sm-2">
+					From:<input ng-model="criteria.startDate" class="form-control" placeholder="Start Date" id="from" ui-date="dateOptions" name="from" type="text" value="">
+				</div>
+				<div class="col-sm-2">
+					To:<input class="form-control" ui-date="dateOptions" placeholder="End Date" id="to" name="to" type="text" value="">
+				</div>
+			</div>
+			<div class="col-sm-4 year" style="display:{{display(criteria.horizontal== 'year')}}">
+				Year <br>
+				<select class="form-control" ng-model="criteria.year" name="year" ng-options="i.id as i.name for i in years">
+					</select>
+			</div>
+			<div class="col-sm-4 age" style="display:{{display(criteria.horizontal== 'age')}}">
+				Age Range <br>
+				<select class="form-control" name="age" ng-model="criteria.ageRange"  ng-options="i.id as i.name for i in ageRange"></select>
+			</div>
+			<div class="col-sm-4 years" style="display:{{display(criteria.horizontal== 'years')}}">
+				<div class="col-sm-6">
+					Start <br>
+					<select class="form-control" ng-model="criteria.startYear" name="start" ng-options="i.id as i.name for i in years"></select>
+				</div>
+				<div class="col-sm-6">
+					End<br>
+					<select class="form-control" ng-model="criteria.endYear" name="end" ng-options="i.id as i.name for i in years"></select>
+				</div>
+			</div>
+		</div>
+		<div class="form-group" style="margin-bottom: 5px">
+
+			<div class="col-sm-2">
+				Region<br>
+				<select multiple="multiple" class="form-control multi"
+					name="region[]" ng-model="criteria.regions" ng-options="i.id as i.name for i in regions">
+					</select>
+			</div>
+			<div class="col-sm-2">
+				District<br>
+				<span id="district-area">
+					<select multiple="multiple" class="form-control multi" ng-model="criteria.districts" ng-options="i.id as i.name for i in regdistricts" name="district[]"></select>
+				</span>
+			</div>
+			<div class="col-sm-6">
+				Offence Nature<br>
+				<span>
+					<select multiple="multiple"
+							class="form-control multi" name="offence[]" 
+							ng-model="criteria.offences" 
+							ng-options="i.id as (i.section + ' ' +i.nature) for i in offences">
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="col-xs-12" style="margin-top: 5px">
+			<md-button class="md-raised col-md-2" ng-click="tableReport()">
+				
+				<img src="http://localhost/psms/public/table.png"
+					style="height: 20px; width: 20px"> Table
+			</md-button>
+			
+			<md-button class="md-raised col-md-2"  id="bar" ng-click="setChartType('column')">
+				<img src="http://localhost/psms/public/bar.png"
+					style="height: 20px; width: 20px"> Bar
+			</md-button>
+			<md-button class="md-raised col-md-2"  id="line" ng-click="setChartType('line')">
+				<img src="http://localhost/psms/public/line.png"
+					style="height: 20px; width: 20px"> Line
+			</md-button>
+			<md-button class="md-raised col-md-2"  id="column"  ng-click="setChartType('bar')">
+				<img src="http://localhost/psms/public/column.png"
+					style="height: 20px; width: 20px"> Column
+			</md-button>
+			<!--    <div class="col-md-2 btn btn-default" id="pie"><img src="http://localhost/psms/public/pie.png" style="height: 20px;width: 20px" /> Pie</div>-->
+			<md-button class="md-raised col-md-2"  id="combined">
+				<img src="http://localhost/psms/public/combined.jpg"
+					style="height: 20px; width: 20px"> Combined
+			</md-button>
+			<md-button type="submit" class="md-raised col-md-2" 
+				id="excel">
+				<img src="http://localhost/psms/public/cvs.jpg"
+					style="height: 20px; width: 20px" ng-click="setChartType('pie')"> Pie
+			</md-button>
+		</div>
+	</form>
+	<div>
+		<!-- <table>
+			<head>
+			<tr>
+				<th ng-repeat="date in results">{{date.time}}</th>
+			</tr>
+			</head>
+			<tbody>
+				<tr>
+					<td ng-repeat="date in results">{{date.offences}}</td>
+				</tr>
+			</tbody>
+		</table> -->
+	</div>
+	<highchart id="chart1" config="chartConfig"></highchart>
+</div>

@@ -1,0 +1,459 @@
+
+<div class="row" style="padding: 15px" ng-controller = "ViewAccidentController">
+
+<h3 class="panel-heading"  style="background-color: #ffffff;color: #000000;border: solid,#000000" ><center>TANZANIA ACCIDENT FORM SHEET (AFS)</center>  </h3>
+
+
+<form name="accident_form" novalidate>
+
+<div class="panel-body">
+
+    <table class="table table-bordered table-striped ">
+
+        <tbody>
+
+        <tr>
+            <td class="my_heading" style="border-width:0px">A : SCENE OF ACCIDENT & SEVERITY</td>
+            <td style="width:11%;background-color: #ffffff">Acc Register</td>
+            <td style="width:22%"> <input class="ingizo"  type="text" ng-model="accident['Accident Registration Number']" name="accident_no" required/> </td>
+            <td style="width:8.5%">OCS Check</td>
+            <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="accident['OCS Check']" name="ocs_check" required /> </td>
+            <td  style="width:8.5%">S.visor Check</td>
+            <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="accident['Supervisor Check']" name="supervisor_check" required /> </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+
+</div>
+
+<div class="panel-body">
+
+    <table class="table table-bordered table-striped">
+
+        <tbody>
+        <tr>
+            <td class="number" style="border-width:0px">1</td>
+            <td class="my_td"  style="width: 10%">Police Station</td>
+            <td style="width: 10%"><input class="ingizo"  type="text" ng-model="police_station" name="police_station" required/></td>
+            <td class="my_td"  style="width: 10%"></td>
+            <td class="my_td"  style="width: 11%">Number</td>
+            <td class="my_td"  style="width: 11%">Name</td>
+            <td class="my_td"  style="width: 11%">Sign.Date</td>
+            <td class="my_td"  style="width: 8.5%"></td>
+            <td  style="width: 8.5%">Acc.Severity</td>
+            <td class="my_td"  style="width: 8.5%"></td>
+            <td class="my_td"  style="width: 8.5%"></td>
+
+        </tr>
+
+        <tr>
+            <td class="number" style="border-width:0px">2</td>
+            <td class="my_td"  style="width: 10%">District </td>
+            <td style="width: 10%"><input class="ingizo" ng-model="station_district" type="text" /></td>
+            <td class="my_td"  style="width: 10%">Police Officer (1) </td>
+            <td style="width: 11%"><input class="ingizo" ng-model="accident.Police['Rank Number']" type="text" /></td>
+            <td style="width: 11%"><input class="ingizo" value="{{accident.Police.Person['First Name'] + ' ' + accident.Police.Person['Middle Name'] + ' ' + accident.Police.Person['Last Name']}}" type="text"/></td>
+            <td style="width: 11%"><input class="ingizo"  ng-model="accident['Time of Accident']" type="text"/></td>
+            <td style="width: 8.5%">Fatal(n)</td>
+            <td  style="width:8.5%"><input class="ingizo" ng-model="accident['Number of Fatal Injuries']" type="text"/></td>
+            <td  style="width: 8.5%">Simple(n)</td>
+            <td style="width: 8.5%"><input class="ingizo" ng-model="accident['Number of Simple Injuries']" type="text/"></td>
+
+        </tr>
+
+        <tr>
+            <td class="number" style="border-width:0px">3</td>
+            <td class="my_td" >Region</td>
+            <td><input class="ingizo" ng-model="station_region" type="text" name="region" required ></td>
+            <td class="my_td" >Accident Cause</td>
+            <td><input class="ingizo"  type="text" ng-model="accident['Cause of Accident']" name="officer_2" required/></td>
+            <td class="my_td" >Weather Conditions</td>
+            <td><input class="ingizo"  type="text" ng-model="accident.Weather"/></td>
+            <td class="my_td" >Severe Injury(n)</td>
+            <td><input class="ingizo" ng-model="accident['Number of Severe Injuries']" type="text"/></td>
+            <td class="my_td" >Only Damage</td>
+            <td><input class="ingizo" ng-model="accident_only_damage" type="text"/></td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="panel-body">
+
+    <table class="table table-bordered table-striped ">
+
+        <tbody>
+        <tr>
+            <td class="my_heading" style="border-width:0px">B : TIME AND LOCATION</td>
+            <td style="width:11%">Latitude</td>
+            <td style="width:11%"> <input class="ingizo" ng-model="accident.Latitude" type="text" /> </td>
+            <td style="width:11%">Longitude</td>
+            <td style="width:8.5%"> <input class="ingizo" ng-model="accident.Longitude" type="text" /> </td>
+            <td style="width:12.75%">Hit & Run</td>
+            <td style="width:12.75%"> <input class="ingizo"  type="text"   ng-model="hit_run"/> </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="row" style = "padding: 0px;margin: 0px;border: 0px">
+
+<div class="col-md-9" style="width: 87.25%;padding: 0px">
+
+    <table class="table table-bordered table-striped" style="padding-right: 2px">
+
+        <tbody >
+        <tr>
+            <td class="number" style="border-width:0px">1</td>
+            <td style="width: 15%">Accident Date</td>
+            <td style="width: 15%">Accident Time</td>
+            <td class="my_td"  style="width: 33%">Area Of Accident </td>
+            <td class="my_td"  style="width: 8.5%">Road </td>
+            <td class="my_td"  style="width:12.75%">Intersection</td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td class="number" style="border-width:0px">2</td>
+            <td class="my_td"  style="width: 10%">Day</td>
+            <td style="width:5%"> <input class="ingizo" ng-model="accident['Time of Accident']" type="text" /> </td>
+            <td style="width: 10%">Hour(24)</td>
+            <td style="width:5%"> <input class="ingizo"  type="text" /> </td>
+            <td class="my_td"  style="width: 11%">Area Name</td>
+            <td style="width:11%"> <input class="ingizo"  ng-model="accident['Area of Accident']" type="text" /> </td>
+            <td style="width: 11%">Name </td>
+            <td style="width:8.5%"> <input class="ingizo" ng-model="accident['Road Name']" type="text" /> </td>
+            <td style="width:12.75%"> <input class="ingizo"  ng-model="accident['Intersection Name']" type="text" /> </td>
+        </tr>
+
+        <tr>
+            <td class="number" style="border-width:0px">3</td>
+            <td class="my_td"  >Month</td>
+            <td > <input class="ingizo"  type="text" /> </td>
+            <td >Min(60)</td>
+            <td> <input class="ingizo"  type="text" /> </td>
+            <td class="my_td" >City/Region</td>
+            <td> <input class="ingizo"  ng-model="area_region" type="text" /> </td>
+            <td>No </td>
+            <td> <input class="ingizo" ng-model="accident['Road Number']" type="text" /> </td>
+            <td> <input class="ingizo" ng-model="accident['Intersection Number']" type="text" /> </td>
+        </tr>
+
+
+        <tr>
+            <td class="number" style="border-width:0px">4</td>
+            <td class="my_td"  >Year</td>
+            <td > <input class="ingizo"  type="text" /> </td>
+            <td class="my_td" ></td>
+            <td> <input class="ingizo"  type="text" /> </td>
+            <td class="my_td" >District</td>
+            <td> <input class="ingizo" ng-model="area_district" type="text" /> </td>
+            <td>Kilometer(Mark) </td>
+            <td> <input class="ingizo" ng-model="accident['Road Mark']" type="text" /> </td>
+            <td> <input class="ingizo" ng-model="accident['Intersection Mark']" type="text" /> </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="col-md-3" style="width: 12.75%">
+    <center><img src="img/logo.jpg" height="50%" width="50%"></center>
+</div>
+
+<div class="row" style="padding: 0px;margin-top:0px">
+<table class="table table-bordered table-striped " id="driver">
+
+    <tbody>
+    <tr>
+        <td class="my_heading2" style="border-width:0px">C : VEHICLE & DRIVER</td>
+        <td style="width:5%"> Fatal</td>
+        <td style="width:11%"><input class="ingizo" ng-model="vehicle_severe_injury" type="text" /></td>
+        <td style="width:11%"> Severe Injury</td>
+        <td style="width:11%"> Simple Injury</td>
+        <td  style="width:21.25%">Not Injured</td>
+        <td style="width:12.75%;background-color:#c5d9f1 ">
+
+    </tr>
+    </tbody>
+
+</table>
+
+<table class="table table-bordered table-striped table-condensed" >
+
+    <tbody>
+    <tr>
+        <td class="number" style="border-width:0px">1</td>
+        <td style="width: 30%" class="driver" >Driver Details</td>
+        <td style="width: 33%" class="vehicle">Vehicle Details</td>
+        <td style="width: 34%" class="insurance"> Vehicle Insurance</td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered table-striped table-condensed" >
+
+    <tbody>
+
+    <tr>
+        <td class="number" style="border-width:0px">2</td>
+        <td style="width: 15%" class="my_td">Driving License ID </td>
+        <td style="width: 15%"><input class="ingizo-driver" ng-model="accident.Driver['Driver License Number']" type="text" /></td>
+        <td style="width: 16.5%" class="my_td">Vehicle Registration Number </td>
+        <td style="width: 16.5%"><input class="ingizo-gari" ng-model="accident.Vehicle['Vehicle Plate Number']" type="text" /></td>
+        <td style="width: 17%" class="my_td">Insurance Company</td>
+        <td style="width: 17%" class="my_td"><input class="ingizo-insurance" type="text"></td>
+
+    <tr>
+        <td class="number" style="border-width:0px">3</td>
+        <td style="width: 16.5%" class="my_td">Surname </td>
+        <td style="width:16.5%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['First Name']" type="text" /> </td>
+        <td style="width: 15%" class="my_td">Vehicle Type </td>
+        <td style="width:15%"> <input class="ingizo-gari" ng-model="accident.Vehicle.Model" type="text" /> </td>
+        <td style="width: 17%" class="my_td">Insurance Type</td>
+        <td style="width: 17%"><input class="ingizo-insurance" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">4</td>
+        <td style="width: 15%" class="my_td">Other Names </td>
+        <td style="width:15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Middle Name']"  type="text" /> </td>
+        <td style="width: 15%" class="my_td">Owner's Full name </td>
+        <td style="width:15%"> <input class="ingizo-gari" ng-model="accident.Driver.Person['Last Name']" type="text" /> </td>
+        <td style="width: 17%" class="my_td">Phone Number</td>
+        <td style="width: 17%"><input class="ingizo-insurance" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">5</td>
+        <td style="width: 15%" class="my_td">Physical Address </td>
+        <td style="width:15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Postal Address']"  type="text" /> </td>
+        <td style="width: 16.5%" class="my_td">Nationality</td>
+        <td style="width: 16.5%"><input class="ingizo-gari" ng-model="driver1_p_add" type="text" /></td>
+        <td style="width: 17%" class="my_td">Policy Number </td>
+        <td style="width: 17%"><input class="ingizo-insurance" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">6</td>
+        <td style="width: 15%" class="my_td">Address PO Box </td>
+        <td style="width:15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Postal Address']"  type="text" /> </td>
+        <td style="width: 16.5%" class="my_td">Physical Address</td>
+        <td style="width: 16.5%"><input class="ingizo-gari" ng-model="vehicle_owner_p_addr" type="text" /></td>
+        <td style="width: 17%" class="my_td">Policy Period</td>
+        <td style="width: 17%"><input class="ingizo-insurance" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">7</td>
+        <td style="width: 15%" class="my_td">National ID </td>
+        <td style="width:15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Nationality']"  type="text" /> </td>
+        <td style="width: 16.5%" class="my_td">Address</td>
+        <td style="width: 16.5%"><input class="ingizo-gari" ng-model="vehicle_owner_address" type="text" /></td>
+        <td style="width: 17%" class="my_td">Estimated Repair TSH</td>
+        <td style="width: 17%"><input class="ingizo-insurance" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">8</td>
+        <td style="width: 15%" class="my_td">Phone No  </td>
+        <td style="width:15%"> <input class="ingizo-driver" ng-model="accident.Driver.Person['Phone Number']"  type="text" /> </td>
+        <td style="width: 16.5%" class="my_td">Damage</td>
+        <td style="width: 16.5%"><input class="ingizo-gari" ng-model="driver1_phone_no"  type="text" /></td>
+        <td style="width: 17%;text-align: center" ><strong>Damage</strong></td>
+        <td style="width: 17%"><input class="ingizo-driver" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">9</td>
+        <td style="width: 15%" class="my_td">Gender </td>
+        <td style="width:15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Gender']" type="text" /> </td>
+        <td style="width: 16.5%" class="my_td">Year of manufacturing</td>
+        <td style="width: 16.5%"><input class="ingizo-gari" ng-model="accident.Vehicle['Year of Make']" type="text" /></td>
+        <td style="width: 17%" class="my_td">Vehicle</td>
+        <td style="width: 17%"><input class="ingizo-driver" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">10</td>
+        <td style="width: 15%" class="my_td">Date Of Birth </td>
+        <td style="width: 15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Date of Birth']" type="text" /> </td>
+        <td style="width: 16.5%" class="my_td">Chassis Number</td>
+        <td style="width: 16.5%"><input class="ingizo-gari" ng-model="accident.Vehicle['Chasis Number']" type="text" /></td>
+        <td style="width: 17%" class="my_td">Vehicle Total</td>
+        <td style="width: 17%"><input class="ingizo-driver" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">11</td>
+        <td style="width: 15%" class="my_td">Nationality </td>
+        <td style="width: 15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Nationality']" type="text" /> </td>
+        <td style="width: 16.5%"> <input class="ingizo-driver"  ng-model="alcohol" type="text" /> </td>
+        <td style="width: 16.5%"> <input class="ingizo-driver"  ng-model="phone_use" type="text" /> </td>
+        <td style="width: 17%" class="my_td">Infrastructure</td>
+        <td style="width: 17%"><input class="ingizo-driver" type="text"></td>
+    </tr>
+
+    <tr>
+        <td class="number" style="border-width:0px">12</td>
+        <td style="width: 15%" class="my_td">Occupation </td>
+        <td style="width: 15%"> <input class="ingizo-driver"  ng-model="accident.Driver.Person['Postal Address']" type="text" /> </td>
+        <td style="width: 16.5%"> <input class="ingizo-driver"  ng-model="alcohol" type="text" /> </td>
+        <td style="width: 16.5%"> <input class="ingizo-driver"  ng-model="seat_belt" type="text" /> </td>
+        <td style="width: 17%" class="my_td">Rescue cost</td>
+        <td style="width: 17%"><input class="ingizo-driver" type="text"></td>
+    </tr>
+
+    </tbody>
+
+</table>
+
+<table class="table table-bordered table-striped " id="driver2">
+
+    <tbody>
+    <tr>
+        <td class="my_heading2" style="border-width:0px;width: 100%">E:PASSENGER</td>
+    </tr>
+    </tbody>
+
+</table>
+
+
+<table class="table table-bordered table-striped table-condensed" >
+
+    <tbody>
+    <tr>
+        <td class="number" style="border-width:0px">1</td>
+        <td style="width: 15%" class="my_td">Name </td>
+        <td style="width:15%"> <input class="ingizo-driver" ng-model="pass_name"  type="text" /> </td>
+        <td style="width: 16.5%" class="my_td">Gender</td>
+        <td style="width:16.5%"> <input class="ingizo-driver"  type="text"   ng-model="pass_gender"/> </td>
+        <td style="width: 17%" class="my_td">Date of Birth </td>
+        <td style="width:17%"> <input class="ingizo-driver" ng-model="pass_dob" type="text" /> </td>
+
+    <tr>
+
+        <td class="number" style="border-width:0px">2</td>
+        <td style="width: 15%" class="my_td">Physical Address </td>
+        <td style="width:15%"> <input class="ingizo-driver"  type="text" required ng-model="pass_physical_address"/> </td>
+        <td style="width: 16.5%" class="my_td">Address</td>
+        <td style="width:16.5%"> <input class="ingizo-driver" ng-model="pass_address" type="text" required/> </td>
+        <td style="width: 17%" class="my_td">Nationality/ID  </td>
+        <td style="width:17%"> <input class="ingizo-driver" ng-model="pass_national_id"  type="text" required/> </td>
+    </tr>
+    <tr>
+
+        <td class="number" style="border-width:0px">3</td>
+        <td style="width: 15%" class="my_td">Phone Number </td>
+        <td style="width:15%"> <input class="ingizo-driver"  type="text" required ng-model="pass_phone_number"/> </td>
+        <td style="width: 16.5%"  class="my_td">
+            Alcohol [%]
+
+
+        </td>
+        <td style="width: 16.5%">
+            <input class="ingizo-driver"  type="text" required ng-model="pass_alcohol"/>
+        </td>
+
+        <td style="width: 17%"  class="my_td">Passenger casuality </td>
+        <td style="width: 17%">
+            <input class="ingizo-driver"  type="text" required ng-model="pass_casuality"/>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<table class="table table-bordered table-striped " id="driver1">
+
+    <tbody>
+    <tr>
+        <td class="my_heading2" style="border-width:0px;width: 100%">F:WITNESS</td>
+    </tr>
+    </tbody>
+
+</table>
+
+
+<table class="table table-bordered table-striped table-condensed" >
+
+    <tbody>
+    <tr>
+        <td class="number" style="border-width:0px">1</td>
+        <td style="width: 15%" class="my_td">Name </td>
+        <td style="width:15%"> <input class="ingizo-driver"  type="text" required  ng-model="witness_name"/> </td>
+        <td style="width: 16.5%" class="my_td">Gender</td>
+        <td style="width:16.5%"> <input class="ingizo-driver"  type="text" required  ng-model="witness_gender"/> </td>
+        <td style="width: 17%" class="my_td">Date of Birth </td>
+        <td style="width:17%"> <input class="ingizo-driver"  type="text" required  ng-model="witness_dob"/> </td>
+
+    <tr>
+
+        <td class="number" style="border-width:0px">2</td>
+        <td style="width: 15%" class="my_td">Physical Address </td>
+        <td style="width:15%"> <input class="ingizo-driver"  type="text" required ng-model="witness_physical_address"/> </td>
+        <td style="width: 16.5%" class="my_td">Address</td>
+        <td style="width:16.5%"> <input class="ingizo-driver"  type="text" required  ng-model="witness_address"/> </td>
+        <td style="width: 17%" class="my_td">Nationality/ID  </td>
+        <td style="width:17%"> <input class="ingizo-driver"  type="text" required ng-model="witness_national_id"/> </td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<table class="table table-bordered table-striped table-condensed" >
+
+    <thead>
+    <th style="width:50%">Accident Description</th>
+    <th style="width:50%">Police Signature</th>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td ><img style="width:100px;height:100px"  src ="{{description_path}} "></td>
+        <td ><img style="width:100px;height:100px" src ="{{police_signature}} " ></td>
+    </tr>
+    </tbody>
+
+</table>
+
+<table class="table table-bordered table-striped table-condensed">
+
+    <thead>
+    <th style="width:50%">Driver Signature</th>
+    <th style="width:50%">Witness Signature</th>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td><img style="width:100px;height: 100px"  src="{{driver_signature}}"></td>
+        <td><img style="width:100px;height: 100px"  src="{{witness_signature}}"></td>
+    </tr>
+    </tbody>
+
+</table>
+
+</div>
+</div>
+
+
+</form>
+
+</div>

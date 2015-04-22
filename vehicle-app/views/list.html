@@ -1,0 +1,42 @@
+
+<div class="col-sm-12" id="listTable">
+    <table class="table table-stripped">
+        <tr>
+            <th># </th>
+            <th>Registration Number</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Body Type</th>
+            <th>Chassis Number</th>
+            <th>Class</th>
+            <th>Year of Manufacture</th>
+            <th>Fuel</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="vehicle in data.vehicles">
+            <td>{{ $index+1 }}</td>
+            <td>{{ vehicle.plate_number }}</td>
+            <td>{{ vehicle.make }}</td>
+            <td>{{ vehicle.type }}</td>
+            <td>{{ vehicle.body_type }}</td>
+            <td>{{ vehicle.chasis_no }}</td>
+            <td>{{ vehicle.class }}</td>
+            <td>{{ vehicle.yom}}</td>
+            <td>{{ vehicle.fuel }}</td>
+            <td>
+                <md-button class="md-hue-3 md-raised md-primary md-fab" style="height: 24px;width: 24px" ng-click="showAdvanced($event,vehicle)"><i class="fa fa-info"></i>
+                    <md-tooltip>
+                        Info
+                    </md-tooltip>
+                </md-button>
+                <md-button class="md-hue-3 md-raised md-primary md-fab" style="height: 24px;width: 24px" href="#/car/{{vehicle.id}}" ><i class="fa fa-list"></i> Details
+                    <md-tooltip>
+                        More Details
+                    </md-tooltip>
+                </md-button>
+
+            </td>
+        </tr>
+    </table>
+
+</div>

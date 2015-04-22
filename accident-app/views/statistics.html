@@ -1,0 +1,421 @@
+<div ng-controller="AccidentReportController">
+
+    <md-toolbar>
+        <center> <h2 class="md-toolbar-tools">YEARLY REGION TRAFFIC RETURN</h2></center>
+    </md-toolbar>
+
+        <div class="row" style="margin-top: 10px ">
+
+
+            <div class="col-sm-3">
+                Region<br>
+                <select class="form-control" ng-model="selected_region" ng-options="region.name for region in regions" ng-change="getDistrict()">
+                    <option value="">Select Region</option>
+                </select>
+            </div>
+
+            <div class="col-sm-3">
+                District<br>
+                <select class="form-control" ng-model="selected_district" ng-options="district.name for district in districts">
+                    <option value="">Select district</option>
+                </select>
+            </div>
+
+            <div class="col-sm-3">
+                Year <br><select ng-model="report_year" class="form-control" name="year"><option value="2015" selected="selected">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option><option value="1994">1994</option><option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option><option value="1986">1986</option><option value="1985">1985</option><option value="1984">1984</option><option value="1983">1983</option><option value="1982">1982</option><option value="1981">1981</option><option value="1980">1980</option><option value="1979">1979</option><option value="1978">1978</option><option value="1977">1977</option><option value="1976">1976</option><option value="1975">1975</option><option value="1974">1974</option><option value="1973">1973</option><option value="1972">1972</option><option value="1971">1971</option><option value="1970">1970</option></select>
+            </div>
+
+        </div>
+
+    <div class="col-sm-3 col-md-3">
+        Accident Classification<br>
+        <select class="form-control" ng-model="accident_class" ng-change="getAccidentReport()">
+            <option value="">--Accident Classification--</option>
+            <option value="Fatal Accident">Fatal Accidents</option>
+            <option value="Injure Accident">Injure Accidents</option>
+            <option value="Ordinary Accident">Ordinary Accidents</option>
+            <option value="Human Error Accident">Human Error Accidents</option>
+            <option value="Not Human Error or Unavoidable Accident">Not Human Error or Unavoidable Accidents</option>
+        </select>
+    </div>
+
+
+        <div class="col-md-12" style="margin-top: 10px ; margin-bottom: 30px">
+
+       <md-card>
+            <md-card-content>
+                <div class="row" ng-controller="AccidentListController">
+                    <p>Total Number Of Accidents</p><span><input ng-model="accident.accident_total" class="statistics"></span>
+
+                    <h6><strong>CLASSES OF PERSONS KILLED AND INJURED</strong></h6>
+
+                    <table class="table table-striped table-condensed ">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>KILLED</th>
+                            <th>INJURED</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td class="my_td">Drivers</td>
+                            <td class="my_td">{{(accident|filter:{severity:'Killed'}).length}}</td>
+                            <td class="my_td">{{(accident|filter:{severity:'Injured'}).length}}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="my_td">Passengers</td>
+                            <td class="my_td">{{(accident|filter:{pass_casuality:'Killed'}).length}}</td>
+                            <td class="my_td">{{(accident|filter:{pass_casuality:'Injured'}).length}}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="my_td">Motor Cyclists</td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.motor_cyclists_killed_total"/></td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.motor_cyclists_injured_total"/></td>
+                        </tr>
+
+                        <tr>
+                            <td class="my_td">Pedal Cyclists</td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.pedal_killed_total"/></td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.pedal_injured_total"/></td>
+                        </tr>
+
+                        <tr>
+                            <td class="my_td">Pedestrians</td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.pedestrians_killed_total"/></td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.pedestrians_injured_total"/></td>
+                        </tr>
+
+                        <tr>
+                            <td class="my_td">Rickshawers</td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.rickshawers_killed_total"/></td>
+                            <td class="my_td"><input class="statistics" ng-model="accident.rickshawers_injured_total"/></td>
+                        </tr>
+
+                     <!--   <tr>
+                            <td class="my_td">Total</td>
+                            <td class="my_td">{{(accident|filter:{severity:'Killed'}).length}}</td>
+                            <td class="my_td">{{(accident|filter:{severity:'Injured'}).length}}</td>
+                        </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+            </md-card-content>
+        </md-card>
+       <md-card>
+           <md-content>
+               <h6><strong>WEATHER CONDITION DURING ACCIDENTS</strong></h6>
+               <div class="row" >
+                   <table class="table table-striped table-condensed " >
+                       <thead>
+                       <tr>
+                           <th></th>
+                           <th>KILLED</th>
+                           <th>INJURED</th>
+                       </tr>
+                       </thead>
+
+                       <tbody>
+                       <tr>
+                           <td class="my_td">Wet</td>
+                           <td class="my_td">{{(accident|filter:{weather:'wet'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{weather:'wet'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Rain</td>
+                           <td class="my_td">{{(accident|filter:{weather:'Rain'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{weather:'Rain'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Dry</td>
+                           <td class="my_td">{{(accident|filter:{weather:'Dry'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{weather:'Dry'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Slippery</td>
+                           <td class="my_td">{{(accident|filter:{weather:'Slippery'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{weather:'Slippery'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                     <!--  <tr>
+                           <td class="my_td">Total</td>
+                           <td class="my_td"><input  class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>-->
+                       </tbody>
+                   </table>
+               </div>
+
+           </md-content>
+       </md-card>
+       <md-card>
+           <md-content>
+               <div class="row" >
+                   <h6><strong>PRIVATE CARS INVOLVED</strong></h6>
+                   <table class="table table-striped table-condensed " >
+                       <thead>
+                       <tr>
+                           <th></th>
+                           <th>KILLED</th>
+                           <th>INJURED</th>
+                       </tr>
+                       </thead>
+
+                       <tbody>
+                       <tr>
+                           <td class="my_td">P.S.V(Buses)</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">P.S.V(Dala Dala)</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">P.S.V(Taxi Cabs)</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">P.S.V(Private Hire)</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">H.D.V/Trailer</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Motor Cycles</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Pedal Cycles</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Pick Ups</td>
+                           <td class="my_td"><input class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Total</td>
+                           <td class="my_td"><input  class="statistics"/></td>
+                           <td class="my_td"><input class="statistics"/></td>
+                       </tr>
+                       </tbody>
+                   </table>
+               </div>
+           </md-content>
+       </md-card>
+
+       <md-card >
+         <md-content>
+            <div class="row" >
+                <h6><strong>INSTITUTIONAL VEHICLES INVOLVED</strong></h6>
+              <table class="table table-striped table-condensed " >
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>KILLED</th>
+                                        <th>INJURED</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+                                        <td class="my_td">G.T.Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">JW Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">Police Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">Prisons Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">JKT Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">TX Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">SU Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">Diplomatic Vehicles</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">Foreign or Transit</td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="my_td">Total</td>
+                                        <td class="my_td"><input  class="statistics"/></td>
+                                        <td class="my_td"><input class="statistics"/></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+            </div>
+         </md-content>
+       </md-card>
+
+       <md-card >
+           <md-content>
+               <div class="row" >
+                   <h6><strong>PRIMARY CAUSES OF ACCIDENTS</strong></h6>
+                   <table class="table table-striped table-condensed " >
+                       <thead>
+                       <tr>
+                           <th></th>
+                           <th>ACCIDENTS</th>
+                           <th>KILLED</th>
+                           <th>INJURED</th>
+                       </tr>
+                       </thead>
+
+                       <tbody>
+
+                       <tr>
+                           <td class="my_td">Dangerous Driving</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Dangerous Driving'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Dangerous Driving'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Dangerous Driving'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Careless Driver</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Careless Driver'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Careless Driver'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Careless Driver'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Mechanical Defects</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Mechanical Defects'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Mechanical Defects'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Mechanical Defects'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Fire</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Fire'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Fire'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Fire'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Careless Cyclists</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Careless Cyclists'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Careless Cyclists'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Careless Cyclists'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Excessive Speed</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Excessive Speed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Excessive Speed'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Excessive Speed'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Lights</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Lights'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Lights'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Lights'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Animal Stray</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Animal Stray'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Animal Stray'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Animal Stray'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Overtaking</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Overtaking'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Overtaking'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Overtaking'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Level Crossing</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Level Crossing'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Level Crossing'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Level Crossing'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Obstruction</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Obstruction'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Obstruction'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Obstruction'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+
+                       <tr>
+                           <td class="my_td">Bad-Road</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Bad-Road'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Bad-Road'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Bad-Road'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>
+                     <!--  <tr>
+                           <td>Total</td>
+                           <td class="my_td"><input ng-model="accident.accident_total" class="statistics"></td>
+                           <td class="my_td">{{(accident|filter:{cause:'Dangerous Driving'}|filter:{severity:'Killed'}).length}}</td>
+                           <td class="my_td">{{(accident|filter:{cause:'Dangerous Driving'}|filter:{pass_casuality:'Injured'}).length}}</td>
+                       </tr>-->
+                       </tbody>
+                   </table>
+               </div>
+           </md-content>
+       </md-card>
+        </div>
+
+</div>
