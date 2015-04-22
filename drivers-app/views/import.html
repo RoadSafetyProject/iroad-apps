@@ -1,0 +1,93 @@
+<style>
+    .drop-box {
+        background: #F8F8F8;
+        border: 5px dashed #DDD;
+        width: 200px;
+        height: 85px;
+        text-align: center;
+        padding-top: 25px;
+        margin: 10px;
+    }
+    .dragover {
+        border: 5px dashed blue;
+    }
+</style>
+<h3 class="text-center">Vehicle Information Import</h3>
+<p style="font-size: 17px">This Functionality allows you to import motor vehicle information from the excel file to the system  </p>
+<md-whiteframe class="md-whiteframe-z5 col-sm-12">
+    <h4>The expected file format is</h4>
+    <img src="/img/vehicle.png" style="width:100%">
+    <hr>
+    <h3>Make sure of the following before uploading the file <a href="/apps/license/vehicle.xlsx" title="Get sample Excel File"><i class="fa fa-download"></i>  </a> </h3>
+    <ol>
+        <li>The heading columns in the excel are on the first row.(not preceded by any rows)</li>
+        <li>The column names looks exactly the same as the one in the sample above</li>
+        <li>Use standard names for the Make and model of cars</li>
+    </ol>
+    Drop File:<span class="help-block">**The upload will start immediately  after you select or drop the file</span>
+    <div ng-file-drop ng-file-select ng-model="files" class="drop-box"
+         drag-over-class="dragover" ng-multiple="true" allow-dir="false">
+        Drop xlxs here or click to upload
+    </div>
+    <div class="progress" ng-if="progressParcent != 0">
+        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{ progressParcent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progressParcent }}%">
+            <span class="sr-only">{{ progressParcent }}% Complete (success)</span>
+        </div>
+    </div>
+    <div ng-no-file-drop>File Drag/Drop is not supported for this browser</div>
+    <ul>
+        <li ng-repeat="f in files" style="font:smaller">{{f.name}}</li>
+    </ul>
+
+</md-whiteframe>
+<div ng-if="data.imported.length != 0">
+    <h3>Import Summary</h3>
+</div>
+<table datatable="ng" class="row-border hover" ng-if="data.imported.newValues && data.imported.newValues.length">
+    <thead>
+    <tr>
+        <th>Plate Number</th>
+        <th>Model</th>
+        <th>Make</th>
+        <th>YOM</th>
+        <th>Color</th>
+        <th>Class</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="requi in data.imported.newValues">
+        <td>{{ requi.registration_number }}</td>
+        <td>{{ requi.car_model }}</td>
+        <td>{{ requi.car_make }}</td>
+        <td>{{ requi.year_of_manufacture }}</td>
+        <td>{{ requi.color }}</td>
+        <td>{{ requi.class }}</td>
+        <td>New Value</td>
+    </tr>
+    </tbody>
+</table>
+<table datatable="ng" class="row-border hover" ng-if="data.imported.duplicates && data.imported.duplicates.length != 0">
+    <thead>
+    <tr>
+        <th>Plate Number</th>
+        <th>Model</th>
+        <th>Make</th>
+        <th>YOM</th>
+        <th>Color</th>
+        <th>Class</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="requi in data.imported.duplicates">
+        <td>{{ requi.registration_number }}</td>
+        <td>{{ requi.car_model }}</td>
+        <td>{{ requi.car_make }}</td>
+        <td>{{ requi.year_of_manufacture }}</td>
+        <td>{{ requi.color }}</td>
+        <td>{{ requi.class }}</td>
+        <td>Updates</td>
+    </tr>
+    </tbody>
+</table>

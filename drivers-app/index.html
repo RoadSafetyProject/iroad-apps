@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html ng-app="rsmsaApp"  ng-controller="AppCtrl">
+<head>
+
+    <!-- Angulars Material CSS now available via Google CDN; version 0.6 used here -->
+    <link rel="stylesheet" href="libraries/angular-material/angular-material.css">
+    <link href="libraries/DataTables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="libraries/jquery-ui/themes/cupertino/jquery-ui.css" rel="stylesheet">
+    <link href="styles/angular-multi-select.css" rel="stylesheet">
+    <!-- Angular Material Dependencies -->
+    <script src="scripts/jquery.js"></script>
+    <script src="libraries/angular/angular.min.js"></script>
+    <script src="libraries/jquery-ui/jquery-ui.js"></script>
+    <script src="libraries/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="libraries/angular-ui-date/src/date.js"></script>
+    <script src="scripts/angular-multi-select.js"></script>
+    <!--<script src="libraries/angular-datatables/dist/angular-datatables.js"></script>-->
+    <script src="libraries/angular-animate/angular-animate.min.js"></script>
+    <script src="libraries/angular-aria/angular-aria.min.js"></script>
+    <script src="libraries/angular/angular-messages.min.js"></script>
+    <script src="libraries/highcharts-ng/src/highcharts-custom.js"></script>
+    <script src="libraries/highcharts-ng/src/highcharts-ng.js"></script>
+    <!-- Angular Material Javascript now available via Google CDN; version 0.6 used here -->
+    <script src="scripts/bootstrap.js"></script>
+    <link href="styles/bootstrap.css" rel="stylesheet" />
+    <link href="styles/bootstrap-theme.css" rel="stylesheet" />
+    <script src="scripts/abn_tree_directive.js"></script>
+    <link href="styles/abn_tree.css" rel="stylesheet" />
+    <script src="libraries/angular-material/angular-material.min.js"></script>
+    <script src="libraries/angular-material/angular-text.min.js"></script>
+    <script src="libraries/angular/angular-route.min.js"></script>
+    <script src="scripts/angular-file-upload.min.js"></script>
+
+    <link rel="stylesheet"href="libraries/angular-material/angular-text.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/autocomplete.css">
+    <link rel="stylesheet" href="libraries/font-awesome/css/font-awesome.css">
+    <style>
+        .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: url(/img/background.jpg);
+            height: 100%;
+            width: 100%;
+        }
+        .container > md-content > md-toobar{
+            background-color: #8BC34A !important;
+        }
+        .main {
+            position: absolute;
+            width: 75%;
+            background-color: white;
+            min-height: 1000px;
+            left: 12.5%;
+            top: 20px;
+        }
+
+        md-card, .content {
+            padding: 0;
+        }
+
+        md-toolbar {
+            padding:8px;
+        }
+        .menu-button{
+            width:56px;
+            height:56px;
+            border-radius:50% !important;
+        }
+        .sub-menu-button{
+            width:100%;
+            height: 40px;
+            text-align: left;
+            padding-left: 20px;
+            text-transform: none;
+        }
+        md-icon{
+            margin-top:0;
+        }
+    </style>
+    <!--<script ng-repeat="app in app.routes" ng-src="{{getControllerSrc(app.controller)}}"></script>-->
+    <script>
+        var dhisConfigs = {
+            baseUrl: "/",
+            refferencePrefix:"Program_"
+        }
+        var mainModule = angular.module('rsmsaApp', ['ngMaterial', "ngRoute","angularFileUpload",'ui.date','multi-select',"highcharts-ng"]);
+        mainModule.controller('AppCtrl', function($scope, $http, $mdSidenav, $log,$route) {
+            //When menu button is clicked show the left menu
+            $scope.toggleLeft = function() {
+                $mdSidenav('left').toggle();
+            };
+            $scope.closeNav = function() {
+                $mdSidenav('left').close();
+            };
+            dhisConfigs.onLoad = function(){
+
+            }
+            dhis2.Init(dhisConfigs);
+            $scope.app = {};
+        });
+    </script>
+    <script src="routes.js"></script>
+    <script src="scripts/controllers/vehicleAppCtrl.js"></script>
+    <script src="scripts/controllers/vehicleImportCtrl.js"></script>
+    <script src="scripts/controllers/vehicleAddCtrl.js"></script>
+    <script src="scripts/controllers/offenceListController.js"></script>
+    <script src="scripts/controllers/offenceFormController.js"></script>
+    <script src="scripts/controllers/insuranceAddCtrl.js"></script>
+    <script src="scripts/controllers/inspectionCtrl.js"></script>
+    <script src="scripts/controllers/licenceCtrl.js"></script>
+    <script src="scripts/controllers/singleCarController.js"></script>
+</head>
+
+<body style="" ng-controller="vehicleAppCtrl">
+<div class="container">
+    <md-content> <md-toolbar class="md-tall md-warn md-hue-3" style="background-color: {{app.color.c500}}  !important"> </md-toolbar>
+
+    </md-content>
+</div>
+<md-card class="main">
+    <md-card-content class="content">
+        <section layout="row" flex>
+            <md-sidenav class="md-sidenav-left md-whiteframe-z2"
+                        md-component-id="left">
+                <md-toolbar class="md-theme-light" style="background-color:{{app.color.c200}} !important">
+                    <h1 class="md-toolbar-tools">Menu</h1>
+                </md-toolbar>
+                <md-list>
+                    <!-- Menu buttons -->
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/home" style="width:100%" ng-click="closeNav()"><md-button class="sub-menu-button">Home</md-button></a>
+                        </md-item-content>
+                    </md-item>
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/list" style="width:100%" ng-click="closeNav()"><md-button class="sub-menu-button">List</md-button></a>
+                        </md-item-content>
+                    </md-item>
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/add" style="width:100%" ng-click="closeNav()"><md-button class="sub-menu-button">Registration</md-button></a>
+                        </md-item-content>
+                    </md-item>
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/insurance" style="width:100%" ng-click="closeNav()"><md-button class="sub-menu-button">Insurance</md-button></a>
+                        </md-item-content>
+                    </md-item>
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/licencing" style="width:100%" ng-click="closeNav()"><md-button class="sub-menu-button">Licencing</md-button></a>
+                        </md-item-content>
+                    </md-item>
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/inspection" style="width:100%" ng-click="closeNav()"><md-button class="sub-menu-button">Inspection</md-button></a>
+                        </md-item-content>
+                    </md-item>
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/import" style="width:100%" ng-click="closeNav()"><md-button class="sub-menu-button">Vehicles Import</md-button></a>
+                        </md-item-content>
+                    </md-item>
+
+                </md-list>
+            </md-sidenav>
+            <md-toolbar style="background-color:{{app.color.c200}} !important">
+                <div layout="row" >
+                    <div flex>
+                        <md-button class="menu-button" aria-label="Profile" ng-click="toggleLeft()"> <md-icon
+                                icon="/img/navigation/2x_web/ic_menu_black_48dp.png"
+                                style="width: 24px; height: 24px;"></md-icon> </md-button>
+                    </div>
+                    <div flex>
+                        <h2 class="md-toolbar-tools">
+                            <span>Motor Vehicles</span>
+                        </h2>
+                    </div>
+                </div>
+            </md-toolbar>
+        </section>
+        <ng-view />
+    </md-card-content> </md-card>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+    "version":"1.0",
+    "name":"Driver Capture",
+    "description":"Driver Capture is used to enter, update and view Driver data",
+    "icons":{
+        "16":"images/icon.png",
+        "48":"images/icon.png",
+        "128":"images/icon.png"
+    },
+    "developer":{
+        "url":"http://roadsafety.udsm.ac.tz/about/team/kelvinmbwilo",
+        "name":"Kelvin Mbwilo",
+        "company":"University of Dar es salaam",
+        "email":"kelvinmbwilo@gmail.com"
+    },
+    "activities":{
+        "dhis":{
+            "href":"http://localhost:8080/demo"
+        }
+    },
+    "folderName":null,
+    "baseUrl":null,
+    "launchUrl":null,
+    "key":null,
+    "launch_path":"/index.html",
+    "installs_allowed_from":null,
+    "default_locale":"en"
+}

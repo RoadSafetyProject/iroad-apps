@@ -1,0 +1,150 @@
+<style>
+    .dialogdemoBasicUsage .full {
+        width: 100%;
+        height: 100%; }
+    .dialogdemoBasicUsage .gap {
+        width: 50px; }
+    .dialogdemoBasicUsage .md-subheader {
+        background-color: #dcedc8;
+        margin: 0px; }
+    .dialogdemoBasicUsage h2.md-subheader {
+        margin: 0px;
+        margin-left: -24px;
+        margin-right: -24px;
+        margin-top: -24px; }
+    .dialogdemoBasicUsage h2.md-subheader.md-sticky-clone {
+        margin-right: 0px;
+        margin-top: 0px;
+        box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); }
+    .dialogdemoBasicUsage h2 .md-subheader-content {
+        padding-left: 10px; }
+</style>
+<md-dialog aria-label="Driver Details" style="width: 40%;top:10%">
+    <md-content>
+        <h3 class="md-sticky-no-effect">Registration Number {{ vehicle.plate_number }}</h3>
+       <div class="col-sm-5">
+           Owner Details
+           <table class="table">
+               <tr>
+                   <th>ID Number</th>
+                   <td>{{ vehicle.owner_id }}</td>
+               </tr>
+               <tr>
+                   <th>Category</th>
+                   <td>{{ vehicle.ownership_category }}</td>
+               </tr>
+               <tr>
+                   <th>Name</th>
+                   <td>{{ vehicle.owner_name }}</td>
+               </tr>
+               <tr>
+                   <th>Postal Address</th>
+                   <td>{{ vehicle.owner_address }}</td>
+               </tr>
+          </table>
+           <br/><br>Title Holder Details Details
+           <table class="table">
+               <tr>
+                   <th>ID Number</th>
+                   <td>{{ vehicle.owner_id }}</td>
+               </tr>
+               <tr>
+                   <th>Category</th>
+                   <td>{{ vehicle.ownership_category }}</td>
+               </tr>
+               <tr>
+                   <th>Name</th>
+                   <td>{{ vehicle.owner_name }}</td>
+               </tr>
+               <tr>
+                   <th>Postal Address</th>
+                   <td>{{ vehicle.owner_address }}</td>
+               </tr>
+          </table>
+       </div>
+        <div class="col-sm-7">
+            <h4>Vehicle Details</h4>
+            <table class="table">
+                <tr>
+                    <th>make</th>
+                    <td>{{ vehicle.make }}</td>
+                </tr>
+                <tr>
+                    <th>Model</th>
+                    <td>{{ vehicle.type }}</td>
+                </tr>
+                <tr>
+                    <th>Model Number</th>
+                    <td>{{ vehicle.model_number }}</td>
+                </tr>
+                <tr>
+                    <th>Body Type</th>
+                    <td>{{ vehicle.body_type }}</td>
+                </tr>
+                <tr>
+                    <th>Color</th>
+                    <td ng-style="{'background-color':vehicle.color }">{{ vehicle.color }}</td>
+                </tr>
+                <tr>
+                    <th>Class</th>
+                    <td>{{ vehicle.class }}</td>
+                </tr>
+                <tr>
+                    <th>Year Of Manufacture</th>
+                    <td>{{ vehicle.yom }}</td>
+                </tr>
+                <tr>
+                    <th>Chassis Number</th>
+                    <td>{{ vehicle.chasis_no }}</td>
+                </tr>
+                <tr>
+                    <th>Engine Capacity</th>
+                    <td>{{ vehicle.engine_capacity }}</td>
+                </tr>
+                <tr>
+                    <th>Engine Number</th>
+                    <td>{{ vehicle.engine_number }}</td>
+                </tr>
+                <tr>
+                    <th>Fuel Used</th>
+                    <td>{{ vehicle.fuel }}</td>
+                </tr>
+                <tr>
+                    <th>Number of Axels</th>
+                    <td>{{ vehicle.number_of_axial }}</td>
+                </tr>
+                <tr>
+                    <th>Axle Distance</th>
+                    <td>{{ vehicle.axial_distance }}</td>
+                </tr>
+                <tr>
+                    <th>Seating Capacity</th>
+                    <td>{{ vehicle.seating_capacity }}</td>
+                </tr>
+                <tr>
+                    <th>Tare Weight</th>
+                    <td>{{ vehicle.tare_weight }}</td>
+                </tr>
+                <tr>
+                    <th>Gross Weight</th>
+                    <td>{{ vehicle.gross_wheight }}</td>
+                </tr>
+                <tr>
+                    <th>Imported From</th>
+                    <td>{{ vehicle.imported_from }}</td>
+                </tr>
+
+            </table>
+       </div>
+
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" hide show-md>
+            More on Wikipedia
+        </md-button>
+        <span flex></span>
+        <md-button ng-click="answer('not useful')">
+            Close
+        </md-button>
+    </div>
+</md-dialog>

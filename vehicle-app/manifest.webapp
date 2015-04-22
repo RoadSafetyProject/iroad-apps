@@ -1,21 +1,28 @@
 {
-    "version": "0.1",
-    "name": "Motor Vehicle",
-    "description": "The Motor vehicle management app",
-    "launch_path": "index.html",
-    "icons": {
-        "16": "/images/icon.jpg",
-        "48": "/images/icon.jpg",
-        "128": "/images/icon.jpg"
+    "version":"1.0",
+    "name":"Motor Vehicle Capture",
+    "description":"Motor Vehicle Capture is used to enter, update and view Motor Vehicle data",
+    "icons":{
+        "16":"images/icon.png",
+        "48":"images/icon.png",
+        "128":"images/icon.png"
     },
-    "developer": {
-        "name": "Kelvin Mbwilo",
-        "url": "https://launchpad.net/~kelvinmbwilo"
+    "developer":{
+        "url":"http://roadsafety.udsm.ac.tz/about/team/kelvinmbwilo",
+        "name":"Kelvin Mbwilo",
+        "company":"University of Dar es salaam",
+        "email":"kelvinmbwilo@gmail.com"
     },
-    "default_locale": "en",
-    "activities": {
-        "dhis": {
-            "href": ".."
+    "activities":{
+        "dhis":{
+            "href":"http://localhost:8080/demo"
         }
-    }
+    },
+    "folderName":null,
+    "baseUrl":null,
+    "launchUrl":null,
+    "key":null,
+    "launch_path":"/index.html",
+    "installs_allowed_from":null,
+    "default_locale":"en"
 }
