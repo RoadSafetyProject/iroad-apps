@@ -1,0 +1,78 @@
+<style>
+
+    .my_table_td {
+        padding: 5px !important;
+        text-align: left;
+    }
+
+
+    .my_style_right{
+        text-align: right;
+        padding: 5px !important;
+    }
+</style>
+
+<div layout="row" layout-sm="column" layout-align="center center"  style="margin-bottom: 20px;padding:10px">
+
+    <img title="APPLICATION APPEARANCE CONFIGURATION" src="icon16.png" style="height: 25%px;width: 25%;border-radius: 50%"> <h3 style=" margin-left:8px ; color: #6fa2d1">APPLICATION APPEARANCE CONFIGURATION</h3>
+    <md-content>
+
+        <md-list>
+            <md-item>
+                <md-item-content>
+                    <div class="md-tile-left">
+                        <img src="img/tick_pic.jpg" style="height: 25%px;width: 25%px;border-radius: 50%">
+                    </div>
+                    <div class="md-tile-content">
+                        <h3 style="color:#6fa2d1;font-weight: bold  ">Change Application Colors</h3>
+                        <h4>
+                            This part will help you change the outlook of every service Application in the System by using the color pallete.
+                        </h4>
+                    </div>
+                </md-item-content>
+            </md-item>
+            <md-item>
+                <md-item-content>
+                    <div class="md-tile-left">
+                        <img src="img/tick_pic.jpg" style="height: 25%px;width: 25%px;border-radius: 50%">
+                    </div>
+                    <div class="md-tile-content">
+                        <h3  style="color:#6fa2d1;font-weight: bold ">Application Names</h3>
+                        <h4>
+                            This part will help you rename all Applications in the system.
+                        </h4>
+                    </div>
+                </md-item-content>
+            </md-item>
+        </md-list>
+    </md-content>
+</div>
+
+<div class="panel-body">
+<div class="col-sm-12" id="listTable">
+    <table datatable="ng" class="table table-stripped">
+        <thead>
+        <tr>
+            <th class="my_table_td" ># </th>
+            <th class="my_table_td" >App Name</th>
+            <th class="my_table_td" >App Primary Color</th>
+            <th class="my_table_td" >App Secondary Color</th>
+            <th class="my_style_right" >Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="app in data.apps">
+            <td class="my_table_td" >{{ $index+1 }}</td>
+            <td class="my_table_td" >{{ app.name }}</td>
+            <td class="my_table_td" >{{ app.primary_color }}</td>
+            <td class="my_table_td" >{{ app.secondary_color }}</td>
+            <td class="my_style_right" >
+                <md-button title="View or Edit" class="md-hue-3 md-raised md-primary md-fab" style="height: 30px;width: 30px;padding: 4px" ng-click="showApp($event,app)"><i class="fa fa-info"></i>
+                </md-button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</div>
