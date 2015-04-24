@@ -3,7 +3,7 @@
  */
 angular.module("rsmsaApp").config( function($routeProvider){
     $routeProvider.when("/home",{
-        templateUrl: 'views/home.html',
+        templateUrl: 'views/list.html',
         controller: 'vehicleAppCtrl'
     });
     $routeProvider.when("/list",{

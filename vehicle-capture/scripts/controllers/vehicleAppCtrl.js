@@ -19,9 +19,18 @@ angular.module('rsmsaApp')
         $scope.data.category = 'category';
 
         $scope.displayTable = true;
-        $http.get('../../vehicle').success(function(data){
-            $scope.data.vehicles = data;
-        });
+        $scope.onInitialize = function(){
+                var offenceModal = new iroad2.data.Modal("Vehicle",[]);
+                offenceModal.getAll(function(result){
+                    $scope.data.vehicles = result;
+                    console.log(result);
+                    $scope.$apply();
+                });
+        };
+        dhisConfigs.onLoad = function(){
+            $scope.onInitialize();
+        }
+        iroad2.Init(dhisConfigs);
 
         $scope.deleteVehicle = function (vehicle) {
             $scope.data.vehicles.splice($scope.data.vehicles.indexOf(vehicle), 1);
