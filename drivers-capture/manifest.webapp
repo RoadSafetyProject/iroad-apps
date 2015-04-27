@@ -1,6 +1,6 @@
 {
     "version":"1.0",
-    "name":"Mbwilo Driver Capture",
+    "name":"Driver Capture",
     "description":"Driver Capture is used to enter, update and view Driver data",
     "icons":{
         "16":"images/icon.png",
