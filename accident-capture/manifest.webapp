@@ -15,7 +15,7 @@
     },
     "activities":{
         "dhis":{
-            "href":"http://localhost:8080/demo"
+            "href":".."
         }
     },
     "folderName":null,

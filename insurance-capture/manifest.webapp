@@ -1,0 +1,7 @@
+{"version":"1.0",
+"name":"Insurance Capture",
+"description":"Insurance Capture App is used to view,add, and delete insurance companies",
+"icons":{"16":"icon16.png","48":"icon16.png","128":"icon16.png"},
+"developer":{"url":"http://me.com","name":"Paul Peter","company":null,"email":null},
+"activities":{"dhis":{"href":".."}},
+"folderName":null,"baseUrl":null,"launchUrl":null,"key":null,"launch_path":"/index.html","installs_allowed_from":null,"default_locale":"en"}

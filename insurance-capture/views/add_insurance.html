@@ -1,0 +1,94 @@
+<style>
+    .entry{
+        border: 0px;
+        border-bottom-style:solid ;
+        border-bottom-color:#767678;
+        border-bottom-width:1px ;
+        width: 100%;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+        background-color: #ffffff;
+        margin-bottom: 10px;
+    }.entry:focus{
+         border-bottom-width:2px ;
+         border-bottom-right-radius: 0px;
+         border-bottom-left-radius: 0px;
+         border-bottom-color:#000000;
+     }
+    p{
+        color: #000000;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    .multiSelect img {
+        vertical-align: middle;
+        margin-bottom: 0px;
+        height: 22px;
+        width: 42px;
+    }b{
+         color: #084646;
+     }
+</style>
+
+
+<md-dialog aria-label="Mango (Fruit)" layout="column">
+
+    <md-toolbar
+            class="md-theme-light" style="background-color:#B39DDB !important">
+        <h1 class="md-toolbar-tools">Insurance Company Registration</h1>
+    </md-toolbar>
+
+
+    <div class="col-sm-12" style="margin-top: 15px;margin-bottom: 15px;">
+
+        <form name="insuranceForm" novalidate>
+            <div class="col-xs-12">
+                <div class="col-xs-12"><b>Company Name:</b> <input type="text" class="entry" ng-model="insurance.name" required/></div>
+            </div>
+            <div class="col-xs-12">
+                <div class="col-xs-6"><b>Principal Officer:</b> <input type="text" class="entry" ng-model="insurance.officer" required/></div>
+                <div class="col-xs-6"><b>Insurance Type:</b> <input type="text" class="entry" ng-model="insurance.type" required/></div>
+            </div>
+            <div class="col-xs-12">
+                <div class="col-xs-6"><b>Policy Number:</b> <input type="text" class="entry" ng-model="insurance.policy_no" required/></div>
+                <div class="col-xs-6"><b>Policy Period:</b> <input type="text" class="entry" ng-model="insurance.policy_period" required/></div>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="col-xs-6"><b>Postal Box:</b> <input type="text" class="entry" ng-model="insurance.physical_address" required/></div>
+                <div class="col-xs-6"><b>Address:</b> <input type="text" class="entry" ng-model="insurance.address" required/></div>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="col-xs-6"><b>Phone Number:</b> <input type="text" class="entry" ng-model="insurance.phone_no" required/></div>
+                <div class="col-xs-6"><b>Fax:</b> <input type="text" class="entry" ng-model="insurance.fax" /></div>
+            </div>
+            <div class="col-xs-12">
+                <div class="col-xs-6"><b>Website:</b> <input type="text" class="entry" ng-model="insurance.website" /></div>
+                <div class="col-xs-6"><b>Email:</b> <input type="email" class="entry" ng-model="insurance.email" /></div>
+            </div>
+
+            <div class="col-xs-12" hidden="hidden">
+                <div class="col-xs-6"><b>Date:</b> <input type="text" hidden="hidden" class="entry" ng-model="insurance.date" value="<?php echo date('Y-m-d') ?>" /></div>
+            </div>
+
+        </form>
+
+    </div>
+
+<!--saving messages-->
+
+    <div class="md-actions" layout="row">
+
+        <!--saving messages-->
+        <span class="pull-left" ng-if="InsuranceCurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+        <span class="pull-left text-success" ng-if="InsuranceSavedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+        <span class="pull-left text-danger" ng-if="InsuranceSavedFailure"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+
+        <md-button ng-click="saveInsurance(insurance)" ng-disabled="insuranceForm.$invalid" class="md-primary"> <i class="fa fa-save"></i> Save </md-button>
+        <md-button ng-click="hide()" class="md-primary"> Cancel </md-button>
+    </div>
+
+
+
+</md-dialog>

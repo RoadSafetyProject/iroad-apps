@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html ng-app="configApp"  ng-controller="AppCtrl">
+<head>
+
+    <!-- Angulars Material CSS now available via Google CDN; version 0.6 used here -->
+    <link rel="stylesheet" href="resources/angular-material/angular-material.css">
+
+    <!-- Angular Material Dependencies -->
+
+    <script src="resources/js/jquery/jquery.js"></script>
+    <script src="resources/js/jquery/jquery-ui.js"></script>
+    <script src="resources/angular/angular.min.js"></script>
+    <script src="resources/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="resources/angular-datatables/dist/angular-datatables.js"></script>
+    <script src="resources/angular-animate/angular-animate.min.js"></script>
+    <script src="resources/angular-aria/angular-aria.min.js"></script>
+    <script src="resources/angular/angular-messages.min.js"></script>
+    <!-- Angular Material Javascript now available via Google CDN; version 0.6 used here -->
+    <script src="resources/angular-material/angular-material.min.js"></script>
+    <script src="resources/angular-material/angular-text.min.js"></script>
+    <script src="resources/angular/angular-route.min.js"></script>
+    <script src="resources/angular/ui-date/date.js"></script>
+    <script src="resources/js/angular-file-upload.min.js"></script>
+    <script src="resources/js/jquery.js"></script>
+    <script src="resources/js/abn_tree_directive.js"></script>
+    <script src="resources/js/bootstrap.js"></script>
+    <script src="resources/js/bootstrap-colorpicker-module.js"></script>
+    <script src="resources/js/dhis2-library.js"></script>
+
+    <!-- Angular Material Dependencies -->
+    <link href="resources/css/colorpicker.css" rel="stylesheet" />
+    <link href="resources/css/abn_tree.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="resources/js/jquery/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="resources/angular-material/angular-text.min.css"/>
+    <link rel="stylesheet" href="resources/css/style.css"/>
+    <link rel="stylesheet" href="resources/css/bootstrap.css"/>
+    <link rel="stylesheet" href="resources/css/bootstrap-theme.css"/>
+    <link href="resources/DataTables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="resources/css/font-awesome/css/font-awesome.min.css" />
+
+    <style>
+        .container {
+            padding:0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: url('img/background.jpg');
+            height: 100%;
+            width: 100%;
+        }
+        .container > md-content > md-toobar{
+            background-color: #8BC34A !important;
+        }
+        .main {
+            position: absolute;
+            width: 75%;
+            min-height: 800px;
+            background-color: white;
+            left: 12.5%;
+            top: 20px;
+            overflow: hidden;
+        }
+
+        md-card, .content {
+            padding: 0;
+        }
+
+        md-toolbar {
+            padding:8px;
+        }
+        .menu-button{
+            width:56px;
+            height:56px;
+            border-radius:50% !important;
+        }
+        .sub-menu-button{
+            width:100%;
+            height: 40px;
+            text-align: left;
+            padding-left: 20px;
+            text-transform: none;
+        }
+        md-icon{
+            margin-top:0;
+        }
+    </style>
+
+    <script>
+
+        var dhisConfigs = {
+            baseUrl:"/",
+            refferencePrefix:"Program_",
+            onLoad : function(){
+                //$scope.onInitialize();
+            }
+        };
+
+    </script>
+
+    <script ng-repeat="app in app.routes" ng-src="{{getControllerSrc(app.controller)}}"></script>
+    <script>
+        var routeProvider = null;
+
+        var mainModule = angular.module('configApp', ['ngMaterial', "ngRoute","ui.date","datatables","angularFileUpload","angularBootstrapNavTree","ngAnimate" ,"colorpicker.module"]).config(function ($routeProvider) {
+
+            routeProvider = $routeProvider;
+        });
+
+        mainModule.controller('AppCtrl', function($scope, $http, $mdSidenav, $log,$route) {
+            //When menu button is clicked show the left menu
+            $scope.toggleLeft = function() {
+                $mdSidenav('left').toggle();
+            };
+            $scope.app = {};
+
+            //setting active link on top menu
+            $scope.isActive = function (viewLocation) {
+                var active = (viewLocation === $location.path());
+                return active;
+            };
+
+            $scope.addTwo = function(one,two){
+                return parseInt(one) + parseInt(two);
+            }
+
+            $scope.matchName = function(query) {
+                return function(friend) { return friend.region_id == query; }
+            };
+
+            $scope.getWards = function(id){
+                $http.get("/wards/district/"+id).success(function(distr){
+                    $scope.data.disward = distr;
+                });
+            }
+
+            $scope.getVillages = function(id){
+                $http.get("/village/ward/"+id).success(function(distr){
+                    $scope.data.disvillage = distr;
+                });
+            }
+
+            $scope.findSum = function(kata){
+                return Math.floor(kata.male) + Math.floor(kata.female);
+            }
+            $scope.findDiff = function(answer){
+                if(answer/2 > 5){
+                    return 5
+                }else{
+                    return answer/2
+                }
+            }
+
+            $scope.getDetails =function(region){
+                if(region.districts == null){
+                    $http.get("/districts/region/"+region.id).success(function(distr){
+                        region.districts = distr;
+                        angular.forEach(region.districts,function(val){
+                            var district = val;
+                            $http.get("/people/district/"+val.id).success(function(ppl){
+                                district.people = ppl;
+                            });
+                        });
+                    });
+                }
+            }
+
+            $scope.closeNav = function() {
+                $mdSidenav('left').close();
+            };
+
+        });
+    </script>
+
+    <script src="routes.js"></script>
+    <script src="controllers/configController.js"></script>
+    <script src="controllers/accConfig.js"></script>
+    <script src="controllers/OrgUnitAppCtrl.js"></script>
+    <script src="controllers/InsuranceCtrl.js"></script>
+    <script src="controllers/InspectionController.js"></script>
+
+</head>
+
+<body>
+
+
+<div class="container">
+    <md-content>
+        <md-toolbar class="md-tall md-warn md-hue-3" style="background-color:#CE93D8 !important"> </md-toolbar>
+    </md-content>
+</div>
+<md-card class="main">
+    <md-card-content class="content">
+        <section layout="row" flex>
+            <md-sidenav class="md-sidenav-left md-whiteframe-z2"
+                        md-component-id="left">
+                <md-toolbar class="md-theme-light" style="background-color:#9C27B0 !important">
+                    <h1 class="md-toolbar-tools">Menu</h1>
+                </md-toolbar>
+                <md-list>
+                    <!-- Menu buttons -->
+                    <md-item>
+                        <md-item-content>
+                            <a href="#/home" style="width:100%;font-size:14px"><md-button class="sub-menu-button" ng-click="closeNav()">Home</md-button></a>
+                        </md-item-content>
+                    </md-item>
+
+
+                </md-list>
+            </md-sidenav>
+            <md-toolbar style="background-color:#9C27B0 !important">
+                <div layout="row" >
+                    <div flex>
+                        <md-button class="menu-button" aria-label="Profile" ng-click="toggleLeft()"> <md-icon
+                                icon="img/ic_menu_black_48dp.png"
+                                style="width: 24px; height: 24px;"></md-icon> </md-button>
+                    </div>
+                    <div flex>
+                        <h2 class="md-toolbar-tools">
+                            <center><span style="color:black">INSURANCE COMPANIES CAPTURE</span></center>
+                        </h2>
+                    </div>
+                </div>
+            </md-toolbar>
+
+        </section>
+        <!-- Put app content here -->
+        <ng-view />
+    </md-card-content>
+</md-card>
+
+
+</body>
+
+
+</html>
