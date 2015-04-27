@@ -3,6 +3,7 @@
  */
 angular.module('configApp')
     .controller('InsuranceController',function($scope,$http,$mdDialog){
+
 //DHIS2 Way Starts
         $scope.insuranceList = [];
         $scope.onInitialize = function(){
