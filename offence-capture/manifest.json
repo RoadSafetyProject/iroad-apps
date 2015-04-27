@@ -11,12 +11,10 @@
         }
     },
 	"menu":[
-		{"name":"Home","route":"/home"},
+		{"name":"Home","route":"/list"},
 		{"name":"Offence List","route":"/list"},
 		{"name":"Report Offence","route":"/report"},
-		{"name":"Registry","route":"/registry"},
-		{"name":"Payment","route":"/offence/payments"},
-		{"name":"Statistics","route":"/offence/statistics"}	
+		{"name":"Registry","route":"/registry"}	
 	],
 	"routes":[
 		{"route":"/home","view":"/stats.html"},
