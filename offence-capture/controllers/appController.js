@@ -1,6 +1,4 @@
-/**
- * Created by kelvin on 4/24/15.
- */
+
 'use strict';
 
 /* Controllers */
@@ -8,13 +6,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
 //Controller for settings page
     .controller('MainController',
-    function($scope,
-             $modal,
-             $timeout,
-             $translate,
-             $anchorScroll,
-             storage,
-             Paginator,
+    function($scope,$modal,$timeout,$translate,$anchorScroll,storage,Paginator,
              OptionSetService,
              ProgramFactory,
              ProgramStageFactory,
@@ -30,16 +22,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
              ErrorMessageService,
              ModalService,
              DialogService) {
+    	var offenceEventModal = new iroad2.data.Modal("Offence Event",[]);
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.data = {};
         $scope.onInitialize = function(){
-        	$scope.modal = new iroad2.data.Modal("Offence Event",[]);
-        	$scope.modal.getAll(function(result){
+        	offenceEventModal.getAll(function(result){
 				$scope.data.offences = result;
 				$scope.$apply();
 			});
-        	var driver = new  iroad2.data.Modal("Driver",[]);
+        	/*var driver = new  iroad2.data.Modal("Driver",[]);
         	driver.getAll(function(result){
         		console.log("Divers:" + JSON.stringify(result));
 				$scope.data.drivers = result;
@@ -50,7 +42,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         		console.log("Vehicles:" + JSON.stringify(result));
 				$scope.data.drivers = result;
 				$scope.$apply();
-			});
+			});*/
         }
         dhisConfigs.onLoad = function(){
 			$scope.onInitialize();
@@ -61,7 +53,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 			var event = {};
 			angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == modalName) {
-                	console.log("Program:" + JSON.stringify(program));
                 	angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                 		if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
                 			event[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
@@ -92,7 +83,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.editing = "true";
             //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
-                if (program.name == $scope.modal.getModalName()) {
+                if (program.name == offenceEventModal.getModalName()) {
                     $scope.editingProgram = program;
                 }
             });
@@ -100,7 +91,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.editingEvent = event;
             for (var key in event) {
             	if (typeof event[key] == "object") {
-            		var program = $scope.modal.getProgramByName(key);
+            		var program = offenceEventModal.getProgramByName(key);
             		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                         if (dataElement.dataElement.code) {
                         	if(dataElement.dataElement.code.startsWith("id_")){
@@ -119,9 +110,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             	delete $scope.editingEvent[savableData.name];
             	$scope.editingEvent[savableData.key] = savableData.value;
             });
-			console.log("Saving data:" + JSON.stringify($scope.editingEvent));
+			console.log("Saving Modal:"+JSON.stringify(offenceEventModal));
+			console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
 			var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
-			$scope.modal.save($scope.editingEvent,otherData,function(result){
+			offenceEventModal.save($scope.editingEvent,otherData,function(result){
 				console.log("Save Made:" + JSON.stringify(result));
 			});
 			$scope.cancelEdit();
@@ -150,7 +142,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 		        			angular.forEach($scope.savableEventData, function (savableData) {
 		        				if(savableData.name == dataElement.name){
 		        					savableData.value = null;
-		        					console.log("See if changes:" + JSON.stringify($scope.savableEventData));
 		        				}
 		                    });
 		        		}

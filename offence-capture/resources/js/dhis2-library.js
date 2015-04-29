@@ -414,6 +414,7 @@ iroad2.data.Modal = function (modalName,relations) {
 	 */
 	this.convertToEvent = function(object,otherData){
 		program = self.getProgramByName(self.modalName);
+		console.log("Program Saving:" + self.modalName);
 		var selfConvertToEvent = this;
 		var date = new Date();
 		var event = {
