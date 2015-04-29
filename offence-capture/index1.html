@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html ng-app="rsmsaApp" ng-controller="offenceCtrl">
+<head>
+
+<!-- Angulars Material CSS now available via Google CDN; version 0.6 used here -->
+<link rel="stylesheet" href="resources/angular-material/angular-material.css">
+<link rel="stylesheet" href="resources/bootstrap/bootstrap.min.css">
+
+<!-- Angular Material Dependencies -->
+<script src="resources/js/jquery/jquery.js"></script>
+<script src="resources/js/jquery/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="resources/js/jquery/jquery-ui.min.css">
+
+<script src="resources/angular/angular.min.js"></script>
+<script src="resources/hammerjs/hammer.min.js"></script>
+<script src="resources/angular-animate/angular-animate.min.js"></script>
+<script src="resources/angular-aria/angular-aria.min.js"></script>
+<script src="resources/angular/angular-messages.min.js"></script>
+<!-- Angular Material Javascript now available via Google CDN; version 0.6 used here -->
+<script src="resources/angular-material/angular-material.min.js"></script>
+<script src="resources/angular-material/angular-text.min.js"></script>
+<script src="resources/angular/angular-route.min.js"></script>
+<script src="resources/angular/ui-date/date.js"></script>
+<script src="resources/angular/highcharts/highcharts-custom.js"></script>
+<script src="resources/angular/highcharts/highcharts-ng.js"></script>
+<script src="resources/js/angular-multi-select.js"></script>
+<script src="/demo/commons/src/dhis2-library.js"></script>
+<link href="resources/css/angular-multi-select.css" rel="stylesheet">
+<link rel="stylesheet"href="resources/angular-material/angular-text.min.css">
+<!-- <link rel="stylesheet" href="/css/style.css"> -->
+<link rel="stylesheet" href="resources/css/font-awesome/css/font-awesome.css">
+<script>
+
+</script>
+<style>
+.container {
+	padding:0;
+	position: fixed;
+	top: 60px;
+	left: 0;
+	z-index: 0;
+	background: url(/img/background.jpg);
+	height: 100%;
+	width: 100%;
+}
+.container > md-content > md-toobar{
+	background-color: #8BC34A !important;
+}
+.main {
+	position: absolute;
+	width: 75%;
+	background-color: white;
+	left: 12.5%;
+	top: 20px;
+	overflow: hidden;
+	min-height:500px;
+}
+.view{
+	padding:80px;
+}
+md-card, .content {
+	padding: 0;
+}
+
+md-toolbar {
+	padding:8px;
+}
+.menu-button{
+	width:56px;
+	height:56px;
+	border-radius:50% !important;
+}
+.sub-menu-button{
+	width:100%;
+	height: 40px;
+	text-align: left;
+	padding-left: 20px;
+	text-transform: none;
+}
+md-icon{
+	margin-top:0;
+}
+</style>
+<script>
+var dhisConfigs = {
+		baseUrl:"../../../",
+		refferencePrefix:"Program_"
+};
+</script>
+<script>
+ window.dhis2 = window.dhis2 || {};
+ dhis2.settings = dhis2.settings || {};
+ dhis2.settings.baseUrl = 'demo';
+</script>
+
+<!-- Menu scripts -->
+ <link type="text/css" rel="stylesheet" href="../../../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
+        <link type="text/css" rel="stylesheet" media="screen" href="../../../dhis-web-commons/css/menu.css">
+<script src="resources/js/Chart.js"></script>
+<script src="controllers/offenceController.js"></script>
+<!--<script ng-repeat="controller in appControllers" ng-src="{{getContollerUrl(controller)}}"></script>-->
+<script src="controllers/statsController.js"></script>
+<script src="controllers/offenceListController.js"></script>
+<script src="controllers/offenceFormController.js"></script>
+<script src="controllers/offenceRegController.js"></script>
+<script src="controllers/offenceReportController.js"></script>
+<script src="controllers/offencePaymentController.js"></script>
+<script src="controllers/statisticsController.js"></script>
+<!-- <script src="<?php echo asset('app/payment/controllers/receiptController.js')?>"></script> -->
+</head>
+<body style="" >
+	<!-- DHIS2 Settings initialization for a baseUrl that is used for the menu -->
+
+ <div id="dhisDropDownMenu"></div>
+
+        <!-- DHIS2 Settings initialization for a baseUrl that is used for the menu -->
+        <script>
+            window.dhis2 = window.dhis2 || {};
+            dhis2.settings = dhis2.settings || {};
+            dhis2.settings.baseUrl = 'dhis';
+        </script>
+
+        <!-- Menu scripts -->
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
+	<div class="container">
+		<md-content> <md-toolbar class="md-tall md-warn md-hue-3" style="background-color: {{app.color.c500}}  !important"> </md-toolbar>
+		
+		</md-content>
+	</div>
+	<md-card class="main"> 
+	<md-card-content class="content">
+	<section layout="row" flex>
+		<md-sidenav class="md-sidenav-left md-whiteframe-z2"
+			md-component-id="left"> 
+			<md-toolbar class="md-theme-light" style="background-color:{{app.color.c200}} !important">
+				<h1 class="md-toolbar-tools">Menu</h1>
+			</md-toolbar> 
+			<md-list>
+				<md-item ng-repeat="menu in app.menu">
+					<md-item-content>
+					<a href="#{{menu.route}}" style="width:100%"><md-button class="sub-menu-button" ng-click="closeNav()">{{menu.name}}</md-button></a>
+					</md-item-content>
+				</md-item>					
+			</md-list>
+		</md-sidenav>
+		<md-toolbar style="background-color:{{app.color.c200}} !important">
+			<div layout="row" >
+				<div flex>
+					<md-button class="menu-button" aria-label="Profile" ng-click="toggleLeft()"> <md-icon
+						icon="/img/navigation/2x_web/ic_menu_black_48dp.png"
+						style="width: 24px; height: 24px;"></md-icon> </md-button>
+				</div>
+				<div flex>
+					<h2 class="md-toolbar-tools">
+						<span>{{app.name}}</span>
+					</h2>
+				</div>
+			</div>
+		</md-toolbar>
+	</section>
+	<div class="view">
+		<div ng-view="#/home" />
+	</div>
+	<div>
+	
+	</div>
+	</md-card-content> </md-card>
+</body>
+</html>
