@@ -376,11 +376,10 @@ iroad2.data.Modal = function (modalName,relations) {
 		for (k = 0; k < relations.length; k++) {//For each relation
 			var relation = relations[k];
 			var programModal = null;
-			alert("Here:" + relation.isManyToMany());
+			
 			if(relation.type == "ONE_MANY"){//If relationship is one to many
 				programModal = new iroad2.data.Modal(relation.name, []);
-			}else if(relation.type == "MANY_MANY"){//If relationship is many to many
-				
+			}else if(relation.isManyToMany()){//If relationship is many to many
 				programModal = new iroad2.data.Modal(relation.pivot, [new iroad2.data.Relation(relation.name)]);
 				//Create modal with one to many relation with the pivot entity
 				/*programModal = new iroad2.data.Modal(relation.pivot, [{
@@ -412,9 +411,8 @@ iroad2.data.Modal = function (modalName,relations) {
 	 * 
 	 * @param otherData {object} Additional data to be added to the event like program,eventDate,orgUnit etc
 	 */
-	this.convertToEvent = function(object,otherData){
-		program = self.getProgramByName(self.modalName);
-		console.log("Program Saving:" + self.modalName);
+	this.convertToEvent = function(modalName,object,otherData){
+		program = self.getProgramByName(modalName);
 		var selfConvertToEvent = this;
 		var date = new Date();
 		var event = {
@@ -469,25 +467,27 @@ iroad2.data.Modal = function (modalName,relations) {
 	 * 
 	 * @param (Optional) onError {function} Callback function an error has occured.
 	 */
-	this.save = function(data,otherData,onSuccess,onError){
+	this.save = function(data,otherData,onSuccess,onError,modalName){
+		var savingModal = modalName;
+		if(savingModal == undefined){
+			savingModal = self.getModalName();
+		}
 		var sendData = {};
 		var saveUrl = iroad2.config.baseUrl + "api/events";
 		if(Array.isArray(data)){
 			var events = [];
 			
 			for(count = 0; count < data.length;count++){
-				events.push(self.convertToEvent(data[count],otherData));
+				events.push(self.convertToEvent(savingModal,data[count],otherData));
 			}
 			sendData.events = events;
 		}else{
-			sendData = self.convertToEvent(data,otherData);
+			sendData = self.convertToEvent(savingModal,data,otherData);
 		}
 		
 		//var event = self.convertToEvent(data);
 		if(sendData.event){
-			alert("has event");
-			saveUrl += "/" +sendData.event; 
-			console.log("Updating Data:" + JSON.stringify(sendData));
+			saveUrl += "/" +sendData.event;
 			http.put(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
 			},function(results){
