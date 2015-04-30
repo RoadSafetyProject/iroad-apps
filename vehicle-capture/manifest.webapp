@@ -1,28 +1,21 @@
 {
-    "version":"1.0",
-    "name":"Motor Vehicle Capture",
-    "description":"Motor Vehicle Capture is used to enter, update and view Motor Vehicle data",
-    "icons":{
-        "16":"images/mini_crossover_08_4.png",
-        "48":"images/mini_crossover_08_4.png",
-        "128":"images/mini_crossover_08_4.png"
+    "version": "0.1",
+    "name": "Event Capture",
+    "description": "Event Capture App",
+    "launch_path": "index.html",
+    "icons": {
+        "16": "/img/icons/mortar-16.png",
+        "48": "/img/icons/mortar-48.png",
+        "128": "/img/icons/mortar-128.png"
     },
-    "developer":{
-        "url":"http://roadsafety.udsm.ac.tz/about/team/kelvinmbwilo",
-        "name":"Kelvin Mbwilo",
-        "company":"University of Dar es salaam",
-        "email":"kelvinmbwilo@gmail.com"
+    "developer": {
+        "name": "HISP",
+        "url": "http://dhis2.org"
     },
-    "activities":{
-        "dhis":{
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
             "href": ".."
         }
-    },
-    "folderName":null,
-    "baseUrl":null,
-    "launchUrl":null,
-    "key":null,
-    "launch_path":"/index.html",
-    "installs_allowed_from":null,
-    "default_locale":"en"
+    }
 }
