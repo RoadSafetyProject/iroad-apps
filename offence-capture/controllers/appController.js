@@ -13,24 +13,19 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
     	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         //selected org unit
         $scope.today = DateUtils.getToday();
+        $scope.panel = {vehicle:false,driver : false,offences:false};
+        $scope.show = function(panel){
+        	for(var key in $scope.panel){
+        		$scope.panel[key] = false;
+        	}
+        	$scope.panel[panel] = true;
+        }
         $scope.data = {};
         $scope.onInitialize = function(){
         	$scope.offenceEventModal.getAll(function(result){
 				$scope.data.offences = result;
 				$scope.$apply();
 			});
-        	/*var driver = new  iroad2.data.Modal("Driver",[]);
-        	driver.getAll(function(result){
-        		console.log("Divers:" + JSON.stringify(result));
-				$scope.data.drivers = result;
-				$scope.$apply();
-			});
-        	var vehicle = new  iroad2.data.Modal("Vehicle",[]);
-        	vehicle.getAll(function(result){
-        		console.log("Vehicles:" + JSON.stringify(result));
-				$scope.data.drivers = result;
-				$scope.$apply();
-			});*/
         }
         dhisConfigs.onLoad = function(){
 			$scope.onInitialize();
@@ -53,9 +48,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
 			$scope.enableEdit(event);
 		}
-		$scope.setRegistries = function(registries){
-			alert("here");
+		$scope.showRegistries = function(registries){
+			$scope.show("offences");
 			$scope.data.offenceRegistries = registries;
+		}
+		$scope.showDriver = function(driver){
+			$scope.show("driver");
+			$scope.data.driver = driver;
+		}
+		$scope.showVehicle = function(vehicle){
+			$scope.show("vehicle");
+			$scope.data.vehicle = vehicle;
 		}
 		$scope.enableEdit  = function(event){
             $scope.normalStyle= { "z-index": '10'};

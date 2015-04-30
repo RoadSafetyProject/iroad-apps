@@ -50,9 +50,9 @@
                             	
                                 <li><a  ng-click="enableEdit(event)">Edit</a> </li>
                                 <li><a >Delete</a> </li>
-                                <li><a  ng-click="setRegistries(event.Offences)">View Offences </a> </li>
-                                <li><a >View Driver</a> </li>
-                                <li><a >View Vehicle</a> </li>
+                                <li><a ng-click="showRegistries(event.Offences)">View Offences </a> </li>
+                                <li><a ng-click="showDriver(event.Driver)">View Driver</a> </li>
+                                <li><a ng-click="showVehicle(event.Vehicle)">View Vehicle</a> </li>
                             </ul>
                         </div>
                     </td>
@@ -63,12 +63,15 @@
 
     </div>
 
-		<div class="mws-panel grid_4" style="z-index: 30;background-color: white" ng-if="editing" >
+		<div class="mws-panel grid_2" style="z-index: 30;background-color: white;margin-top:70px" ng-if="editing" >
             <a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
-            <table >
+            <table  class="mws-datatable-fn mws-table">
             <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
+            	<td>
+            		<label>{{key}}</label>
+            	</td>
                 <td >
-                    <label>{{key}}</label><br>
+                    <br>
                     <input  ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet"  ng-model="editingEvent[key]" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
                     <select  ng-focus="focusMe(datas.name)"  style="width: 100%;background: #ffffff" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ><option value=""></option></select>
                 </td>
@@ -78,8 +81,8 @@
              </tr>
             </table>
         </div>
-    <div class="row" style="padding: 0px;" ng-class="normalClass" ng-style="normalStyle">
-        <div class="mws-panel grid_4"  >
+    <div class="row" style="padding: 0px;margin: 0;" ng-class="normalClass" ng-style="normalStyle">
+        <div class="mws-panel grid_8"  ng-if="panel.offences">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> List of offences</span>
             </div>
@@ -123,50 +126,47 @@
                 </table>
             </div>
         </div>
-        <div class="mws-panel grid_4"  >
+        <div class="mws-panel grid_8" ng-if="panel.driver">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Vehicles Registered <a ng-click="enableEdit(events)" class="pull-right" style="color:#fff0ff;font-size: 11px"> Add New </a></span>
+                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence</span>
             </div>
 
             <div class="mws-panel-body no-padding">
                 <table datatable="ng" class="mws-datatable-fn mws-table">
                     <thead>
-                        <tr>
-                            <th># </th>
-                            <th>Vehicle Plate Number</th>
-                            <th>Modal</th>
-                            <th>Make</th>
-                            <th>Color</th>
-                            <th>Year of Make</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="event in data.vehicles">
-                            <td>{{ $index+1 }}</td>
-                    		<td>{{event["Vehicle Plate Number"]}}</td>
-                    		<td>{{event.Model}}</td>
-                    		<td>{{event.Make}}</td>
-                    		<td>{{event.Color}}</td>
-                    		<td>{{event["Year of Make"]}}</td>
-                    		<td>
-                                <div class="btn-group dropdown">
-                                    <button type="button" class="btn btn-default">Action</button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a  ng-click="enableEdit(events)">Edit</a> </li>
-                                        <li><a >Delete</a> </li>
-                                        <li><a >Add Insurance</a> </li>
-                                        <li><a >Add Inspection</a> </li>
-                                        <li><a>Add Business Licence </a> </li>
-                                        <li><a >Add Vehicle Licence </a> </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  class="todelete"  ng-repeat="(key, value) in data.driver">
+			            	<td>
+			            		<label>{{key}}</label>
+			            	</td>
+			                <td >
+			                	<label>{{value}}</label>
+			                </td>
+		            	</tr>
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="mws-panel grid_8" ng-if="panel.vehicle">
+            <div class="mws-panel-header"  style="height: 48px !important;">
+                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Vehicle Involved in Offence </span>
+            </div>
+
+            <div class="mws-panel-body no-padding">
+                <table datatable="ng" class="mws-datatable-fn mws-table">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr  class="todelete"  ng-repeat="(key, value) in data.vehicle">
+			            	<td>
+			            		<label>{{key}}</label>
+			            	</td>
+			                <td >
+			                	<label>{{value}}</label>
+			                </td>
+			            	</tr>
                         </tbody>
                 </table>
             </div>
