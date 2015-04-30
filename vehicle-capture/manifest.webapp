@@ -1,16 +1,16 @@
 {
-    "version": "0.1",
-    "name": "Event Capture",
-    "description": "Event Capture App",
+    "version": "1.0",
+    "name": "Motor Vehicle Capture",
+    "description": "Motor Vehicle Capture",
     "launch_path": "index.html",
     "icons": {
-        "16": "/img/icons/mortar-16.png",
-        "48": "/img/icons/mortar-48.png",
-        "128": "/img/icons/mortar-128.png"
+        "16": "/img/Optimized-mini_crossover_08_4.png",
+        "48": "/img/Optimized-mini_crossover_08_4.png",
+        "128": "/img/Optimized-mini_crossover_08_4.png"
     },
     "developer": {
-        "name": "HISP",
-        "url": "http://dhis2.org"
+        "name": "Kelvin Mbwilo",
+        "url": "http://kelvinmbwilo.tk"
     },
     "default_locale": "en",
     "activities": {
