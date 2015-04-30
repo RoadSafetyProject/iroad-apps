@@ -1,4 +1,59 @@
 
+<<<<<<< HEAD
+<div class="row" style=" margin-top: 85px;padding: 10px">
+    {{ data.events.programs }}
+    <div ng-class="normalClass" ng-style="normalStyle">
+        <table  datatable="ng" class="table table-condensed table-stripped table-responsive">
+            <thead>
+            <tr>
+                <th># </th>
+                <th>Registration Number</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Body Type</th>
+                <th>Chassis Number</th>
+                <th>Class</th>
+                <th>Year of Manufacture</th>
+                <th>Fuel</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="events in data.selectedprogram.dataValues.events">
+               zxAcsvzdbxfndgjkfyul
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Vehicle Plate Number'}">{{ datas.value }}</td>
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Make'}">{{ datas.value }}</td>
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Model'}">{{ datas.value }}</td>
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Body Type'}">{{ datas.value }}</td>
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Chassis Number'}">{{ datas.value }}</td>
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Class'}">{{ datas.value }}</td>
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Year of Manufacture'}">{{ datas.value }}</td>
+                <td ng-repeat="datas in events.dataValues | filter:{name:'Fuel'}">{{ datas.value }}</td>
+                <td>
+                    <div class="btn-group dropdown">
+                        <button type="button" class="btn btn-default">Action</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a  ng-click="enableEdit(events)">Edit</a> </li>
+                            <li><a >Delete</a> </li>
+                            <li><a >Add Insurance</a> </li>
+                            <li><a >Add Inspection</a> </li>
+                            <li><a>Add Business Licence </a> </li>
+                            <li><a >Add Vehicle Licence </a> </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="col-sm-12">
+            <div class="col-sm-5 thumbnail" style="margin-right: 20px;margin-left: 30px">
+                <table  datatable="ng" class="table table-condensed table-stripped table-responsive">
+=======
 <div class="row" style="margin-top: 90px">
     <div class="col-sm-12">
         <div ng-class="normalClass">
@@ -6,6 +61,7 @@
                 <div class="panel-heading"><b>Motor Vehicles</b><button class="btn btn-primary btn-sm pull-right" data-ng-click="enableAdding()">Add Vehicle</button> </div>
 
                 <table  datatable="ng" class="table table-condensed table-striped table-responsive">
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                     <thead>
                     <tr>
                         <th># </th>
@@ -21,6 +77,18 @@
                     </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
+                    <tr ng-repeat="events in data.selectedprogram.dataValues.events">
+                        <td>{{ $index+1 }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Vehicle Plate Number'}">{{ datas.value }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Make'}">{{ datas.value }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Model'}">{{ datas.value }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Body Type'}">{{ datas.value }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Chassis Number'}">{{ datas.value }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Class'}">{{ datas.value }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Year of Manufacture'}">{{ datas.value }}</td>
+                        <td ng-repeat="datas in events.dataValues | filter:{name:'Fuel'}">{{ datas.value }}</td>
+=======
                     <tr ng-repeat="events in data.programs['Vehicle'].dataValues.events">
                         <td>{{ $index+1 }}</td>
                         <td>{{events.dataValues['Vehicle Plate Number'].value }}</td>
@@ -31,6 +99,7 @@
                         <td>{{ events.dataValues['Vehicle Class'].value }}</td>
                         <td>{{ events.dataValues['Year of Make'].value }}</td>
                         <td>{{ events.dataValues['Fuel'].value }}</td>
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                         <td>
                             <div class="btn-group dropdown">
                                 <button type="button" class="btn btn-default">Action</button>
@@ -52,6 +121,37 @@
                     </tbody>
                 </table>
             </div>
+<<<<<<< HEAD
+            <div class="col-sm-5 thumbnail">
+                Item 1
+            </div>
+            <div class="col-sm-5 thumbnail" style="margin-right: 20px;margin-left: 30px">
+                Item 1
+            </div>
+            <div class="col-sm-5 thumbnail">
+                Item 1
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3" style="z-index: 30;background-color: white" ng-if="editing" >
+        <a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
+        <table >
+            <tr  class="todelete"  ng-repeat="datas in editingEvent.dataValues">
+                <td >
+                    <label>{{ datas.name }}</label><br>
+                    <input  ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                    <select  ng-focus="focusMe(datas.name)"  style="width: 100%;background: #ffffff" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ><option value=""></option></select>
+                </td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-sm btn-primary" ng-click="cancelEdit()">Done</button> </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+=======
         </div>
 
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="editing" >
@@ -104,3 +204,4 @@
     </div>
     </div>
 </div>
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
