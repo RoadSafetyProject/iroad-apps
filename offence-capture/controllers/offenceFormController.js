@@ -88,7 +88,7 @@ angular.module('rsmsaApp')
 			$scope.isreadonly = true;
 			
 			
-			var offenceModal = new dhis2.data.Modal("Offence Event",[{name:"Offence Registry",type:"MANY_MANY",pivot:"Offence"}]);
+			var offenceModal = new dhis2.data.Modal("Offence Event",[new dhis2.data.Relation("Offence Registry","Offence")]);
 			offenceModal.find($routeParams.id,function(result){
 				console.log(JSON.stringify(result));
 				$scope.offence = result;

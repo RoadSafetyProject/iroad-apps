@@ -49,7 +49,11 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
                     evs.events.push(ev);
                 });
 
+<<<<<<< HEAD
                 $http.post('/demo/api/events', evs).then(function(evResponse){
+=======
+                $http.post('../api/events', evs).then(function(evResponse){                            
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                     def.resolve();
                 });                      
             });
@@ -200,7 +204,11 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
         	var pg = pager ? pager.page : 1;
             pgSize = pgSize > 1 ? pgSize  : 1;
             pg = pg > 1 ? pg : 1;              
+<<<<<<< HEAD
             var url = '/demo/api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&pageSize=' + pgSize + '&page=' + pg;
+=======
+            var url = '../api/events.json?' + 'orgUnit=' + orgUnit + '&programStage=' + programStage + '&pageSize=' + pgSize + '&page=' + pg;
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
             
             var promise = $http.get( url ).then(function(response){                    
                 return response.data;        
@@ -226,7 +234,11 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return promise;
         },        
         get: function(eventUid){            
+<<<<<<< HEAD
             var promise = $http.get('/demo/api/events/' + eventUid + '.json').then(function(response){
+=======
+            var promise = $http.get('../api/events/' + eventUid + '.json').then(function(response){               
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                 return response.data;                
             }, function(){
                 var p = dhis2.ec.store.get('events', eventUid).then(function(ev){
@@ -238,7 +250,11 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return promise;
         },        
         create: function(dhis2Event){
+<<<<<<< HEAD
             var promise = $http.post('/demo/api/events.json', dhis2Event).then(function(response){
+=======
+            var promise = $http.post('../api/events.json', dhis2Event).then(function(response){
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                 return response.data;
             }, function(){            
                 dhis2Event.id = dhis2.util.uid();  
@@ -249,7 +265,11 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return promise;            
         },        
         delete: function(dhis2Event){
+<<<<<<< HEAD
             var promise = $http.delete('/demo/api/events/' + dhis2Event.event).then(function(response){
+=======
+            var promise = $http.delete('../api/events/' + dhis2Event.event).then(function(response){
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                 return response.data;
             }, function(){
                 dhis2.ec.store.remove( 'events', dhis2Event.event );
@@ -257,7 +277,11 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return promise;           
         },    
         update: function(dhis2Event){
+<<<<<<< HEAD
             var promise = $http.put('/demo/api/events/' + dhis2Event.event, dhis2Event).then(function(response){
+=======
+            var promise = $http.put('../api/events/' + dhis2Event.event, dhis2Event).then(function(response){              
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                 return response.data;
             }, function(){
                 dhis2.ec.store.remove('events', dhis2Event.event);
@@ -267,7 +291,11 @@ var eventCaptureServices = angular.module('eventCaptureServices', ['ngResource']
             return promise;
         },        
         updateForSingleValue: function(singleValue, fullValue){        
+<<<<<<< HEAD
             var promise = $http.put('/demo/api/events/' + singleValue.event + '/' + singleValue.dataValues[0].dataElement, singleValue ).then(function(response){
+=======
+            var promise = $http.put('../api/events/' + singleValue.event + '/' + singleValue.dataValues[0].dataElement, singleValue ).then(function(response){
+>>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
                  return response.data;
             }, function(){
                 dhis2.ec.store.remove('events', fullValue.event);

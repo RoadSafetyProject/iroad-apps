@@ -121,7 +121,7 @@ function ajax_login()
         var username = $('#username').val();
         var password = $('#password').val();
 
-        $.post('/dhis-web-commons-security/login.action', {
+        $.post('../../../dhis-web-commons-security/login.action', {
             'j_username': username,
             'j_password': password
         }).success(function()
@@ -168,7 +168,7 @@ function getCalendarSetting()
     var def = $.Deferred();
 
     $.ajax({
-        url: '/api/systemSettings?key=keyCalendar&key=keyDateFormat',
+        url: '../../../api/systemSettings?key=keyCalendar&key=keyDateFormat',
         type: 'GET'
     }).done(function(response) {
         localStorage['CALENDAR_SETTING'] = JSON.stringify(response);
@@ -185,7 +185,7 @@ function getOrgUnitLevels()
     var def = $.Deferred();
 
     $.ajax({
-        url: '/api/organisationUnitLevels.json',
+        url: '../../../api/organisationUnitLevels.json',
         type: 'GET',
         data:'filter=level:gt:1&fields=id,name,level&paging=false'
     }).done( function(response) {      
@@ -253,7 +253,7 @@ function getGeoJson( level )
 {
     return function() {
         return $.ajax( {
-            url: '/api/organisationUnits.geojson',
+            url: '../../../api/organisationUnits.geojson',
             type: 'GET',
             data: 'level=' + level
         }).done( function( response ){
@@ -271,7 +271,7 @@ function getMetaPrograms()
     var def = $.Deferred();
 
     $.ajax({
-        url: '/api/programs.json',
+        url: '../../../api/programs.json',
         type: 'GET',
         data:'filter=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[dataElement[id,optionSet[id,version]]]]'
     }).done( function(response) {          
@@ -341,7 +341,7 @@ function getProgram( id )
 {
     return function() {
         return $.ajax( {
-            url: '/api/programs.json?filter=id:eq:' + id +'&fields=id,name,type,version,dataEntryMethod,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name,version]',
+            url: '../../../api/programs.json?filter=id:eq:' + id +'&fields=id,name,type,version,dataEntryMethod,dateOfEnrollmentDescription,dateOfIncidentDescription,displayIncidentDate,ignoreOverdueEvents,organisationUnits[id,name],programStages[id,name,version]',
             type: 'GET'
         }).done( function( response ){
             
@@ -421,7 +421,7 @@ function getProgramStage( id )
 {
     return function() {
         return $.ajax( {
-            url: '/api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,preGenerateUID,programStageSections[id,name,programStageDataElements[dataElement[id]]],programStageDataElements[displayInReports,sortOrder,allowProvidedElsewhere,allowFutureDate,compulsory,dataElement[id,name,type,numberType,formName,optionSet[id]]]',
+            url: '../../../api/programStages.json?filter=id:eq:' + id +'&fields=id,name,version,description,reportDateDescription,captureCoordinates,dataEntryForm,minDaysFromStart,repeatable,preGenerateUID,programStageSections[id,name,programStageDataElements[dataElement[id]]],programStageDataElements[displayInReports,sortOrder,allowProvidedElsewhere,allowFutureDate,compulsory,dataElement[id,name,type,numberType,formName,optionSet[id]]]',
             type: 'GET'
         }).done( function( response ){            
             _.each( _.values( response.programStages ), function( programStage ) {                
@@ -488,7 +488,7 @@ function getOptionSet( id )
 {
     return function() {
         return $.ajax( {
-            url: '/api/optionSets.json?filter=id:eq:' + id +'&fields=id,name,version,options[id,name,code]',
+            url: '../../../api/optionSets.json?filter=id:eq:' + id +'&fields=id,name,version,options[id,name,code]',
             type: 'GET'
         }).done( function( response ){            
             _.each( _.values( response.optionSets ), function( optionSet ) {                
