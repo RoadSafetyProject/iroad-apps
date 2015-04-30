@@ -9,7 +9,8 @@
         border-bottom-left-radius: 8px;
         background-color: #ffffff;
         margin-bottom: 10px;
-    }.entry:focus{
+    }
+    .entry:focus{
          border-bottom-width:2px ;
          border-bottom-right-radius: 0px;
          border-bottom-left-radius: 0px;
@@ -59,49 +60,29 @@
                 <div class="col-xs-4"><b>Make:</b>
                     <select class="entry" ng-model="currentKaya.make" ng-change="getModels(currentKaya.make)">
                         <option value="">-- Select --</option>
-                        <option  ng-repeat="make in data.make" value="{{ make.make }}">{{ make.make }}</option>
+                        <option  ng-repeat="make in data.make" value="{{ make.name }}">{{ make.name }}</option>
                     </select>
                 </div>
                 <div class="col-xs-4"><b>Model:</b>
                     <select class="entry" ng-model="currentKaya.type">
                         <option value="">-- Select --</option>
-                        <option  ng-repeat="modle in data.model" value="{{ modle.model }}">{{ modle.model }}</option>
+                        <option  ng-repeat="modle in data.model" value="{{ modle.name }}">{{ modle.name }}</option>
                     </select>
                 </div>
-                <div class="col-xs-4"><b>Model Number:</b> <input type="text" class="entry" ng-model="currentKaya.model_number" required/></div>
+                <div class="col-xs-4"><b>Model Number:</b> <input type="text" class="entry" ng-model="currentKaya.nu" required/></div>
             </div>
             <div class="col-xs-12">
                 <div class="col-xs-4"><b>Body Type</b> <input type="text" class="entry" ng-model="currentKaya.body_type" required/></div>
-                <div class="col-xs-4"><b>Color <span  ng-style="{'background-color': currentKaya.color}" style="width: 50px;height: 40px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></b>
+                <div class="col-xs-4"><b>Color <span  ng-style="{'background-color': currentKaya.color}" style="width: 80px;height: 40px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></b>
                     <select class="entry" ng-model="currentKaya.color">
                         <option value="">-- Select --</option>
-                        <option value="White">White</option>
-                        <option value="Blue">Blue</option>
-                        <option value="Yellow">Yellow</option>
-                        <option value="Red">Red</option>
-                        <option value="Green">Green</option>
-                        <option value="Black">Black</option>
-                        <option value="Brown">Brown</option>
-                        <option value="Grey">Grey</option>
-                        <option value="Pink">Pink</option>
-                        <option value="Others">Others</option>
-                        <option value="Multicolor">Multicolor</option>
+                        <option  ng-repeat="modle in data.color" value="{{ modle.name }}">{{ modle.name }}</option>
                     </select>
                 </div>
                 <div class="col-xs-4"><b>Class</b>
                     <select class="entry" ng-model="currentKaya.class">
                         <option value="">-- Select --</option>
-                        <option value="Motocyle">Motocyle</option>
-                        <option value="Motor Tricycle">Motor Tricycle</option>
-                        <option value="Light Passenger Vehicle">Light Passenger Vehicle</option>
-                        <option value="Heavy Passenger Vehicle">Heavy Passenger Vehicle</option>
-                        <option value="Light Load Vehicle">Light Load Vehicle</option>
-                        <option value="Heavy Load Vehicle">Heavy Load Vehicle</option>
-                        <option value="Trailer">Trailer</option>
-                        <option value="Agriculture Tractor">Agriculture Tractor</option>
-                        <option value="Agriculture Trailer">Agriculture Trailer</option>
-                        <option value="Mining or Road Construction Equipment">Mining or Road Construction Equipment</option>
-                        <option value="Other">Other</option>
+                        <option  ng-repeat="modle in data.class" value="{{ modle.name }}">{{ modle.name }}</option>
                     </select>
                 </div>
             </div><div class="col-xs-12">
@@ -109,7 +90,7 @@
                     <select class="entry" ng-model="currentKaya.yom">
                         <option value="">-- Select --</option>
                         <option value="2014">2014</option>
-                        <option  ng-repeat="modle in data.yom" value="{{ modle.year }}">{{ modle.year }}</option>
+                        <option  ng-repeat="modle in data.yom" value="{{ modle.name }}">{{ modle.name }}</option>
                     </select>
                 </div>
                 <div class="col-xs-4"><b>Chassis Number</b> <input type="text" class="entry" ng-model="currentKaya.chasis_no" required/></div>
@@ -119,10 +100,7 @@
                 <div class="col-xs-4"><b>Fuel Used</b>
                     <select class="entry" ng-model="currentKaya.fuel">
                         <option value="">-- Select --</option>
-                        <option value="Petrol">Petrol</option>
-                        <option value="Diesel">Diesel</option>
-                        <option value="Electricity">Electricity</option>
-                        <option value="Other">Other</option>
+                        <option  ng-repeat="modle in data.fuel" value="{{ modle.name }}">{{ modle.name }}</option>
                     </select>
                 </div>
                 <div class="col-xs-4"><b>Number of Axial</b> <input type="text" class="entry" ng-model="currentKaya.number_of_axial" required/></div>
