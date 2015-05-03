@@ -30,6 +30,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
              ModalService,
              DialogService) {
         //selected org unit
+        $scope.dateOptions1 = {
+            changeYear: true,
+            changeMonth: true,
+            dateFormat: 'yy-mm-dd'
+        };
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
@@ -181,19 +186,19 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.savingDate = date1.toISOString();
             var datavaluess = [];
             angular.forEach(value,function(data,key){
-                if(key == "vz0PAS4uCul"){
+                if(data instanceof Date){
                     datavaluess.push({
                         dataElement: key,
-                        value: keyValue
-                    })
-                }else{
-                    datavaluess.push({
-                        dataElement: key,
-                        value: data
+                        value:  DateUtils.formatFromUserToApi(data)
                     })
                 }
-
-            })
+                datavaluess.push({
+                    dataElement: key,
+                    value: data
+                })
+            });
+            console.log(keyValue);
+            datavaluess.push({dataElement: 'vz0PAS4uCul',value:keyValue})
             var dhis2Event = {
                 program: program,
                 programStage: programStage,
@@ -202,6 +207,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
+            console.log(dhis2Event);
             $scope.currentSaving = true;
             $.postJSON = function(url, data, callback,failureCallback) {
                 return jQuery.ajax({
@@ -219,7 +225,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 });
             };
             $.postJSON('../../../api/events',dhis2Event,function(response){
-                alert("success")
+                alert("success");
             },function(response){
                 alert("failed");
             });
@@ -232,6 +238,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.savingDate = date1.toISOString();
             var datavaluess = [];
             angular.forEach(value,function(data,key){
+                if(data instanceof Date){
+                    datavaluess.push({
+                        dataElement: key,
+                        value: DateUtils.formatFromUserToApi(data)
+                    })
+                }
                 datavaluess.push({
                     dataElement: key,
                     value: data
@@ -262,7 +274,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 });
             };
             $.postJSON('../../../api/events',dhis2Event,function(response){
-                $scope.AddDriver(value1,response.reference)
+                $scope.AddDriver(value1,response.importSummaries[0].reference);
+                console.log(response);
+                console.log(response.importSummaries[0].reference);
+
             },function(response){
                 alert("failed");
                 console.log(response);
@@ -305,15 +320,20 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.editing = "false";
         }
 
+        $scope.showNotes = function(dhis2Event){
+            var modalInstance = $modal.open({
+                templateUrl: 'views/notes.html',
+                controller: 'NotesController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    }
+                }
+            });
 
-        /**Add new event for first time
-         *
-         * @param dataelen
-         * @param value
-         * @param newVal
-         * @param program
-         */
-
+            modalInstance.result.then(function (){
+            });
+        };
 
         $scope.clickMe = function(event){
             $(event.target).datepicker();

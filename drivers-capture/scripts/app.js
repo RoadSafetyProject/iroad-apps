@@ -3,7 +3,7 @@
 /* App Module */
 
 var eventCapture = angular.module('eventCapture',
-		 ['ui.bootstrap', 
+		 ['ui.bootstrap',
 		  'ngRoute', 
 		  'ngCookies', 
 		  'eventCaptureDirectives', 
@@ -16,8 +16,7 @@ var eventCapture = angular.module('eventCapture',
           'd2Controllers',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate',
-          'd2HeaderBar',"datatables",'datatables.bootstrap'])
-              
+          'd2HeaderBar',"datatables",'datatables.bootstrap','ui.date'])
 .value('DHIS2URL', '../../..')
 
 .config(function($routeProvider, $translateProvider) {    

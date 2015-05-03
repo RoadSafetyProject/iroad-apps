@@ -425,48 +425,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
          * @param item
          * @param programArray
          */
-<<<<<<< HEAD
-        $scope.updateData = function(dataElement,newVal,program,event,item,programArray){
-
-                if($scope.isInt(newVal,item.type)){
-                    var updatedSingleValueEvent = {event: program.event, dataValues: [{value: newVal, dataElement: dataElement}]};
-                    var e = {};
-
-                    e.event         = program.event;
-                    e.status        = 'ACTIVE';
-                    e.program       = program.program;
-                    e.programStage  = program.programStage;
-                    e.orgUnit       = program.orgUnit;
-                    e.eventDate     = program.eventDate;;
-
-                    var dvs = [];
-                    angular.forEach(program.dataValues, function(prStDe){
-                        if(prStDe.value){
-                            dvs.push({dataElement: prStDe.id, value: prStDe.value });
-                        }
-                    });
-
-                    e.dataValues = dvs;
-
-                    var updatedFullValueEvent = e;
-                    item.color = { "background-color": $scope.colorYellow, 'width': $scope.cellWidth, 'text-align': $scope.textAlign  };
-                    $http.put('/demo/api/events/' + updatedSingleValueEvent.event + '/' + updatedSingleValueEvent.dataValues[0].dataElement, updatedSingleValueEvent ).then(function(response){
-                        return response.data;
-                    });
-//                    DHIS2EventFactory.updateForSingleValue(updatedSingleValueEvent, updatedFullValueEvent).then(function(data){
-//                        if(newVal && newVal != "") {
-//                            item.color = { "background-color": $scope.colorGreen, 'width': $scope.cellWidth, 'text-align': $scope.textAlign  };
-//                        }else{
-//                            item.color = { "background-color": $scope.normalColor, 'width': $scope.cellWidth, 'text-align': $scope.textAlign  };
-//                        }
-//                    });
-                }else{
-                    alert("Value must be a number \n \n "+item.name);
-                    item.value = null;
-//                    item.color = { "background-color" : $scope.colorYellow,'width':$scope.cellWidth,'text-align':$scope.textAlign  };
-                }
-            }
-=======
 //        $scope.updateData = function(dataElement,newVal,program,event,item,programArray){
 //
 //            if($scope.isInt(newVal,item.type)){
@@ -507,7 +465,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 ////                    item.color = { "background-color" : $scope.colorYellow,'width':$scope.cellWidth,'text-align':$scope.textAlign  };
 //            }
 //        }
->>>>>>> 1218ef0d3e45f81f391fa4a99f5327fc3b28df40
 
         /**CheckForIntegerType
          *
