@@ -177,10 +177,19 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.vehicle = events;
         }
         $scope.enableAddingLicence  = function(events){
-             $scope.cancelEdit();
+            $scope.cancelEdit();
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
-             $scope.addingLicence = true;
+            $scope.addingLicence = true;
+            $scope.vehicle = events;
+        }
+
+        $scope.enableaddingInspection = function(events){
+            $scope.cancelEdit();
+            $scope.normalStyle= { "z-index": '10'};
+            $scope.normalClass= "col-sm-9";
+            $scope.addingInspection = true;
+            $scope.data.
             $scope.vehicle = events;
         }
 
@@ -191,6 +200,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.addingInsurance = false;
             $scope.addingBusLicence = false;
             $scope.addingLicence = false;
+            $scope.addingInspection = false;
         }
 
         //adding a new Vehicle
@@ -321,8 +331,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //adding a new Vehicle Insurance Information
         $scope.AddBussinessLicence =function(value,vehicle_id){
-            var program = $scope.data.programs['Vehicle Insurance History'].id;
-            var programStage = $scope.data.programs['Vehicle Insurance History'].programStages[0].id;
+            var program = $scope.data.programs['Bussiness License History'].id;
+            var programStage = $scope.data.programs['Bussiness License History'].programStages[0].id;
             value[$scope.getPrimaryId($scope.data.programs['Bussiness License History'],'Program_Vehicle')] = vehicle_id;
             var d = new Date();
             var curr_date	= d.getDate();
@@ -393,9 +403,80 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //adding a new Vehicle Licence
         $scope.AddLicence =function(value,vehicle_id){
-            var program = $scope.data.programs['Vehicle Insurance History'].id;
-            var programStage = $scope.data.programs['Vehicle Insurance History'].programStages[0].id;
-            value[$scope.getPrimaryId($scope.data.programs['Bussiness License History'],'Program_Vehicle')] = vehicle_id;
+            var program = $scope.data.programs['Vehicle License History'].id;
+            var programStage = $scope.data.programs['Vehicle License History'].programStages[0].id;
+            value[$scope.getPrimaryId($scope.data.programs['Vehicle License History'],'Program_Vehicle')] = vehicle_id;
+            var d = new Date();
+            var curr_date	= d.getDate();
+            var curr_month	= d.getMonth()+1;
+            var curr_year 	= d.getFullYear();
+            if(curr_month<10){
+                curr_month="0"+curr_month;
+            }
+            if(curr_date<10){
+                curr_date="0"+curr_date;
+            }
+            $scope.savingDate = curr_year+"-"+curr_month+"-"+curr_date;
+            var datavaluess = [];
+            angular.forEach(value,function(data,key){
+                if(data instanceof Date){
+                    var curr_date	= data.getDate();
+                    var curr_month	= data.getMonth()+1;
+                    var curr_year 	= data.getFullYear();
+                    if(curr_month<10){
+                        curr_month="0"+curr_month;
+                    }
+                    if(curr_date<10){
+                        curr_date="0"+curr_date;
+                    }
+                    var data1 = curr_year+"-"+curr_month+"-"+curr_date;
+                    datavaluess.push({
+                        dataElement: key,
+                        value: data1
+                    })
+                }else{
+                    datavaluess.push({
+                        dataElement: key,
+                        value: data
+                    })
+                }
+            })
+            var dhis2Event = {
+                program: program,
+                programStage: programStage,
+                status: "ACTIVE",
+                orgUnit: "ij7JMOFbePH",
+                eventDate: $scope.savingDate,
+                dataValues: datavaluess
+            };
+            $scope.currentSaving = true;
+            $.postJSON = function(url, data, callback,failureCallback) {
+                return jQuery.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'admin':'district'
+                    },
+                    'type': 'POST',
+                    'url': url,
+                    'data': JSON.stringify(data),
+                    'dataType': 'json',
+                    'success': callback,
+                    'failure':failureCallback
+                });
+            };
+            $.postJSON('../../../api/events',dhis2Event,function(response){
+                alert("success")
+                $scope.cancelEdit();
+            },function(response){
+                 alert("failed");
+            });
+        }
+      //adding a new Vehicle Licence
+        $scope.AddnewInspection =function(value,vehicle_id){
+            var program = $scope.data.programs['Vehicle Inspection'].id;
+            var programStage = $scope.data.programs['Vehicle Inspection'].programStages[0].id;
+            value[$scope.getPrimaryId($scope.data.programs['Vehicle Inspection'],'Program_Vehicle')] = vehicle_id;
             var d = new Date();
             var curr_date	= d.getDate();
             var curr_month	= d.getMonth()+1;
