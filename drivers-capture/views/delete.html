@@ -4,6 +4,8 @@
 
 <div class="modal-body page">
     <h3>Are you sure you want to delete this driver</h3>
+    <h4>Name: {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</h4>
+    <h4>Licence Number: {{ dhis2Event.dataValues['Driver License Number'].value }}</h4>
 </div>
 
 <div class="modal-footer page">

@@ -3,7 +3,7 @@
     <div class="col-sm-12">
         <div ng-class="normalClass">
             <div class="panel panel-default">
-                <div class="panel-heading"><b>Motor Vehicles</b><button class="btn btn-primary btn-sm pull-right" data-ng-click="enableAdding()">Add Driver</button> </div>
+                <div class="panel-heading"><b>Drivers</b><button class="btn btn-primary btn-sm pull-right" data-ng-click="enableAdding()">Add Driver</button> </div>
 
                 <table  datatable="ng" class="table table-condensed table-striped table-responsive">
                     <thead>
@@ -11,10 +11,9 @@
                         <th># </th>
                         <th>Licence Number</th>
                         <th>Name</th>
-                        <th>Date of Birth</th>
-                        <th ng-if="!editing && !adding">Gender</th>
-                        <th ng-if="!editing && !adding">Phone Number</th>
-                        <th ng-if="!editing && !adding">Address</th>
+                        <th>Gender</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
                         <th>Tin Number</th>
                         <th></th>
                     </tr>
@@ -24,10 +23,10 @@
                         <td>{{ $index+1 }}</td>
                         <td>{{ events.dataValues['Driver License Number'].value }}</td>
                         <td>{{ events.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ events.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ events.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</td>
-                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Date of Birth'].value | date:'dd MMM yyyy' }}</td>
-                        <td ng-if="!editing && !adding" >{{ events.dataValues['Program_Person'].Person.dataValues['Gender'].value }}</td>
-                        <td ng-if="!editing && !adding" >{{ events.dataValues['Program_Person'].Person.dataValues['Phone Number'].value }}</td>
-                        <td ng-if="!editing && !adding" >{{ events.dataValues['Program_Person'].Person.dataValues['Postal Address'].value }}</td>
+                        <!--<td>{{ events.dataValues['Program_Person'].Person.dataValues['Date of Birth'].value | date:'dd MMM yyyy' }}</td>-->
+                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Gender'].value }}</td>
+                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Phone Number'].value }}</td>
+                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Postal Address'].value }}</td>
                         <td>{{ events.dataValues['TIN Number'].value }}</td>
                         <td>
                             <div class="btn-group dropdown">
@@ -37,10 +36,12 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a  ng-click="enableEdit(events)"> Info</a> </li>
-                                    <li><a  ng-click="enableEdit(events)"> Edit</a> </li>
+                                    <li><a ng-click="enableEdit(events)"> Info</a> </li>
+                                    <li><a ng-click="enableEdit(events)"> Edit</a> </li>
                                     <li><a ng-click="showDelete(events,data.programs['Driver'].dataValues.events)"> Delete</a> </li>
-                                    <li><a>Update Licence Information</a> </li>
+                                    <li><a ng-click="enableAddingLicence(events)">Update Licence</a> </li>
+                                    <li><a ng-click="ViewAccident(events)">Accidents</a> </li>
+                                    <li><a ng-click="ViewOffences(events)">Offences</a> </li>
                                 </ul>
                             </div>
                         </td>
@@ -50,6 +51,7 @@
             </div>
         </div>
 
+        <!--updating driver area-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-show="editing" >
             <div class="panel panel-default" >
                 <div class="panel-heading"><b>Update Driver</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
@@ -80,10 +82,10 @@
                 </div>
             </div>
 
-    <!--adding new car-->
+    <!--adding new driver-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-show="adding" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Motor Vehicles</b><a ng-click="cancelAdd()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Add New Driver</b><a ng-click="cancelAdd()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
                 <div class="panel-body" style="padding-left: 30px">
                     <table >
                         <tr ng-if="list.dataElement.name != 'Program_Person'" ng-repeat="list in  data.programs['Driver'].programStages[0].programStageDataElements">
@@ -119,14 +121,17 @@
     <!--adding new Licence-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingLicence" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Motor Vehicles</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Update Driver Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
                 <div class="panel-body" style="padding-left: 30px">
+                    <p>Name : {{ driver.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ driver.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ driver.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</p>
+                    <p>License No: {{ driver.dataValues['Driver License Number'].value }}</p>
                     <table >
-                        <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements">
-                        <td >
+                        <tr ng-repeat="list in  data.programs['Driver License History'].programStages[0].programStageDataElements">
+                        <td ng-if="list.dataElement.name != 'Program_Driver'">
                             <label>{{ list.dataElement.name }}</label>
-                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]"  >
-                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
+                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
+                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                           </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -134,7 +139,7 @@
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddVehicle(data.newCarValue)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="addLicenceInfo(data.newLicence,driver.event)">Add</button>
                             </td>
                         </tr>
                     </table>
