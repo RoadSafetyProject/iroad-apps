@@ -64,16 +64,20 @@
     </div>
 
 		<div class="mws-panel grid_2" style="z-index: 30;background-color: white;margin-top:70px" ng-if="editing" >
-            <a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
+			<div class="mws-panel-header"  style="height: 48px !important;">
+                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
+            </div>
+     
             <table  class="mws-datatable-fn mws-table">
             <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
-            	<td>
-            		<label>{{key}}</label>
-            	</td>
-                <td >
-                    <br>
-                    <input  ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet"  ng-model="editingEvent[key]" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                    <select  ng-focus="focusMe(datas.name)"  style="width: 100%;background: #ffffff" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ><option value=""></option></select>
+            	<td  ng-if="(key != 'id')">
+            		<label>{{key}}</label><br />
+                    <input ng-if="isString(key)"  ng-model="editingEvent[key]" class="form-control" />
+                    <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" >
+                    	<option value="true">Yes</option>
+                    	<option value="false">No</option>
+                    </select>
+                    <input ng-if="isDate(key)" ui-date="dateOptions" class="form-control" ng-model="editingEvent[key]"/>
                 </td>
             </tr>
              <tr>
@@ -81,7 +85,6 @@
              </tr>
             </table>
         </div>
-    <div class="row" style="padding: 0px;margin: 0;" ng-class="normalClass" ng-style="normalStyle">
         <div class="mws-panel grid_8"  ng-if="panel.offences">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> List of offences</span>
@@ -172,4 +175,3 @@
             </div>
 
         </div>
-    </div>
