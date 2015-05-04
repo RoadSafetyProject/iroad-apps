@@ -650,6 +650,22 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
         };
 
+        //display a model to view car Details
+        $scope.ViewInfo = function(dhis2Event){
+            var modalInstance = $modal.open({
+                templateUrl: 'views/info.html',
+                controller: 'VehicleController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
         //display a model to view licence history
         $scope.ViewLicences = function(dhis2Event,items){
             var itemOfInterest = items

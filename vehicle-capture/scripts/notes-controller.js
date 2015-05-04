@@ -51,3 +51,15 @@ eventCaptureControllers.controller('DeleteController',
 //        $modalInstance.close();
         };
     });
+
+eventCaptureControllers.controller('VehicleController',
+    function($scope,
+             $modalInstance,
+             dhis2Event){
+
+        $scope.dhis2Event = dhis2Event;
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
