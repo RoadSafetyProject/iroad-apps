@@ -40,6 +40,7 @@
                                     <li><a ng-click="enableEdit(events)"> Edit</a> </li>
                                     <li><a ng-click="showDelete(events,data.programs['Driver'].dataValues.events)"> Delete</a> </li>
                                     <li><a ng-click="enableAddingLicence(events)">Update Licence</a> </li>
+                                    <li><a ng-click="ViewLicences(events,getRelatedObjects(events.event,'Driver License History'))">Licence History</a> </li>
                                     <li><a ng-click="ViewAccident(events)">Accidents</a> </li>
                                     <li><a ng-click="ViewOffences(events)">Offences</a> </li>
                                 </ul>

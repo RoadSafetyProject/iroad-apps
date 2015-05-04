@@ -493,6 +493,26 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
         };
 
+        //display a model to view licence history
+        $scope.ViewLicences = function(dhis2Event,items){
+            var itemOfInterest = items
+            var modalInstance = $modal.open({
+                templateUrl: 'views/licences.html',
+                controller: 'DriverLicenceController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return itemOfInterest;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
         $scope.clickMe = function(event){
             $(event.target).datepicker();
             console.log(event.target)
@@ -500,11 +520,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //getting all object related to driver
         $scope.getRelatedObjects = function(driver_id,object){
-            angular.forEach($scope.data.programs[object].programStages[0].programStageDataElements, function (dataVal) {
-                if(dataVal.dataElement.name == 'Program_Driver'){
-//                    id = dataVal.dataElement.id;
+            var items = [];
+            angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
+                console.log(dataVal.dataValues['Program_Driver'].value +" === "+ driver_id);
+                if(dataVal.dataValues['Program_Driver'].value == driver_id){
+                    items.push(dataVal);
                 }
             });
+            return items;
 
         }
 

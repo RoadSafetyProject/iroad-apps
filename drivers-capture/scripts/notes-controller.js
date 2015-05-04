@@ -77,3 +77,16 @@ eventCaptureControllers.controller('DriverOffenceController',
         $modalInstance.close();
     };
 });
+
+eventCaptureControllers.controller('DriverLicenceController',
+    function($scope,
+            $modalInstance,
+            dhis2Event,events){
+
+    $scope.dhis2Event = dhis2Event;
+    $scope.events = events;
+
+    $scope.close = function () {
+        $modalInstance.close();
+    };
+});
