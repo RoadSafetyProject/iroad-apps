@@ -503,5 +503,23 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             return counter;
         }
 
+        $scope.showDelete = function(dhis2Event,events){
+            var modalInstance = $modal.open({
+                templateUrl: 'views/delete.html',
+                controller: 'DeleteController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return events;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
 
     });

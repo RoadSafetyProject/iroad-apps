@@ -1,0 +1,13 @@
+<div class="modal-header page">
+    <h3>Delete Driver</h3>
+</div>
+
+<div class="modal-body page">
+    <h3>Are you sure you want to delete this driver</h3>
+</div>
+
+<div class="modal-footer page">
+    <span ng-show="deleting" class="pull-left">Deleting...</span>
+    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
+    <button class="btn btn-danger" data-ng-click="delete(dhis2Event,events)">{{'delete'| translate}}</button>
+</div>

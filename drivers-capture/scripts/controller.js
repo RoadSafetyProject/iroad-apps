@@ -291,6 +291,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.editing = "true";
+            $scope.adding = "false";
             angular.forEach($scope.data.programs, function (prog) {
                 if (prog.id == events.program) {
                     $scope.editingProgram = prog;
@@ -320,13 +321,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.editing = "false";
         }
 
-        $scope.showNotes = function(dhis2Event){
+        $scope.showDelete = function(dhis2Event,events){
             var modalInstance = $modal.open({
-                templateUrl: 'views/notes.html',
-                controller: 'NotesController',
+                templateUrl: 'views/delete.html',
+                controller: 'DeleteController',
                 resolve: {
                     dhis2Event: function () {
                         return dhis2Event;
+                    },
+                    events: function () {
+                        return events;
                     }
                 }
             });
@@ -353,26 +357,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.updateData = function(dataElement,newVal,program,event,item,programArray){
             if($scope.isInt(newVal,item.type)){
                 var updatedSingleValueEvent = {event: program.event, dataValues: [{value: newVal, dataElement: dataElement}]};
-//                var e = {};
-//
-//                e.event         = program.event;
-//                e.status        = 'ACTIVE';
-//                e.program       = program.program;
-//                e.programStage  = program.programStage;
-//                e.orgUnit       = program.orgUnit;
-//                e.eventDate     = program.eventDate;;
-//
-//                var dvs = [];
-//                angular.forEach(program.dataValues, function(prStDe){
-//                    if(prStDe.value){
-//                        dvs.push({dataElement: prStDe.id, value: prStDe.value });
-//                    }
-//                });
-//
-//                e.dataValues = dvs;
-//
-//                var updatedFullValueEvent = e;
-                item.color = { "background-color": $scope.colorYellow, 'width': $scope.cellWidth, 'text-align': $scope.textAlign  };
                 $.postJSON = function(url, data, callback,failureCallback) {
                     return jQuery.ajax({
                         headers: {
