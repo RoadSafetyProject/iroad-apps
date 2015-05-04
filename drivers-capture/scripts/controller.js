@@ -38,7 +38,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
-        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
             var resultProg = data.programs;
@@ -70,6 +70,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                 dataelement.id = dataVal.dataElement.id;
                                 dataelement.name = dataVal.dataElement.name;
                                 dataelement.type = dataVal.dataElement.type;
+                                dataelement.sortOrder = dataVal.sortOrder;
                                 if(dataVal.dataElement.optionSet){
                                     dataelement.optionSet = dataVal.dataElement.optionSet;
                                 }
