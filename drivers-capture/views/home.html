@@ -1,174 +1,147 @@
-<style>
-    md-buttom{
-        font-size: 0.9em;
-    }
-</style>
-<div class="container-fluid">
-<md-tabs md-selected="selectedIndex" flex>
-<md-tab label="Motor Vehicle" class="col-md-6">
-    <div class="demo-tab tab1" layout="column" layout-align="space-around center">
-<div class="container-fluid">
-        <div class="col-sm-2">
-            <div class="form-group">
-                <select ng-model="data.category" ng-change="prepareDropdown(data.category)" id="category" class="form-control" required="" style="background: transparent;border-top-color: wheat">
-                    <option value="Ownership">Ownership</option>
-                    <option value="category" selected>Car Category</option>
-                    <option value="model">Model</option>
-                    <option value="make">Make</option>
-                    <option value="fuel">Fuel Used</option>
-                    <option value="color">Color</option>
-                    <option value="years">Year of Make</option>
-                    <option value="importation">Importation Country</option>
-                </select>
+
+<div class="row" style="margin-top: 90px">
+    <div class="col-sm-12">
+        <div ng-class="normalClass">
+            <div class="panel panel-default">
+                <div class="panel-heading"><b>Motor Vehicles</b><button class="btn btn-primary btn-sm pull-right" data-ng-click="enableAdding()">Add Driver</button> </div>
+
+                <table  datatable="ng" class="table table-condensed table-striped table-responsive">
+                    <thead>
+                    <tr>
+                        <th># </th>
+                        <th>Licence Number</th>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        <th ng-if="!editing && !adding">Gender</th>
+                        <th ng-if="!editing && !adding">Phone Number</th>
+                        <th ng-if="!editing && !adding">Address</th>
+                        <th>Tin Number</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="events in data.programs['Driver'].dataValues.events">
+                        <td>{{ $index+1 }}</td>
+                        <td>{{ events.dataValues['Driver License Number'].value }}</td>
+                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ events.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ events.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</td>
+                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Date of Birth'].value | date:'dd MMM yyyy' }}</td>
+                        <td ng-if="!editing && !adding" >{{ events.dataValues['Program_Person'].Person.dataValues['Gender'].value }}</td>
+                        <td ng-if="!editing && !adding" >{{ events.dataValues['Program_Person'].Person.dataValues['Phone Number'].value }}</td>
+                        <td ng-if="!editing && !adding" >{{ events.dataValues['Program_Person'].Person.dataValues['Postal Address'].value }}</td>
+                        <td>{{ events.dataValues['TIN Number'].value }}</td>
+                        <td>
+                            <div class="btn-group dropdown">
+                                <button type="button" class="btn btn-default">Action</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a  ng-click="enableEdit(events)"><span class="glyphicon glyphicon-info-sign"></span> Info</a> </li>
+                                    <li><a  ng-click="enableEdit(events)"><span class="glyphicon glyphicon-pencil"></span> Edit</a> </li>
+                                    <li><a ng-click="showNotes(events)"><span class="glyphicon glyphicon-trash text-danger"></span> Delete</a> </li>
+                                    <li><a>Update Licence Information</a> </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-        <div class="col-sm-2">
-            <div class="form-group">
-                <div
-                        multi-select
-                        input-model="data.usedCat"
-                        button-label="name"
-                        item-label="name"
-                        tick-property="ticked"
-                        output-model="report.charCat"
-                        max-labels="0"
-                        max-height ="150px"
-                        on-item-click = "changeCats()"
-                        helper-elements="filter"
-                        >
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-8">
-            <md-button ng-click="changeChart('table')" class="md-hue-3 md-raised"><img src="/apps/license/img/table.png" style="height: 20px;width: 20px"> Table</md-button>
-            <md-button ng-click="changeChart('column')" class="md-hue-3 md-raised"><img src="/apps/license/img/bar.png" style="height: 20px;width: 20px"> Bar </md-button>
-            <md-button ng-click="changeChart('spline')" class="md-hue-3 md-raised"><img src="/apps/license/img/line.png" style="height: 20px;width: 20px"> Line </md-button>
-            <md-button ng-click="changeChart('bar')" class="md-hue-3 md-raised"><img src="/apps/license/img/column.png" style="height: 20px;width: 20px"> Column </md-button>
-            <!--<md-button ng-click="changeChart('combined')" class="md-hue-3 md-raised"><img src="combined.jpg" style="height: 20px;width: 20px"> Combined Chart</md-button>-->
-            <md-button ng-click="changeChart('spider')" class="md-hue-3 md-raised"><img src="/apps/license/img/spider.jpg" style="height: 20px;width: 20px"> Spider</md-button>
-            <md-button ng-click="changeChart('area')" class="md-hue-3 md-raised"><img src="/apps/license/img/table.png" style="height: 20px;width: 20px"> Area </md-button>
-            <md-button ng-click="changeChart('pie')" class="md-hue-3 md-raised"><img src="/apps/license/img/pie.png" style="height: 20px;width: 20px"> Pie </md-button>
-            <md-button ng-click="" class="md-hue-3 md-raised"><img src="/apps/license/img/cvs.jpg" style="height: 20px;width: 20px"> </md-button>
         </div>
 
-        <highchart id="chart1" config="chartConfig" class="col-sm-12" ng-if="!displayTable"></highchart>
-        <table class="table table-condensed table-bordered table-responsive" ng-if="displayTable">
-            <tr>
-                <th ng-repeat="cats in table.headers">{{ cats.name }}</th>
-            </tr>
-            <tr>
-                <td ng-repeat="nsf in table.colums">{{ nsf.val }}</td>
-            </tr>
-        </table>
-</div>
-    </div>
-</md-tab>
-<md-tab label="Business License"  style="width: 300px">
-<div class="demo-tab tab2" layout="column" layout-align="space-around center">
-    <div class="container-fluid">
-        <div class="col-sm-2">
-            <div class="form-group">
-                <select ng-model="data.busnesscategory" ng-change="prepareBusinessDropdown(data.busnesscategory)" id="category" class="form-control" required="" style="background: transparent;border-top-color: wheat">
-                    <option value="Nature of application">Nature of application</option>
-                    <option value="Period applied for">Period applied for</option>
-                    <option value="Body type">Body type</option>
-                    <option value="Classes of services">Classes of services</option>
-                    <option value="Nature/Type of service">Nature/Type of service</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-2">
-            <div class="form-group">
-                <div
-                        multi-select
-                        input-model="data.businesCat"
-                        button-label="name"
-                        item-label="name"
-                        tick-property="ticked"
-                        output-model="report.outBusinesCat"
-                        max-labels="0"
-                        max-height ="150px"
-                        on-item-click = "changeBusinessCats()"
-                        helper-elements="filter"
-                        >
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-show="editing" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Update Driver</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <table >
+                        <tr ng-if="datas.name != 'Program_Person'"  class="todelete"  ng-repeat="datas in editingEvent.dataValues">
+                            <td style="margin-right: 20px">
+                                <label>{{ datas.name }}</label><br>
+                                <input  class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <input  class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <select  class="form-control"  ng-focus="focusMe(datas.name)" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
+                            </td>
+                        </tr>
+                        <tr  ng-repeat="datas in editingPerson.dataValues">
+                            <td style="margin-right: 20px">
+                                <label>{{ datas.name }}</label><br>
+                                <input class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingPerson,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color">
+                                <input  class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type == 'date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <select  class="form-control"  ng-focus="focusMe(datas.name)" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
+                            </td>
+                        </tr>
+                        <tr style="margin-top: 10px">
+                            <td><button class="btn btn-sm btn-primary" ng-click="cancelEdit()">Done</button> </td>
+                        </tr>
+                    </table>
+                </div>
+
                 </div>
             </div>
-        </div>
-        <div class="col-sm-8">
-            <md-button ng-click="changeChart('table')" class="md-hue-3 md-raised"><img src="/apps/license/img/table.png" style="height: 20px;width: 20px"> Table</md-button>
-            <md-button ng-click="changeChart('column')" class="md-hue-3 md-raised"><img src="/apps/license/img/bar.png" style="height: 20px;width: 20px"> Bar </md-button>
-            <md-button ng-click="changeChart('spline')" class="md-hue-3 md-raised"><img src="/apps/license/img/line.png" style="height: 20px;width: 20px"> Line </md-button>
-            <md-button ng-click="changeChart('bar')" class="md-hue-3 md-raised"><img src="/apps/license/img/column.png" style="height: 20px;width: 20px"> Column </md-button>
-            <!--<md-button ng-click="changeChart('combined')" class="md-hue-3 md-raised"><img src="combined.jpg" style="height: 20px;width: 20px"> Combined Chart</md-button>-->
-            <md-button ng-click="changeChart('spider')" class="md-hue-3 md-raised"><img src="/apps/license/img/spider.jpg" style="height: 20px;width: 20px"> Spider</md-button>
-            <md-button ng-click="changeChart('area')" class="md-hue-3 md-raised"><img src="/apps/license/img/table.png" style="height: 20px;width: 20px"> Area </md-button>
-            <md-button ng-click="changeChart('pie')" class="md-hue-3 md-raised"><img src="/apps/license/img/pie.png" style="height: 20px;width: 20px"> Pie </md-button>
-            <md-button ng-click="" class="md-hue-3 md-raised"><img src="/apps/license/img/cvs.jpg" style="height: 20px;width: 20px"> </md-button>
+
+    <!--adding new car-->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-show="adding" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Update Motor Vehicles</b><a ng-click="cancelAdd()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <table >
+                        <tr ng-if="list.dataElement.name != 'Program_Person'" ng-repeat="list in  data.programs['Driver'].programStages[0].programStageDataElements">
+                        <td >
+                            <label>{{ list.dataElement.name }}</label>
+                            <input  ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <input  ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date'" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                          </td>
+                        </tr>
+                        <tr ng-repeat="list in  data.programs['Person'].programStages[0].programStageDataElements">
+                        <td >
+                            <label>{{ list.dataElement.name }}</label>
+                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type !='date'" ng-model="data.newPersonValue[list.dataElement.id]"  >
+                            <input ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type=='date'" ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newPersonValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                          </td>
+                        </tr>
+                        <tr style="margin-top: 10px">
+                            <td>
+                                <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                                <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                                <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddPerson(data.newPersonValue,data.newDriverValue)">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
         </div>
 
-        <highchart id="chart1" config="chartConfig" class="col-sm-12" ng-if="!displayTable"></highchart>
-        <table class="table table-condensed table-bordered table-responsive" ng-if="displayTable">
-            <tr>
-                <th ng-repeat="cats in table.headers">{{ cats.name }}</th>
-            </tr>
-            <tr>
-                <td ng-repeat="nsf in table.colums">{{ nsf.val }}</td>
-            </tr>
-        </table>
+    <!--adding new Licence-->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingLicence" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Update Motor Vehicles</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <table >
+                        <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements">
+                        <td >
+                            <label>{{ list.dataElement.name }}</label>
+                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                          </td>
+                        </tr>
+                        <tr style="margin-top: 10px">
+                            <td>
+                                <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                                <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                                <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddVehicle(data.newCarValue)">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
     </div>
 </div>
-</md-tab>
-    <md-tab label="Vehicle Inspections"  style="width: 300px">
-<div class="demo-tab tab3" layout="column" layout-align="space-around center">
-    Motor Vehicle Inspection Statistics
-</div>
-</md-tab>
-</md-tabs>
-</div>
-        <div class="col-sm-12">
-            <h3>Motor Vehicle Management App</h3>
-            <md-content>
-                <md-list>
-                    <md-item>
-                        <md-item-content>
-                            <div class="md-tile-left">
-                                <img src="/apps/license/img/car.jpg" style="height: 50px;width: 50px;border-radius: 50%">
-                            </div>
-                            <div class="md-tile-content">
-                                <h3>Listing of Motor Vehicle</h3>
-                                <h4>
-                                   This part will help you to see the list of all registered motor vehicle and their details, to remove selected vehicle and see the
-                                    offences and accidents that the selected motor vehicle is involved.
-                                </h4>
-                            </div>
-                        </md-item-content>
-                    </md-item>
-                    <md-item>
-                        <md-item-content>
-                            <div class="md-tile-left">
-                                <img src="/apps/license/img/samples.jpg" style="height: 50px;width: 50px;border-radius: 50%">
-                            </div>
-                            <div class="md-tile-content">
-                                <h3>Motor Vehicle Registration</h3>
-                                <h4>
-                                   This part will help you to make a new registration of  motor vehicle.
-                                </h4>
-                            </div>
-                        </md-item-content>
-                    </md-item>
-                    <md-item>
-                        <md-item-content>
-                            <div class="md-tile-left">
-                                <img src="/apps/license/img/cvs.jpg" style="height: 50px;width: 50px;border-radius: 50%">
-                            </div>
-                            <div class="md-tile-content">
-                                <h3>Motor Vehicle Importation</h3>
-                                <h4>
-                                   This part will help you to import motor vehicle details from a formatted excel file.
-                                </h4>
-                            </div>
-                        </md-item-content>
-                    </md-item>
-                </md-list>
-            </md-content>
-        </div>

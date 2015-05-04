@@ -36,6 +36,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
+            var resultProg = data.programs;
             angular.forEach(data.programs, function(program1){
                 $scope.data.programs[program1.name] = {};
 
@@ -77,7 +78,39 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                             var name = arr.join(" ");
                                             name.trim();
                                             $http.get('../../../api/events/'+newDatval.value+'.json').success(function(data1){
-                                                dataelement[name] = data1;
+                                                var event1 = data1.event;
+                                                var program11 = data1.program;
+                                                var programstage1 = data1.programStage;
+                                                var orgunit1 = data1.orgUnit;
+                                                var orgunitName1 = data1.orgUnitName;
+                                                var eventDate1 = data1.eventDate;
+                                                var datavalues1 = {};
+                                                angular.forEach(resultProg,function(value2){
+                                                    if(value2.id == program11){
+                                                        angular.forEach(value2.programStages[0].programStageDataElements, function (dataVal1) {
+                                                            var dataelement1 = {};
+                                                            datavalues1[dataVal1.dataElement.name] = {}
+                                                            dataelement1.id = dataVal1.dataElement.id;
+                                                            dataelement1.name = dataVal1.dataElement.name;
+                                                            dataelement1.type = dataVal1.dataElement.type;
+                                                            if(dataVal1.dataElement.optionSet){
+                                                                dataelement1.optionSet = dataVal1.dataElement.optionSet;
+                                                            }
+                                                            angular.forEach(data1.dataValues, function (newDatval1) {
+                                                                if (newDatval1.dataElement == dataVal1.dataElement.id) {
+                                                                    dataelement1.value = newDatval1.value;
+                                                                }
+                                                            });
+
+                                                            datavalues1[dataVal1.dataElement.name] =  dataelement1;
+
+                                                        });
+                                                    }
+
+                                                })
+
+
+                                                dataelement[name] = {event: event1, program: program11, programStage: programstage1, orgUnit: orgunit1, orgUnitName: orgunitName1, eventDate: eventDate1, dataValues: datavalues1};
                                                 dataelement.value = newDatval.value;
                                             });
                                         }else{

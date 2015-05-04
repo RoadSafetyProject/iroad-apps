@@ -1,147 +1,190 @@
-<div class="col-xs-2">
-    Report Type
-    <select ng-model="data.report_type" ng-change="prepareDropdown()"  id="category" class="form-control" required="" >
-        <option value="Gender">Gender</option>
-        <option value="Classes of persons">Classes Of Persons</option>
-        <option value="Weather">Weather</option>
-        <option value="Accident Cause">Accident Cause</option>
-        <option value="Private Cars">Private Vehicles</option>
-        <option value="Institutional Vehicles">Institutional Vehicles</option>
-    </select>
-</div>
-<div class="col-xs-2">
-    Administrative Unit Type
-    <select ng-model="data.category" ng-change="prepareDropdown()" id="category" class="form-control" required="" >
-        <option value="Regions">Regions</option>
-        <option value="Districts">Districts</option>
-        <option value="Wards">Wards</option>
-        <option value="Village">Village</option>
-    </select>
-</div>
+<style>
+    a:hover{
+        text-underline: none;
+    }
+</style>
+<div ng-class="normalClass" ng-style="normalStyle" style="margin-top: 50px !important;">
 
-<div class="col-xs-2">
-    <div class="col-xs-12" ng-show="data.category == 'Wards' || data.category == 'Village'">
-        Mkoa
-        <select class="entry" ng-model="currentKaya.region">
-            <option ng-repeat="region in data.regions" value="{{ region.id }}">{{ region.region }}</option>
-        </select>
+    <div class="panel-heading">
+        <h3>Accident Capture <button ng-click="addNew('Accident')" class="pull-right" style="font-size: 11px"> Add New </button></h3>
     </div>
 
-    <div class="col-xs-12" ng-show="data.category == 'Regions' ">
-        Regions
-        <div
-                multi-select
-                input-model="data.usedRegions"
-                button-label="name"
-                item-label="name"
-                tick-property="ticked"
-                output-model="data.selectedRegions"
-                max-labels="0"
-                max-height ="150px"
-                on-item-click = "prepareDropdown()"
-                helper-elements="filter"
-                style="width: 100%">
-        </div>
+    <div class="mws-panel-header"  style="height: 48px !important;">
+        <span style="color: #fff0ff !important;"><i class="icon-table"></i> Accident Registered</span>
     </div>
 
-    <div class="col-xs-12" ng-show="data.category == 'Districts'">
-        Districts
-        <div
-                multi-select
-                input-model="data.usedDistricts"
-                button-label="name"
-                item-label="name"
-                tick-property="ticked"
-                output-model="data.selectedDistricts"
-                max-labels="0"
-                max-height ="150px"
-                on-item-click = "prepareDropdown()"
-                helper-elements="filter"
-                >
-        </div>
-    </div>
-</div>
-<div class="col-xs-2">
-    <div class="col-xs-12" ng-show="data.category == 'Wards'">
-        Wilaya
-        <select class="entry" ng-model="currentKaya.district" required ng-change="getWards1(currentKaya.district)">
-            <option ng-repeat="district in data.districts | filter:matchName(currentKaya.region)" value="{{ district.id }}">{{ district.district }}</option>
-        </select>
-    </div>
-    <div class="col-xs-12" ng-show="data.category == 'Village'">
-        Wilaya
-        <select class="entry" ng-model="currentKaya.district" required ng-change="getWards(currentKaya.district)">
-            <option ng-repeat="district in data.districts | filter:matchName(currentKaya.region)" value="{{ district.id }}">{{ district.district }}</option>
-        </select>
+    <div class="mws-panel-body no-padding">
+        <table datatable="ng" class="mws-datatable-fn mws-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Accident Registration Number</th>
+                <th>Area of Accident</th>
+                <th>Cause of Accident</th>
+                <th> Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="accident in data.accidents">
+                <td>{{$index+1}}</td>
+                <td>{{ accident['Accident Registration Number'] }}</td>
+                <td>{{ accident['Area of Accident'] }}</td>
+                <td>{{ accident['Cause of Accident'] }}</td>
+                <td>
+                    <div class="btn-group dropdown">
+                        <button type="button" class="btn btn-default">Action</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a  ng-click="enableEdit(accident)">Edit</a> </li>
+                            <li><a >Delete</a> </li>
+                            <li><a ng-click="addNew('Accident')">Add Accident</a> </li>
+                            <li><a ng-click="showVehicle('Accident')">View Vehicle(s) Involved</a> </li>
+                            <li><a ng-click="showDriver(accident)">View Driver(s) Involved</a> </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
-<div class="col-xs-2">
-    <div class="col-xs-12" ng-show="data.category == 'Village'">
-        Kata
-        <select class="entry" ng-model="currentKaya.ward" ng-change="getVillages1(currentKaya.ward)">
-            <option ng-repeat="ward in data.disward" value="{{ ward.id }}">{{ ward.name }}</option>
-        </select>
+
+<div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="editing" >
+
+    <div class="mws-panel-header"  style="height: 48px !important;">
+        <span  style="color: #fff0ff !important;"><i class="icon-table"></i> ADD NEW
+           <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
+        </span>
     </div>
-    <div class="col-xs-12" ng-show="data.category == 'Wards'">
-        Wards
-        <div
-                multi-select
-                input-model="data.usedWards"
-                button-label="name"
-                item-label="name"
-                tick-property="ticked"
-                output-model="data.selectedWards"
-                max-labels="0"
-                max-height ="150px"
-                on-item-click = "prepareDropdown()"
-                helper-elements="filter"
-                >
-        </div>
-    </div>
-</div>
-<div class="col-xs-2" style="margin-bottom: 10px" ng-show="data.category == 'Village' ">
-    Villages
-    <div
-            multi-select
-            input-model="data.usedVillages"
-            button-label="name"
-            item-label="name"
-            tick-property="ticked"
-            output-model="data.selectedVillages"
-            max-labels="0"
-            max-height ="150px"
-            on-item-click = "prepareDropdown()"
-            helper-elements="filter"
-            >
-    </div>
+    <div class="mws-panel-body no-padding">
+    <table class="mws-datatable-fn mws-table">
+        <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
+            <td >
+                <label>{{key}}</label><br>
+                <input  ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet"  ng-model="editingEvent[key]" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                <select  ng-focus="focusMe(datas.name)"  style="width: 100%;background: #ffffff" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ><option value=""></option></select>
+            </td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Done</button> </td>
+        </tr>
+    </table>
+ </div>
 </div>
 
-<center>
+<div class="row" ng-class="normalClassDriver" ng-style="normalStyleDriver" ng-if="showingDriver" style="padding: 10px">
+    <div class="mws-panel grid_8">
 
-        <div class="col-sm-10" style="margin-top: 10px">
-            <md-button ng-click="changeChart('table')" class="md-hue-3 md-raised"><img src="img/table.png" style="height: 20px;width: 20px"> Table</md-button>
-            <md-button ng-click="changeChart('column')" class="md-hue-3 md-raised"><img src="img/bar.png" style="height: 20px;width: 20px"> Bar </md-button>
-            <md-button ng-click="changeChart('spline')" class="md-hue-3 md-raised"><img src="img/line.png" style="height: 20px;width: 20px"> Line </md-button>
-            <md-button ng-click="changeChart('bar')" class="md-hue-3 md-raised"><img src="img/column.png" style="height: 20px;width: 20px"> Column </md-button>
-            <md-button ng-click="changeChart('nyingine')" class="md-hue-3 md-raised"><img src="img/combined.jpg" style="height: 20px;width: 20px"> Combined Chart</md-button>
-            <md-button ng-click="changeChart('area')" class="md-hue-3 md-raised"><img src="img/table.png" style="height: 20px;width: 20px"> Area </md-button>
-            <md-button ng-click="changeChart('pie')" class="md-hue-3 md-raised"><img src="img/pie.png" style="height: 20px;width: 20px"> Pie </md-button>
-            <md-button ng-click="" class="md-hue-3 md-raised"><img src="img/cvs.jpg" style="height: 20px;width: 20px">Download CVS </md-button>
+        <div class="mws-panel-header"  style="height: 48px !important;">
+            <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved </span>
         </div>
 
-</center>
+        <div class="mws-panel-body no-padding">
+            <table class="mws-datatable-fn mws-table" >
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Licence Number</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Nationality</th>
+                    <th>Postal Address</th>
+                    <th> Action</th>
+                </tr>
+                </thead>
 
-<highchart style="height: 500px; padding-bottom: 10px" id="chart1" config="chartConfig" class="col-sm-12" ng-if="!displayTable"></highchart>
+                <tbody>
 
-<table class="table table-condensed table-bordered table-responsive" ng-if="displayTable">
-    <tr>
-        <th>{{ data.category }}</th>
-        <th ng-repeat="cats in table.headers">{{ cats }}</th>
-    </tr>
-    <tr data-ng-repeat="column in table.colums">
-        <td>{{ column.name }}</td>
-        <td ng-repeat="nsf in column.values">{{ nsf.value }}</td>
-    </tr>
+                <tr>
+                    <td>{{$index + 1}}</td>
+                    <td>{{data.accident.Driver['Driver License Number'] }}</td>
+                    <td>{{data.accident.Driver.Person['First Name'] }}</td>
+                    <td>{{data.accident.Driver.Person['Middle Name']}}</td>
+                    <td>{{data.accident.Driver.Person['Last name']}}</td>
+                    <td>{{data.accident.Driver.Person['Date of Birth'] }}</td>
+                    <td>{{data.accident.Driver.Person['Gender'] }}</td>
+                    <td>{{data.accident.Driver.Person['Nationality'] }}</td>
+                    <td>{{data.accident.Driver.Person['Postal Address'] }}</td>
+                    <td>
+                        <div class="btn-group dropdown">
+                            <button type="button" class="btn btn-default">Action</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a  ng-click="enableEdit(data.accident.Driver.Person)">View Driver</a> </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-</table>
+    </div>
+</div>
+
+<div class="row" ng-class="normalClassDriver" ng-style="normalStyleDriver" ng-if="showingDriver" style="padding: 10px">
+    <div class="mws-panel grid_8">
+
+        <div class="mws-panel-header"  style="height: 48px !important;">
+            <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved </span>
+        </div>
+
+        <div class="mws-panel-body no-padding">
+            <table class="mws-datatable-fn mws-table" >
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Licence Number</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Nationality</th>
+                    <th>Postal Address</th>
+                    <th> Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr>
+                    <td>{{$index + 1}}</td>
+                    <td>{{data.accident.Driver['Driver License Number'] }}</td>
+                    <td>{{data.accident.Driver.Person['First Name'] }}</td>
+                    <td>{{data.accident.Driver.Person['Middle Name']}}</td>
+                    <td>{{data.accident.Driver.Person['Last name']}}</td>
+                    <td>{{data.accident.Driver.Person['Date of Birth'] }}</td>
+                    <td>{{data.accident.Driver.Person['Gender'] }}</td>
+                    <td>{{data.accident.Driver.Person['Nationality'] }}</td>
+                    <td>{{data.accident.Driver.Person['Postal Address'] }}</td>
+                    <td>
+                        <div class="btn-group dropdown">
+                            <button type="button" class="btn btn-default">Action</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a  ng-click="enableEdit(data.accident.Driver.Person)">View Driver</a> </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
