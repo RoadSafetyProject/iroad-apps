@@ -45,6 +45,7 @@
                                     <li><a ng-click="enableaddingInspection(events)">Add Inspection</a> </li>
                                     <li><a ng-click="enableAddingBusLicence(events)">Add Business Licence </a> </li>
                                     <li><a ng-click="enableAddingLicence(events)">Add Vehicle Licence </a> </li>
+                                    <li><a ng-click="enableViewInsurance(events)">Insurance History </a> </li>
                                 </ul>
                             </div>
                         </td>
@@ -210,6 +211,39 @@
                                 <button class="btn btn-sm btn-primary pull-right" ng-click="AddnewInspection(data.newInspection,vehicle.event)">Add</button>
                             </td>
                         </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!--View Insurance History-->
+        <div class="col-sm-5" style="z-index: 30;background-color: white;" ng-if="viewInsurance" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Insurance History for  {{ vehicle.dataValues['Vehicle Plate Number'].value }}</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <table >
+                        <thead>
+                        <tr>
+                            <th>Insurance Number</th>
+                            <th>Car Value</th>
+                            <th>Insurance Company</th>
+                            <th>Insurance Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="list in  data.programs['Vehicle Insurance History'].dataValues.events">
+                            <td>{{ list.dataValues['Insurance Number'].value }}</td>
+                            <td>{{ list.dataValues['Vehicle Value'].value }}</td>
+                            <td>{{ list.dataValues['Insurance Company'].value }}</td>
+                            <td>{{ list.dataValues['Inspection Type'].value }}</td>
+                            <td>{{ list.dataValues['Start Date'].value }}</td>
+                            <td>{{ list.dataValues['End Date'].value }}</td>
+                           </td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
 

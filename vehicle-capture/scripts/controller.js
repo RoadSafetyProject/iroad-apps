@@ -100,10 +100,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                                             datavalues1[dataVal1.dataElement.name] = {}
                                                             dataelement1.id = dataVal1.dataElement.id;
                                                             dataelement1.name = dataVal1.dataElement.name;
-                                                            dataelement1.type = dataVal1.dataElement.type;
-                                                            if(dataVal1.dataElement.optionSet){
-                                                                dataelement1.optionSet = dataVal1.dataElement.optionSet;
-                                                            }
+//                                                            dataelement1.type = dataVal1.dataElement.type;
+//                                                            if(dataVal1.dataElement.optionSet){
+//                                                                dataelement1.optionSet = dataVal1.dataElement.optionSet;
+//                                                            }
                                                             angular.forEach(data1.dataValues, function (newDatval1) {
                                                                 if (newDatval1.dataElement == dataVal1.dataElement.id) {
                                                                     dataelement1.value = newDatval1.value;
@@ -189,8 +189,25 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.addingInspection = true;
-            $scope.data.
             $scope.vehicle = events;
+        }
+
+        $scope.enableViewInsurance = function(events){
+            var modalInstance = $modal.open({
+                templateUrl: 'views/insurance.html',
+                controller: 'VehicleInsuranceController',
+                resolve: {
+                    dhis2Event: function () {
+                        return events;
+                    },events: function () {
+                        return  $scope.getRelatedObjects(events.event,'Vehicle Insurance History');
+                    }
+
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
         }
 
         $scope.cancelEdit = function(){
@@ -692,8 +709,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.getRelatedObjects = function(vehicle_id,object){
             var items = [];
             angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
-                console.log(dataVal.dataValues['Program_Driver'].value +" === "+ driver_id);
-                if(dataVal.dataValues['Program_Driver'].value == driver_id){
+                console.log(dataVal.dataValues['Program_Vehicle'].value +" === "+ vehicle_id);
+                if(dataVal.dataValues['Program_Vehicle'].value == vehicle_id){
                     items.push(dataVal);
                 }
             });
