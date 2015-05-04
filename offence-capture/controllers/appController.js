@@ -2,7 +2,7 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', [])
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date"])
 
 //Controller for settings page
     .controller('MainController',
@@ -51,6 +51,43 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 		$scope.showRegistries = function(registries){
 			$scope.show("offences");
 			$scope.data.offenceRegistries = registries;
+		}
+		$scope.isInteger = function(key){
+			return $scope.is(key,"int");
+		}
+		$scope.isDate = function(key){
+			return $scope.is(key,"date");
+		}
+		$scope.isString = function(key){
+			return $scope.is(key,"string");
+		}
+		$scope.is = function(key,dataType){
+			for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+				if(iroad2.data.dataElements[j].name == key){
+					if(iroad2.data.dataElements[j].type == dataType){
+						
+						return true;
+					}
+					break;
+				}
+			};
+			return false;
+		}
+		$scope.isBoolean = function(key){
+			return $scope.is(key,"bool");
+		}
+		$scope.filterObject = function(object,fields){
+			con:
+			for(var key in object){
+				for(j = 0 ;j < fields.length;j++){
+					if(fields[j] == key){
+						delete object[key];
+						continue con;
+					}
+				}
+			};
+			console.log(JSON.stringify(object));
+			return object;
 		}
 		$scope.showDriver = function(driver){
 			$scope.show("driver");
