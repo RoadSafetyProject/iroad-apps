@@ -1,14 +1,14 @@
 //Controller for notes
-eventCaptureControllers.controller('NotesController', 
-    function($scope, 
-            $modalInstance, 
+eventCaptureControllers.controller('NotesController',
+    function($scope,
+            $modalInstance,
             dhis2Event){
-    
+
     $scope.dhis2Event = dhis2Event;
-    
+
     $scope.close = function () {
         $modalInstance.close();
-    };      
+    };
 });
 
 eventCaptureControllers.controller('DeleteController',
@@ -23,8 +23,7 @@ eventCaptureControllers.controller('DeleteController',
         $modalInstance.close();
     };
         $scope.delete = function (event,events) {
-            $scope.deleting= true
-        alert(event.event)
+            $scope.deleting= true;
             $.postJSON = function(url, data, callback,failureCallback) {
                 return jQuery.ajax({
                     headers: {
