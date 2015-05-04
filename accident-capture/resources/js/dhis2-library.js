@@ -498,6 +498,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		}else{
 			console.log("Saving Data:" + JSON.stringify(sendData));
 			http.post(saveUrl,JSON.stringify(sendData),function(results){
+                console.log(results);
 				onSuccess(results);
 			},function(results){
 				onError(results);
