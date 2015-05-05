@@ -70,7 +70,7 @@
      
             <table  class="mws-datatable-fn mws-table">
             <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
-            	<td  ng-if="(key != 'id')">
+            	<td ng-if="(key != 'id')">
             		<label>{{key}}</label><br />
                     <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control" />
                     <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
@@ -110,7 +110,7 @@
                     		<td>{{event.Offence_Registry.Nature}}</td>
                     		<td>{{event.Offence_Registry.Amount}}</td>
                     		<td>
-                                <div class="btn-group dropdown">
+                                <!-- <div class="btn-group dropdown">
                                     <button type="button" class="btn btn-default">Action</button>
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <span class="caret"></span>
@@ -124,7 +124,7 @@
                                         <li><a>Add Business Licence </a> </li>
                                         <li><a >Add Vehicle Licence </a> </li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </td>
                         </tr>
                         </tbody>
@@ -141,7 +141,7 @@
                     <thead>
                     </thead>
                     <tbody>
-                        <tr  class="todelete"  ng-repeat="(key, value) in data.driver">
+                        <tr ng-repeat="(key, value) in data.driver">
 			            	<td>
 			            		<label>{{key}}</label>
 			            	</td>
@@ -164,7 +164,7 @@
                     <thead>
                     </thead>
                     <tbody>
-                        <tr  class="todelete"  ng-repeat="(key, value) in data.vehicle">
+                        <tr ng-if="(key != 'id')" class="todelete"  ng-repeat="(key, value) in data.vehicle">
 			            	<td>
 			            		<label>{{key}}</label>
 			            	</td>
