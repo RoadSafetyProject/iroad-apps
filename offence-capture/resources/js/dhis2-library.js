@@ -153,6 +153,14 @@ iroad2.data.Modal = function (modalName,relations) {
 		return modalName;
 	}
 	/**
+	 * Get the Modal Relationships
+	 * 
+	 * @return {iroad2.data.Relation[]} modal name
+	 */
+	this.getRelationships = function(){
+		return relations;
+	}
+	/**
 	 * Get a program from the list of iroad2 programs by its name
 	 * 
 	 * @param string name
@@ -393,7 +401,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			refProgram.fetch = function() {
 				var selfProgram = this;
 				this.program.get({program:self.getModalName(),value:selfrenderToJSON.object.id}, function(result) {	
-					selfrenderToJSON.object[selfProgram.program.getModalName() + "s"] = result;
+					selfrenderToJSON.object[selfProgram.program.getModalName()] = result;
 					
 					//Check if all results from the server are fetched
 					selfrenderToJSON.checkAllResultsFetched();
@@ -488,6 +496,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		//var event = self.convertToEvent(data);
 		if(sendData.event){
 			saveUrl += "/" +sendData.event;
+			alert("here");
 			http.put(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
 			},function(results){
@@ -527,18 +536,26 @@ http = {
 	 */
 	request : function(url,method,data,onSuccess,onError){
 		var xmlhttp = new XMLHttpRequest();
+		
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				//try{
+				
+				try{
 					onSuccess(JSON.parse(xmlhttp.responseText));
-				/*}catch(e){
-					if(onError == undefined){
-						console.error(e);
-					}else
-					{
-						onError(e);
+				}catch(e){
+					alert(xmlhttp.responseText);
+					if(xmlhttp.responseText.startsWith("Event updated: ")){
+						onSuccess({"status":"SUCCESS","updatedEvent":xmlhttp.responseText.replace("Event updated: ","").replace("\r\n","")})
+					}else{
+						console.error("Returned:" + xmlhttp.responseText);
+						if(onError == undefined){
+							console.error(e);
+						}else
+						{
+							onError(e);
+						}
 					}
-				}*/
+				}
 				
 			}
 		}
