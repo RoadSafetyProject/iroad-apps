@@ -10,7 +10,7 @@
         </div>
 
         <div class="mws-panel-header"  style="height: 48px !important;">
-            <span style="color: #fff0ff !important;"><i class="icon-table"></i> Offence Events Registered<a ng-click="addNew('Offence Event')" class="pull-right" style="color:#fff0ff;font-size: 11px"> Add New </a></span>
+            <span style="color: #fff0ff !important;"><i class="icon-table"></i> Offence Events Registered<a ng-click="addNew()" class="pull-right" style="color:#fff0ff;font-size: 11px"> Add New </a></span>
         </div>
 
         <div class="mws-panel-body no-padding">
@@ -50,7 +50,7 @@
                             	
                                 <li><a  ng-click="enableEdit(event)">Edit</a> </li>
                                 <li><a >Delete</a> </li>
-                                <li><a ng-click="showRegistries(event.Offences)">View Offences </a> </li>
+                                <li><a ng-click="showRegistries(event.Offence)">View Offences </a> </li>
                                 <li><a ng-click="showDriver(event.Driver)">View Driver</a> </li>
                                 <li><a ng-click="showVehicle(event.Vehicle)">View Vehicle</a> </li>
                             </ul>
@@ -72,12 +72,14 @@
             <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
             	<td  ng-if="(key != 'id')">
             		<label>{{key}}</label><br />
-                    <input ng-if="isString(key)"  ng-model="editingEvent[key]" class="form-control" />
+                    <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control" />
+                    <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
                     <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" >
-                    	<option value="true">Yes</option>
-                    	<option value="false">No</option>
+                    	<option value="true">Yes</option><option value="false">No</option>
                     </select>
+                    <select  ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
                     <input ng-if="isDate(key)" ui-date="dateOptions" class="form-control" ng-model="editingEvent[key]"/>
+                    <multi-select  ng-if="multiselectBools[key]" class="form-control" input-model="inputModal[key]" output-model="editingEvent[key]"item-label="name" button-label="button" tick-property="selected" />
                 </td>
             </tr>
              <tr>
