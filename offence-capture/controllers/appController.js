@@ -151,6 +151,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.showDriver = function(driver){
 			$scope.show("driver");
 			$scope.data.driver = driver;
+			for(var key in driver.Person){
+				$scope.data.driver[key] = driver.Person[key]; 
+			}
+			delete driver.Person;
 		}
 		$scope.showVehicle = function(vehicle){
 			$scope.show("vehicle");
