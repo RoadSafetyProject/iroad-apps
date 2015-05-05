@@ -94,10 +94,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			        				input[column] = result[$scope.converts[key][column]]; 
 			        			}
 			        			input.selected = false;
+			        			angular.forEach($scope.editingEvent[key],function(element){
+			        				if(element[relationship.name.replace(" ","_")].id == input.id){
+			        					input.selected = true;
+			        				}
+			        			});
 			        			inputModal.push(input);
 			        		});
-			        		//console.log("Input Modal:" + JSON.stringify(inputModal));
+			        		
 			        		$scope.inputModal[key] = inputModal;
+			        		
+			        		console.log("Input Modals:" + JSON.stringify($scope.inputModal[key]));
 							$scope.$apply();
 						});
 						return true;
@@ -173,6 +180,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             $scope.editingEvent = event;
             for (var key in event) {
             	if(Array.isArray(event[key])){
+            		console.log(key + " Event:" + JSON.stringify(event));
             		$scope.multiselectBools[key] = $scope.isManyRelation(key);
             	}else if(typeof event[key] == "object") {
             		var program = $scope.offenceEventModal.getProgramByName(key);

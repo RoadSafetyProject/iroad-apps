@@ -543,7 +543,6 @@ http = {
 				try{
 					onSuccess(JSON.parse(xmlhttp.responseText));
 				}catch(e){
-					alert(xmlhttp.responseText);
 					if(xmlhttp.responseText.startsWith("Event updated: ")){
 						onSuccess({"status":"SUCCESS","updatedEvent":xmlhttp.responseText.replace("Event updated: ","").replace("\r\n","")})
 					}else{
