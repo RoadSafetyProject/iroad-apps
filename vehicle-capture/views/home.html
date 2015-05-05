@@ -22,7 +22,7 @@
                     <tbody>
                     <tr ng-repeat="events in data.programs['Vehicle'].dataValues.events">
                         <td>{{ $index+1 }}</td>
-                        <td>{{events.dataValues['Vehicle Plate Number'].value }}</td>
+                        <td>{{ events.dataValues['Vehicle Plate Number'].value }}</td>
                         <td>{{ events.dataValues['Make'].value }}</td>
                         <td>{{ events.dataValues['Model'].value }}</td>
                         <td>{{ events.dataValues['Body Type'].value }}</td>
@@ -38,12 +38,13 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a  ng-click="enableEdit(events)">Edit</a> </li>
-                                    <li><a >Delete</a> </li>
-                                    <li><a >Add Insurance</a> </li>
-                                    <li><a >Add Inspection</a> </li>
-                                    <li><a>Add Business Licence </a> </li>
-                                    <li><a >Add Vehicle Licence </a> </li>
+                                    <li><a ng-click="ViewInfo(events)">info</a> </li>
+                                    <li><a ng-click="enableEdit(events)">Edit</a> </li>
+                                    <li><a ng-click="showDelete(events,data.programs['Vehicle'].dataValues.events)"> Delete</a> </li>
+                                    <li><a ng-click="enableAddingInsurance(events)">Add Insurance</a> </li>
+                                    <li><a ng-click="enableaddingInspection(events)">Add Inspection</a> </li>
+                                    <li><a ng-click="enableAddingBusLicence(events)">Add Business Licence </a> </li>
+                                    <li><a ng-click="enableAddingLicence(events)">Add Vehicle Licence </a> </li>
                                 </ul>
                             </div>
                         </td>
@@ -58,7 +59,7 @@
                 <div class="panel-heading"><b>Update Motor Vehicles<b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
                 <div class="panel-body" style="padding-left: 30px">
                     <table >
-                        <tr  class="todelete"  ng-repeat="datas in editingEvent.dataValues">
+                        <tr  class="todelete"  ng-repeat="datas in editingEvent.dataValues  | orderBy:'sortOrder'">
                             <td style="margin-right: 20px">
                                 <label>{{ datas.name }}</label><br>
                                 <input class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
@@ -77,10 +78,10 @@
     <!--adding new car-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="adding" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Motor Vehicles</b><a ng-click="cancelAdd()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Update Motor Vehicles</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
                 <div class="panel-body" style="padding-left: 30px">
                     <table >
-                        <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements">
+                        <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements  | orderBy:'sortOrder'">
                         <td >
                             <label>{{ list.dataElement.name }}</label>
                             <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]"  >
@@ -93,6 +94,120 @@
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
                                 <button class="btn btn-sm btn-primary pull-right" ng-click="AddVehicle(data.newCarValue)">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!--adding new Insurance-->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingInsurance" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Update Vehicle Insurance</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <table >
+                        <tr ng-repeat="list in  data.programs['Vehicle Insurance History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
+                            <td ng-if="list.dataElement.name != 'Program_Vehicle'">
+                                <label>{{ list.dataElement.name }}</label>
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
+                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInsurance[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            </td>
+                        </tr>
+                        <tr style="margin-top: 10px">
+                            <td>
+                                <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                                <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                                <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddInsurance(data.newInsurance,vehicle.event)">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!--adding new Business Licence-->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingBusLicence" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Update Vehicle Business Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <table >
+                        <tr ng-repeat="list in  data.programs['Bussiness License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
+                            <td ng-if="list.dataElement.name != 'Program_Vehicle'">
+                                <label>{{ list.dataElement.name }}</label>
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            </td>
+                        </tr>
+                        <tr style="margin-top: 10px">
+                            <td>
+                                <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                                <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                                <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddBussinessLicence(data.newBusLicence,vehicle.event)">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--Adding New Car Licence-->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingLicence" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Update Vehicle Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <table >
+                        <tr ng-repeat="list in  data.programs['Vehicle License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
+                            <td ng-if="list.dataElement.name != 'Program_Vehicle'">
+                                <label>{{ list.dataElement.name }}</label>
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            </td>
+                        </tr>
+                        <tr style="margin-top: 10px">
+                            <td>
+                                <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                                <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                                <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddBussinessLicence(data.newBusLicence,vehicle.event)">Add</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!--Adding New Car Inspection-->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingInspection" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Update Vehicle Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-body" style="padding-left: 30px">
+                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <table >
+                        <tr ng-repeat="list in  data.programs['Vehicle Inspection'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
+                            <td ng-if="list.dataElement.name != 'Program_Vehicle'">
+                                <label>{{ list.dataElement.name }}</label>
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
+                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
+                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInspection[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            </td>
+                        </tr>
+                        <tr style="margin-top: 10px">
+                            <td>
+                                <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                                <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                                <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddnewInspection(data.newInspection,vehicle.event)">Add</button>
                             </td>
                         </tr>
                     </table>

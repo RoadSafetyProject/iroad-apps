@@ -38,7 +38,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
-        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
             var resultProg = data.programs;
@@ -70,6 +70,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                 dataelement.id = dataVal.dataElement.id;
                                 dataelement.name = dataVal.dataElement.name;
                                 dataelement.type = dataVal.dataElement.type;
+                                dataelement.sortOrder = dataVal.sortOrder;
                                 if(dataVal.dataElement.optionSet){
                                     dataelement.optionSet = dataVal.dataElement.optionSet;
                                 }
@@ -130,21 +131,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         });
 
                     }
-                    $scope.getSelectedProgram("Vehicle");
                 });
             });
 
 
         });
 
-        $scope.data.selectedprogram = [];
-        $scope.getSelectedProgram = function(name,manyToMany){
-            angular.forEach($scope.data.programs, function (prog) {
-                if (prog.name == name) {
-                    $scope.data.selectedprogram = prog;
-                }
-            });
-        }
+
 
         $scope.normalClass= "col-sm-12";
         $scope.normalStyle= { "z-index": '1000'};
@@ -187,9 +180,19 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             var datavaluess = [];
             angular.forEach(value,function(data,key){
                 if(data instanceof Date){
+                    var curr_date	= data.getDate();
+                    var curr_month	= data.getMonth()+1;
+                    var curr_year 	= data.getFullYear();
+                    if(curr_month<10){
+                        curr_month="0"+curr_month;
+                    }
+                    if(curr_date<10){
+                        curr_date="0"+curr_date;
+                    }
+                    var data1 = curr_year+"-"+curr_month+"-"+curr_date;
                     datavaluess.push({
                         dataElement: key,
-                        value:  DateUtils.formatFromUserToApi(data)
+                        value: data1
                     })
                 }
                 datavaluess.push({
@@ -197,7 +200,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     value: data
                 })
             });
-            console.log(keyValue);
             datavaluess.push({dataElement: 'vz0PAS4uCul',value:keyValue})
             var dhis2Event = {
                 program: program,
@@ -207,7 +209,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
-            console.log(dhis2Event);
             $scope.currentSaving = true;
             $.postJSON = function(url, data, callback,failureCallback) {
                 return jQuery.ajax({
@@ -234,14 +235,34 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.AddPerson =function(value,value1){
             var program = $scope.data.programs['Person'].id;
             var programStage = $scope.data.programs['Person'].programStages[0].id;
-            var date1 = new Date();
-            $scope.savingDate = date1.toISOString();
+                var d = new Date();
+                var curr_date	= d.getDate();
+                var curr_month	= d.getMonth()+1;
+                var curr_year 	= d.getFullYear();
+                if(curr_month<10){
+                    curr_month="0"+curr_month;
+                }
+                if(curr_date<10){
+                    curr_date="0"+curr_date;
+                }
+                $scope.savingDate = curr_year+"-"+curr_month+"-"+curr_date;
+
             var datavaluess = [];
             angular.forEach(value,function(data,key){
                 if(data instanceof Date){
+                    var curr_date	= data.getDate();
+                    var curr_month	= data.getMonth()+1;
+                    var curr_year 	= data.getFullYear();
+                    if(curr_month<10){
+                        curr_month="0"+curr_month;
+                    }
+                    if(curr_date<10){
+                        curr_date="0"+curr_date;
+                    }
+                    var data1 = curr_year+"-"+curr_month+"-"+curr_date;
                     datavaluess.push({
                         dataElement: key,
-                        value: DateUtils.formatFromUserToApi(data)
+                        value: data1
                     })
                 }
                 datavaluess.push({
@@ -275,22 +296,100 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             };
             $.postJSON('../../../api/events',dhis2Event,function(response){
                 $scope.AddDriver(value1,response.importSummaries[0].reference);
-                console.log(response);
-                console.log(response.importSummaries[0].reference);
-
             },function(response){
                 alert("failed");
-                console.log(response);
             });
             }
 //
+        $scope.addLicenceInfo = function(value,driverId){
+            var program = $scope.data.programs['Driver License History'].id;
+            var programStage = $scope.data.programs['Driver License History'].programStages[0].id;
+            value[$scope.getPrimaryId($scope.data.programs['Driver License History'],'Program_Driver')] = driverId;
 
+            var d = new Date();
+            var curr_date	= d.getDate();
+            var curr_month	= d.getMonth()+1;
+            var curr_year 	= d.getFullYear();
+            if(curr_month<10){
+                curr_month="0"+curr_month;
+            }
+            if(curr_date<10){
+                curr_date="0"+curr_date;
+            }
+            $scope.savingDate = curr_year+"-"+curr_month+"-"+curr_date;
+            var datavaluess = [];
+            angular.forEach(value,function(data,key){
+                if(data instanceof Date){
+                    var curr_date	= data.getDate();
+                    var curr_month	= data.getMonth()+1;
+                    var curr_year 	= data.getFullYear();
+                    if(curr_month<10){
+                        curr_month="0"+curr_month;
+                    }
+                    if(curr_date<10){
+                        curr_date="0"+curr_date;
+                    }
+                    var data1 = curr_year+"-"+curr_month+"-"+curr_date;
+                    datavaluess.push({
+                        dataElement: key,
+                        value: data1
+                    })
+                }else{
+                    datavaluess.push({
+                        dataElement: key,
+                        value: data
+                    })
+                }
+
+            })
+            var dhis2Event = {
+                program: program,
+                programStage: programStage,
+                status: "ACTIVE",
+                orgUnit: "ij7JMOFbePH",
+                eventDate: $scope.savingDate,
+                dataValues: datavaluess
+            };
+            $scope.currentSaving = true;
+            $.postJSON = function(url, data, callback,failureCallback) {
+                return jQuery.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'admin':'district'
+                    },
+                    'type': 'POST',
+                    'url': url,
+                    'data': JSON.stringify(data),
+                    'dataType': 'json',
+                    'success': callback,
+                    'failure':failureCallback
+                });
+            };
+            $.postJSON('../../../api/events',dhis2Event,function(response){
+                alert("success");
+            },function(response){
+                alert("failed");
+            });
+        }
+
+        $scope.getPrimaryId = function(program,name){
+            var id = "";
+            angular.forEach(program.programStages[0].programStageDataElements, function (dataVal) {
+                if(dataVal.dataElement.name == name){
+                    id = dataVal.dataElement.id;
+                }
+            });
+            return id;
+        }
         $scope.normalClass= "col-sm-12";
         $scope.normalStyle= { "z-index": '1000'};
         $scope.enableEdit  = function(events){
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
-            $scope.editing = "true";
+            $scope.editing = true;
+            $scope.adding = false;
+            $scope.addingLicence = false;
             angular.forEach($scope.data.programs, function (prog) {
                 if (prog.id == events.program) {
                     $scope.editingProgram = prog;
@@ -304,29 +403,109 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.enableAdding  = function(){
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
-            $scope.adding = "true";
-            $scope.editing = "false";
+            $scope.adding = true;
+            $scope.editing = false;
+            $scope.addingLicence = false;
+        }
+        $scope.enableAddingLicence  = function(driver){
+            $scope.normalStyle= { "z-index": '10'};
+            $scope.normalClass= "col-sm-9";
+            $scope.addingLicence = true;
+            $scope.adding = false;
+            $scope.editing = false;
+            $scope.driver = driver;
         }
 
+        $scope.cancelAddingLicence = function(){
+            $scope.normalClass= "col-sm-12";
+            $scope.editing = false;
+            $scope.adding = false;
+            $scope.addingLicence = false;
+        }
         $scope.cancelEdit = function(){
             $scope.normalClass= "col-sm-12";
-            $scope.editing = "false";
-            $scope.adding = "false";
+            $scope.editing = false;
+            $scope.adding = false;
+            $scope.addingLicence = false;
         }
 
         $scope.cancelAdd = function(){
             $scope.normalClass= "col-sm-12";
-            $scope.adding = "false";
-            $scope.editing = "false";
+            $scope.adding = false;
+            $scope.editing = false;
+            $scope.addingLicence = false;
         }
 
-        $scope.showNotes = function(dhis2Event){
+        $scope.showDelete = function(dhis2Event,events){
             var modalInstance = $modal.open({
-                templateUrl: 'views/notes.html',
-                controller: 'NotesController',
+                templateUrl: 'views/delete.html',
+                controller: 'DeleteController',
                 resolve: {
                     dhis2Event: function () {
                         return dhis2Event;
+                    },
+                    events: function () {
+                        return events;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
+        //display a model to view accidents
+        $scope.ViewAccident = function(dhis2Event){
+            var itemOfInterest = $scope.data.programs['Accident'];
+            var modalInstance = $modal.open({
+                templateUrl: 'views/accidents.html',
+                controller: 'DriverAccidentController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return itemOfInterest;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
+        //display a model to view offences
+        $scope.ViewOffences = function(dhis2Event){
+            var itemOfInterest = $scope.data.programs['Offences'];
+            var modalInstance = $modal.open({
+                templateUrl: 'views/offences.html',
+                controller: 'DriverOffenceController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return itemOfInterest;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
+        //display a model to view licence history
+        $scope.ViewLicences = function(dhis2Event,items){
+            var itemOfInterest = items
+            var modalInstance = $modal.open({
+                templateUrl: 'views/licences.html',
+                controller: 'DriverLicenceController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return itemOfInterest;
                     }
                 }
             });
@@ -338,6 +517,19 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.clickMe = function(event){
             $(event.target).datepicker();
             console.log(event.target)
+        }
+
+        //getting all object related to driver
+        $scope.getRelatedObjects = function(driver_id,object){
+            var items = [];
+            angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
+                console.log(dataVal.dataValues['Program_Driver'].value +" === "+ driver_id);
+                if(dataVal.dataValues['Program_Driver'].value == driver_id){
+                    items.push(dataVal);
+                }
+            });
+            return items;
+
         }
 
         /**send new update to server
@@ -353,26 +545,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.updateData = function(dataElement,newVal,program,event,item,programArray){
             if($scope.isInt(newVal,item.type)){
                 var updatedSingleValueEvent = {event: program.event, dataValues: [{value: newVal, dataElement: dataElement}]};
-//                var e = {};
-//
-//                e.event         = program.event;
-//                e.status        = 'ACTIVE';
-//                e.program       = program.program;
-//                e.programStage  = program.programStage;
-//                e.orgUnit       = program.orgUnit;
-//                e.eventDate     = program.eventDate;;
-//
-//                var dvs = [];
-//                angular.forEach(program.dataValues, function(prStDe){
-//                    if(prStDe.value){
-//                        dvs.push({dataElement: prStDe.id, value: prStDe.value });
-//                    }
-//                });
-//
-//                e.dataValues = dvs;
-//
-//                var updatedFullValueEvent = e;
-                item.color = { "background-color": $scope.colorYellow, 'width': $scope.cellWidth, 'text-align': $scope.textAlign  };
                 $.postJSON = function(url, data, callback,failureCallback) {
                     return jQuery.ajax({
                         headers: {

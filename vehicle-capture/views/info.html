@@ -1,0 +1,23 @@
+<style>
+    .modal-dialog{
+        margin-left: 18%;
+        margin-right: 18%;
+        width: 64%
+    }
+</style>
+<div class="modal-header page">
+    <h3>Vehicles Details</h3>
+</div>
+
+<div class="modal-body page">
+        <table class="table table-border table-striped">
+            <tr data-ng-repeat="data in dhis2Event.dataValues | orderBy:'sortOrder'">
+                <th>{{ data.name }}</th>
+                <td>{{ data.value }}</td>
+            </tr>
+        </table>
+</div>
+
+<div class="modal-footer page">
+    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
+</div>

@@ -2,10 +2,10 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', [])
+var eventCaptureControllers = angular.module('eventCaptureControllers', []);
 
 //Controller for settings page
-    .controller('MainController',
+eventCaptureControllers.controller('MainController',
     function($scope,$modal,$timeout,$translate,$anchorScroll,storage,Paginator,
              OptionSetService,
              ProgramFactory,
@@ -26,14 +26,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.data = {};
-        $scope.onInitialize = function(){
+
+        $scope.onInitializeAccident = function(){
             accidentEventModal.getAll(function(result){
+                console.log("Accidents:" + JSON.stringify(result));
                 $scope.data.accidents = result;
                 $scope.$apply();
             });
+
             var driver = new  iroad2.data.Modal("Driver",[]);
             driver.getAll(function(result){
-                console.log("Divers:" + JSON.stringify(result));
+                console.log("Drivers:" + JSON.stringify(result));
                 $scope.data.drivers = result;
                 $scope.$apply();
             });
@@ -45,12 +48,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
         }
         dhisConfigs.onLoad = function(){
-            $scope.onInitialize();
+            $scope.onInitializeAccident();
         }
         iroad2.Init(dhisConfigs);
         $scope.normalClass= "mws-panel grid_8";
 
-        $scope.addNew = function(modalName){
+        $scope.addNewAccident = function(modalName){
             var event = {};
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == modalName) {
@@ -66,10 +69,29 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.enableEdit(event);
         }
 
+      $scope.addAccidentVehicle = function(modalName){
+            var event = {};
+            angular.forEach(iroad2.data.programs, function (program) {
+                if (program.name == modalName) {
+                    angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+                        if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+                            event[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+                        }else{
+                            event[dataElement.dataElement.name] = "";
+                        }
+                    });
+                }
+            });$scope.editing = "false";
+            $scope.enableEdit(event);
+        }
+
         $scope.enableEdit  = function(event){
             $scope.normalStyle= { "z-index": '10'};
-            $scope.normalClass= "mws-panel grid_6";$scope.normalClassDriver= "mws-panel grid_6";$scope.normalStyleDriver= { "padding": '0px'};
-            $scope.editing = "true";
+            $scope.normalClass= "mws-panel grid_6";
+            $scope.normalClassDriver= "mws-panel grid_6";
+            $scope.normalStyleDriver= { "padding": '0px'};
+            $scope.normalClassVehicle= "mws-panel grid_6";
+            $scope.normalStyleVehicle= { "padding": '0px'};
             //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == accidentEventModal.getModalName()) {
@@ -79,6 +101,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.savableEventData = [];
             $scope.editingEvent = event;
             console.log('Editing' + JSON.stringify(event));
+            $scope.editing = "true";
             for (var key in event) {
                 if (typeof event[key] == "object") {
                     var program = accidentEventModal.getProgramByName(key);
@@ -96,21 +119,22 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             }
         }
 
+
         //Show Driver involved in an accident
         $scope.showDriver  = function(driver) {
-            $scope.showingDriver = "true";
+            $scope.showingDriver = "true"; $scope.showingVehicle = "false";
             $scope.data.accident = driver;
             //alert("Driver:" + JSON.stringify($scope.data.accident));
         }
 
         //Show Vehicle involved in an accident
         $scope.showVehicle  = function(vehicle) {
-            $scope.showingVehicle = "true";
+            $scope.showingVehicle = "true"; $scope.showingDriver = "false";
             $scope.data.accident = vehicle;
-            //alert("Vehicle:" + JSON.stringify($scope.data.accident));
+            //alert("Vehicle:" + JSON.stringify($scope.data.accident.Vehicle));
         }
 
-        $scope.save = function(){
+        $scope.saveAccident = function(){
             angular.forEach($scope.savableEventData, function (savableData) {
                 delete $scope.editingEvent[savableData.name];
                 $scope.editingEvent[savableData.key] = savableData.value;
@@ -121,16 +145,67 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             var saveEvent = $scope.editingEvent;
 
             accidentEventModal.save(saveEvent,otherData,function(result){
-                console.log("Save Made:" + JSON.stringify(result));
+                console.log("Save Made:" + JSON.stringify(result.importSummaries.reference));
+                //$scope.addAccidentVehicle('Accident Vehicle');
             },function(error){
 
             },accidentEventModal.getModalName());
             $scope.cancelEdit();
         }
+
         $scope.cancelEdit = function(){
             $scope.normalClass= "mws-panel grid_8";
             $scope.editing = "false";
         }
+
+        $scope.cancelDriver = function(){
+            $scope.normalClass= "mws-panel grid_8";
+            $scope.showingDriver = "false";
+        }
+
+        $scope.cancelVehicle = function(){
+            $scope.normalClass= "mws-panel grid_8";
+            $scope.showingVehicle = "false";
+        }
+
+        $scope.deleteAccident = function(accident){
+
+            $http.delete('/demo/api/events' , accident).
+                success(function(data) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    console.log("data");
+                    $scope.accidentCurrentSaving = false;
+                    $scope.accidentSavedSuccess = true;
+                    $scope.accidentSavedFalue = false;
+                }).
+                error(function(error) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    console.log(error);
+                    $scope.accidentCurrentSaving = false;
+                    $scope.accidentSavedSuccess = false;
+                    $scope.accidentSavedFailure = true;
+                });
+
+        }
+
+        $scope.ViewAccident = function(dhis2Event){
+            console.log(JSON.stringify(dhis2Event));
+            var modalInstance = $modal.open({
+                templateUrl: 'views/accident_dialog.html',
+                controller: 'AccidentController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
         $scope.watchEditing = function(program,dataElement){
             $scope.$watch("editingEvent['"+dataElement.name+"']", function (newValue, oldValue) {
                 //alert("Program:" + JSON.stringify(program));
@@ -160,6 +235,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
         };
     });
+
 if (typeof String.prototype.startsWith != 'function') {
     /**
      * Checks if a string starts with a given string
@@ -173,6 +249,7 @@ if (typeof String.prototype.startsWith != 'function') {
         return this.indexOf(str) === 0;
     };
 }
+
 if (typeof String.prototype.endsWith != 'function') {
     /**
      * Checks if a string ends with a given string
@@ -185,4 +262,15 @@ if (typeof String.prototype.endsWith != 'function') {
     String.prototype.endsWith = function (str){
         return this.slice(-str.length) == str;
     };
+
 }
+
+eventCaptureControllers.controller('AccidentController',
+    function($scope,$modalInstance,dhis2Event){
+
+        $scope.dhis2Event = dhis2Event;
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
