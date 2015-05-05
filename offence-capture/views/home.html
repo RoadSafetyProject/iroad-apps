@@ -141,7 +141,7 @@
                     <thead>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="(key, value) in data.driver">
+                        <tr ng-if="(key != 'id')" ng-repeat="(key, value) in data.driver">
 			            	<td>
 			            		<label>{{key}}</label>
 			            	</td>
