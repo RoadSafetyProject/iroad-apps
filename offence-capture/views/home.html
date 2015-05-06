@@ -3,10 +3,11 @@
         text-underline: none;
     }
 </style>
-<div style="margin-top: 50px !important;" ng-class="normalClass" ng-style="normalStyle" >
+<div ng-class="normalClass" ng-style="normalStyle" style="margin-bottom:40px;">
+<div style="margin-top: 50px !important;">
 
         <div class="panel-heading">
-            <h3>Offence Capture
+            <h3>Offence Capture</h3>
         </div>
 
         <div class="mws-panel-header"  style="height: 48px !important;">
@@ -31,7 +32,7 @@
                     <td>{{event.Driver["Driver License Number"]}}</td>
                     <td>{{event.Driver.Person["First Name"]}} {{event.Driver.Person["Last Name"]}}</td>
                     <td>{{event["Offence Place"]}}</td>
-                    <td>{{event["Offence Date"]}}</td>
+                    <td>{{event["Offence Date"] | date:'dd MMM yyyy'}}</td>
                     <!-- <td ng-repeat="datas in events.dataValues | filter:{name:'Make'}">{{ datas.value }}</td>
                     <td ng-repeat="datas in events.dataValues | filter:{name:'Model'}">{{ datas.value }}</td>
                     <td ng-repeat="datas in events.dataValues | filter:{name:'Body Type'}">{{ datas.value }}</td>
@@ -64,31 +65,8 @@
 
     </div>
 
-		<div class="mws-panel grid_2" style="z-index: 30;background-color: white;margin-top:70px" ng-if="editing" >
-			<div class="mws-panel-header"  style="height: 48px !important;">
-                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
-            </div>
-     
-            <table  class="mws-datatable-fn mws-table">
-            <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
-            	<td ng-if="(key != 'id')">
-            		<label>{{key}}</label><br />
-                    <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control" />
-                    <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
-                    <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" >
-                    	<option value="true">Yes</option><option value="false">No</option>
-                    </select>
-                    <select  ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
-                    <input ng-if="isDate(key)" ui-date="dateOptions" class="form-control" ng-model="editingEvent[key]"/>
-                    <multi-select  ng-if="multiselectBools[key]" class="form-control" input-model="inputModal[key]" output-model="editingEvent[key]"item-label="name" button-label="button" tick-property="selected" />
-                </td>
-            </tr>
-             <tr>
-                 <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Done</button> </td>
-             </tr>
-            </table>
-        </div>
-        <div class="mws-panel grid_8"  ng-if="panel.offences">
+		
+        <div ng-if="panel.offences">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> List of offences</span>
             </div>
@@ -132,7 +110,7 @@
                 </table>
             </div>
         </div>
-        <div class="mws-panel grid_8" ng-if="panel.driver">
+        <div ng-if="panel.driver">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence</span>
             </div>
@@ -155,7 +133,7 @@
             </div>
 
         </div>
-        <div class="mws-panel grid_8" ng-if="panel.vehicle">
+        <div ng-if="panel.vehicle">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Vehicle Involved in Offence </span>
             </div>
@@ -177,4 +155,29 @@
                 </table>
             </div>
 
+        </div>
+</div>
+        <div class="mws-panel grid_2" style="background-color: white;margin-top:70px" ng-if="editing" >
+			<div class="mws-panel-header"  style="height: 48px !important;">
+                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
+            </div>
+     
+            <table  class="mws-datatable-fn mws-table">
+            <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
+            	<td ng-if="(key != 'id')">
+            		<label>{{key}}</label><br />
+                    <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control" />
+                    <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
+                    <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" >
+                    	<option value="true">Yes</option><option value="false">No</option>
+                    </select>
+                    <select  ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                    <input ng-if="isDate(key)" ui-date="dateOptions" class="form-control" ng-model="editingEvent[key]"/>
+                    <multi-select  ng-if="multiselectBools[key]" class="form-control" input-model="inputModal[key]" output-model="editingEvent[key]"item-label="name" button-label="button" tick-property="selected" />
+                </td>
+            </tr>
+             <tr>
+                 <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Done</button> </td>
+             </tr>
+            </table>
         </div>
