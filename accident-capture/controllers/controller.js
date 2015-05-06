@@ -86,6 +86,7 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.enableEdit  = function(event){
+            $scope.editing = "true";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "mws-panel grid_6";
             $scope.normalClassDriver= "mws-panel grid_6";
@@ -101,7 +102,6 @@ eventCaptureControllers.controller('MainController',
             $scope.savableEventData = [];
             $scope.editingEvent = event;
             console.log('Editing' + JSON.stringify(event));
-            $scope.editing = "true";
             for (var key in event) {
                 if (typeof event[key] == "object") {
                     var program = accidentEventModal.getProgramByName(key);
@@ -145,8 +145,8 @@ eventCaptureControllers.controller('MainController',
             var saveEvent = $scope.editingEvent;
 
             accidentEventModal.save(saveEvent,otherData,function(result){
-                console.log("Save Made:" + JSON.stringify(result.importSummaries.reference));
-                //$scope.addAccidentVehicle('Accident Vehicle');
+                console.log("Save Made:" + JSON.stringify(result.importSummaries['reference']));
+                $scope.addAccidentVehicle('Accident Vehicle');
             },function(error){
 
             },accidentEventModal.getModalName());
@@ -189,6 +189,23 @@ eventCaptureControllers.controller('MainController',
                 });
 
         }
+
+
+        $scope.addAccident = function(dhis2Event){
+            console.log(JSON.stringify(dhis2Event));
+            var modalInstance = $modal.open({
+                templateUrl: 'views/add_accident_dialog.html',
+                controller: 'AccidentFormController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
 
         $scope.ViewAccident = function(dhis2Event){
             console.log(JSON.stringify(dhis2Event));
@@ -266,6 +283,15 @@ if (typeof String.prototype.endsWith != 'function') {
 }
 
 eventCaptureControllers.controller('AccidentController',
+    function($scope,$modalInstance,dhis2Event){
+
+        $scope.dhis2Event = dhis2Event;
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
+
+eventCaptureControllers.controller('AccidentFormController',
     function($scope,$modalInstance,dhis2Event){
 
         $scope.dhis2Event = dhis2Event;
