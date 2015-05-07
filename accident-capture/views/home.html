@@ -6,7 +6,7 @@
 <div ng-class="normalClass" ng-style="normalStyle" style="margin-top: 50px !important;">
 
     <div class="panel-heading">
-        <h3>Accident Capture <button ng-click="addNewAccident('Accident')" class="pull-right" style="font-size: 11px"> Add New </button></h3>
+        <h3>Accident Capture <button ng-click="addAccident(accident)" class="pull-right" style="font-size: 11px"> Add New </button></h3>
     </div>
 
     <div class="mws-panel-header"  style="height: 48px !important;">
@@ -28,9 +28,9 @@
             <tbody>
             <tr ng-repeat="accident in data.accidents">
                 <td>{{$index+1}}</td>
-                <td>{{ accident['Accident Registration Number'] }}</td>
-                <td>{{ accident['Area of Accident'] }}</td>
-                <td>{{ accident['Cause of Accident'] }}</td>
+                <td>{{ accident.Accident['Accident Registration Number'] }}</td>
+                <td>{{ accident.Accident['Area of Accident'] }}</td>
+                <td>{{ accident.Accident['Cause of Accident'] }}</td>
                 <td>
                     <div class="btn-group dropdown">
                         <button type="button" class="btn btn-default">Action</button>
@@ -40,11 +40,10 @@
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a ng-click="ViewAccident(accident)">Info</a></li>
-                            <li><a  ng-click="enableEdit(accident)">Edit</a> </li>
-                            <li><a >Delete</a> </li>
-                            <li><a ng-click="addNewAccident('Accident')">Add Accident</a> </li>
+                            <li><a  ng-click="enableEdit(accident.Accident)">Edit</a> </li>
                             <li><a ng-click="showVehicle(accident)">View Vehicle(s) Involved</a> </li>
                             <li><a ng-click="showDriver(accident)">View Driver(s) Involved</a> </li>
+                            <li><a >Delete</a> </li>
                         </ul>
                     </div>
                 </td>
@@ -63,18 +62,27 @@
         </span>
     </div>
     <div class="mws-panel-body no-padding">
+
     <table class="mws-datatable-fn mws-table">
         <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
             <td >
                 <label>{{key}}</label><br>
-                <input  ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet"  ng-model="editingEvent[key]" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                <select  ng-focus="focusMe(datas.name)"  style="width: 100%;background: #ffffff" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ><option value=""></option></select>
+
+                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control input-sm"/>
+                <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control input-sm" />
+                <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control input-sm">
+                    <option value="true">Yes</option><option value="false">No</option>
+                </select>
+                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEvent[key]"/>
+
             </td>
         </tr>
         <tr>
-            <td><button class="btn btn-sm btn-primary" ng-click="saveAccident(editingEvent)">Save and Proceed</button> </td>
+            <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Save and Proceed</button> </td>
         </tr>
     </table>
+
  </div>
 </div>
 
@@ -83,7 +91,7 @@
 
         <div class="mws-panel-header"  style="height: 48px !important;">
             <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved
-            <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
+            <a title="Cancel" ng-click="cancelDriver()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
         </div>
 
         <div class="mws-panel-body no-padding">
@@ -142,7 +150,7 @@
 
         <div class="mws-panel-header"  style="height: 48px !important;">
             <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Vehicle(s) Involved
-            <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
+            <a title="Cancel" ng-click="cancelVehicle()" class="pull-right"> <i class="fa fa-times"></i>  </a>
             </span>
         </div>
 
