@@ -265,19 +265,18 @@
 			</table>
 			
 			</div>
-			<md-button ng-click="showOffences($event)" class="md-raised md-primary" ng-click="" ng-disabled="isreadonly">Add Offence</md-button>
 			<div style="display:inline-block;width: 100%;">
 				<md-input-container class="col-sm-4"> 
 					<label>Date of offence</label>
-					<input name="date" ng-model="offence['Offence Date']" ui-date="dateOptions" required  ng-readonly="isreadonly"> 
+					{{offence['Offence Date']}} 
 				</md-input-container>
 				<md-input-container class="col-sm-4"> 
 					<label>Location of Offence</label>
-					<input name="place" ng-model="offence['Offence Place']"  required  ng-readonly="isreadonly"> 
+					{{offence['Offence Place']}} 
 				</md-input-container><br />
 				<md-input-container  class="col-sm-12"> 
 					<label>Brief facts about the offence</label>
-					<textarea ng-model="offence['Offence Facts']" ng-readonly="isreadonly"> </textarea>
+					{{offence['Offence Facts']}}
 				</md-input-container>
 			</div>
 		<div class="demo-tab tab" layout="column" layout-fill>
