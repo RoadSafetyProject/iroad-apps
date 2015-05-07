@@ -2,6 +2,9 @@
     a:hover{
         text-underline: none;
     }
+    .rightPanel{
+    	white;margin-top:125px;
+    }
 </style>
 <div ng-class="normalClass" ng-style="normalStyle" style="margin-bottom:40px;">
 <div style="margin-top: 50px !important;">
@@ -27,7 +30,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="event in data.offences" ng-click="">
+                <tr ng-repeat="event in data.offences | ">
                     <td>{{ $index+1 }}</td>
                     <td>{{event.Driver["Driver License Number"]}}</td>
                     <td>{{event.Driver.Person["First Name"]}} {{event.Driver.Person["Last Name"]}}</td>
@@ -112,7 +115,9 @@
                 </table>
             </div>
         </div>
-        <div ng-if="panel.driver">
+        
+</div>
+	<div ng-if="panel.driver" class="mws-panel grid_2 rightPanel">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence</span>
             </div>
@@ -135,7 +140,7 @@
             </div>
 
         </div>
-        <div ng-if="panel.vehicle">
+        <div ng-if="panel.vehicle" class="mws-panel grid_2 rightPanel">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Vehicle Involved in Offence </span>
             </div>
@@ -158,22 +163,22 @@
             </div>
 
         </div>
-        <div ng-if="panel.payment">
+        <div class="mws-panel grid_2 rightPanel" ng-if="panel.payment">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Offence Payment </span>
             </div>
 
             <div class="mws-panel-body no-padding">
-                <table datatable="ng" class="mws-datatable-fn mws-table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    	<tr>
+                <table class="mws-datatable-fn mws-table">
+                    <tr ng-if="(!data.payment['Offence Paid'] && !makePayment) || (data.payment['Offence Paid'] == undefined)">
 			            	<td>
 			            		<label>Is am</label>
 			            	</td>
 			                <td >
-			                	<label>{{data.payment['Offence Reciept Number']}}</label>
+			                	<label>Payment is not yet made</label>
+			                </td>
+			                <td >
+			                	<button  class="btn btn-primary" ng-click="startPayment()">Pay</button>
 			                </td>
 			            	</tr>
                         <tr ng-if="data.payment['Offence Paid']">
@@ -184,21 +189,43 @@
 			                	<label>{{data.payment['Offence Reciept Number']}}</label>
 			                </td>
 			            	</tr>
-			            <tr>
+			            <tr ng-if="data.payment['Offence Paid']">
 			            	<td>
 			            		<label>Amount Paid</label>
 			            	</td>
 			                <td >
 			                	<label>{{data.payment['Offence Reciept Amount']}}</label>
 			                </td>
-			            	</tr>
-                        </tbody>
+			            </tr>
+			            <tr ng-if="makePayment">
+			            	<td>
+			            		<label>Reciept Number</label>
+			            	</td>
+			                <td >
+			                	<input ng-model="data.payment['Offence Reciept Number']" class="form-control" />
+			                </td>
+			            </tr>
+			            <tr ng-if="makePayment">
+			            	<td>
+			            		<label>Amount Paid</label>
+			            	</td>
+			                <td >
+			                	<input ng-model="data.payment['Offence Reciept Amount']" class="form-control" />
+			                </td>
+			            </tr>
+			            <tr ng-if="makePayment">
+			            	<td>
+			            		
+			            	</td>
+			                <td >
+			                	<button class="btn btn-danger" ng-click="cancelPayment()">Cancel</button><button  ng-click="savePayment()" style="margin-left:20px" class="btn btn-primary">Save</button>
+			                </td>
+			            </tr>
                 </table>
             </div>
 
-        </div>
-</div>
-        <div class="mws-panel grid_2" style="background-color: white;margin-top:70px" ng-if="editing" >
+        </div>	
+        <div class="mws-panel grid_2 rightPanel" ng-if="panel.edit">
 			<div class="mws-panel-header"  style="height: 48px !important;">
                 <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
             </div>
