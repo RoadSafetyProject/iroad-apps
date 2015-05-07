@@ -14,8 +14,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
     	$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
         //selected org unit
         $scope.today = DateUtils.getToday();
-        $scope.panel = {vehicle:false,driver : false,offences:false};
+        $scope.panel = {vehicle:false,driver : false,offences:false,edit:false,payment:false};
         $scope.show = function(panel){
+        	$scope.normalStyle= { "z-index": '10'};
+            $scope.normalClass= "mws-panel grid_6";
         	for(var key in $scope.panel){
         		$scope.panel[key] = false;
         	}
@@ -56,9 +58,34 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			});
 			$scope.enableEdit(event);
 		}
+		$scope.makePayment = false;
+		$scope.startPayment = function(){
+			$scope.makePayment = true;
+		}
+		$scope.cancelPayment  = function(){
+			$scope.makePayment = false;
+			$scope.data.payment['Offence Reciept Amount'] = "";
+			$scope.data.payment['Offence Reciept Reciept'] = "";
+		}
+		$scope.savePayment = function(){
+			if($scope.data.payment['Offence Reciept Amount'] != "" && $scope.data.payment['Offence Reciept Reciept'] != ""){
+				$scope.data.payment['Offence Paid'] = true;
+				var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
+				$scope.offenceEventModal.save($scope.data.payment,otherData,function(result){
+	        		console.log("Result:" + JSON.stringify(result));
+	        		$scope.makePayment = false;
+	        		$scope.$apply();
+				});
+			}
+		}
 		$scope.showRegistries = function(registries){
 			$scope.show("offences");
 			$scope.data.offenceRegistries = registries;
+		}
+		$scope.showPayment = function(offence){
+			$scope.show("payment");
+			console.log(JSON.stringify(offence));
+			$scope.data.payment = offence;
 		}
 		$scope.isInteger = function(key){
 			return $scope.is(key,"int");
@@ -77,13 +104,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 				var relationship = relationships[z];
 				if(relationship.pivot){
 					if(relationship.pivot == key){
-						/*$scope.inputModal = [
-		        		                          { icon: "<img src=[..]/opera.png.. />",               name: "Opera",              maker: "(Opera Software)",        ticked: true  },
-		        		                          { icon: "<img src=[..]/internet_explorer.png.. />",   name: "Internet Explorer",  maker: "(Microsoft)",             ticked: false },
-		        		                          { icon: "<img src=[..]/firefox-icon.png.. />",        name: "Firefox",            maker: "(Mozilla Foundation)",    ticked: true  },
-		        		                          { icon: "<img src=[..]/safari_browser.png.. />",      name: "Safari",             maker: "(Apple)",                 ticked: false },
-		        		                          { icon: "<img src=[..]/chrome.png.. />",              name: "Chrome",             maker: "(Google)",                ticked: true  }
-		        		                      ];*/
 						var relationshipProgram = new iroad2.data.Modal(relationship.name,[]);
 						relationshipProgram.getAll(function(results){
 			        		//console.log("Relation Result:" + JSON.stringify(results));
@@ -155,6 +175,20 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			};
 			return object;
 		}
+		$scope.showOffence = function(aOffence){
+			var modalInstance = $modal.open({
+                templateUrl: 'views/offenceForm.html',
+                controller: 'offenceFormController',
+                resolve: {
+                    aOffence : function () {
+                        return aOffence;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+		}
 		$scope.showDriver = function(driver){
 			$scope.show("driver");
 			$scope.data.driver = driver;
@@ -168,9 +202,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			$scope.data.vehicle = vehicle;
 		}
 		$scope.enableEdit  = function(event){
-            $scope.normalStyle= { "z-index": '10'};
-            $scope.normalClass= "mws-panel grid_6";
-            $scope.editing = "true";
+            $scope.show("edit");
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == $scope.offenceEventModal.getModalName()) {
                     $scope.editingProgram = program;
