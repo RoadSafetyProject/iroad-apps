@@ -155,6 +155,23 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			};
 			return object;
 		}
+		$scope.showOffence = function(offence){
+			var modalInstance = $modal.open({
+                templateUrl: 'views/offenceForm.html',
+                controller: 'DeleteController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return events;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+		}
 		$scope.showDriver = function(driver){
 			$scope.show("driver");
 			$scope.data.driver = driver;

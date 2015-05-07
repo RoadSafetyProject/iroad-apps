@@ -48,10 +48,12 @@
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
+                            	
                             	<li><a ng-click="showOffence(event)">View Details </a> </li>
                                 <li><a  ng-click="enableEdit(event)">Edit</a> </li>
                          
                                 <li><a ng-click="showRegistries(event.Offence)">View Offences </a> </li>
+                                <li><a ng-click="showPayment(event)">View Payment </a> </li>
                                 <li><a ng-click="showDriver(event.Driver)">View Driver</a> </li>
                                 <li><a ng-click="showVehicle(event.Vehicle)">View Vehicle</a> </li>
                                 <li><a >Delete</a> </li>
@@ -149,6 +151,45 @@
 			            	</td>
 			                <td >
 			                	<label>{{value}}</label>
+			                </td>
+			            	</tr>
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div ng-if="panel.payment">
+            <div class="mws-panel-header"  style="height: 48px !important;">
+                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Offence Payment </span>
+            </div>
+
+            <div class="mws-panel-body no-padding">
+                <table datatable="ng" class="mws-datatable-fn mws-table">
+                    <thead>
+                    </thead>
+                    <tbody>
+                    	<tr>
+			            	<td>
+			            		<label>Is am</label>
+			            	</td>
+			                <td >
+			                	<label>{{data.payment['Offence Reciept Number']}}</label>
+			                </td>
+			            	</tr>
+                        <tr ng-if="data.payment['Offence Paid']">
+			            	<td>
+			            		<label>Offence Reciept Number</label>
+			            	</td>
+			                <td >
+			                	<label>{{data.payment['Offence Reciept Number']}}</label>
+			                </td>
+			            	</tr>
+			            <tr>
+			            	<td>
+			            		<label>Amount Paid</label>
+			            	</td>
+			                <td >
+			                	<label>{{data.payment['Offence Reciept Amount']}}</label>
 			                </td>
 			            	</tr>
                         </tbody>
