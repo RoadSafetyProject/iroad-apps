@@ -61,6 +61,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.makePayment = false;
 		$scope.startPayment = function(){
 			$scope.makePayment = true;
+			console.log(JSON.stringify($scope.data.payment));
 		}
 		$scope.cancelPayment  = function(){
 			$scope.makePayment = false;
@@ -243,7 +244,39 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                     });
             	}
             }
+            /*var out = {};
+            var program = $scope.offenceEventModal.getProgramByName($scope.offenceEventModal.getModalName());
+            console.log("Program:" + JSON.stringify(program));
+    		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+    			
+    			if(event[dataElement.dataElement.name]){
+    				
+    				if(Array.isArray(event[dataElement.dataElement.name])){
+                		$scope.multiselectBools[key] = $scope.isManyRelation(key);
+                		out[dataElement.name] = event[dataElement.dataElement.name]
+                	}else if(typeof event[dataElement.dataElement.name] == "object") {
+                		var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name);
+                		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
+                            if (dataElement2.dataElement.code) {
+                            	if(dataElement2.dataElement.code.startsWith("id_")){
+                            		
+                    				out[dataElement2.dataElement.name] = event[dataElement.dataElement.name][dataElement2.dataElement.name];
+                    				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
+                    				$scope.watchEditing(program2,dataElement2.dataElement);
+                    				//delete $scope.editingEvent[key];
+                    			}
+                            }
+                        });
+                	}else{
+                		console.log("DataElement:" + JSON.stringify(event[dataElement.dataElement.name]));
+                		out[dataElement.name] = event[dataElement.dataElement.name];
+                	}
+    			}
+            });
+    		console.log("Output:" + JSON.stringify(out));
+    		$scope.editingEvent = out;*/
         }
+		
 		$scope.save = function(){
 			angular.forEach($scope.savableEventData, function (savableData) {
             	delete $scope.editingEvent[savableData.name];

@@ -176,7 +176,7 @@
 
             <div class="mws-panel-body no-padding">
                 <table class="mws-datatable-fn mws-table">
-                    <tr ng-if="(!data.payment['Offence Paid'] && !makePayment) || (data.payment['Offence Paid'] == undefined)">
+                    <tr ng-if="(data.payment['Offence Paid'] == 'false')">
 			            	<td>
 			            		<label>Is am</label>
 			            	</td>
