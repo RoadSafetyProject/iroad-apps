@@ -187,7 +187,7 @@ angular.module("accidentApp")
                 console.log("data");
                 $scope.accidentCurrentSaving = false;
                 $scope.accidentSavedSuccess = true;
-                $scope.accidentSavedFalue = false;
+                $scope.accidentSavedFalure = false;
             }).
             error(function(error) {
                 // called asynchronously if an error occurs

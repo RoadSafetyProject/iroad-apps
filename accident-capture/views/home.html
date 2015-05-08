@@ -79,7 +79,12 @@
             </td>
         </tr>
         <tr>
-            <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Save and Proceed</button> </td>
+            <td>
+                <span class="pull-left" ng-if="CurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Updating... </span>
+                <span class="pull-left text-success" ng-if="UpdatedSuccess"><i class='fa fa-check fa-2x'></i> Update Successful </span>
+                <span class="pull-left text-danger" ng-if="UpdateFailure"><i class='fa fa-times fa-2x'></i> Update Failed </span>
+                <button class="btn btn-sm btn-primary pull-right" ng-click="save(editingEvent)">Save and Proceed</button>
+            </td>
         </tr>
     </table>
 

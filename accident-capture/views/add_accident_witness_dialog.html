@@ -28,7 +28,12 @@
             </td>
         </tr>
         <tr>
-            <td><button class="btn btn-sm btn-primary" ng-click="saveAccidentWitness(editingEventVehicle)">Save and Proceed</button> </td>
+            <td>
+                <span class="pull-left" ng-if="WitnessCurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                <span class="pull-left text-success" ng-if="WitnessSavingSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                <span class="pull-left text-danger" ng-if="WitnessSavingFailure"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                <button class="btn btn-sm btn-primary pull-right" ng-click="saveAccidentWitness(editingEventVehicle)">Save and Proceed</button>
+            </td>
         </tr>
     </table>
 
