@@ -292,7 +292,7 @@
 <div class="mws-panel grid_8">
 
 <div class="mws-panel-header"  style="height: 48px !important;">
-        <span  style="color: #fff0ff !important;"><i class="icon-table"></i>ACCIDENT NUMBER:{{dhis2Event.Vehicle['Accident Registration Number']}}</span>
+        <span  style="color: #fff0ff !important;"><i class="icon-table"></i>ACCIDENT NUMBER:{{$dhis2Event.Accident['Accident Registration Number']}}</span>
 </div>
 
     <div class="mws-panel-body no-padding">
@@ -307,11 +307,11 @@
             <tr>
                 <td class="my_heading" style="border-width:0px">A : SCENE OF ACCIDENT & SEVERITY</td>
                 <td style="width:11%;background-color: #ffffff">Acc Register</td>
-                <td style="width:22%"> <input class="ingizo"  type="text" ng-model="dhis2Event['Accident Registration Number']" name="accident_no" required/> </td>
+                <td style="width:22%"> <input class="ingizo"  type="text" ng-model="dhis2Event.Accident['Accident Registration Number']" name="accident_no" required/> </td>
                 <td style="width:8.5%">OCS Check</td>
-                <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="dhis2Event['OCS Check']" name="ocs_check" required /> </td>
+                <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="dhis2Event.Accident['OCS Check']" name="ocs_check" required /> </td>
                 <td  style="width:8.5%">S.visor Check</td>
-                <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="dhis2Event['Supervisor Check']" name="supervisor_check" required /> </td>
+                <td style="width:8.5%"> <input class="ingizo"  type="text" ng-model="dhis2Event.Accident['Supervisor Check']" name="supervisor_check" required /> </td>
             </tr>
 
             </tbody>
@@ -346,13 +346,13 @@
                 <td class="my_td"  style="width: 10%">District </td>
                 <td style="width: 10%"><input class="ingizo" ng-model="station_district" type="text" /></td>
                 <td class="my_td"  style="width: 10%">Police Officer </td>
-                <td style="width: 11%"><input class="ingizo" ng-model="dhis2Event.Police['Rank Number']" type="text" /></td>
-                <td style="width: 11%"><input class="ingizo" value="{{dhis2Event.Police.Person['First Name'] + ' ' + accident.Police.Person['Middle Name'] + ' ' + accident.Police.Person['Last Name']}}" type="text"/></td>
-                <td style="width: 11%"><input class="ingizo"  ng-model="dhis2Event['Time of Accident']" type="text"/></td>
+                <td style="width: 11%"><input class="ingizo" ng-model="dhis2Event.Accident.Police['Rank Number']" type="text" /></td>
+                <td style="width: 11%"><input class="ingizo" value="{{dhis2Event.Accident.Police.Person['First Name'] + ' ' + dhis2Event.Accident.Police.Person['Middle Name'] + ' ' + dhis2Event.Accident.Police.Person['Last Name']}}" type="text"/></td>
+                <td style="width: 11%"><input class="ingizo"  ng-model="dhis2Event.Accident['Time of Accident']" type="text"/></td>
                 <td style="width: 8.5%">Fatal(n)</td>
-                <td  style="width:8.5%"><input class="ingizo" ng-model="dhis2Event['Number of Fatal Injuries']" type="text"/></td>
+                <td  style="width:8.5%"><input class="ingizo" ng-model="dhis2Event.Accident['Number of Fatal Injuries']" type="text"/></td>
                 <td  style="width: 8.5%">Simple(n)</td>
-                <td style="width: 8.5%"><input class="ingizo" ng-model="dhis2Event['Number of Simple Injuries']" type="text/"></td>
+                <td style="width: 8.5%"><input class="ingizo" ng-model="dhis2Event.Accident['Number of Simple Injuries']" type="text/"></td>
 
             </tr>
 
@@ -361,11 +361,11 @@
                 <td class="my_td" >Region</td>
                 <td><input class="ingizo" ng-model="station_region" type="text" name="region" required ></td>
                 <td class="my_td" >Accident Cause</td>
-                <td><input class="ingizo"  type="text" ng-model="dhis2Event['Cause of Accident']" name="officer_2" required/></td>
+                <td><input class="ingizo"  type="text" ng-model="dhis2Event.Accident['Cause of Accident']" name="officer_2" required/></td>
                 <td class="my_td" >Weather Conditions</td>
-                <td><input class="ingizo"  type="text" ng-model="accident.Weather"/></td>
+                <td><input class="ingizo"  type="text" ng-model="dhis2Event.Accident['Weather']"/></td>
                 <td class="my_td" >Severe Injury(n)</td>
-                <td><input class="ingizo" ng-model="dhis2Event['Number of Severe Injuries']" type="text"/></td>
+                <td><input class="ingizo" ng-model="dhis2Event.Accident['Number of Severe Injuries']" type="text"/></td>
                 <td class="my_td" >Only Damage</td>
                 <td><input class="ingizo" ng-model="accident_only_damage" type="text"/></td>
             </tr>
@@ -415,14 +415,14 @@
             <tr>
                 <td class="number" style="border-width:0px">2</td>
                 <td class="my_td"  style="width: 10%">Day</td>
-                <td style="width:5%"> <input class="ingizo" ng-model="dhis2Event['Time of Accident']" type="text" /> </td>
+                <td style="width:5%"> <input class="ingizo" ng-model="dhis2Event.Accident['Time of Accident']" type="text" /> </td>
                 <td style="width: 10%">Hour(24)</td>
                 <td style="width:5%"> <input class="ingizo"  type="text" /> </td>
                 <td class="my_td"  style="width: 11%">Area Name</td>
-                <td style="width:11%"> <input class="ingizo"  ng-model="dhis2Event['Area of Accident']" type="text" /> </td>
+                <td style="width:11%"> <input class="ingizo"  ng-model="dhis2Event.Accident['Area of Accident']" type="text" /> </td>
                 <td style="width: 11%">Name </td>
-                <td style="width:8.5%"> <input class="ingizo" ng-model="dhis2Event['Road Name']" type="text" /> </td>
-                <td style="width:12.75%"> <input class="ingizo"  ng-model="dhis2Event['Intersection Name']" type="text" /> </td>
+                <td style="width:8.5%"> <input class="ingizo" ng-model="dhis2Event.Accident['Road Name']" type="text" /> </td>
+                <td style="width:12.75%"> <input class="ingizo"  ng-model="dhis2Event.Accident['Intersection Name']" type="text" /> </td>
             </tr>
 
             <tr>
@@ -434,8 +434,8 @@
                 <td class="my_td" >City/Region</td>
                 <td> <input class="ingizo"  ng-model="area_region" type="text" /> </td>
                 <td>No </td>
-                <td> <input class="ingizo" ng-model="dhis2Event['Road Number']" type="text" /> </td>
-                <td> <input class="ingizo" ng-model="dhis2Event['Intersection Number']" type="text" /> </td>
+                <td> <input class="ingizo" ng-model="dhis2Event.Accident['Road Number']" type="text" /> </td>
+                <td> <input class="ingizo" ng-model="dhis2Event.Accident['Intersection Number']" type="text" /> </td>
             </tr>
 
 
@@ -448,8 +448,8 @@
                 <td class="my_td" >District</td>
                 <td> <input class="ingizo" ng-model="area_district" type="text" /> </td>
                 <td>Kilometer(Mark) </td>
-                <td> <input class="ingizo" ng-model="dhis2Event['Road Mark']" type="text" /> </td>
-                <td> <input class="ingizo" ng-model="dhis2Event['Intersection Mark']" type="text" /> </td>
+                <td> <input class="ingizo" ng-model="dhis2Event.Accident['Road Mark']" type="text" /> </td>
+                <td> <input class="ingizo" ng-model="dhis2Event.Accident['Intersection Mark']" type="text" /> </td>
             </tr>
 
             </tbody>

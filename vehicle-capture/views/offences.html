@@ -1,0 +1,40 @@
+
+<style>
+    .modal-dialog{
+        margin-left: 8%;
+        margin-right: 8%;
+        width: 84%
+    }
+</style>
+<div class="modal-header page">
+    <h3>Offence Committed By {{ dhis2Event.dataValues['Vehicle Plate Number'].value }}</h3>
+</div>
+
+<div class="modal-body page">
+    <table class="table" datatable="ng">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Area</th>
+            <th>Facts</th>
+            <!--<th>Offences</th>-->
+            <th>Admission Status</th>
+            <th>Driver</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="data in events">
+            <td>{{ data.dataValues['Offence Date'].value }}</td>
+            <td>{{ data.dataValues['Offence Place'].value }}</td>
+            <td>{{ data.dataValues['Offence Facts'].value }}</td>
+            <td>{{ data.dataValues['Offence Admission Status'].value }}</td>
+            <td>{{ data.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ data.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ data.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer page">
+    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
+</div>

@@ -63,3 +63,55 @@ eventCaptureControllers.controller('VehicleController',
             $modalInstance.close();
         };
     });
+
+eventCaptureControllers.controller('VehicleInsuranceController',
+    function($scope,
+             $modalInstance,
+             dhis2Event,events){
+
+        $scope.dhis2Event = dhis2Event;
+        $scope.events = events;
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
+
+eventCaptureControllers.controller('VehicleBussinessController',
+    function($scope,
+             $modalInstance,
+             dhis2Event,events){
+
+        $scope.dhis2Event = dhis2Event;
+        $scope.events = events;
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
+
+eventCaptureControllers.controller('DriverAccidentController',
+    function($scope,
+             $modalInstance,
+             dhis2Event,events){
+
+        $scope.dhis2Event = dhis2Event;
+        $scope.events = events;
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
+
+eventCaptureControllers.controller('DriverOffenceController',
+    function($scope,
+             $modalInstance,
+             dhis2Event,events){
+
+        $scope.dhis2Event = dhis2Event;
+        $scope.events = events;
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
