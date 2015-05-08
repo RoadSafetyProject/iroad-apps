@@ -7,7 +7,7 @@
 <div ng-class="normalClass" ng-style="normalStyle" style="margin-top: 50px !important;">
 
     <div class="panel-heading">
-        <h3>Accident Capture <button ng-click="addNew('Accident')" class="pull-right" style="font-size: 11px"> Add New </button></h3>
+        <h3>Accident Capture <button ng-click="addAccident(accident)" class="pull-right" style="font-size: 11px"> Add New </button></h3>
     </div>
 
     <div class="mws-panel-header"  style="height: 48px !important;">
@@ -29,9 +29,9 @@
             <tbody>
             <tr ng-repeat="accident in data.accidents">
                 <td>{{$index+1}}</td>
-                <td>{{ accident['Accident Registration Number'] }}</td>
-                <td>{{ accident['Area of Accident'] }}</td>
-                <td>{{ accident['Cause of Accident'] }}</td>
+                <td>{{ accident.Accident['Accident Registration Number'] }}</td>
+                <td>{{ accident.Accident['Area of Accident'] }}</td>
+                <td>{{ accident.Accident['Cause of Accident'] }}</td>
                 <td>
                     <div class="btn-group dropdown">
                         <button type="button" class="btn btn-default">Action</button>
@@ -40,11 +40,11 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a  ng-click="enableEdit(accident)">Edit</a> </li>
-                            <li><a >Delete</a> </li>
-                            <li><a ng-click="addNew('Accident')">Add Accident</a> </li>
-                            <li><a ng-click="showVehicle('Accident')">View Vehicle(s) Involved</a> </li>
+                            <li><a ng-click="ViewAccident(accident)">Info</a></li>
+                            <li><a  ng-click="enableEdit(accident.Accident)">Edit</a> </li>
+                            <li><a ng-click="showVehicle(accident)">View Vehicle(s) Involved</a> </li>
                             <li><a ng-click="showDriver(accident)">View Driver(s) Involved</a> </li>
+                            <li><a >Delete</a> </li>
                         </ul>
                     </div>
                 </td>
@@ -58,23 +58,37 @@
 <div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="editing" >
 
     <div class="mws-panel-header"  style="height: 48px !important;">
-        <span  style="color: #fff0ff !important;"><i class="icon-table"></i> ADD NEW
+        <span  style="color: #fff0ff !important;"><i class="icon-table"></i>
            <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
         </span>
     </div>
     <div class="mws-panel-body no-padding">
+
     <table class="mws-datatable-fn mws-table">
         <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
             <td >
                 <label>{{key}}</label><br>
-                <input  ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet"  ng-model="editingEvent[key]" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                <select  ng-focus="focusMe(datas.name)"  style="width: 100%;background: #ffffff" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ><option value=""></option></select>
+
+                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control input-sm"/>
+                <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control input-sm" />
+                <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control input-sm">
+                    <option value="true">Yes</option><option value="false">No</option>
+                </select>
+                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEvent[key]"/>
+
             </td>
         </tr>
         <tr>
-            <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Done</button> </td>
+            <td>
+                <span class="pull-left" ng-if="CurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Updating... </span>
+                <span class="pull-left text-success" ng-if="UpdatedSuccess"><i class='fa fa-check fa-2x'></i> Update Successful </span>
+                <span class="pull-left text-danger" ng-if="UpdateFailure"><i class='fa fa-times fa-2x'></i> Update Failed </span>
+                <button class="btn btn-sm btn-primary pull-right" ng-click="save(editingEvent)">Save and Proceed</button>
+            </td>
         </tr>
     </table>
+
  </div>
 </div>
 
@@ -82,7 +96,8 @@
     <div class="mws-panel grid_8">
 
         <div class="mws-panel-header"  style="height: 48px !important;">
-            <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved </span>
+            <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved
+            <a title="Cancel" ng-click="cancelDriver()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
         </div>
 
         <div class="mws-panel-body no-padding">
@@ -123,6 +138,7 @@
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a  ng-click="enableEdit(data.accident.Driver.Person)">View Driver</a> </li>
+                                <li><a  ng-click="enableEdit(data.accident.Vehicle)">View Vehicle</a> </li>
                             </ul>
                         </div>
                     </td>
@@ -134,11 +150,14 @@
     </div>
 </div>
 
-<div class="row" ng-class="normalClassDriver" ng-style="normalStyleDriver" ng-if="showingDriver" style="padding: 10px">
+<div class="row" ng-class="normalClassVehicle" ng-style="normalStyleVehicle" ng-if="showingVehicle" style="padding: 10px">
+
     <div class="mws-panel grid_8">
 
         <div class="mws-panel-header"  style="height: 48px !important;">
-            <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved </span>
+            <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Vehicle(s) Involved
+            <a title="Cancel" ng-click="cancelVehicle()" class="pull-right"> <i class="fa fa-times"></i>  </a>
+            </span>
         </div>
 
         <div class="mws-panel-body no-padding">
@@ -146,15 +165,14 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Licence Number</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Last Name</th>
-                    <th>Date of Birth</th>
-                    <th>Gender</th>
-                    <th>Nationality</th>
-                    <th>Postal Address</th>
-                    <th> Action</th>
+                    <th>Vehicle Plate Number</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Body Type</th>
+                    <th>Chassis Number</th>
+                    <th>Year of Manufacture</th>
+                    <th>Fuel</th>
+                    <th></th>
                 </tr>
                 </thead>
 
@@ -162,14 +180,13 @@
 
                 <tr>
                     <td>{{$index + 1}}</td>
-                    <td>{{data.accident.Driver['Driver License Number'] }}</td>
-                    <td>{{data.accident.Driver.Person['First Name'] }}</td>
-                    <td>{{data.accident.Driver.Person['Middle Name']}}</td>
-                    <td>{{data.accident.Driver.Person['Last name']}}</td>
-                    <td>{{data.accident.Driver.Person['Date of Birth'] }}</td>
-                    <td>{{data.accident.Driver.Person['Gender'] }}</td>
-                    <td>{{data.accident.Driver.Person['Nationality'] }}</td>
-                    <td>{{data.accident.Driver.Person['Postal Address'] }}</td>
+                    <td>{{data.accident.Vehicle['Vehicle Plate Number']}}</td>
+                    <td>{{data.accident.Vehicle['Make']}}</td>
+                    <td>{{data.accident.Vehicle['Model']}}</td>
+                    <td>{{data.accident.Vehicle['Body Type']}}</td>
+                    <td>{{data.accident.Vehicle['Chasis Number']}}</td>
+                    <td>{{data.accident.Vehicle['Year of Make']}}</td>
+                    <td>{{data.accident.Vehicle['Fuel']}}</td>
                     <td>
                         <div class="btn-group dropdown">
                             <button type="button" class="btn btn-default">Action</button>
@@ -179,6 +196,7 @@
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a  ng-click="enableEdit(data.accident.Driver.Person)">View Driver</a> </li>
+                                <li><a  ng-click="enableEdit(data.accident.Vehicle)">View Vehicle</a> </li>
                             </ul>
                         </div>
                     </td>
@@ -188,4 +206,5 @@
         </div>
 
     </div>
+
 </div>

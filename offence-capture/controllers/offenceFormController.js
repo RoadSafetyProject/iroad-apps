@@ -1,6 +1,6 @@
-angular.module('rsmsaApp')
+angular.module('eventCaptureControllers')
 .controller('offenceFormController',
-	function($scope,$http, $mdDialog,$rootScope, $scope, $routeParams, $route) {
+	function($scope,$http,$rootScope, $scope, $routeParams, $route,aOffence) {
 	//Initialize readonly value for the offence form. View is readonly
 	$scope.isreadonly = false;
 	//Initialize Date options for ui-date
@@ -10,9 +10,7 @@ angular.module('rsmsaApp')
 	        yearRange: '1900:-0'
 	    };
 	//Initialize Offence as mirrored in the database
-	$scope.offence = {
-			"Offence Admission Status":false
-		};
+	$scope.offence = aOffence;
 	//Initialize offence events of an offence
 	$scope.offenceEvents = [];
 	//Initialize the amount payable for the offence events
@@ -88,7 +86,7 @@ angular.module('rsmsaApp')
 			$scope.isreadonly = true;
 			
 			
-			var offenceModal = new dhis2.data.Modal("Offence Event",[new dhis2.data.Relation("Offence Registry","Offence")]);
+			var offenceModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
 			offenceModal.find($routeParams.id,function(result){
 				console.log(JSON.stringify(result));
 				$scope.offence = result;
@@ -107,7 +105,7 @@ angular.module('rsmsaApp')
 			$scope.$watch("offence.Driver['Driver License Number']", function (value, oldValue) {
 				if(value != '')//If the changed value is not empty
 				{
-					var driver = new dhis2.data.Modal("Driver",[]);
+					var driver = new iroad2.data.Modal("Driver",[]);
 					driver.get({value:$scope.offence.Driver['Driver License Number']},function(result){
 						if(result.length == 1)
 						{
@@ -123,7 +121,7 @@ angular.module('rsmsaApp')
 			$scope.$watch("offence.Vehicle['Vehicle Plate Number']", function (value, oldValue) {
 				if(value != '')//If the changed value is not empty
 				{
-					var vehicle = new dhis2.data.Modal("Vehicle",[]);
+					var vehicle = new iroad2.data.Modal("Vehicle",[]);
 					vehicle.get({value:$scope.offence.Vehicle['Vehicle Plate Number']},function(result){
 						if(result.length == 1)
 						{
@@ -138,7 +136,7 @@ angular.module('rsmsaApp')
 			$scope.$watch("offence.Police['Rank Number']", function (value, oldValue) {
 				if(value != '')//If the changed value is not empty
 				{
-					var police = new dhis2.data.Modal("Police",[]);
+					var police = new iroad2.data.Modal("Police",[]);
 					police.get({value:$scope.offence.Police['Rank Number']},function(result){
 						if(result.length == 1)
 						{
@@ -152,7 +150,7 @@ angular.module('rsmsaApp')
 			});
 		}
 	}
-	dhis2.Init(dhisConfigs);
+	iroad2.Init(dhisConfigs);
 	/**
 	 * 
 	 * Sets payment
@@ -195,11 +193,11 @@ angular.module('rsmsaApp')
 			$scope.offence.Offences.push({Offence_Registry: $scope.offenceEvents[i]});
 		}
 		
-		var offenceEvent = new dhis2.data.Modal("Offence Event",[]);
+		var offenceEvent = new iroad2.data.Modal("Offence Event",[]);
 		var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.offence['Offence Date']};
 		offenceEvent.save($scope.offence,otherData,function(result){
 			console.log("Offence Save successfully:"+JSON.stringify(result));
-			var offence = new dhis2.data.Modal("Offence",[]);
+			var offence = new iroad2.data.Modal("Offence",[]);
 			var offences = [];
 			for(i = 0; i < $scope.offenceEvents.length;i++)
 			{
@@ -217,27 +215,7 @@ angular.module('rsmsaApp')
 		});
 	}
 	
-	//Show a dialog box of offence registry
-	$scope.showOffences = function(ev) {
-		/**
-		 * Push offenceEvent to the list of offenceEvents
-		 * 
-		 * @param Object(OffenceEvent) offenceEvent
-		 * 
-		 */
-		$mdDialog.push = function(offenceEvent){
-			//Push offence event
-			$scope.offenceEvents.push(angular.copy(offenceEvent));
-			//Update amount payable
-			$scope.updateAmountPayable();
-		};
-		//Show dialog box with a list of offences to choose from
-		$mdDialog.show({
-			controller : OffenceDialogController,
-			templateUrl : 'views/offencelistdialog.html',
-			targetEvent : ev,
-		});
-	};
+	
 	/**
 	 * Get a Yes or No value from a boolean value
 	 * 
@@ -295,19 +273,6 @@ angular.module('rsmsaApp')
 			elem.innerHTML = 'Show Details';
 		}
 	};
-	//Show a dialog box of offence registry
-	$scope.openPaymentForm = function(ev) {
-		$mdDialog.setPayment = function(receipt){
-			$scope.setPayment(receipt);
-			$scope.submitOffence();
-		};
-		//Show dialog box with a list of offences to choose from
-		$mdDialog.show({
-			controller : PaymentDialogController,
-			templateUrl : 'views/paymentForm.html',
-			targetEvent : ev,
-		});
-	};
 });
 /**
  * Converts 1 or 0 to true or false in an offence object
@@ -331,40 +296,4 @@ function offenceConversion(offence){
 		offence.paid = false;
 	}
 	return offence;
-}
-/**
- * Dialog box to select offences from list of offences
- */
-function OffenceDialogController($scope, $mdDialog,$http) {
-	//Initialize offenceRegistry list
-	$scope.offenceRegistry = [];
-	//Hide the dialog box
-	$scope.hide = function() {
-		$mdDialog.hide();
-	};
-	/**
-	 * Push the check offence to the offence form
-	 * 
-	 * @param Object(OffenceEvent) offenceEvent
-	 * 
-	 */
-	$scope.checkClick = function(offenceEvent) {
-		$mdDialog.push(offenceEvent);
-	}
-	var offenceRegs = new dhis2.data.Modal("Offence Registry",[]);
-	offenceRegs.getAll(function(result){
-		$scope.offenceRegistry = result;
-		$scope.$apply();
-	});
-}
-/**
- * Dialog box to make payments
- */
-function PaymentDialogController($scope, $mdDialog,$http) {
-	//Hide the dialog box
-	$scope.complete = function(receipt) {
-		//Set payment to parent scope
-		$mdDialog.setPayment(receipt);
-		$mdDialog.hide();
-	};
 }

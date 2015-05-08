@@ -60,6 +60,7 @@ iroad2.Init = function(config){
 		//Set the dhis data elements
 		iroad2.data.dataElements = results.dataElements;
 		//Fetch programs from the dhis server
+		//http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
 		http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
 			//Set the dhis programs
 			iroad2.data.programs = results2.programs;
@@ -151,6 +152,14 @@ iroad2.data.Modal = function (modalName,relations) {
 	 */
 	this.getModalName = function(){
 		return modalName;
+	}
+	/**
+	 * Get the Modal Relationships
+	 * 
+	 * @return {iroad2.data.Relation[]} modal name
+	 */
+	this.getRelationships = function(){
+		return relations;
 	}
 	/**
 	 * Get a program from the list of iroad2 programs by its name
@@ -393,7 +402,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			refProgram.fetch = function() {
 				var selfProgram = this;
 				this.program.get({program:self.getModalName(),value:selfrenderToJSON.object.id}, function(result) {	
-					selfrenderToJSON.object[selfProgram.program.getModalName() + "s"] = result;
+					selfrenderToJSON.object[selfProgram.program.getModalName()] = result;
 					
 					//Check if all results from the server are fetched
 					selfrenderToJSON.checkAllResultsFetched();
@@ -488,6 +497,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		//var event = self.convertToEvent(data);
 		if(sendData.event){
 			saveUrl += "/" +sendData.event;
+			alert("here");
 			http.put(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
 			},function(results){
@@ -527,18 +537,25 @@ http = {
 	 */
 	request : function(url,method,data,onSuccess,onError){
 		var xmlhttp = new XMLHttpRequest();
+		
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				//try{
+				
+				try{
 					onSuccess(JSON.parse(xmlhttp.responseText));
-				/*}catch(e){
-					if(onError == undefined){
-						console.error(e);
-					}else
-					{
-						onError(e);
+				}catch(e){
+					if(xmlhttp.responseText.startsWith("Event updated: ")){
+						onSuccess({"status":"SUCCESS","updatedEvent":xmlhttp.responseText.replace("Event updated: ","").replace("\r\n","")})
+					}else{
+						console.error("Returned:" + xmlhttp.responseText);
+						if(onError == undefined){
+							console.error(e);
+						}else
+						{
+							onError(e);
+						}
 					}
-				}*/
+				}
 				
 			}
 		}
