@@ -2,18 +2,19 @@
 eventCaptureControllers.controller('offenceFormController',
 	function($scope) {
 	//console.log(JSON.stringify($scope));
-	angular.element("#offenceScope").scope();
+	$scope.offence = angular.element("#offenceScope").scope().offence;
 	console.log(JSON.stringify($scope.offence));
-	//Initialize readonly value for the offence form. View is readonly
-	$scope.isreadonly = false;
-	//Initialize Date options for ui-date
-	$scope.dateOptions = {
-	        changeYear: true,
-	        changeMonth: true,
-	        yearRange: '1900:-0'
-	    };
 	//Initialize Offence as mirrored in the database
-	//$scope.offence = aOffence;
+	var offenceModal = new iroad2.data.Modal("Offence",[new iroad2.data.Relation("Offence Registry")])
+	offenceModal.get(new iroad2.data.SearchCriteria("","=",$scope.offence.id),function(results){
+		console.log("Registries:"+JSON.stringify(results));
+		var registries = [];
+		angular.forEach(results,function(registry){
+			registries.push(registry.Offence_Registry);
+		});
+		$scope.offenceEvents = registries;
+		$scope.$apply();
+	});
 	//Initialize offence events of an offence
 	$scope.offenceEvents = [];
 	//Initialize the amount payable for the offence events
