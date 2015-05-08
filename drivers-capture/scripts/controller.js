@@ -80,7 +80,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                         if(dataelement.name.indexOf("Program_")!= -1){
                                             var arr = (dataelement.name.split("_"));
                                             arr.splice(0,1);
-                                            console.log(JSON.stringify(arr))
                                             var name = arr.join(" ");
                                             name.trim();
                                             $http.get('../../../api/events/'+newDatval.value+'.json').success(function(data1){
@@ -384,7 +383,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
         $scope.normalClass= "col-sm-12";
         $scope.normalStyle= { "z-index": '1000'};
+        $scope.data.color = []
         $scope.enableEdit  = function(events){
+            $scope.data.color = []
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.editing = true;
@@ -394,6 +396,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 if (prog.id == events.program) {
                     $scope.editingProgram = prog;
                 }
+//                if(prog.id == )
 
             });
             $scope.editingPerson = events.dataValues['Program_Person'].Person;
@@ -408,6 +411,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.addingLicence = false;
         }
         $scope.enableAddingLicence  = function(driver){
+            $scope.data.color = []
+            $scope.data.color[driver.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.addingLicence = true;
@@ -417,12 +422,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
 
         $scope.cancelAddingLicence = function(){
+            $scope.data.color = [];
             $scope.normalClass= "col-sm-12";
             $scope.editing = false;
             $scope.adding = false;
             $scope.addingLicence = false;
         }
         $scope.cancelEdit = function(){
+            $scope.data.color = [];
             $scope.normalClass= "col-sm-12";
             $scope.editing = false;
             $scope.adding = false;
@@ -430,6 +437,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
 
         $scope.cancelAdd = function(){
+            $scope.data.color = [];
             $scope.normalClass= "col-sm-12";
             $scope.adding = false;
             $scope.editing = false;
@@ -476,7 +484,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //display a model to view offences
         $scope.ViewOffences = function(dhis2Event){
-            var itemOfInterest = $scope.data.programs['Offences'];
+            var itemOfInterest = $scope.getRelatedObjects(dhis2Event.event,'Offence Event');
             var modalInstance = $modal.open({
                 templateUrl: 'views/offences.html',
                 controller: 'DriverOffenceController',
@@ -516,16 +524,26 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.clickMe = function(event){
             $(event.target).datepicker();
-            console.log(event.target)
         }
 
         //getting all object related to driver
         $scope.getRelatedObjects = function(driver_id,object){
             var items = [];
             angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
-                console.log(dataVal.dataValues['Program_Driver'].value +" === "+ driver_id);
                 if(dataVal.dataValues['Program_Driver'].value == driver_id){
                     items.push(dataVal);
+                }
+            });
+            return items;
+
+        }
+
+        //getting all object related to driver
+        $scope.getRelatedObjectsNumber = function(driver_id,object){
+            var items = 0;
+            angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
+                if(dataVal.dataValues['Program_Driver'].value == driver_id){
+                    items++;
                 }
             });
             return items;
@@ -545,6 +563,25 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.updateData = function(dataElement,newVal,program,event,item,programArray){
             if($scope.isInt(newVal,item.type)){
                 var updatedSingleValueEvent = {event: program.event, dataValues: [{value: newVal, dataElement: dataElement}]};
+                var e = {};
+
+                e.event         = program.event;
+                e.status        = 'ACTIVE';
+                e.program       = program.program;
+                e.programStage  = program.programStage;
+                e.orgUnit       = program.orgUnit;
+                e.eventDate     = program.eventDate;;
+
+                var dvs = [];
+                angular.forEach(program.dataValues, function(prStDe){
+                    if(prStDe.value){
+                        dvs.push({dataElement: prStDe.id, value: prStDe.value });
+                    }
+                });
+
+                e.dataValues = dvs;
+
+                var updatedFullValueEvent = e;
                 $.postJSON = function(url, data, callback,failureCallback) {
                     return jQuery.ajax({
                         headers: {
@@ -560,7 +597,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         'failure':failureCallback
                     });
                 };
-                $.postJSON('../../../api/events/' + updatedSingleValueEvent.event + '/' + updatedSingleValueEvent.dataValues[0].dataElement,updatedSingleValueEvent,function(response){
+                $.postJSON('../../../api/events/' + updatedSingleValueEvent.event ,updatedSingleValueEvent,function(response){
                     console.log(response)
                 },function(response){
                 });

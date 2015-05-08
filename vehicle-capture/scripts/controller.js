@@ -38,8 +38,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
+        $scope.feedBack = false;
+        $scope.showFeedback = function(data){
+            $scope.messagess = data;
+            $scope.feedBack = true;
 
-
+            $timeout( function(){
+                $scope.feedBack = false;
+            }, 3000);
+        }
         $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
@@ -141,11 +148,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.normalClass= "col-sm-12";
         $scope.normalStyle= { "z-index": '1000'};
+        $scope.data.color = [];
         $scope.enableEdit  = function(events){
+            $scope.cancelEdit();
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.editing = true;
-            $scope.adding = false;
             angular.forEach($scope.data.programs, function (prog) {
                 if (prog.id == events.program) {
                     $scope.editingProgram = prog;
@@ -156,6 +165,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.enableAdding  = function(){
             $scope.cancelEdit();
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
              $scope.normalClass= "col-sm-9";
             $scope.adding = true;
@@ -163,6 +173,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.enableAddingInsurance  = function(events){
             $scope.cancelEdit();
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.addingInsurance = true;
@@ -171,6 +182,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
          $scope.enableAddingBusLicence  = function(events){
              $scope.cancelEdit();
+             $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
              $scope.addingBusLicence = true;
@@ -178,6 +190,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
         $scope.enableAddingLicence  = function(events){
             $scope.cancelEdit();
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.addingLicence = true;
@@ -186,12 +199,22 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.enableaddingInspection = function(events){
             $scope.cancelEdit();
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "col-sm-9";
             $scope.addingInspection = true;
             $scope.vehicle = events;
         }
+        $scope.enableViewing = function(events){
+            $scope.cancelEdit();
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
+            $scope.normalStyle= { "z-index": '10'};
+            $scope.normalClass= "col-sm-9";
+            $scope.vieInformation = true;
+            $scope.vehicle = events;
+        }
 
+        //viewing Insurance History
         $scope.enableViewInsurance = function(events){
             var modalInstance = $modal.open({
                 templateUrl: 'views/insurance.html',
@@ -210,7 +233,27 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
         }
 
+        //Viewing Car Business licence History
+        $scope.enableViewBusiness = function(events){
+            var modalInstance = $modal.open({
+                templateUrl: 'views/business.html',
+                controller: 'VehicleBussinessController',
+                resolve: {
+                    dhis2Event: function () {
+                        return events;
+                    },events: function () {
+                        return  $scope.getRelatedObjects(events.event,'Bussiness License History');
+                    }
+
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        }
+
         $scope.cancelEdit = function(){
+            $scope.data.color = [];
             $scope.normalClass= "col-sm-12";
             $scope.editing = false;
             $scope.adding = false;
@@ -218,6 +261,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.addingBusLicence = false;
             $scope.addingLicence = false;
             $scope.addingInspection = false;
+            $scope.vieInformation = false;
         }
 
         //adding a new Vehicle
@@ -339,8 +383,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 });
             };
             $.postJSON('../../../api/events',dhis2Event,function(response){
-                alert("success")
-                $scope.cancelEdit();
+                $scope.showFeedback("added successfully");
             },function(response){
                  alert("failed");
             });
@@ -703,6 +746,45 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
         };
 
+        //display a model to view accidents
+        $scope.ViewAccident = function(dhis2Event){
+            var itemOfInterest = $scope.data.programs['Accident'];
+            var modalInstance = $modal.open({
+                templateUrl: 'views/accidents.html',
+                controller: 'DriverAccidentController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return itemOfInterest;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
+
+        //display a model to view offences
+        $scope.ViewOffences = function(dhis2Event){
+            var itemOfInterest = $scope.getRelatedObjects(dhis2Event.event,'Offence Event');
+            var modalInstance = $modal.open({
+                templateUrl: 'views/offences.html',
+                controller: 'DriverOffenceController',
+                resolve: {
+                    dhis2Event: function () {
+                        return dhis2Event;
+                    },
+                    events: function () {
+                        return itemOfInterest;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        };
 
 
         //getting all object related to driver
@@ -712,6 +794,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 console.log(dataVal.dataValues['Program_Vehicle'].value +" === "+ vehicle_id);
                 if(dataVal.dataValues['Program_Vehicle'].value == vehicle_id){
                     items.push(dataVal);
+                }
+            });
+            return items;
+
+        }
+        //getting all object related to driver
+        $scope.getRelatedObjectsNumber = function(vehicle_id,object){
+            var items = 0;
+            angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
+                console.log(dataVal.dataValues['Program_Vehicle'].value +" === "+ vehicle_id);
+                if(dataVal.dataValues['Program_Vehicle'].value == vehicle_id){
+                    items++;
                 }
             });
             return items;

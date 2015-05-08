@@ -1,10 +1,15 @@
+<div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="feedBack">{{ messagess }}</div>
+
 <div class="row" style="margin-top: 90px">
+
     <div class="col-sm-12">
         <div ng-class="normalClass">
             <div class="panel panel-default">
-                <div class="panel-heading"><b>Motor Vehicles</b><button class="btn btn-primary btn-sm pull-right" data-ng-click="enableAdding()">Add Vehicle</button> </div>
+                <div class="panel-heading" style="padding-bottom: 10px"><b>Motor Vehicles</b>
+                    <button class="btn btn-primary btn-xs pull-right" data-ng-click="enableAdding()">Add Vehicle</button>
+                </div>
 
-                <table  datatable="ng" class="table table-condensed table-striped table-responsive">
+                <table datatable="ng" class="table table-condensed table-striped table-responsive">
                     <thead>
                     <tr>
                         <th># </th>
@@ -16,11 +21,13 @@
                         <th>Class</th>
                         <th>Year of Manufacture</th>
                         <th>Fuel</th>
+                        <th>Accidents</th>
+                        <th>Offences</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="events in data.programs['Vehicle'].dataValues.events">
+                    <tr ng-repeat="events in data.programs['Vehicle'].dataValues.events" style="background-color: {{ data.color[events.event] }}">
                         <td>{{ $index+1 }}</td>
                         <td>{{ events.dataValues['Vehicle Plate Number'].value }}</td>
                         <td>{{ events.dataValues['Make'].value }}</td>
@@ -30,6 +37,8 @@
                         <td>{{ events.dataValues['Vehicle Class'].value }}</td>
                         <td>{{ events.dataValues['Year of Make'].value }}</td>
                         <td>{{ events.dataValues['Fuel'].value }}</td>
+                        <td><a ng-click="ViewAccident(events)">{{ getRelatedObjectsNumber(events.event,'Accident Vehicle') }}</a></td>
+                        <td><a ng-click="ViewOffences(events)">{{ getRelatedObjectsNumber(events.event,'Offence Event') }}</a></td>
                         <td>
                             <div class="btn-group dropdown">
                                 <button type="button" class="btn btn-default">Action</button>
@@ -38,7 +47,7 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a ng-click="ViewInfo(events)">info</a> </li>
+                                    <li><a ng-click="enableViewing(events)">info</a> </li>
                                     <li><a ng-click="enableEdit(events)">Edit</a> </li>
                                     <li><a ng-click="showDelete(events,data.programs['Vehicle'].dataValues.events)"> Delete</a> </li>
                                     <li><a ng-click="enableAddingInsurance(events)">Add Insurance</a> </li>
@@ -46,6 +55,9 @@
                                     <li><a ng-click="enableAddingBusLicence(events)">Add Business Licence </a> </li>
                                     <li><a ng-click="enableAddingLicence(events)">Add Vehicle Licence </a> </li>
                                     <li><a ng-click="enableViewInsurance(events)">Insurance History </a> </li>
+                                    <li><a ng-click="enableViewBusiness(events)">Business Licences </a> </li>
+                                    <li><a ng-click="ViewAccident(events)">Accidents</a> </li>
+                                    <li><a ng-click="ViewOffences(events)">Offences</a> </li>
                                 </ul>
                             </div>
                         </td>
@@ -57,7 +69,9 @@
 
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="editing" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Motor Vehicles<b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Update Motor Vehicles</b>
+                    <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
+                    <button ng-click="ViewInfo(editingEvent)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button>         </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <table >
                         <tr  class="todelete"  ng-repeat="datas in editingEvent.dataValues  | orderBy:'sortOrder'">
@@ -79,7 +93,9 @@
     <!--adding new car-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="adding" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Motor Vehicles</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Motor Vehicles Registration</b>
+                    <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
+                  </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements  | orderBy:'sortOrder'">
@@ -106,7 +122,7 @@
         <!--adding new Insurance-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingInsurance" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Vehicle Insurance</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Update Vehicle Insurance</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
@@ -135,7 +151,7 @@
         <!--adding new Business Licence-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingBusLicence" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Vehicle Business Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Update Vehicle Business Licence</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
@@ -163,7 +179,9 @@
         <!--Adding New Car Licence-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingLicence" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Vehicle Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Update Vehicle Licence</b>
+                    <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
+                    <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
@@ -191,7 +209,7 @@
         <!--Adding New Car Inspection-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addingInspection" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Update Vehicle Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Update Vehicle Licence</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
@@ -217,38 +235,25 @@
             </div>
         </div>
 
-        <!--View Insurance History-->
-        <div class="col-sm-5" style="z-index: 30;background-color: white;" ng-if="viewInsurance" >
+<!--VIewing Car Information-->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="vieInformation" >
             <div class="panel panel-default" >
-                <div class="panel-heading"><b>Insurance History for  {{ vehicle.dataValues['Vehicle Plate Number'].value }}</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
+                <div class="panel-heading"><b>Vehicle Information</b>
+                    <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
+                <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;
+                </div>
                 <div class="panel-body" style="padding-left: 30px">
-                    <table >
-                        <thead>
-                        <tr>
-                            <th>Insurance Number</th>
-                            <th>Car Value</th>
-                            <th>Insurance Company</th>
-                            <th>Insurance Type</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
+                    <table class="table table-border table-striped">
+                        <tr data-ng-repeat="data in vehicle.dataValues | orderBy:'sortOrder'">
+                            <th>{{ data.name }}</th>
+                            <td>{{ data.value }}</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="list in  data.programs['Vehicle Insurance History'].dataValues.events">
-                            <td>{{ list.dataValues['Insurance Number'].value }}</td>
-                            <td>{{ list.dataValues['Vehicle Value'].value }}</td>
-                            <td>{{ list.dataValues['Insurance Company'].value }}</td>
-                            <td>{{ list.dataValues['Inspection Type'].value }}</td>
-                            <td>{{ list.dataValues['Start Date'].value }}</td>
-                            <td>{{ list.dataValues['End Date'].value }}</td>
-                           </td>
-                        </tr>
-                        </tbody>
                     </table>
                 </div>
 
             </div>
         </div>
+
     </div>
     </div>
 
