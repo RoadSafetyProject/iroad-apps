@@ -461,6 +461,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
 
         $scope.AccCurrentSaving = true;
         $scope.AccSavingSuccess = false;
+        $scope.AccSavingSuccess = false;
         $scope.AccSavingFailure = false;
 
         angular.forEach($scope.savableEventData, function (savableData) {
@@ -660,7 +661,7 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
@@ -853,7 +854,7 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
@@ -1046,7 +1047,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
