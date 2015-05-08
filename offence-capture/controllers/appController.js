@@ -175,8 +175,23 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			};
 			return object;
 		}
+		$scope.getOffences = function(offences){
+			return offences;
+		}
+		/*$scope.search = {
+				payment: "all";
+		};
+		$scope.searchFilter = function (item) {
+			if($scope.search.payment == "all"){
+				return true;
+			}else{
+				return false;
+			}
+		};*/
 		$scope.showOffence = function(aOffence){
+			$scope.offence = aOffence;
 			var modalInstance = $modal.open({
+				
                 templateUrl: 'views/offenceForm.html',
                 controller: 'offenceFormController',
                 resolve: {
@@ -185,7 +200,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                     }
                 }
             });
-
+			
             modalInstance.result.then(function (){
             });
 		}
