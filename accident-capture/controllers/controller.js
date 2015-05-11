@@ -11,9 +11,7 @@ eventCaptureControllers.controller('MainController',
              CustomFormService,ErrorMessageService,ModalService,DialogService)
     {
         var accidentEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
-        var passengerEventModal = new iroad2.data.Modal("Accident Passenger",[]);
-        var witnessEventModal = new iroad2.data.Modal("Accident Witness",[]);
-
+        //var accidentEventModal = new iroad2.data.Modal("Accident",[]);
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.data = {};
@@ -61,18 +59,11 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.onInitializeAccident = function(){
-            var accident_id = '';
             accidentEventModal.getAll(function(result){
                 console.log("Accidents:" + JSON.stringify(result));
-
-                result.forEach(function(entry){
-                    console.log("Accident:" + JSON.stringify(entry));
-                });
-
                 $scope.data.accidents = result;
                 $scope.$apply();
             });
-
 
         }
 
