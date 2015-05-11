@@ -14,22 +14,20 @@
         <thead>
         <tr>
             <th>Date</th>
+            <th>Area</th>
             <th>Facts</th>
-            <th>Offences</th>
+            <!--<th>Offences</th>-->
             <th>Admission Status</th>
-            <th>Severe Injuries</th>
-            <th>Simple Injuries</th>
+            <th>Vehicle</th>
         </tr>
         </thead>
         <tbody>
-        <tr data-ng-repeat="events in data.programs['Accident'].dataValues.events">
-            <td>{{ events.dataValues['Accident Type'].value }}</td>
-            <td>{{ events.dataValues['Time of Accident'].value }}</td>
-            <td>{{ events.dataValues['Area of Accident'].value }}</td>
-            <td>{{ events.dataValues['Cause of Accident'].value }}</td>
-            <td>{{ events.dataValues['Number of Fatal Injuries'].value }}</td>
-            <td>{{ events.dataValues['Number of Severe Injuries'].value }}</td>
-            <td>{{ events.dataValues['Number of Simple Injuries'].value }}</td>
+        <tr data-ng-repeat="data in events">
+            <td>{{ data.dataValues['Offence Date'].value }}</td>
+            <td>{{ data.dataValues['Offence Place'].value }}</td>
+            <td>{{ data.dataValues['Offence Facts'].value }}</td>
+            <td>{{ data.dataValues['Offence Admission Status'].value }}</td>
+            <td>{{ data.dataValues['Program_Vehicle'].Vehicle.dataValues['Vehicle Plate Number'].value }}</td>
         </tr>
         </tbody>
     </table>

@@ -1,0 +1,42 @@
+<style>
+    .modal-dialog{
+        margin-left: 18%;
+        margin-right: 18%;
+        width: 64%
+    }
+</style>
+<div class="modal-header page">
+    <h3>Business Licence History for  {{ dhis2Event.dataValues['Vehicle Plate Number'].value }}</h3>
+</div>
+
+<div class="modal-body page">
+    <table datatable="ng" class="table table-border table-striped">
+        <thead>
+        <tr>
+            <th>Licence Number</th>
+            <th>Route</th>
+            <th>Period Type</th>
+            <th>Application Nature</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="list in  events">
+            <td>{{ list.dataValues['Bussiness License Number'].value }}</td>
+            <td>{{ list.dataValues['Route'].value }}</td>
+            <td>{{ list.dataValues['Application Period Type'].value }}</td>
+            <td>{{ list.dataValues['Application Nature'].value }}</td>
+            <td>{{ list.dataValues['Start Date'].value }}</td>
+            <td>{{ list.dataValues['End Date'].value }}</td>
+            <td><button class="btn btn-primary">Info</button></td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer page">
+    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
+</div>
