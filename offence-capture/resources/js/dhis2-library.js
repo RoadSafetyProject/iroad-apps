@@ -66,6 +66,9 @@ iroad2.Init = function(config){
 			iroad2.data.programs = results2.programs;
 			//Load the scripts to use from user
 			iroad2.config.onLoad();
+			http.get(iroad2.config.baseUrl + "api/me", function(results3) {
+				iroad2.data.user = results3;
+			});
 		});
 	});
 }

@@ -71,7 +71,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.savePayment = function(){
 			if($scope.data.payment['Offence Reciept Amount'] != "" && $scope.data.payment['Offence Reciept Reciept'] != ""){
 				$scope.data.payment['Offence Paid'] = true;
-				var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
+				var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
 				$scope.offenceEventModal.save($scope.data.payment,otherData,function(result){
 	        		console.log("Result:" + JSON.stringify(result));
 	        		$scope.makePayment = false;
@@ -218,6 +218,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			$scope.data.vehicle = vehicle;
 		}
 		$scope.enableEdit  = function(event){
+			if(iroad2.data.user.organisationUnits.length == 0){
+				alert("You cannot perform this action. You are not assigned an organisation unit.");
+				return;
+			}
             $scope.show("edit");
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == $scope.offenceEventModal.getModalName()) {
@@ -283,7 +287,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             	$scope.editingEvent[savableData.key] = savableData.value;
             });
 			
-			var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
+			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
 			
