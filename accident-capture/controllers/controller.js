@@ -11,7 +11,9 @@ eventCaptureControllers.controller('MainController',
              CustomFormService,ErrorMessageService,ModalService,DialogService)
     {
         var accidentEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
-        //var accidentEventModal = new iroad2.data.Modal("Accident",[]);
+        var passengerEventModal = new iroad2.data.Modal("Accident Passenger",[]);
+        var witnessEventModal = new iroad2.data.Modal("Accident Witness",[]);
+
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.data = {};
@@ -59,11 +61,18 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.onInitializeAccident = function(){
+            var accident_id = '';
             accidentEventModal.getAll(function(result){
                 console.log("Accidents:" + JSON.stringify(result));
+
+                result.forEach(function(entry){
+                    console.log("Accident:" + JSON.stringify(entry));
+                });
+
                 $scope.data.accidents = result;
                 $scope.$apply();
             });
+
 
         }
 
@@ -98,13 +107,14 @@ eventCaptureControllers.controller('MainController',
 
         $scope.save = function(){
             $scope.UpdatedSuccess = true;
+
             angular.forEach($scope.savableEventData, function (savableData) {
                 delete $scope.editingEvent[savableData.name];
                 $scope.editingEvent[savableData.key] = savableData.value;
             });
 
             console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
+            var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
             var saveEvent = $scope.editingEvent;
             accidentEventModal.save(saveEvent,otherData,function(result){
                 console.log("Update Made:" + JSON.stringify(result));
@@ -460,7 +470,6 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
     $scope.saveAccident = function(){
 
         $scope.AccCurrentSaving = true;
-        $scope.AccSavingSuccess = false;
         $scope.AccSavingSuccess = false;
         $scope.AccSavingFailure = false;
 
