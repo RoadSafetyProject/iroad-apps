@@ -89,7 +89,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                         if(dataelement.name.indexOf("Program_")!= -1){
                                             var arr = (dataelement.name.split("_"));
                                             arr.splice(0,1);
-                                            console.log(JSON.stringify(arr))
                                             var name = arr.join(" ");
                                             name.trim();
                                             $http.get('../../../api/events/'+newDatval.value+'.json').success(function(data1){
@@ -165,7 +164,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.enableAdding  = function(){
             $scope.cancelEdit();
-            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
              $scope.normalClass= "col-sm-9";
             $scope.adding = true;
@@ -606,7 +604,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         $scope.clickMe = function(event){
             $(event.target).datepicker();
-            console.log(event.target)
         }
 
         /**send new update to server
@@ -638,7 +635,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     });
                 };
                 $.postJSON('../../../api/events/' + updatedSingleValueEvent.event + '/' + updatedSingleValueEvent.dataValues[0].dataElement,updatedSingleValueEvent,function(response){
-                    console.log(response)
+
                 },function(response){
                 });
 
@@ -791,7 +788,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.getRelatedObjects = function(vehicle_id,object){
             var items = [];
             angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
-                console.log(dataVal.dataValues['Program_Vehicle'].value +" === "+ vehicle_id);
                 if(dataVal.dataValues['Program_Vehicle'].value == vehicle_id){
                     items.push(dataVal);
                 }
@@ -803,7 +799,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.getRelatedObjectsNumber = function(vehicle_id,object){
             var items = 0;
             angular.forEach($scope.data.programs[object].dataValues.events, function (dataVal) {
-                console.log(dataVal.dataValues['Program_Vehicle'].value +" === "+ vehicle_id);
                 if(dataVal.dataValues['Program_Vehicle'].value == vehicle_id){
                     items++;
                 }
