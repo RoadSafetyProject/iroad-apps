@@ -1,6 +1,6 @@
 angular.module('eventCaptureControllers')
 .controller('offenceFormController',
-	function($scope,$http,$rootScope, $scope, $routeParams, $route,aOffence) {
+	function($scope) {
 	//Initialize readonly value for the offence form. View is readonly
 	$scope.isreadonly = false;
 	//Initialize Date options for ui-date
@@ -65,7 +65,7 @@ angular.module('eventCaptureControllers')
 			if(value != '')//If the changed value is not empty
 			{
 				//Fetch station information given the station_id
-				$http.get(url + value).success(
+				/*$http.get(url + value).success(
 						function(data) {
 							success(data);
 						})
@@ -73,14 +73,14 @@ angular.module('eventCaptureControllers')
 					///alert(error);
 					$scope.data.error = error;
 				});
-			}
+*/			}
 		});
 	}
 	$scope.payment = {};
 	$scope.formTitle = "Report Offence";
 	dhisConfigs.onLoad = function(){
 	//Is there a request in the route parameters
-		if($routeParams.request){
+		/*if($routeParams.request){
 			//There is a request in the route parameters
 			$scope.formTitle = "Offence Details";
 			$scope.isreadonly = true;
@@ -101,7 +101,7 @@ angular.module('eventCaptureControllers')
 			{
 				
 			}
-		}else{
+		}else{*/
 			$scope.$watch("offence.Driver['Driver License Number']", function (value, oldValue) {
 				if(value != '')//If the changed value is not empty
 				{
@@ -148,7 +148,7 @@ angular.module('eventCaptureControllers')
 					});
 				}
 			});
-		}
+		//}
 	}
 	iroad2.Init(dhisConfigs);
 	/**

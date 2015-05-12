@@ -25,7 +25,7 @@
 </style>
 	<div ng-controller="offenceFormController">
 	<center>
-		<h2>{{formTitle}}</h2>
+		<h2>Offence Report</h2>
 	</center>
 		<div  ng-if="offenceAdded">
 			The offence was saved successfully
@@ -36,287 +36,250 @@
 			<form ng-if="!offenceAdded" name="offenceForm" class="form-inline">
 			<div style="display:inline-block;width: 100%;">
 				<h3>Driver Information</h3>
-				<md-input-container class="col-sm-4"> 
-					<label>Licence No.</label> 
-					<input ng-model="offence.Driver['Driver License Number']" required ng-readonly="isreadonly" /> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Full Name of offender</label> 
-					<input name="name" ng-model="offence.Driver.Person['First Name']" readonly required> 
-				</md-input-container> 
-				<md-input-container  class="col-sm-4">
-					<label>Postal Address</label> 
-					<input name="address" ng-model="offence.Driver.Person['Postal Address']" readonly required> 
-				</md-input-container>
+				<div class="col-sm-4"> 
+					<label>Licence No.</label><br /> <br />
+					{{offence.Driver['Driver License Number']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Full Name</label><br /> <br />
+					{{offence.Driver.Person['First Name']}} 
+				</div> 
+				<div  class="col-sm-4">
+					<label>Postal Address</label><br />
+					{{offence.Driver.Person['Postal Address']}} 
+				</div>
 				<div class="expiry" ng-if="isExpired(offence.offence_date)">License of this driver has expired</div>
 				<div class="show-details" ng-click="showDetails('driverDetails',$event)">Show Details</div>
 				<div id="driverDetails" style="display:none">
-					<md-input-container  class="col-sm-4">
-						<label>Physical Address</label> 
-						<input name="address" ng-model="offence.Driver.Person['Physical Address']" readonly required> 
-					</md-input-container>
-					<md-input-container  class="col-sm-4">
-						<label>Gender</label> 
-						<input ng-model="offence.Driver.Person.gender" readonly> 
-					</md-input-container>
-					<md-input-container  class="col-sm-4">
-						<label>Birth Date</label> 
-						<input ng-model="offence.Driver.Person['Date of Birth']" readonly ui-date="dateOptions"> 
-					</md-input-container>
-					<md-input-container  class="col-sm-4">
-						<label>Nationality</label> 
-						<input ng-model="offence.Driver.Person.Nationality" readonly> 
-					</md-input-container>
-					<md-input-container  class="col-sm-4">
-						<label>Phone Number</label> 
-						<input ng-model="offence.Driver.Person['Phone Number']" readonly> 
-					</md-input-container>
-					<md-input-container  class="col-sm-4">
-						<label>Occupation</label> 
-						<input ng-model="offence.Driver.Person.Occupation" readonly> 
-					</md-input-container>
-					<md-input-container  class="col-sm-4">
-						<label>Driving Class</label> 
-						<input ng-model="offence.driving_class" readonly> 
-					</md-input-container>
-					<md-input-container  class="col-sm-4">
-						<label>License Expiry Date</label> 
-						<input ng-model="offence.expiry_date" readonly ui-date="dateOptions"> 
-					</md-input-container>
+					<div  class="col-sm-4">
+						<label>Physical Address</label><br /> <br />
+						{{offence.Driver.Person['Physical Address']}} 
+					</div>
+					<div  class="col-sm-4">
+						<label>Gender</label><br />
+						{{offence.Driver.Person.gender}} 
+					</div>
+					<div  class="col-sm-4">
+						<label>Birth Date</label><br /> <br />
+						{{offence.Driver.Person['Date of Birth']}} 
+					</div>
+					<div  class="col-sm-4">
+						<label>Nationality</label><br /> 
+						{{offence.Driver.Person.Nationality}} 
+					</div>
+					<div  class="col-sm-4">
+						<label>Phone Number</label><br /> <br />
+						{{offence.Driver.Person['Phone Number']}} 
+					</div>
+					<div  class="col-sm-4">
+						<label>Occupation</label><br /> <br />
+						{{offence.Driver.Person.Occupation}} 
+					</div>
+					<div class="col-sm-4">
+						<label>Driving Class</label><br /> <br />
+						{{offence.driving_class}}
+					</div>
+					<div  class="col-sm-4">
+						<label>License Expiry Date</label><br /> <br />
+						{{offence.expiry_date}} 
+					</div>
 				</div>
 			</div>
 			<div style="display:inline-block;width: 100%;">
 				<h3>Vehicle Details</h3>
-				<md-input-container  class="col-sm-4" ng-keyup="getVehicle()"> 
-					<label>Plate Number</label>
-					<input name="vehicle" ng-model="offence.Vehicle['Vehicle Plate Number']"  ng-readonly="isreadonly" required>
-				</md-input-container>
+				<div class="col-sm-4" ng-keyup="getVehicle()"> 
+					<label>Plate Number</label><br />
+					{{offence.Vehicle['Vehicle Plate Number']}}
+				</div>
 				<div class="show-details" ng-click="showDetails('vehicleDetails',$event)">Show Details</div>
 				<div id="vehicleDetails" style="display:none">
 				<div style="display:inline-block;width: 100%;">
 				<h4>Vehicle Apearance</h4>
-				<md-input-container  class="col-sm-4"> 
-					<label>Make</label>
-					<input ng-model="offence.Vehicle['Make']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Type</label>
-					<input ng-model="vehicle.type" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Color</label>
-					<input ng-model="offence.Vehicle['Color']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Vehicle Control Number</label>
-					<input ng-model="offence.Vehicle['Vehicle Control Number']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Body Type</label>
-					<input ng-model="offence.Vehicle['Body Type']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Model Number</label>
-					<input ng-model="offence.Vehicle['Model Number']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Class</label>
-					<input ng-model="offence.Vehicle['Vehicle Class']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Engine Number</label>
-					<input ng-model="offence.Vehicle['Engine Number']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Engine Capacity</label>
-					<input ng-model="offence.Vehicle['Engine Capacity']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Fuel</label>
-					<input ng-model="offence.Vehicle.Fuel" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Number of Axial</label>
-					<input ng-model="offence.Vehicle['Number of Axial']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Axial Distance</label>
-					<input ng-model="offence.Vehicle['Axial Distance']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Seating Capacity</label>
-					<input ng-model="offence.Vehicle['Seating Capacity']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Year of Manufacture</label>
-					<input ng-model="offence.Vehicle['Year of Make']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Chasis Number</label>
-					<input ng-model="offence.Vehicle['Chasis Number']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Tare Weight</label>
-					<input ng-model="offence.Vehicle['Tare Weight']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Gross Wheight</label>
-					<input ng-model="offence.Vehicle['Gross Weight']" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Imported From</label>
-					<input ng-model="offence.Vehicle['Imported From']" readonly> 
-				</md-input-container>
+				<div  class="col-sm-4"> 
+					<label>Make</label><br />
+					{{offence.Vehicle['Make']}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Type</label><br />
+					{{vehicle.type}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Color</label><br />
+					{{offence.Vehicle['Color']}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Vehicle Control Number</label><br />
+					{{offence.Vehicle['Vehicle Control Number']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Body Type</label><br />
+					{{offence.Vehicle['Body Type']}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Model Number</label><br />
+					{{offence.Vehicle['Model Number']}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Class</label><br />
+					{{offence.Vehicle['Vehicle Class']}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Engine Number</label><br />
+					{{offence.Vehicle['Engine Number']}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Engine Capacity</label><br />
+					{{offence.Vehicle['Engine Capacity']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Fuel</label><br />
+					{{offence.Vehicle.Fuel}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Number of Axial</label><br />
+					{{offence.Vehicle['Number of Axial']}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Axial Distance</label><br />
+					{{offence.Vehicle['Axial Distance']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Seating Capacity</label><br />
+					{{offence.Vehicle['Seating Capacity']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Year of Manufacture</label><br />
+					{{offence.Vehicle['Year of Make']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Chasis Number</label><br />
+					{{offence.Vehicle['Chasis Number']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Tare Weight</label><br />
+					{{offence.Vehicle['Tare Weight']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Gross Wheight</label><br />
+					{{offence.Vehicle['Gross Weight']}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Imported From</label><br />
+					{{offence.Vehicle['Imported From']}} 
+				</div>
 				</div>
 				<div style="display:inline-block;width: 100%;">
 				<h4>Owner Details</h4>
-				<md-input-container  class="col-sm-4"> 
-					<label>Owner Id</label>
-					<input ng-model="vehicle.owner_id" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Name</label>
-					<input ng-model="vehicle.owner_name" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Nationality</label>
-					<input ng-model="vehicle.owner_nationality" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Ownership Category</label>
-					<input ng-model="vehicle.ownership_category" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Physical Address</label>
-					<input ng-model="vehicle.owner_physical_address" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Postal Address</label>
-					<input ng-model="vehicle.owner_address" readonly> 
-				</md-input-container>
-				<md-input-container  class="col-sm-4"> 
-					<label>Phone Number</label>
-					<input ng-model="vehicle.owner_phone_number" readonly> 
-				</md-input-container>
+				<div  class="col-sm-4"> 
+					<label>Owner Id</label><br />
+					{{vehicle.owner_id}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Name</label><br />
+					{{vehicle.owner_name}} 
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Nationality</label><br />
+					{{vehicle.owner_nationality}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Ownership Category</label><br />
+					{{vehicle.ownership_category}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Physical Address</label><br />
+					{{vehicle.owner_physical_address}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Postal Address</label><br />
+					{{vehicle.owner_address}}
+				</div>
+				<div  class="col-sm-4"> 
+					<label>Phone Number</label><br />
+					{{vehicle.owner_phone_number}}
+				</div>
 				</div>
 			</div>
 			</div>
 			<div style="display:inline-block;width: 100%;">
 			<h3>Police Details</h3>
-				<md-input-container class="col-sm-4" > 
-					<label>No. Rank</label>
-					<input ng-model="offence.Police['Rank Number']"  ng-readonly="isreadonly"> 
-				</md-input-container>
-				<md-input-container class="col-sm-4"> 
-					<label>First Name</label>
-					<input ng-model="offence.Police.Person['First Name']" readonly> 
-				</md-input-container>
-				<md-input-container class="col-sm-4"> 
-					<label>Last Name</label>
-					<input ng-model="offence.Police.Person['Last Name']" readonly> 
-				</md-input-container>
+				<div class="col-sm-4" > 
+					<label>No. Rank</label><br />
+					{{offence.Police['Rank Number']}}
+				</div>
+				<div class="col-sm-4"> 
+					<label>First Name</label><br />
+					{{offence.Police.Person['First Name']}}
+				</div>
+				<div class="col-sm-4"> 
+					<label>Last Name</label><br />
+					{{offence.Police.Person['Last Name']}}
+				</div>
 				<div class="show-details" ng-click="showDetails('policeDetails',$event)">Show Details</div>
 				<div id="policeDetails" style="display:none">
-					<md-input-container class="col-sm-4"> 
-						<label>Postal Address</label>
-						<input ng-model="offence.Police.Person['Postal Address']" readonly> 
-					</md-input-container>
-					<md-input-container class="col-sm-4"> 
-						<label>Gender</label>
-						<input ng-model="offence.Police.Person.Gender" readonly> 
-					</md-input-container>
-					<md-input-container class="col-sm-4"> 
-						<label>Birth Date</label>
-						<input ui-date="dateOptions" ng-model="offence.Police.Person['Date of Birth']" readonly> 
-					</md-input-container>
-					<md-input-container class="col-sm-4"> 
-						<label>Phone Number</label>
-						<input ng-model="offence.Police.Person['Phone Number']" readonly> 
-					</md-input-container>
-					<md-input-container class="col-sm-4"> 
-						<label>Email</label>
-						<input ng-model="offence.Police.Person.Email" readonly> 
-					</md-input-container>
-					<md-input-container class="col-sm-4"> 
-						<label>Station</label>
-						<input ng-model="station.name" readonly> 
-					</md-input-container>
+					<div class="col-sm-4"> 
+						<label>Postal Address</label><br />
+						{{offence.Police.Person['Postal Address']}}
+					</div>
+					<div class="col-sm-4"> 
+						<label>Gender</label><br />
+						{{offence.Police.Person.Gender}}
+					</div>
+					<div class="col-sm-4"> 
+						<label>Birth Date</label><br />
+						{{offence.Police.Person['Date of Birth']}}
+					</div>
+					<div class="col-sm-4"> 
+						<label>Phone Number</label><br />
+						{{offence.Police.Person['Phone Number']}}
+					</div>
+					<div class="col-sm-4"> 
+						<label>Email</label><br />
+						{{offence.Police.Person.Email}}
+					</div>
+					<div class="col-sm-4"> 
+						<label>Station</label><br />
+						{{station.name}}
+					</div>
 				</div>
 			</div>
 			<h3>Offence Details</h3>
 			Charged Offences:
 			<div style="height:200px;overflow-y: scroll;overflow-x: hidden;border:1px solid rgba(0,0,0,0.12);margin:10px 0 10px 0">
-			<table>
-				<thead><tr><th>Section</th><th>Nature</th><th>Action</th></tr></thead>
+			<table class="col-sm-12">
+				<thead><tr><th>Section</th><th>Nature</th><th>Amount</th></tr></thead>
 				<tbody>
 				<tr ng-repeat="off in offenceEvents">
 					<td>{{off.Section}}</td>
 					<td>{{off.Nature}}</td>
-					<td>
-						<md-button class="md-hue-3 md-raised md-warn md-fab" ng-click="deleteOffence(off)" ng-disabled="isreadonly">
-							<md-tooltip>
-					          Delete
-					        </md-tooltip>
-							<i class="fa fa-trash-o" style="font-size: 20px;"></i> 
-						</md-button>
-					</td>
+					<td>{{off.Amount}}</td>
 				</tr>
 				</tbody>
 			</table>
 			
 			</div>
 			<div style="display:inline-block;width: 100%;">
-				<md-input-container class="col-sm-4"> 
-					<label>Date of offence</label>
-					{{offence['Offence Date']}} 
-				</md-input-container>
-				<md-input-container class="col-sm-4"> 
-					<label>Location of Offence</label>
-					{{offence['Offence Place']}} 
-				</md-input-container><br />
-				<md-input-container  class="col-sm-12"> 
-					<label>Brief facts about the offence</label>
-					{{offence['Offence Facts']}}
-				</md-input-container>
-			</div>
-		<div class="demo-tab tab" layout="column" layout-fill>
-		    <div >
-		        Is offence admited:
-				<md-switch ng-model="offence['Offence Admission Status']" ng-disabled="isreadonly">
-				    {{getAnswerValue(offence.admit)}}
-				</md-switch>
-				<md-input-container class="inline-container" style="width:500px">
-					<label>Amount payable</label>
-					<input ng-model="amountPayable" readonly/> </md-input-container><br /><br />
-				<md-input-container>
-				<!-- Is fine paid:
-				<md-switch ng-model="offence.paid" ng-disabled="isreadonly">
-				    {{getAnswerValue(offence.paid)}}
-				</md-switch>
-				<md-button class="col-sm-2 md-raised md-primary" ng-click="openPaymentForm($event)" ng-if="!offence.paid">
-					Payment Form
-				</md-button>
-				<div style="display:{{getDisplayValue(offence.paid)}}">
-					<h3>Receipt Details</h3>
-					<md-input-container> 
-						<label>Reciept Number</label>
-						<input ng-model="payment.receipt_number" ng-readonly="isreadonly && offence.paid" />
-					</md-input-container>
-					<md-input-container> 
-						<label>Amount Paid</label>
-						<input ng-model="payment.amount" ng-readonly="isreadonly && offence.paid" />
-					</md-input-container>
+				<div class="col-sm-6"> 
+					<label>Date of offence</label><br />
+					{{offence['Offence Date'] | date:'dd MMM yyyy'}} 
 				</div>
-					<label>Officer Commanding District or Officer
-				Commanding Station of </label>
-					<input ng-model="offence.station" name="station"> 
-				</md-input-container><br /> -->
-		        </div>
-		      </div>
-			
-			<md-button class="md-raised md-primary" ng-click="submitOffence()" ng-disabled="offence['Offence Place'] == undefined"> <!-- ng-disabled="formTitle == 'Offence Details' || offence.Driver.id == undefined || offence.Police.id == undefined || offence.Vehicle.id == undefined || offence['Offence Date'] == undefined" -->
-				Submit
-			</md-button>
+				<div class="col-sm-6"> 
+					<label>Location of Offence</label><br />
+					{{offence['Offence Place']}} 
+				</div><br /><br /><br />
+				<div  class="col-sm-12"> 
+					<label>Brief facts about the offence</label><br />
+					{{offence['Offence Facts']}}
+				</div>
+			</div>
+			<div class="col-sm-12">
+					<label> Offence admission:</label>
+				{{offence['Offence Admission Status']}}
+			</div>
+			<div class="col-sm-12">
+					<label>Amount payable</label><br />
+					{{amountPayable}}
+			</div>
 		</form>
 		</div>
 		</md-content>

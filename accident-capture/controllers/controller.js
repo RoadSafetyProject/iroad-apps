@@ -98,13 +98,14 @@ eventCaptureControllers.controller('MainController',
 
         $scope.save = function(){
             $scope.UpdatedSuccess = true;
+
             angular.forEach($scope.savableEventData, function (savableData) {
                 delete $scope.editingEvent[savableData.name];
                 $scope.editingEvent[savableData.key] = savableData.value;
             });
 
             console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
+            var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
             var saveEvent = $scope.editingEvent;
             accidentEventModal.save(saveEvent,otherData,function(result){
                 console.log("Update Made:" + JSON.stringify(result));
@@ -460,7 +461,6 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
     $scope.saveAccident = function(){
 
         $scope.AccCurrentSaving = true;
-        $scope.AccSavingSuccess = false;
         $scope.AccSavingSuccess = false;
         $scope.AccSavingFailure = false;
 

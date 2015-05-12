@@ -61,11 +61,14 @@ iroad2.Init = function(config){
 		iroad2.data.dataElements = results.dataElements;
 		//Fetch programs from the dhis server
 		//http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
-		http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
+		http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
 			//Set the dhis programs
 			iroad2.data.programs = results2.programs;
 			//Load the scripts to use from user
 			iroad2.config.onLoad();
+			http.get(iroad2.config.baseUrl + "api/me", function(results3) {
+				iroad2.data.user = results3;
+			});
 		});
 	});
 }

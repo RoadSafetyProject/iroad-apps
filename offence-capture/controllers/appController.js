@@ -61,6 +61,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.makePayment = false;
 		$scope.startPayment = function(){
 			$scope.makePayment = true;
+			console.log(JSON.stringify($scope.data.payment));
 		}
 		$scope.cancelPayment  = function(){
 			$scope.makePayment = false;
@@ -70,7 +71,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.savePayment = function(){
 			if($scope.data.payment['Offence Reciept Amount'] != "" && $scope.data.payment['Offence Reciept Reciept'] != ""){
 				$scope.data.payment['Offence Paid'] = true;
-				var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
+				var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
 				$scope.offenceEventModal.save($scope.data.payment,otherData,function(result){
 	        		console.log("Result:" + JSON.stringify(result));
 	        		$scope.makePayment = false;
@@ -175,8 +176,23 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			};
 			return object;
 		}
+		$scope.getOffences = function(offences){
+			return offences;
+		}
+		/*$scope.search = {
+				payment: "all";
+		};
+		$scope.searchFilter = function (item) {
+			if($scope.search.payment == "all"){
+				return true;
+			}else{
+				return false;
+			}
+		};*/
 		$scope.showOffence = function(aOffence){
+			$scope.offence = aOffence;
 			var modalInstance = $modal.open({
+				
                 templateUrl: 'views/offenceForm.html',
                 controller: 'offenceFormController',
                 resolve: {
@@ -185,7 +201,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                     }
                 }
             });
-
+			
             modalInstance.result.then(function (){
             });
 		}
@@ -201,7 +217,33 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			$scope.show("vehicle");
 			$scope.data.vehicle = vehicle;
 		}
+		$scope.isInt = function(value,type){
+            if(type == 'int' && value != null){
+                if(value != ""){
+                    var number = new Number( value );
+                    if ( isNaN( number ))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }else{
+                return true;
+            }
+
+        }
+		$scope.validateInteger = function(event){
+			console.log(event.target.value);
+			if(!$scope.isInt(event.target.value,"int")){
+				alert("Integer value is required.");
+				event.target.value = "";
+			}
+		}
 		$scope.enableEdit  = function(event){
+			if(iroad2.data.user.organisationUnits.length == 0){
+				alert("You cannot perform this action. You are not assigned an organisation unit.");
+				return;
+			}
             $scope.show("edit");
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == $scope.offenceEventModal.getModalName()) {
@@ -228,14 +270,46 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                     });
             	}
             }
+            /*var out = {};
+            var program = $scope.offenceEventModal.getProgramByName($scope.offenceEventModal.getModalName());
+            console.log("Program:" + JSON.stringify(program));
+    		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+    			
+    			if(event[dataElement.dataElement.name]){
+    				
+    				if(Array.isArray(event[dataElement.dataElement.name])){
+                		$scope.multiselectBools[key] = $scope.isManyRelation(key);
+                		out[dataElement.name] = event[dataElement.dataElement.name]
+                	}else if(typeof event[dataElement.dataElement.name] == "object") {
+                		var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name);
+                		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
+                            if (dataElement2.dataElement.code) {
+                            	if(dataElement2.dataElement.code.startsWith("id_")){
+                            		
+                    				out[dataElement2.dataElement.name] = event[dataElement.dataElement.name][dataElement2.dataElement.name];
+                    				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
+                    				$scope.watchEditing(program2,dataElement2.dataElement);
+                    				//delete $scope.editingEvent[key];
+                    			}
+                            }
+                        });
+                	}else{
+                		console.log("DataElement:" + JSON.stringify(event[dataElement.dataElement.name]));
+                		out[dataElement.name] = event[dataElement.dataElement.name];
+                	}
+    			}
+            });
+    		console.log("Output:" + JSON.stringify(out));
+    		$scope.editingEvent = out;*/
         }
+		
 		$scope.save = function(){
 			angular.forEach($scope.savableEventData, function (savableData) {
             	delete $scope.editingEvent[savableData.name];
             	$scope.editingEvent[savableData.key] = savableData.value;
             });
 			
-			var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
+			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
 			
