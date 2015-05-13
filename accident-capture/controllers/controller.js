@@ -136,8 +136,10 @@ eventCaptureControllers.controller('MainController',
             $scope.normalClass= "mws-panel grid_6";
             $scope.normalClassDriver= "mws-panel grid_6";
             $scope.normalClassVehicle= "mws-panel grid_6";
+            $scope.normalClassMedia= "mws-panel grid_6";
             $scope.normalStyleDriver= { "padding": '0px'};
             $scope.normalStyleVehicle= { "padding": '0px'};
+            $scope.normalStyleMedia= { "padding": '0px'};
             //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == accidentEventModal.getModalName()) {
@@ -164,6 +166,14 @@ eventCaptureControllers.controller('MainController',
             }
         }
 
+        //Show Media involved in an accident
+        $scope.showMedia  = function(media) {
+            $scope.normalClassMedia= "mws-panel grid_8";
+            $scope.showingMedia = 'true';
+            $scope.showingVehicle = "false";
+            $scope.showingDriver = "false";
+            $scope.data.accident = media;
+        }
 
         //Show Driver involved in an accident
         $scope.showDriver  = function(driver) {

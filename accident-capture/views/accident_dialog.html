@@ -317,10 +317,13 @@
     .checkboxdemoBasicUsage body {
         padding: 0px; }
 
+    .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+        border: 1px solid rgba(0,0,0,0.3);
+    }
 </style>
 
-<div class="modal-header" style="background-color: #276696">
-    <span style="color: #ffffff"><i class="icon-table" style="padding-right: 3px"></i><strong>ACCIDENT NUMBER:{{dhis2Event.Accident['Accident Registration Number']}}</strong></span>
+<div class="modal-header">
+    <span style="color: #000000"><i class="icon-table" style="padding-right: 3px"></i><strong>ACCIDENT NUMBER:{{dhis2Event.Accident['Accident Registration Number']}}</strong></span>
 </div>
 
 <div class="modal-body page" style="font-size: 12px;padding-left: 40px !important;padding-right: 40px !important;">
