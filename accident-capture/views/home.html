@@ -33,7 +33,7 @@
                 <td>{{ accident.Accident['Accident Registration Number'] }}</td>
                 <td>{{ accident.Accident['Area of Accident']}}</td>
                 <td>{{ accident.Accident['Cause of Accident']}}</td>
-                <td>{{accident.Accident['Time of Accident']}}</td>
+                <td>{{accident.Accident['Time of Accident'] | date:'dd MMM yyyy'}}</td>
                 <td>
                     <div class="btn-group dropdown">
                         <button type="button" class="btn btn-default">Action</button>
