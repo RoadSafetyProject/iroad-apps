@@ -109,7 +109,7 @@ scripts/app.js
 scripts/services.js
 scripts/filters.js
 scripts/directives.js
-scripts/controller.js
+scripts/controllers.js
 scripts/notes-controller.js 
 
 views/column-modal.html
@@ -122,10 +122,10 @@ views/map.html
 views/modal.html
 views/notes.html
 
-scripts/DataTables/media/js/jquery.dataTables.js"></script>
-scripts/angular-datatables/dist/angular-datatables.min.js"></script>
-scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.colvis.js"></script>
-scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.options.js"></script>
-scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.tabletools.js"></script>
-scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+scripts/DataTables/media/js/jquery.dataTables.js
+scripts/angular-datatables/dist/angular-datatables.min.js
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.colvis.js
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.options.js
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.tabletools.js
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.js
 scripts/angular-ui-date/src/date.js"></script>
