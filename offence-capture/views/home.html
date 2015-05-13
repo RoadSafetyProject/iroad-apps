@@ -241,7 +241,7 @@
             	<td ng-if="(key != 'id')">
             		<label>{{key}}</label><br />
                     <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control" />
-                    <input ng-if="isInteger(key)"  ng-blur="validateInteger($event)" ng-model="editingEvent[key]" class="form-control" />
+                    <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
                     <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" >
                     	<option value="true">Yes</option><option value="false">No</option>
                     </select>

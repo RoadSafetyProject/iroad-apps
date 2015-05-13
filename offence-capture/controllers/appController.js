@@ -217,28 +217,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			$scope.show("vehicle");
 			$scope.data.vehicle = vehicle;
 		}
-		$scope.isInt = function(value,type){
-            if(type == 'int' && value != null){
-                if(value != ""){
-                    var number = new Number( value );
-                    if ( isNaN( number ))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }else{
-                return true;
-            }
-
-        }
-		$scope.validateInteger = function(event){
-			console.log(event.target.value);
-			if(!$scope.isInt(event.target.value,"int")){
-				alert("Integer value is required.");
-				event.target.value = "";
-			}
-		}
 		$scope.enableEdit  = function(event){
 			if(iroad2.data.user.organisationUnits.length == 0){
 				alert("You cannot perform this action. You are not assigned an organisation unit.");
@@ -305,11 +283,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		
 		$scope.save = function(){
 			angular.forEach($scope.savableEventData, function (savableData) {
-            	delete $scope.editingEvent[savableData.name];
-            	$scope.editingEvent[savableData.key] = savableData.value;
+				if(typeof savebleData.value == "object"){
+					
+				}
+            	/*delete $scope.editingEvent[savableData.name];
+            	$scope.editingEvent[savableData.key] = savableData.value;*/
             });
 			
-			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
+			/*var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
 			
@@ -348,7 +329,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			},function(error){
 				console.log("Error Saving:" + JSON.stringify(error));
 			},$scope.offenceEventModal.getModalName());
-			$scope.cancelEdit();
+			$scope.cancelEdit();*/
         }
 		$scope.cancelEdit = function(){
 			$scope.normalClass= "mws-panel grid_8";
