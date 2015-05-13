@@ -60,7 +60,7 @@ eventCaptureControllers.controller('MainController',
 
         $scope.onInitializeAccident = function(){
             accidentEventModal.getAll(function(result){
-               console.log("Accidents:" + JSON.stringify(result));
+                console.log("Accidents:" + JSON.stringify(result));
                 $scope.data.accidents = result;
                 $scope.$apply();
             });
@@ -68,10 +68,10 @@ eventCaptureControllers.controller('MainController',
         }
 
         /*
-        dhisConfigs.onLoad = function(){
-            $scope.onInitializeAccident();
-        }
-        */
+         dhisConfigs.onLoad = function(){
+         $scope.onInitializeAccident();
+         }
+         */
         dhisConfigs.onLoad = function(){
             $scope.onInitializeAccident();
         }
@@ -172,6 +172,8 @@ eventCaptureControllers.controller('MainController',
             $scope.showingMedia = 'true';
             $scope.showingVehicle = "false";
             $scope.showingDriver = "false";
+            $scope.editing = "false";
+            $scope.normalClass= "mws-panel grid_8";
             $scope.data.accident = media;
         }
 
@@ -217,7 +219,7 @@ eventCaptureControllers.controller('MainController',
 
 
         $scope.addAccident = function(dhis2Event){
-           // console.log(JSON.stringify(dhis2Event));
+            // console.log(JSON.stringify(dhis2Event));
             var modalInstance = $modal.open({
                 templateUrl: 'views/add_accident_dialog.html',
                 controller: 'AccidentFormController',
@@ -321,7 +323,7 @@ eventCaptureControllers.controller('AccidentController',
 eventCaptureControllers.controller('AccidentFormController',function($scope,$modal,$modalInstance,dhis2Event){
 
 
-   var accidentEventModal = new iroad2.data.Modal("Accident",[]);
+    var accidentEventModal = new iroad2.data.Modal("Accident",[]);
 
     $scope.dhis2Event = dhis2Event;
     //console.log(dhis2Event);
@@ -425,7 +427,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
         });
         $scope.savableEventData = [];
         $scope.editingEvent = event;
-        //console.log('Adding' + JSON.stringify(event));
+        console.log('Adding' + JSON.stringify(event));
         for (var key in event) {
             if (typeof event[key] == "object") {
                 var program = accidentEventModal.getProgramByName(key);
@@ -483,7 +485,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
             $scope.editingEvent[savableData.key] = savableData.value;
         });
 
-        //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
+        console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
         var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
         var saveEvent = $scope.editingEvent;
 
@@ -511,7 +513,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
     }
 
 
-    });
+});
 
 eventCaptureControllers.controller('VehicleFormController',function($scope,$modal,$modalInstance,dhis2Event){
 
@@ -680,7 +682,7 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
 
-        //console.log("Saving Data:" + JSON.stringify(saveEvent));
+        console.log("Saving Data:" + JSON.stringify(saveEvent));
 
         accidentVehicleEventModal.save(saveEvent,otherData,function(result){
             $scope.VehicleCurrentSaving = false;
@@ -859,9 +861,9 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
     $scope.addNewAccidentVehicle();
 
     $scope.saveAccidentPassenger = function(){
-           $scope.PassengerCurrentSaving = true;
-           $scope.PassengerSavingSuccess = false;
-           $scope.PassengerSavingFailure = false;
+        $scope.PassengerCurrentSaving = true;
+        $scope.PassengerSavingSuccess = false;
+        $scope.PassengerSavingFailure = false;
 
         angular.forEach($scope.savableEventData, function (savableData) {
             delete $scope.editingEventVehicle[savableData.name];
