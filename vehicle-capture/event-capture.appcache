@@ -33,6 +33,7 @@ CACHE:
 ../../../dhis-web-commons/font-awesome/fonts/FontAwesome.otf
 
 ../../../dhis-web-commons/css/light_blue/light_blue.css
+../../../dhis-web-commons/css/green/green.css
 ../../../dhis-web-commons/css/widgets.css
 ../../../dhis-web-commons/css/menu.css
 styles/style.css
@@ -108,7 +109,7 @@ scripts/app.js
 scripts/services.js
 scripts/filters.js
 scripts/directives.js
-scripts/controllers.js        
+scripts/controller.js
 scripts/notes-controller.js 
 
 views/column-modal.html
@@ -121,3 +122,10 @@ views/map.html
 views/modal.html
 views/notes.html
 
+scripts/DataTables/media/js/jquery.dataTables.js"></script>
+scripts/angular-datatables/dist/angular-datatables.min.js"></script>
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.colvis.js"></script>
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.options.js"></script>
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.tabletools.js"></script>
+scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+scripts/angular-ui-date/src/date.js"></script>
