@@ -305,11 +305,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		
 		$scope.save = function(){
 			angular.forEach($scope.savableEventData, function (savableData) {
-            	delete $scope.editingEvent[savableData.name];
-            	$scope.editingEvent[savableData.key] = savableData.value;
+				if(typeof savebleData.value == "object"){
+					
+				}
+            	/*delete $scope.editingEvent[savableData.name];
+            	$scope.editingEvent[savableData.key] = savableData.value;*/
             });
 			
-			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
+			/*var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
 			
@@ -348,7 +351,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			},function(error){
 				console.log("Error Saving:" + JSON.stringify(error));
 			},$scope.offenceEventModal.getModalName());
-			$scope.cancelEdit();
+			$scope.cancelEdit();*/
         }
 		$scope.cancelEdit = function(){
 			$scope.normalClass= "mws-panel grid_8";
