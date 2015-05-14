@@ -561,7 +561,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         'failure':failureCallback
                     });
                 };
-                $.postJSON('../../../api/events/' + updatedSingleValueEvent.event ,updatedFullValueEvent,function(response){
+                $.postJSON('../../../api/events/' + updatedSingleValueEvent.event+'/'+dataElement ,updatedSingleValueEvent,function(response){
                     console.log(response)
                 },function(response){
 
