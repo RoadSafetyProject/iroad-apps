@@ -1,4 +1,4 @@
-<div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="feedBack">{{ messagess }}</div>
+<div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1200;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="feedBack">{{ messagess }}</div>
 <div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="progresMessage">{{ progresMessagess }}</div>
 
 <div class="row" style="margin-top: 90px">
@@ -26,10 +26,10 @@
                     <tr ng-repeat="events in data.programs['Driver'].dataValues.events" style="background-color: {{ data.color[events.event] }}">
                         <td>{{ $index+1 }}</td>
                         <td>{{ events.dataValues['Driver License Number'].value }}</td>
-                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ events.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ events.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</td>
-                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Gender'].value }}</td>
-                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Phone Number'].value }}</td>
-                        <td>{{ events.dataValues['Program_Person'].Person.dataValues['Postal Address'].value }}</td>
+                        <td>{{ events.dataValues['Full Name'].value }} </td>
+                        <td>{{ events.dataValues['Gender'].value }}</td>
+                        <td>{{ events.dataValues['Phone Number'].value }}</td>
+                        <td>{{ events.dataValues['Postal Address'].value }}</td>
                         <td>{{ events.dataValues['TIN Number'].value }}</td>
                         <td><a ng-click="ViewAccident(events)">{{ getRelatedObjectsNumber(events.event,'Accident Vehicle') }}</a></td>
                         <td><a ng-click="ViewOffences(events)">{{ getRelatedObjectsNumber(events.event,'Offence Event') }}</a></td>
@@ -71,14 +71,14 @@
                                 <select  class="form-control"  ng-focus="focusMe(datas.name)" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color" ></select>
                             </td>
                         </tr>
-                        <tr  ng-repeat="datas in editingPerson.dataValues">
-                            <td style="margin-right: 20px">
-                                <label>{{ datas.name }}</label><br>
-                                <input class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingPerson,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color">
-                                <input  class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type == 'date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color">
-                                <select  class="form-control"  ng-focus="focusMe(datas.name)" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color" ></select>
-                            </td>
-                        </tr>
+                        <!--<tr  ng-repeat="datas in editingPerson.dataValues">-->
+                            <!--<td style="margin-right: 20px">-->
+                                <!--<label>{{ datas.name }}</label><br>-->
+                                <!--<input class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingPerson,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color">-->
+                                <!--<input  class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type == 'date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color">-->
+                                <!--<select  class="form-control"  ng-focus="focusMe(datas.name)" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color" ></select>-->
+                            <!--</td>-->
+                        <!--</tr>-->
                         <tr style="margin-top: 10px">
                             <td><button class="btn btn-sm btn-primary" ng-click="cancelEdit()">Done</button> </td>
                         </tr>
@@ -102,20 +102,20 @@
                             <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                           </td>
                         </tr>
-                        <tr ng-repeat="list in  data.programs['Person'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
-                        <td >
-                            <label>{{ list.dataElement.name }}</label>
-                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type !='date'" ng-model="data.newPersonValue[list.dataElement.id]"  >
-                            <input ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type=='date'" ng-model="data.newDriverValue[list.dataElement.id]"  >
-                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newPersonValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
-                          </td>
-                        </tr>
+                        <!--<tr ng-repeat="list in  data.programs['Person'].programStages[0].programStageDataElements | orderBy:'sortOrder'">-->
+                        <!--<td >-->
+                            <!--<label>{{ list.dataElement.name }}</label>-->
+                            <!--<input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type !='date'" ng-model="data.newPersonValue[list.dataElement.id]"  >-->
+                            <!--<input ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type=='date'" ng-model="data.newDriverValue[list.dataElement.id]"  >-->
+                            <!--<select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newPersonValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>-->
+                          <!--</td>-->
+                        <!--</tr>-->
                         <tr style="margin-top: 10px">
                             <td>
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddPerson(data.newPersonValue,data.newDriverValue)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddDriver(data.newDriverValue)">Add</button>
                             </td>
                         </tr>
                     </table>
@@ -129,7 +129,7 @@
             <div class="panel panel-default" >
                 <div class="panel-heading"><b>Update Driver Licence</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
                 <div class="panel-body" style="padding-left: 30px">
-                    <p>Name : {{ driver.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ driver.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ driver.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</p>
+                    <p>Name : {{ driver.dataValues['Full Name'].value }} </p>
                     <p>License No: {{ driver.dataValues['Driver License Number'].value }}</p>
                     <table >
                         <tr ng-repeat="list in  data.programs['Driver License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
