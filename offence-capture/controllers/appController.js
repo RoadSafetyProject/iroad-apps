@@ -244,7 +244,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                 }
             });
             $scope.savableEventData = [];
-            $scope.editingEvent = event;
+            var e = event;
+            $scope.editingEvent = e;
             for (var key in event) {
             	if(Array.isArray(event[key])){
             		$scope.multiselectBools[key] = $scope.isManyRelation(key);

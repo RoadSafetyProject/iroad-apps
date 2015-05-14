@@ -5,6 +5,11 @@
     .rightPanel{
     	white;margin-top:125px;
     }
+    .modal-dialog{
+        margin-left: 8%;
+        margin-right: 8%;
+        width: 84%
+    }
 </style>
 <div ng-class="normalClass" ng-style="normalStyle" style="margin-bottom:40px;"  id="offenceScope">
 <div style="margin-top: 50px !important;">
@@ -176,7 +181,7 @@
 
             <div class="mws-panel-body no-padding">
                 <table class="mws-datatable-fn mws-table">
-                    <tr ng-if="(data.payment['Offence Paid'] == 'false')">
+                    <tr ng-if="(data.payment['Offence Paid'] == 'false') && !makePayment">
 			            	<td>
 			            		<label>Is am</label>
 			            	</td>
@@ -309,8 +314,8 @@
             </tr>
             <tr ng-if="editingEvent['Offence Paid']">
             	<td>
-            		<label>Offence Reciept Amount</label><br />
-            		<input ng-model="editingEvent['Offence Reciept Amount']" class="form-control" />
+            		<label>Offence Reciept Number</label><br />
+            		<input ng-model="editingEvent['Offence Reciept Number']" class="form-control" />
             	</td>
             </tr>
             <tr ng-if="editingEvent['Offence Paid']">
