@@ -39,6 +39,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.data = {};
 
         $scope.feedBack = false;
+        $scope.progresMessage = false;
         $scope.showFeedback = function(data){
             $scope.messagess = data;
             $scope.feedBack = true;
@@ -47,23 +48,38 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.feedBack = false;
             }, 3000);
         }
+        $scope.showProgresMessage = function(data){
+            $scope.progresMessagess = data;
+            $scope.progresMessage = true;
+        }
+        $scope.hideProgresMessage = function(){
+            $scope.progresMessagess = "";
+            $scope.progresMessage = false;
+        }
         $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
             var resultProg = data.programs;
             angular.forEach(data.programs, function(program1){
                 $scope.data.programs[program1.name] = {};
-
                 $scope.data.programs[program1.name].name= program1.name;
                  $scope.data.programs[program1.name].id= program1.id;
                  $scope.data.programs[program1.name].version= 1;
                  $scope.data.programs[program1.name].programStages= program1.programStages;
             });
 //            $scope.data.programs = data.programs;
+
             angular.forEach($scope.data.programs,function(program){
+                if($scope.data.programs['Vehicle'].id == program.id){
+                    $scope.showProgresMessage('Loading Vehicles.....')
+                }
                 program.dataValues = {};
                 program.dataValues.events = [];
                 $http.get('../../../api/events.json?program='+program.id).success(function(data){
+                    if($scope.data.programs['Vehicle'].id == program.id){
+                        $scope.hideProgresMessage();
+                    }
                     if(data.events){
                         angular.forEach(data.events,function(datas){
                             var event = datas.event;
@@ -745,7 +761,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //display a model to view accidents
         $scope.ViewAccident = function(dhis2Event){
-            var itemOfInterest = $scope.data.programs['Accident'];
+            var itemOfInterest = $scope.getRelatedObjects(dhis2Event.event,'Accident Vehicle');
             var modalInstance = $modal.open({
                 templateUrl: 'views/accidents.html',
                 controller: 'DriverAccidentController',

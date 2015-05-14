@@ -60,7 +60,7 @@ eventCaptureControllers.controller('MainController',
 
         $scope.onInitializeAccident = function(){
             accidentEventModal.getAll(function(result){
-                console.log("Accidents:" + JSON.stringify(result));
+            //console.log("Accidents:" + JSON.stringify(result));
                 $scope.data.accidents = result;
                 $scope.$apply();
             });
@@ -68,10 +68,10 @@ eventCaptureControllers.controller('MainController',
         }
 
         /*
-        dhisConfigs.onLoad = function(){
-            $scope.onInitializeAccident();
-        }
-        */
+         dhisConfigs.onLoad = function(){
+         $scope.onInitializeAccident();
+         }
+         */
         dhisConfigs.onLoad = function(){
             $scope.onInitializeAccident();
         }
@@ -104,15 +104,15 @@ eventCaptureControllers.controller('MainController',
                 $scope.editingEvent[savableData.key] = savableData.value;
             });
 
-            console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
+        //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
             var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
             var saveEvent = $scope.editingEvent;
             accidentEventModal.save(saveEvent,otherData,function(result){
-                console.log("Update Made:" + JSON.stringify(result));
+            //console.log("Update Made:" + JSON.stringify(result));
                 $scope.CurrentSaving = false;
                 $scope.UpdatedSuccess = true;
                 $scope.UpdateFailure = false;
-                console.log($scope.CurrentSaving);
+            //console.log($scope.CurrentSaving);
 
                 //$scope.editing = false;
                 //$scope.normalClass= "mws-panel grid_8";
@@ -136,8 +136,10 @@ eventCaptureControllers.controller('MainController',
             $scope.normalClass= "mws-panel grid_6";
             $scope.normalClassDriver= "mws-panel grid_6";
             $scope.normalClassVehicle= "mws-panel grid_6";
+            $scope.normalClassMedia= "mws-panel grid_6";
             $scope.normalStyleDriver= { "padding": '0px'};
             $scope.normalStyleVehicle= { "padding": '0px'};
+            $scope.normalStyleMedia= { "padding": '0px'};
             //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == accidentEventModal.getModalName()) {
@@ -164,12 +166,24 @@ eventCaptureControllers.controller('MainController',
             }
         }
 
+        //Show Media involved in an accident
+        $scope.showMedia  = function(media) {
+            $scope.normalClassMedia= "mws-panel grid_8";
+            $scope.showingMedia = 'true';
+            $scope.showingVehicle = "false";
+            $scope.showingDriver = "false";
+            $scope.editing = "false";
+            $scope.normalClass= "mws-panel grid_8";
+            $scope.data.accident = media;
+        }
 
         //Show Driver involved in an accident
         $scope.showDriver  = function(driver) {
             $scope.normalClassDriver= "mws-panel grid_8";
             $scope.showingDriver = "true";
             $scope.showingVehicle = "false";
+            $scope.editing = "false";
+            $scope.normalClass= "mws-panel grid_8";
             $scope.data.accident = driver;
             //alert("Driver:" + JSON.stringify($scope.data.accident));
         }
@@ -180,6 +194,8 @@ eventCaptureControllers.controller('MainController',
             $scope.normalClassVehicle= "mws-panel grid_8";
             $scope.showingVehicle = "true";
             $scope.showingDriver = "false";
+            $scope.normalClass= "mws-panel grid_8";
+            $scope.editing = "false";
             $scope.data.accident = vehicle;
         }
 
@@ -203,7 +219,7 @@ eventCaptureControllers.controller('MainController',
 
 
         $scope.addAccident = function(dhis2Event){
-           // console.log(JSON.stringify(dhis2Event));
+            // console.log(JSON.stringify(dhis2Event));
             var modalInstance = $modal.open({
                 templateUrl: 'views/add_accident_dialog.html',
                 controller: 'AccidentFormController',
@@ -297,7 +313,7 @@ eventCaptureControllers.controller('AccidentController',
     function($scope,$modalInstance,dhis2Event){
 
         $scope.dhis2Event = dhis2Event;
-        console.log('Accident' +JSON.stringify($scope.dhis2Event));
+        //console.log('Accident' +JSON.stringify($scope.dhis2Event));
 
         $scope.close = function () {
             $modalInstance.close();
@@ -307,10 +323,10 @@ eventCaptureControllers.controller('AccidentController',
 eventCaptureControllers.controller('AccidentFormController',function($scope,$modal,$modalInstance,dhis2Event){
 
 
-   var accidentEventModal = new iroad2.data.Modal("Accident",[]);
+    var accidentEventModal = new iroad2.data.Modal("Accident",[]);
 
     $scope.dhis2Event = dhis2Event;
-    console.log(dhis2Event);
+    //console.log(dhis2Event);
     $scope.close = function () {
         $modalInstance.close();
     };
@@ -411,7 +427,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
         });
         $scope.savableEventData = [];
         $scope.editingEvent = event;
-        console.log('Adding' + JSON.stringify(event));
+        //console.log('Adding' + JSON.stringify(event));
         for (var key in event) {
             if (typeof event[key] == "object") {
                 var program = accidentEventModal.getProgramByName(key);
@@ -469,18 +485,19 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
             $scope.editingEvent[savableData.key] = savableData.value;
         });
 
-        console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
+        $scope.editingEvent['Accident Occurance'] = $scope.editingEvent['Time of Accident'] ;
+    //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
+        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Time of Accident']};
         var saveEvent = $scope.editingEvent;
 
-        //console.log("Save Made:" + JSON.stringify(saveEvent));
+    //console.log("Save Made:" + JSON.stringify(saveEvent));
 
         accidentEventModal.save(saveEvent,otherData,function(result){
             $scope.AccCurrentSaving = false;
             $scope.AccSavingSuccess = true;
             $scope.AccSavingFailure = false;
 
-            console.log("Save Made:" + JSON.stringify(result.importSummaries[0].reference));
+        //console.log("Save Made:" + JSON.stringify(result.importSummaries[0].reference));
             $scope.accident_id = result.importSummaries[0].reference;
             $scope.close();
             $scope.addAccidentVehicle(result);
@@ -497,14 +514,14 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
     }
 
 
-    });
+});
 
 eventCaptureControllers.controller('VehicleFormController',function($scope,$modal,$modalInstance,dhis2Event){
 
     var accidentVehicleEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
     //console.log(dhis2Event.importSummaries[0].reference);
     $scope.accident_reg_id = dhis2Event.importSummaries[0].reference;
-    console.log($scope.accident_reg_id);
+    //console.log($scope.accident_reg_id);
 
     $scope.close = function () {
         $modalInstance.close();
@@ -666,14 +683,14 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
 
-        console.log("Saving Data:" + JSON.stringify(saveEvent));
+    //console.log("Saving Data:" + JSON.stringify(saveEvent));
 
         accidentVehicleEventModal.save(saveEvent,otherData,function(result){
             $scope.VehicleCurrentSaving = false;
             $scope.VehicleSavingSuccess = true;
             $scope.VehicleSavingFailure = false;
 
-            console.log("Save Made:" + JSON.stringify(result));
+            //console.log("Save Made:" + JSON.stringify(result));
             result['accident_id'] = $scope.accident_reg_id ;
             $scope.close();
             $scope.addAccidentPassenger(result);
@@ -697,7 +714,7 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
     var accidentVehicleEventModal = new iroad2.data.Modal("Accident Passenger",[]);
     //console.log(dhis2Event.importSummaries[0].reference);
     $scope.accident_reg_id = dhis2Event.accident_id;
-    console.log($scope.accident_reg_id);
+    //console.log($scope.accident_reg_id);
 
     $scope.close = function () {
         $modalInstance.close();
@@ -845,9 +862,9 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
     $scope.addNewAccidentVehicle();
 
     $scope.saveAccidentPassenger = function(){
-           $scope.PassengerCurrentSaving = true;
-           $scope.PassengerSavingSuccess = false;
-           $scope.PassengerSavingFailure = false;
+        $scope.PassengerCurrentSaving = true;
+        $scope.PassengerSavingSuccess = false;
+        $scope.PassengerSavingFailure = false;
 
         angular.forEach($scope.savableEventData, function (savableData) {
             delete $scope.editingEventVehicle[savableData.name];
@@ -859,13 +876,13 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
 
-        console.log("Saving Data:" + JSON.stringify(saveEvent));
+        //console.log("Saving Data:" + JSON.stringify(saveEvent));
         accidentVehicleEventModal.save(saveEvent,otherData,function(result){
             $scope.PassengerCurrentSaving = false;
             $scope.PassengerSavingSuccess = true;
             $scope.PassengerSavingFailure = false;
 
-            console.log("Save Made:" + JSON.stringify(result));
+            //console.log("Save Made:" + JSON.stringify(result));
             result['accident_id'] = $scope.accident_reg_id ;
             $scope.addAccidentWitness(result);
             $scope.close();
@@ -889,7 +906,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
     var accidentVehicleEventModal = new iroad2.data.Modal("Accident Witness",[]);
     //console.log(dhis2Event.importSummaries[0].reference);
     $scope.accident_reg_id = dhis2Event.accident_id;
-    console.log($scope.accident_reg_id);
+    //console.log($scope.accident_reg_id);
 
     $scope.close = function () {
         $modalInstance.close();
@@ -1052,14 +1069,14 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
 
-        console.log("Saving Data:" + JSON.stringify(saveEvent));
+        //console.log("Saving Data:" + JSON.stringify(saveEvent));
         accidentVehicleEventModal.save(saveEvent,otherData,function(result){
 
             $scope.WitnessCurrentSaving = false;
             $scope.WitnessSavingSuccess = true;
             $scope.WitnessSavingFailure = false;
 
-            console.log("Save Made:" + JSON.stringify(result));
+            //console.log("Save Made:" + JSON.stringify(result));
             $scope.close();
 
         },function(error){

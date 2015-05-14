@@ -35,10 +35,34 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             changeMonth: true,
             dateFormat: 'yy-mm-dd'
         };
+        $scope.feedBack = false;
+        $scope.progresMessage = false;
+        $scope.showFeedback = function(data){
+            $scope.messagess = data;
+            $scope.feedBack = true;
+
+            $timeout( function(){
+                $scope.feedBack = false;
+            }, 3000);
+        }
+        $scope.showProgresMessage = function(data){
+            $scope.progresMessagess = data;
+            $scope.progresMessage = true;
+        }
+        $scope.hideProgresMessage = function(){
+            $scope.progresMessagess = "";
+            $scope.progresMessage = false;
+        }
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
+        //getting user Information
+        $http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
+            $scope.logedInUser = data;
+        })
+
         $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
             var resultProg = data.programs;
@@ -52,10 +76,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
 //            $scope.data.programs = data.programs;
             angular.forEach($scope.data.programs,function(program){
+                if($scope.data.programs['Driver'].id == program.id){
+                    $scope.showProgresMessage('Loading Drivers.....')
+                }
                 program.dataValues = {};
                 program.dataValues.events = [];
                 $http.get('../../../api/events.json?program='+program.id).success(function(data){
+                    if($scope.data.programs['Driver'].id == program.id){
+                        $scope.hideProgresMessage();
+                    }
                     if(data.events){
+
                         angular.forEach(data.events,function(datas){
                             var event = datas.event;
                             var program1 = datas.program;
@@ -171,7 +202,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.editing = "false";
         }
 
-        $scope.AddDriver =function(value,keyValue){
+        $scope.AddDriver =function(value){
             var program = $scope.data.programs['Driver'].id;
             var programStage = $scope.data.programs['Driver'].programStages[0].id;
             var date1 = new Date();
@@ -199,12 +230,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     value: data
                 })
             });
-            datavaluess.push({dataElement: 'vz0PAS4uCul',value:keyValue})
             var dhis2Event = {
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.logedInUser.organisationUnits[0].id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
@@ -224,81 +254,16 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     'failure':failureCallback
                 });
             };
+            $scope.showProgresMessage('Adding Driver.....')
             $.postJSON('../../../api/events',dhis2Event,function(response){
-                alert("success");
+                $scope.adding = false;
+                $scope.hideProgresMessage();
+                $scope.data.programs['Driver'].dataValues.events.push($scope.prepareOneEvent($scope.data.programs['Driver'].programStages[0].programStageDataElements,dhis2Event))
             },function(response){
-                alert("failed");
+                $scope.hideProgresMessage();
             });
         }
 
-            $scope.AddPerson =function(value,value1){
-            var program = $scope.data.programs['Person'].id;
-            var programStage = $scope.data.programs['Person'].programStages[0].id;
-                var d = new Date();
-                var curr_date	= d.getDate();
-                var curr_month	= d.getMonth()+1;
-                var curr_year 	= d.getFullYear();
-                if(curr_month<10){
-                    curr_month="0"+curr_month;
-                }
-                if(curr_date<10){
-                    curr_date="0"+curr_date;
-                }
-                $scope.savingDate = curr_year+"-"+curr_month+"-"+curr_date;
-
-            var datavaluess = [];
-            angular.forEach(value,function(data,key){
-                if(data instanceof Date){
-                    var curr_date	= data.getDate();
-                    var curr_month	= data.getMonth()+1;
-                    var curr_year 	= data.getFullYear();
-                    if(curr_month<10){
-                        curr_month="0"+curr_month;
-                    }
-                    if(curr_date<10){
-                        curr_date="0"+curr_date;
-                    }
-                    var data1 = curr_year+"-"+curr_month+"-"+curr_date;
-                    datavaluess.push({
-                        dataElement: key,
-                        value: data1
-                    })
-                }
-                datavaluess.push({
-                    dataElement: key,
-                    value: data
-                })
-            })
-            var dhis2Event = {
-                program: program,
-                programStage: programStage,
-                status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
-                eventDate: $scope.savingDate,
-                dataValues: datavaluess
-            };
-            $scope.currentSaving = true;
-            $.postJSON = function(url, data, callback,failureCallback) {
-                return jQuery.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'admin':'district'
-                    },
-                    'type': 'POST',
-                    'url': url,
-                    'data': JSON.stringify(data),
-                    'dataType': 'json',
-                    'success': callback,
-                    'failure':failureCallback
-                });
-            };
-            $.postJSON('../../../api/events',dhis2Event,function(response){
-                $scope.AddDriver(value1,response.importSummaries[0].reference);
-            },function(response){
-                alert("failed");
-            });
-            }
 //
         $scope.addLicenceInfo = function(value,driverId){
             var program = $scope.data.programs['Driver License History'].id;
@@ -399,7 +364,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 //                if(prog.id == )
 
             });
-            $scope.editingPerson = events.dataValues['Program_Person'].Person;
             $scope.editingEvent = events;
         }
 
@@ -464,7 +428,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //display a model to view accidents
         $scope.ViewAccident = function(dhis2Event){
-            var itemOfInterest = $scope.data.programs['Accident'];
+            var itemOfInterest = $scope.getRelatedObjects(dhis2Event.event,'Accident Vehicle');
             var modalInstance = $modal.open({
                 templateUrl: 'views/accidents.html',
                 controller: 'DriverAccidentController',
@@ -597,9 +561,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         'failure':failureCallback
                     });
                 };
-                $.postJSON('../../../api/events/' + updatedSingleValueEvent.event ,updatedSingleValueEvent,function(response){
+                $.postJSON('../../../api/events/' + updatedSingleValueEvent.event ,updatedFullValueEvent,function(response){
                     console.log(response)
                 },function(response){
+
                 });
 
 //                    DHIS2EventFactory.updateForSingleValue(updatedSingleValueEvent, updatedFullValueEvent).then(function(data){
@@ -651,6 +616,36 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }
             });
             return counter;
+        }
+
+        $scope.prepareOneEvent = function(dataelements,datas){
+            var event = datas.event;
+            var program1 = datas.program;
+            var programstage = datas.programStage;
+            var orgunit = datas.orgUnit;
+            var orgunitName = datas.orgUnitName;
+            var eventDate = datas.eventDate;
+            var datavalues = {};
+            angular.forEach(dataelements, function (dataVal) {
+                var dataelement = {};
+                datavalues[dataVal.dataElement.name] = {}
+                dataelement.id = dataVal.dataElement.id;
+                dataelement.name = dataVal.dataElement.name;
+                dataelement.type = dataVal.dataElement.type;
+                dataelement.sortOrder = dataVal.sortOrder;
+                if(dataVal.dataElement.optionSet){
+                    dataelement.optionSet = dataVal.dataElement.optionSet;
+                }
+
+                angular.forEach(datas.dataValues, function (newDatval) {
+                    if (newDatval.dataElement == dataVal.dataElement.id) {
+                        dataelement.value = newDatval.value;
+                    }
+                })
+                datavalues[dataVal.dataElement.name] =  dataelement;
+            })
+            return {event: event, program: program1, programStage: programstage, orgUnit: orgunit, orgUnitName: orgunitName, eventDate: eventDate, dataValues: datavalues};
+
         }
 
 
