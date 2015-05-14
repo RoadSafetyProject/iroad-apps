@@ -35,10 +35,29 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             changeMonth: true,
             dateFormat: 'yy-mm-dd'
         };
+        $scope.feedBack = false;
+        $scope.progresMessage = false;
+        $scope.showFeedback = function(data){
+            $scope.messagess = data;
+            $scope.feedBack = true;
+
+            $timeout( function(){
+                $scope.feedBack = false;
+            }, 3000);
+        }
+        $scope.showProgresMessage = function(data){
+            $scope.progresMessagess = data;
+            $scope.progresMessage = true;
+        }
+        $scope.hideProgresMessage = function(){
+            $scope.progresMessagess = "";
+            $scope.progresMessage = false;
+        }
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
         $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
             var resultProg = data.programs;
@@ -52,10 +71,17 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             });
 //            $scope.data.programs = data.programs;
             angular.forEach($scope.data.programs,function(program){
+                if($scope.data.programs['Driver'].id == program.id){
+                    $scope.showProgresMessage('Loading Drivers.....')
+                }
                 program.dataValues = {};
                 program.dataValues.events = [];
                 $http.get('../../../api/events.json?program='+program.id).success(function(data){
+                    if($scope.data.programs['Driver'].id == program.id){
+                        $scope.hideProgresMessage();
+                    }
                     if(data.events){
+
                         angular.forEach(data.events,function(datas){
                             var event = datas.event;
                             var program1 = datas.program;
