@@ -10,14 +10,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
-    	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
+    	
     	$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.panel = {vehicle:false,driver : false,offences:false,edit:false,payment:false};
         $scope.show = function(panel){
         	$scope.normalStyle= { "z-index": '10'};
-            $scope.normalClass= "mws-panel grid_6";
+        	if(panel != "offences"){
+        		$scope.normalClass= "mws-panel grid_6";
+        	}else{
+        		$scope.normalClass= "mws-panel grid_8";
+        	}
         	for(var key in $scope.panel){
         		$scope.panel[key] = false;
         	}
@@ -25,11 +29,22 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         }
         $scope.data = {};
         $scope.onInitialize = function(){
+        	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         	$scope.offenceEventModal.getAll(function(result){
         		console.log("Result:" + JSON.stringify(result));
 				$scope.data.offences = result;
 				$scope.$apply();
+				var registries = new iroad2.data.Modal("Offence Registry",[]);
+	        	registries.getAll(function(result){
+					$scope.data.registries = result;
+					$scope.$apply();
+				});
 			});
+        	/*var registries = new iroad2.data.Modal("Offence Registry",[]);
+        	registries.getAll(function(result){
+				$scope.data.registries = result;
+				$scope.$apply();
+			});*/
         }
         dhisConfigs.onLoad = function(){
 			$scope.onInitialize();
@@ -135,7 +150,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			return false;
 		}
 		$scope.is = function(key,dataType){
-			for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+			for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
 				if(iroad2.data.dataElements[j].name == key){
 					if(iroad2.data.dataElements[j].type == dataType){
 						return true;
@@ -149,7 +164,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			return $scope.is(key,"bool");
 		}
 		$scope.hasDataSets = function(key){
-			for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+			for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
 				if(iroad2.data.dataElements[j].name == key){
 					return (iroad2.data.dataElements[j].optionSet != undefined);
 				}
@@ -157,7 +172,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			return false;
 		}
 		$scope.getOptionSets = function(key){
-			for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+			for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
 				if(iroad2.data.dataElements[j].name == key){
 					return iroad2.data.dataElements[j].optionSet.options;
 				}
@@ -167,7 +182,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.filterObject = function(object,fields){
 			con:
 			for(var key in object){
-				for(j = 0 ;j < fields.length;j++){
+				for(var j = 0 ;j < fields.length;j++){
 					if(fields[j] == key){
 						delete object[key];
 						continue con;
@@ -232,7 +247,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             $scope.editingEvent = event;
             for (var key in event) {
             	if(Array.isArray(event[key])){
-            		console.log(key + " Event:" + JSON.stringify(event));
             		$scope.multiselectBools[key] = $scope.isManyRelation(key);
             	}else if(typeof event[key] == "object") {
             		var program = $scope.offenceEventModal.getProgramByName(key);
@@ -248,22 +262,34 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                     });
             	}
             }
+            $scope.editInputModal = [];
+            angular.forEach($scope.data.registries, function (registry) {
+            	registry.selected = false;
+            	angular.forEach($scope.editingEvent.Offence, function (off) {
+            		if(off.Offence_Registry.id == registry.id){
+            			registry.selected = true;
+            		}
+                });
+            	$scope.editInputModal.push(registry);
+            	console.log(key + " Registries:" + JSON.stringify($scope.editInputModal));
+            });
             /*var out = {};
             var program = $scope.offenceEventModal.getProgramByName($scope.offenceEventModal.getModalName());
-            console.log("Program:" + JSON.stringify(program));
+            console.log("Event:" + JSON.stringify(event));
     		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
     			
     			if(event[dataElement.dataElement.name]){
     				
     				if(Array.isArray(event[dataElement.dataElement.name])){
                 		$scope.multiselectBools[key] = $scope.isManyRelation(key);
-                		out[dataElement.name] = event[dataElement.dataElement.name]
+                		out[dataElement.dataElement.name] = event[dataElement.dataElement.name]
                 	}else if(typeof event[dataElement.dataElement.name] == "object") {
+                		alert("here1");
                 		var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name);
                 		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
                             if (dataElement2.dataElement.code) {
                             	if(dataElement2.dataElement.code.startsWith("id_")){
-                            		
+                            		alert("here");
                     				out[dataElement2.dataElement.name] = event[dataElement.dataElement.name][dataElement2.dataElement.name];
                     				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
                     				$scope.watchEditing(program2,dataElement2.dataElement);
@@ -272,68 +298,72 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                             }
                         });
                 	}else{
-                		console.log("DataElement:" + JSON.stringify(event[dataElement.dataElement.name]));
-                		out[dataElement.name] = event[dataElement.dataElement.name];
+                		out[dataElement.dataElement.name] = event[dataElement.dataElement.name];
                 	}
+    			}else{
+    				if(dataElement.dataElement.name.startsWith("Program_")){
+    					var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name.replace("Program_",""));
+                		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
+                            if (dataElement2.dataElement.code) {
+                            	if(dataElement2.dataElement.code.startsWith("id_")){
+                    				out[dataElement2.dataElement.name] = "";
+                    				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
+                    				$scope.watchEditing(program2,dataElement2.dataElement);
+                    				//delete $scope.editingEvent[key];
+                    			}
+                            }
+                        });
+    				}
     			}
-            });
-    		console.log("Output:" + JSON.stringify(out));
-    		$scope.editingEvent = out;*/
+            });*/
+    		
+    		//$scope.editingEvent = out;
+    		console.log("Output:" + JSON.stringify($scope.editingEvent));
         }
-		
+		$scope.data.editingOutputModal = [];
 		$scope.save = function(){
 			angular.forEach($scope.savableEventData, function (savableData) {
-				if(typeof savebleData.value == "object"){
-					
-				}
-            	/*delete $scope.editingEvent[savableData.name];
-            	$scope.editingEvent[savableData.key] = savableData.value;*/
+				delete $scope.editingEvent[savableData.name];
+            	$scope.editingEvent[savableData.key] = savableData.value;
             });
 			
-			/*var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
+			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
-			
-			console.log("Saving this:" + JSON.stringify($scope.editingEvent));
 			$scope.offenceEventModal.save($scope.editingEvent,otherData,function(result){
 				console.log("Save Made Result:" + JSON.stringify(result));
 				if(!result.updatedEvent){
-					alert("Reached Here");
 					$scope.editingEvent.id = result.importSummaries[0].reference;
 				}
-				for(var key in $scope.editingEvent){
-					var relationships = $scope.offenceEventModal.getRelationships();
-					for(var z = 0;z < relationships.length;z++) {
-						var relationship = relationships[z];
-						if(relationship.pivot){
-							if(relationship.pivot == key){
-								var pivotProgram = new iroad2.data.Modal(relationship.pivot,[]);
-								var saveDataArray = [];
-								angular.forEach($scope.editingEvent[key], function (relationNameValue) {
-									var saveData = {};
-									saveData[$scope.offenceEventModal.getModalName()] = $scope.editingEvent;
-									saveData[relationship.name] = relationNameValue;
-									saveDataArray.push(saveData);
-					            });
-								
-								console.log("Saving Relation:" + JSON.stringify(saveDataArray));
-								pivotProgram.save(saveDataArray,otherData,function(result){
-									console.log("Relation Save Made Result:" + JSON.stringify(result));
-								},function(error){
-									console.log("Error Saving Relation:" + JSON.stringify(error));
-								},pivotProgram.getModalName());
-							}
-						}
-					}
-				}
+				var saveDataArray = [];
+				console.log("$scope.editingOutputModal:"+JSON.stringify($scope.data.editingOutputModal));
+				angular.forEach($scope.data.editingOutputModal,function(registry){
+					var off = {
+							"Offence_Event":{"id": $scope.editingEvent.id},
+							"Offence_Registry":{"id":registry.id}
+						};
+					console.log("Saving Offence Off:"+JSON.stringify(off));
+					saveDataArray.push(off);
+					console.log("Saving Offence:"+JSON.stringify(saveDataArray));
+				});
+				//console.log("Saving Offence:"+JSON.stringify(saveDataArray));
+				var offence = new iroad2.data.Modal("Offence",[]);
+				offence.save(saveDataArray,otherData,function(result){
+					$scope.offences.push($scope.editingEvent);
+					$scope.$apply();
+					console.log("Relation Save Made Result:" + JSON.stringify(result));
+				},function(error){
+					console.log("Error Saving Relation:" + JSON.stringify(error));
+				},offence.getModalName());
 			},function(error){
 				console.log("Error Saving:" + JSON.stringify(error));
 			},$scope.offenceEventModal.getModalName());
-			$scope.cancelEdit();*/
+			$scope.cancelEdit();
         }
 		$scope.cancelEdit = function(){
-			$scope.normalClass= "mws-panel grid_8";
-            $scope.editing = "false";
+			
+            $scope.show("");
+            $scope.normalClass= "mws-panel grid_8";
         }
 		$scope.watchEditing = function(program,dataElement){
 			$scope.$watch("editingEvent['"+dataElement.name+"']", function (newValue, oldValue) {
