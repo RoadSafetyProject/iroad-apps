@@ -1,4 +1,6 @@
 CACHE MANIFEST
+
+CACHE:
 ../../../dhis-web-commons/javascripts/jQuery/jquery.min.js
 ../../../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js
 ../../../dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js
@@ -39,13 +41,18 @@ CACHE MANIFEST
 ../../../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js
 ../../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js
 ../../../dhis-web-commons/ouwt/ouwt.js
-scripts/event-capture.js
 ../../../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js
 ../../../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js
 ../../../dhis-web-commons/javascripts/angular/plugins/dhis2/directives.js
 ../../../dhis-web-commons/javascripts/angular/plugins/dhis2/filters.js
 ../../../dhis-web-commons/javascripts/angular/plugins/dhis2/services.js
 ../../../dhis-web-commons/javascripts/angular/plugins/dhis2/controllers.js
+../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js
+../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.js
+../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js
+../../../dhis-web-commons/font-awesome/css/font-awesome.min.css
+../../../dhis-web-commons/css/widgets.css
+../../../dhis-web-commons/css/menu.css
 styles/angular-multi-select.css
 libraries/DataTables/media/js/jquery.dataTables.js
 libraries/angular-ui-date/src/date.js
@@ -53,21 +60,13 @@ scripts/angular-multi-select.js
 libraries/angular-datatables/dist/angular-datatables.js
 libraries/angular-aria/angular-aria.min.js
 libraries/angular/angular-messages.min.js
-libraries/highcharts-ng/src/highcharts-custom.js
-libraries/highcharts-ng/src/highcharts-ng.js
 styles/bootstrap.css
 styles/bootstrap-theme.css
 scripts/abn_tree_directive.js
-styles/abn_tree.css" rel="stylesheet" />
+styles/abn_tree.css
 libraries/angular-material/angular-material.min.js
 libraries/angular-material/angular-text.min.js
 libraries/angular-datatables/dist/angular-datatables.min.js
 scripts/angular-file-upload.min.js
 styles/style.css
 styles/autocomplete.css
-../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js
-../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.js
-../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js
-../../../dhis-web-commons/font-awesome/css/font-awesome.min.css
-../../../dhis-web-commons/css/widgets.css
-../../../dhis-web-commons/css/menu.css

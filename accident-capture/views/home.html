@@ -22,6 +22,7 @@
                 <th>Accident Registration Number</th>
                 <th>Area of Accident</th>
                 <th>Cause of Accident</th>
+                <th>Date</th>
                 <th> Action</th>
             </tr>
             </thead>
@@ -30,8 +31,9 @@
             <tr ng-repeat="accident in data.accidents">
                 <td>{{$index+1}}</td>
                 <td>{{ accident.Accident['Accident Registration Number'] }}</td>
-                <td>{{ accident.Accident['Area of Accident'] }}</td>
-                <td>{{ accident.Accident['Cause of Accident'] }}</td>
+                <td>{{ accident.Accident['Area of Accident']}}</td>
+                <td>{{ accident.Accident['Cause of Accident']}}</td>
+                <td>{{accident.Accident['Time of Accident'] | date:'dd MMM yyyy'}}</td>
                 <td>
                     <div class="btn-group dropdown">
                         <button type="button" class="btn btn-default">Action</button>
@@ -44,6 +46,7 @@
                             <li><a  ng-click="enableEdit(accident.Accident)">Edit</a> </li>
                             <li><a ng-click="showVehicle(accident)">View Vehicle(s) Involved</a> </li>
                             <li><a ng-click="showDriver(accident)">View Driver(s) Involved</a> </li>
+                            <li><a ng-click="showMedia()">View Accident Media</a> </li>
                             <li><a >Delete</a> </li>
                         </ul>
                     </div>
@@ -205,6 +208,35 @@
             </table>
         </div>
 
+    </div>
+
+</div>
+
+<div class="row" ng-class="normalClassMedia" ng-style="normalStyleMedia" ng-if="showingMedia" style="padding: 10px">
+
+
+    <div class="mws-panel grid_4">
+        <div class="mws-panel-header" style="height: 40px">
+            <span><i class="icon-file-xml"></i> Image</span>
+        </div>
+
+        <div class="mws-panel-body">
+            <img src="{{data.accident.Accident['Accident Image']}}" style="height: 300px !important" alt="Image">
+        </div>
+    </div>
+
+    <div class="mws-panel grid_4">
+        <div class="mws-panel-header"  style="height:40px">
+            <span><i class="icon-file-xml"></i> Video</span>
+        </div>
+
+        <div class="mws-panel-body">
+            <a href="{{data.accident.Accident['Accident Video']}}" style="display:block; height:300px;" id="player"></a>
+
+            <script language='javascript'>
+                flowplayer("player", "resources/js/flowplayer-3.1.5.swf");
+            </script>
+        </div>
     </div>
 
 </div>
