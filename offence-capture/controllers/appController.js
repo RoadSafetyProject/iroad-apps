@@ -232,7 +232,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			$scope.show("vehicle");
 			$scope.data.vehicle = vehicle;
 		}
-		$scope.enableEdit  = function(event){
+		$scope.enableEdit  = function(e){
 			if(iroad2.data.user.organisationUnits.length == 0){
 				alert("You cannot perform this action. You are not assigned an organisation unit.");
 				return;
@@ -244,8 +244,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                 }
             });
             $scope.savableEventData = [];
-            var e = event;
-            $scope.editingEvent = e;
+            var event = e;
+            $scope.editingEvent = event;
             for (var key in event) {
             	if(Array.isArray(event[key])){
             		$scope.multiselectBools[key] = $scope.isManyRelation(key);
