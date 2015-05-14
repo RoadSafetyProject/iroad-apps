@@ -745,7 +745,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //display a model to view accidents
         $scope.ViewAccident = function(dhis2Event){
-            var itemOfInterest = $scope.data.programs['Accident'];
+            var itemOfInterest = $scope.getRelatedObjects(dhis2Event.event,'Accident Vehicle');
             var modalInstance = $modal.open({
                 templateUrl: 'views/accidents.html',
                 controller: 'DriverAccidentController',
