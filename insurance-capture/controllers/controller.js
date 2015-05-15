@@ -150,6 +150,7 @@ eventCaptureControllers.controller('MainController',
 
             },insuranceCompanyModal.getModalName());
 
+            $scope.editing = false;
         }
 
         $scope.saveInsuredVehicle = function(){
@@ -174,6 +175,8 @@ eventCaptureControllers.controller('MainController',
                 $scope.UpdateFailure = true;
 
             },insuranceCompanyModal.getModalName());
+
+            $scope.register = false ;
 
         }
 
