@@ -1,78 +1,129 @@
 <style>
-
-    .my_table_td {
-        padding: 5px !important;
-        text-align: left;
-    }
-
-
-    .my_style_right{
-        text-align: right;
-        padding: 5px !important;
+    a:hover{
+        text-underline: none;
     }
 </style>
 
-<div layout="row" layout-sm="column" layout-align="center center"  style="margin-bottom: 20px;padding:10px">
+<div ng-class="normalClass" ng-style="normalStyle" style="margin-top: 50px !important;">
 
-    <img title="APPLICATION APPEARANCE CONFIGURATION" src="icon16.png" style="height: 25%px;width: 25%;border-radius: 50%"> <h3 style=" margin-left:8px ; color: #6fa2d1">APPLICATION APPEARANCE CONFIGURATION</h3>
-    <md-content>
+    <div class="panel-heading">
+        <h3>Insurance Capture <button ng-click="addNewCompany()" class="pull-right" style="font-size: 11px;height: 30px;border-bottom-width: 4px;"> Add New Company </button></h3>
+    </div>
 
-        <md-list>
-            <md-item>
-                <md-item-content>
-                    <div class="md-tile-left">
-                        <img src="img/tick_pic.jpg" style="height: 25%px;width: 25%px;border-radius: 50%">
+    <div class="mws-panel-header"  style="height: 48px !important;">
+        <span style="color: #fff0ff !important;"><i class="icon-table"></i> Insurance Companies Registered </span>
+    </div>
+
+    <div class="mws-panel-body no-padding">
+        <table datatable="ng" class="mws-datatable-fn mws-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th> Company Name</th>
+                <th>Company Type</th>
+                <th>Phone Number</th>
+                <th>Policy Period</th>
+                <th> Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="insurance in data.insurance">
+                <td>{{$index+1}}</td>
+                <td>{{ insurance['Company Name'] }}</td>
+                <td>{{ insurance['Company Type'] }}</td>
+                <td>{{ insurance['Phone Number']}}</td>
+                <td>{{insurance['Policy Period']}}</td>
+                <td>
+                    <div class="btn-group dropdown">
+                        <button type="button" class="btn btn-default">Action</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ng-click="ViewInsurance(insurance)">Info</a></li>
+                            <li><a  ng-click="enableEdit(insurance)">Edit</a> </li>
+                            <li><a  ng-click="InsureNewVehicle()">Insure Vehicle</a> </li>
+                        </ul>
                     </div>
-                    <div class="md-tile-content">
-                        <h3 style="color:#6fa2d1;font-weight: bold  ">Change Application Colors</h3>
-                        <h4>
-                            This part will help you change the outlook of every service Application in the System by using the color pallete.
-                        </h4>
-                    </div>
-                </md-item-content>
-            </md-item>
-            <md-item>
-                <md-item-content>
-                    <div class="md-tile-left">
-                        <img src="img/tick_pic.jpg" style="height: 25%px;width: 25%px;border-radius: 50%">
-                    </div>
-                    <div class="md-tile-content">
-                        <h3  style="color:#6fa2d1;font-weight: bold ">Application Names</h3>
-                        <h4>
-                            This part will help you rename all Applications in the system.
-                        </h4>
-                    </div>
-                </md-item-content>
-            </md-item>
-        </md-list>
-    </md-content>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
-<div class="panel-body">
-<div class="col-sm-12" id="listTable">
-    <table datatable="ng" class="table table-stripped">
-        <thead>
-        <tr>
-            <th class="my_table_td" ># </th>
-            <th class="my_table_td" >App Name</th>
-            <th class="my_table_td" >App Primary Color</th>
-            <th class="my_table_td" >App Secondary Color</th>
-            <th class="my_style_right" >Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="app in data.apps">
-            <td class="my_table_td" >{{ $index+1 }}</td>
-            <td class="my_table_td" >{{ app.name }}</td>
-            <td class="my_table_td" >{{ app.primary_color }}</td>
-            <td class="my_table_td" >{{ app.secondary_color }}</td>
-            <td class="my_style_right" >
-                <md-button title="View or Edit" class="md-hue-3 md-raised md-primary md-fab" style="height: 30px;width: 30px;padding: 4px" ng-click="showApp($event,app)"><i class="fa fa-info"></i>
-                </md-button>
+<div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="editing" >
+
+    <div class="mws-panel-header"  style="height: 48px !important;">
+        <span  style="color: #fff0ff !important;"><i class="icon-table"></i>
+           <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
+        </span>
+    </div>
+    <div class="mws-panel-body no-padding">
+
+    <table class="mws-datatable-fn mws-table">
+        <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
+            <td >
+                <label>{{key}}</label><br>
+
+                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control input-sm"/>
+                <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control input-sm" />
+                <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control input-sm">
+                    <option value="true">Yes</option><option value="false">No</option>
+                </select>
+                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEvent[key]"/>
+
             </td>
         </tr>
-        </tbody>
+        <tr>
+            <td>
+                <span class="pull-left" ng-if="CurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Saving... </span>
+                <span class="pull-left text-success" ng-if="UpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saving Successful </span>
+                <span class="pull-left text-danger" ng-if="UpdateFailure"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                <button class="btn btn-sm btn-primary pull-right" ng-click="save(editingEvent)">Save </button>
+            </td>
+        </tr>
     </table>
 
+ </div>
 </div>
+
+<div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="register" >
+
+    <div class="mws-panel-header"  style="height: 48px !important;">
+        <span  style="color: #fff0ff !important;"><i class="icon-table"></i>
+           <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
+        </span>
+    </div>
+    <div class="mws-panel-body no-padding">
+
+        <table class="mws-datatable-fn mws-table">
+            <tr  class="todelete"  ng-repeat="(key, value) in editingEventInsured">
+                <td >
+                    <label>{{key}}</label><br>
+                    <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm"/>
+                    <input ng-if="isInteger(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm" />
+                    <select  ng-if="isBoolean(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm">
+                        <option value="true">Yes</option><option value="false">No</option>
+                    </select>
+                    <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                    <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEventInsured[key]"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="pull-left" ng-if="CurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Saving... </span>
+                    <span class="pull-left text-success" ng-if="UpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saving Successful </span>
+                    <span class="pull-left text-danger" ng-if="UpdateFailure"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                    <button class="btn btn-sm btn-primary pull-right" ng-click="saveInsuredVehicle(editingEventInsured)">Save </button>
+                </td>
+            </tr>
+        </table>
+
+    </div>
 </div>
