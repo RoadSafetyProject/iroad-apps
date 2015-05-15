@@ -13,24 +13,28 @@
     <table class="table" datatable="ng">
         <thead>
         <tr>
-            <th>Type</th>
             <th>Date</th>
+            <th>Type</th>
+            <th>Class</th>
             <th>Area of Accident</th>
             <th>Cause of Accident</th>
             <th>Fatal Injuries</th>
             <th>Severe Injuries</th>
             <th>Simple Injuries</th>
+            <th>Vehicle</th>
         </tr>
         </thead>
         <tbody>
-           <tr data-ng-repeat="events in data.programs['Accident'].dataValues.events">
-              <td>{{ events.dataValues['Accident Type'].value }}</td>
-              <td>{{ events.dataValues['Time of Accident'].value }}</td>
-              <td>{{ events.dataValues['Area of Accident'].value }}</td>
-              <td>{{ events.dataValues['Cause of Accident'].value }}</td>
-              <td>{{ events.dataValues['Number of Fatal Injuries'].value }}</td>
-              <td>{{ events.dataValues['Number of Severe Injuries'].value }}</td>
-              <td>{{ events.dataValues['Number of Simple Injuries'].value }}</td>
+           <tr data-ng-repeat="event in events">
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Time of Accident'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Accident Type'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Accident Class'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Area of Accident'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Cause of Accident'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Number of Fatal Injuries'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Number of Severe Injuries'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Number of Simple Injuries'].value }}</td>
+               <td>{{ event.dataValues['Program_Vehicle'].Vehicle.dataValues['Vehicle Plate Number'].value }}</td>
            </tr>
         </tbody>
     </table>
