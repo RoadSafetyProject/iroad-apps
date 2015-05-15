@@ -1,76 +1,88 @@
 <style>
-    .entry{
-        border: 0px;
-        border-bottom-style:solid ;
-        border-bottom-color:#767678;
-        border-bottom-width:1px ;
-        width: 100%;
-        border-bottom-right-radius: 8px;
-        border-bottom-left-radius: 8px;
-        background-color: #ffffff;
-        margin-bottom: 10px;
-    }.entry:focus{
-         border-bottom-width:2px ;
-         border-bottom-right-radius: 0px;
-         border-bottom-left-radius: 0px;
-         border-bottom-color:#000000;
-     }
-    p{
-        color: #000000;
-        margin-bottom: 10px;
-        margin-top: 10px;
-    }
-    .multiSelect img {
-        vertical-align: middle;
-        margin-bottom: 0px;
-        height: 22px;
-        width: 42px;
-    }b{
-         color: #084646;
-     }
+.modal-dialog{
+    width: 80%;
+}
+
+.entry{
+    border: 0px;
+    border-bottom-style:solid ;
+    border-bottom-color:#767678;
+    border-bottom-width:1px ;
+    border-top-width:0px ;
+    width: 100%;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+
+}.entry:focus{
+     border-bottom-width:2px ;
+     border-bottom-right-radius: 0px;
+     border-bottom-left-radius: 0px;
+     border-bottom-color:#000000;
+ }
+p{
+    color: #000000;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.multiSelect img {
+    vertical-align: middle;
+    margin-bottom: 0px;
+    height: 22px;
+    width: 42px;
+}b{
+     color: #084646;
+ }
+
 </style>
 
+<div class="modal-header">
+    <span style="color: #000000"><i class="icon-table" style="padding-right: 3px"></i><strong>{{dhis2Event['Company Name']}}</strong></span>
+</div>
 
-<md-dialog aria-label="Mango (Fruit)" layout="row" layout-sm="column">
-
-    <md-toolbar flex = "33" class="md-theme-light" style="background-color:#B39DDB !important">
-        <h1 class="md-toolbar-tools">{{insurance['Company Name']}} Details.</h1>
-    </md-toolbar>
-
-
-    <div flex="66" class="col-sm-12" style="margin-top: 15px;margin-bottom: 15px;">
-
-        <form name="insuranceForm" novalidate>
-            <div class="col-xs-12">
-                <div class="col-xs-12"><b>Company Name:</b> <input type="text" class="entry" ng-model="insurance['Company Name']" required/></div>
-            </div>
-            <div class="col-xs-12">
-                <div class="col-xs-6"><b>Principal Officer:</b> <input type="text" class="entry" ng-model="insurance['Principal Officer']" required/></div>
-                <div class="col-xs-6"><b>Insurance Type:</b> <input type="text" class="entry" ng-model="insurance['Company Type']" required/></div>
-            </div>
-            <div class="col-xs-12">
-                <div class="col-xs-6"><b>Policy Number:</b> <input type="text" class="entry" ng-model="insurance['Policy Number']" required/></div>
-                <div class="col-xs-6"><b>Policy Period:</b> <input type="text" class="entry" ng-model="insurance['Policy Period']" required/></div>
-            </div>
-
-            <div class="col-xs-12">
-                <div class="col-xs-6"><b>Postal Box:</b> <input type="text" class="entry" ng-model="insurance['Postal Address']" required/></div>
-                <div class="col-xs-6"><b>Address:</b> <input type="text" class="entry" ng-model="insurance['Postal Address']" required/></div>
-            </div>
-
-            <div class="col-xs-12">
-                <div class="col-xs-6"><b>Phone Number:</b> <input type="text" class="entry" ng-model="insurance['Phone Number']" required/></div>
-                <div class="col-xs-6"><b>Fax:</b> <input type="text" class="entry" ng-model="insurance['Fax']" /></div>
-            </div>
-            <div class="col-xs-12">
-                <div class="col-xs-6"><b>Website:</b> <input type="text" class="entry" ng-model="insurance['Website']" /></div>
-                <div class="col-xs-6"><b>Email:</b> <input type="email" class="entry" ng-model="insurance['Email']" /></div>
-            </div>
-
-        </form>
-
-    </div>
+<div class="modal-body page" style="font-size: 12px;padding-left: 40px !important;padding-right: 40px !important;">
 
 
 
-</md-dialog>
+<div class="mws-panel-body">
+
+<form>
+
+<div class="col-xs-12">
+    <div class="col-xs-12"><b>Company Name:</b> <input type="text" class="entry" value="{{dhis2Event['Company Name']}}"/></div>
+</div>
+<div class="col-xs-12">
+    <div class="col-xs-6"><b>Principal Officer:</b> <input type="text" class="entry" value="{{dhis2Event['Principal Officer']}}" /></div>
+    <div class="col-xs-6"><b>Insurance Type:</b> <input type="text" class="entry" value="{{dhis2Event['Company Type']}}"/></div>
+</div>
+<div class="col-xs-12">
+    <div class="col-xs-6"><b>Policy Number:</b> <input type="text" class="entry" value="{{dhis2Event['Policy Number']}}" /></div>
+    <div class="col-xs-6"><b>Policy Period:</b> <input type="text" class="entry" value="{{dhis2Event['Policy Period']}}" /></div>
+</div>
+<div class="col-xs-12">
+    <div class="col-xs-6"><b>Postal Box:</b> <input type="text" class="entry" value="{{dhis2Event['Postal Box']}}" /></div>
+    <div class="col-xs-6"><b>Address:</b> <input type="text" class="entry" value="{{dhis2Event['Address']}}" /></div>
+</div>
+<div class="col-xs-12">
+    <div class="col-xs-6"><b>Phone Number:</b> <input type="text" class="entry" value="{{dhis2Event['Phone Number']}}" /></div>
+    <div class="col-xs-6"><b>Fax:</b> <input type="text" class="entry" value="{{dhis2Event['Fax']}}" /></div>
+</div>
+<div class="col-xs-12">
+    <div class="col-xs-6"><b>Website:</b> <input type="text" class="entry" value="{{dhis2Event['Website']}}" /></div>
+    <div class="col-xs-6"><b>Email:</b> <input type="email" class="entry" value="{{dhis2Event['Email']}}" /></div>
+</div>
+
+
+<div class="panel-body">
+
+    <table class="table table-bordered table-striped " style="visibility: collapse"></table>
+
+</div>
+
+
+</form>
+
+</div>
+
+</div>
