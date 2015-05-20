@@ -1,0 +1,81 @@
+<div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1200;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="feedBack">{{ messagess }}</div>
+<div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="progresMessage">{{ progresMessagess }}</div>
+
+<div class="row" style="margin-top: 90px">
+    <div class="col-sm-12" ng-app="mapComponentsApp">
+        <div class="google-map" todo-maps="" latitude="43.074688" longitude="-89.384294"></div>
+
+        <script type="text/html" id="todosControlTemplate">
+            <section class="pure-u-1-6 map-control">
+                <header>
+                    <h3>Todo Maps</h3>
+                    <small>Double click todo title or marker to edit.</small>
+                    <div class="pure-menu pure-menu-open pure-menu-horizontal">
+                        <ul>
+                            <li ng-class="{'pure-menu-selected': location.path() == '/'} "><a href="#/">All</a></li>
+                            <li ng-class="{'pure-menu-selected': location.path() == '/active'}"><a href="#/active">Active</a></li>
+                            <li ng-class="{'pure-menu-selected': location.path() == '/completed'}"><a href="#/completed">Completed</a></li>
+                        </ul>
+                    </div>
+                </header>
+                <section ng-show="todos.filtered().length">
+                    <ul>
+                        <li ng-repeat="todo in todos.filtered()" ng-class="{completed: todo.completed}">
+                            <div>
+                                <input type="checkbox" ng-model="todo.completed">
+                                <label
+                                        ng-click="controls.openInfoWindowByTodoId(todo.id)"
+                                        ng-dblclick="controls.editTodoById(todo.id)">{{todo.title}}</label>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+                <footer>
+        <span ng-show="todos.remainingCount()">
+          <strong>{{todos.remainingCount()}}</strong>
+          <span ng-pluralize count="todos.remainingCount()" when="{ one: 'item left', other: 'items left' }"></span>
+        </span>
+                    <hr />
+                    <button class="pure-button" ng-click="todos.prune()" ng-show="todos.remainingCount() < todos.items.length">
+                        Clear completed ({{todos.items.length - todos.remainingCount()}})
+                    </button>
+                    <button class="pure-button pure-button-success" ng-click="controls.newTodo()" ng-hide="controls.editTodo">New Todo</button>
+                </footer>
+            </section>
+        </script>
+
+        <script type="text/html" id="infoWindowTemplate">
+            <div class="google-map">
+                <h3>{{infow.data.title}}</h3>
+                <p ng-show="infow.data.desc">{{infow.data.desc}}</p>
+                <div style="clear: both;"></div>
+            </div>
+        </script>
+
+        <script type="text/html" id="editTodoControlTemplate">
+            <div class="pure-u-1-6 map-control" ng-show="controls.editTodo" ng-controller="EditTodoCtrl">
+                <form name="editTodoForm" class="pure-form" ng-submit="submitTodo()">
+                    <fieldset>
+                        <label for="title">Title:</label>
+                        <input id="title" class="pure-input-1" type="text" ng-model="editTodo.title" ng-maxlength="30" required>
+                        <label for="description">Description:</label>
+                        <input id="description" class="pure-input-1" type="text" ng-model="editTodo.desc">
+                        <label for="latitude">Latitude:</label>
+                        <input id="latitude" class="pure-input-1" type="text" ng-model="editTodo.lat">
+                        <label for="longitude">Longitude:</label>
+                        <input id="longitude" class="pure-input-1" type="text" ng-model="editTodo.lng">
+                        <div ng-show="editTodo.id !== -1">
+                            <label for="completed">Completed:</label>
+                            <input id="completed" type="checkbox" ng-model="editTodo.comp">
+                        </div>
+                        <button class="pure-button pure-button-primary pure-input-1" type="submit">{{editTodo.saveMsg}}</button>
+                        <button class="pure-button pure-input-1" ng-click="resetCloseTodoForm()">{{editTodo.cancelMsg}}</button>
+                    </fieldset>
+                </form>
+            </div>
+        </script>
+
+
+    </div>
+</div>
+</div>

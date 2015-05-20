@@ -1,0 +1,45 @@
+<style>
+    .modal-dialog{
+        margin-left: 8%;
+        margin-right: 8%;
+        width: 84%
+    }
+</style>
+<div class="modal-header page">
+    <h3>Accidents Involving {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</h3>
+</div>
+
+<div class="modal-body page">
+    <table class="table" datatable="ng">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Class</th>
+            <th>Area of Accident</th>
+            <th>Cause of Accident</th>
+            <th>Fatal Injuries</th>
+            <th>Severe Injuries</th>
+            <th>Simple Injuries</th>
+            <th>Vehicle</th>
+        </tr>
+        </thead>
+        <tbody>
+           <tr data-ng-repeat="event in events">
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Time of Accident'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Accident Type'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Accident Class'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Area of Accident'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Cause of Accident'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Number of Fatal Injuries'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Number of Severe Injuries'].value }}</td>
+              <td>{{ event.dataValues['Program_Accident'].Accident.dataValues['Number of Simple Injuries'].value }}</td>
+               <td>{{ event.dataValues['Program_Vehicle'].Vehicle.dataValues['Vehicle Plate Number'].value }}</td>
+           </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer page">
+    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
+</div>
