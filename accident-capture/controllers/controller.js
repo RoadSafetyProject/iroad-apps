@@ -104,7 +104,7 @@ eventCaptureControllers.controller('MainController',
             });
 
         //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
+            var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
             var saveEvent = $scope.editingEvent;
             accidentEventModal.save(saveEvent,otherData,function(result){
             //console.log("Update Made:" + JSON.stringify(result));
@@ -485,7 +485,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
         });
 
     //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Time of Accident']};
+        var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Time of Accident']};
         var saveEvent = $scope.editingEvent;
 
     //console.log("Save Made:" + JSON.stringify(saveEvent));
@@ -676,19 +676,19 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
 
-    //console.log("Saving Data:" + JSON.stringify(saveEvent));
+    console.log("Saving Data:" + JSON.stringify(saveEvent));
 
         accidentVehicleEventModal.save(saveEvent,otherData,function(result){
             $scope.VehicleCurrentSaving = false;
             $scope.VehicleSavingSuccess = true;
             $scope.VehicleSavingFailure = false;
 
-            //console.log("Save Made:" + JSON.stringify(result));
+            console.log("Save Made:" + JSON.stringify(result));
             result['accident_id'] = $scope.accident_reg_id ;
             $scope.close();
             $scope.addAccidentPassenger(result);
@@ -869,7 +869,7 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
@@ -1062,7 +1062,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;

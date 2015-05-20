@@ -134,11 +134,11 @@ eventCaptureControllers.controller('MainController',
                 $scope.editingEvent[savableData.key] = savableData.value;
             });
 
-        //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
+            console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
+            var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
             var saveEvent = $scope.editingEvent;
             insuranceCompanyModal.save(saveEvent,otherData,function(result){
-            //console.log("Update Made:" + JSON.stringify(result));
+            console.log("Update Made:" + JSON.stringify(result));
                 $scope.CurrentSaving = false;
                 $scope.UpdatedSuccess = true;
                 $scope.UpdateFailure = false;
@@ -150,7 +150,7 @@ eventCaptureControllers.controller('MainController',
 
             },insuranceCompanyModal.getModalName());
 
-            $scope.editing = false;
+            $scope.editing = false;$scope.normalClass= "mws-panel grid_8";
         }
 
         $scope.saveInsuredVehicle = function(){
@@ -161,7 +161,7 @@ eventCaptureControllers.controller('MainController',
             });
 
 
-            var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEventInsured['Accident Date']};
+            var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEventInsured['Accident Date']};
             var saveEvent = $scope.editingEventInsured;
             insuranceCompanyModal.save(saveEvent,otherData,function(result){
                 //console.log("Update Made:" + JSON.stringify(result));
@@ -176,7 +176,7 @@ eventCaptureControllers.controller('MainController',
 
             },insuranceCompanyModal.getModalName());
 
-            $scope.register = false ;
+            $scope.register = false ;$scope.normalClass= "mws-panel grid_8";
 
         }
 
