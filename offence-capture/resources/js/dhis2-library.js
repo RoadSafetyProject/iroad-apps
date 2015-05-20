@@ -142,6 +142,7 @@ iroad2.data.SearchCriteria = function (dataElementName,operator,value) {
  *	var driver = new iroad2.data.Modal("Driver",[{name:"Offence Event",type:"MANY_MANY",pivot:"Offence"}]);
  */
 iroad2.data.Modal = function (modalName,relations) {
+	
 	//Set self to get refference of this object
 	self = this;
 	//Set the modal name
@@ -162,7 +163,7 @@ iroad2.data.Modal = function (modalName,relations) {
 	 * @return {iroad2.data.Relation[]} modal name
 	 */
 	this.getRelationships = function(){
-		return relations;
+		return self.relations;
 	}
 	/**
 	 * Get a program from the list of iroad2 programs by its name
@@ -173,7 +174,7 @@ iroad2.data.Modal = function (modalName,relations) {
 	 */
 	this.getProgramByName = function(name){
 		name = name.replace("_"," ");
-		for(i = 0;i < iroad2.data.programs.length;i++){
+		for(var i = 0;i < iroad2.data.programs.length;i++){
 			if(iroad2.data.programs[i].name == name){
 				return iroad2.data.programs[i];
 			}
@@ -187,7 +188,7 @@ iroad2.data.Modal = function (modalName,relations) {
 	 * @return {object} The data element as a jsonObject
 	 */
 	this.getDataElement = function(id) {
-		for (i = 0; i < iroad2.data.dataElements.length; i++) {
+		for(var i = 0; i < iroad2.data.dataElements.length; i++) {
 			if (iroad2.data.dataElements[i].id == id) {
 				return iroad2.data.dataElements[i];
 			}
@@ -201,7 +202,7 @@ iroad2.data.Modal = function (modalName,relations) {
 	 * @return {object} The data element as a jsonObject
 	 */
 	this.getDataElementByName = function(name) {
-		for (i = 0; i < iroad2.data.dataElements.length; i++) {
+		for(var i = 0; i < iroad2.data.dataElements.length; i++) {
 			if (iroad2.data.dataElements[i].name == name) {
 				return iroad2.data.dataElements[i];
 			}
@@ -228,7 +229,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		//Get events of the program from the server
 		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result){
-			for (j = 0; j < result.events.length; j++) {//For each event render to entity column json
+			for(var j = 0; j < result.events.length; j++) {//For each event render to entity column json
 				var event = result.events[j];
 				selfGetAll.resCount.push(1);
 				
@@ -276,9 +277,9 @@ iroad2.data.Modal = function (modalName,relations) {
 		
 		//Get events of the program from the server
 		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result2){
-			for (j = 0; j < result2.events.length; j++) {//For each event render to entity column json
+			for(var j = 0; j < result2.events.length; j++) {//For each event render to entity column json
 				var event = result2.events[j];
-				for (k = 0; k < event.dataValues.length; k++) {
+				for(var k = 0; k < event.dataValues.length; k++) {
 					if(event.dataValues[k].value == criteria.value){//Checks the conditions provided
 						
 						selfGet.getCount.push(1);
@@ -364,8 +365,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			}
 		}
 		this.object["id"] = event.event;
-		
-		for (k = 0; k < event.dataValues.length; k++) {
+		for(var k = 0; k < event.dataValues.length; k++) {
 			
 			var dataValue = event.dataValues[k];
 			var dataElement = self.getDataElement(dataValue.dataElement);
@@ -385,13 +385,13 @@ iroad2.data.Modal = function (modalName,relations) {
 		//Add relations to the object as specified by the relations
 		//
 		
-		for (k = 0; k < relations.length; k++) {//For each relation
+		for(var k = 0; k < relations.length; k++) {//For each relation
 			var relation = relations[k];
 			var programModal = null;
 			
 			if(relation.type == "ONE_MANY"){//If relationship is one to many
 				programModal = new iroad2.data.Modal(relation.name, []);
-			}else if(relation.isManyToMany()){//If relationship is many to many
+			}else if(relation.type == "MANY_MANY"){//If relationship is many to many
 				programModal = new iroad2.data.Modal(relation.pivot, [new iroad2.data.Relation(relation.name)]);
 				//Create modal with one to many relation with the pivot entity
 				/*programModal = new iroad2.data.Modal(relation.pivot, [{
@@ -489,18 +489,17 @@ iroad2.data.Modal = function (modalName,relations) {
 		if(Array.isArray(data)){
 			var events = [];
 			
-			for(count = 0; count < data.length;count++){
+			for(var count = 0; count < data.length;count++){
 				events.push(self.convertToEvent(savingModal,data[count],otherData));
 			}
 			sendData.events = events;
 		}else{
 			sendData = self.convertToEvent(savingModal,data,otherData);
 		}
-		
 		//var event = self.convertToEvent(data);
 		if(sendData.event){
+			console.log("Updating Data "+savingModal+":" + JSON.stringify(sendData));
 			saveUrl += "/" +sendData.event;
-			alert("here");
 			http.put(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
 			},function(results){
@@ -508,7 +507,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			});
 			//delete sendData.event;
 		}else{
-			console.log("Saving Data:" + JSON.stringify(sendData));
+			console.log("Saving Data "+savingModal+":" + JSON.stringify(sendData));
 			http.post(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
 			},function(results){
