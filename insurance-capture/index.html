@@ -1,237 +1,149 @@
 <!DOCTYPE html>
-<html ng-app="configApp"  ng-controller="AppCtrl">
+<html manifest="../../../dhis-web-event-capture/cacheManifest.action" ng-app="eventCapture">
+
 <head>
+    <title>Insurance Capture</title>
+
+    <meta name="description" content="IROAD 2">
+    <meta name="keywords" content="IROAD 2">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <!-- Angulars Material CSS now available via Google CDN; version 0.6 used here -->
     <link rel="stylesheet" href="resources/angular-material/angular-material.css">
-
-    <!-- Angular Material Dependencies -->
-
-    <script src="resources/js/jquery/jquery.js"></script>
-    <script src="resources/js/jquery/jquery-ui.js"></script>
-    <script src="resources/angular/angular.min.js"></script>
-    <script src="resources/DataTables/media/js/jquery.dataTables.js"></script>
-    <script src="resources/angular-datatables/dist/angular-datatables.js"></script>
-    <script src="resources/angular-animate/angular-animate.min.js"></script>
-    <script src="resources/angular-aria/angular-aria.min.js"></script>
-    <script src="resources/angular/angular-messages.min.js"></script>
-    <!-- Angular Material Javascript now available via Google CDN; version 0.6 used here -->
-    <script src="resources/angular-material/angular-material.min.js"></script>
-    <script src="resources/angular-material/angular-text.min.js"></script>
-    <script src="resources/angular/angular-route.min.js"></script>
-    <script src="resources/angular/ui-date/date.js"></script>
-    <script src="resources/js/angular-file-upload.min.js"></script>
-    <script src="resources/js/jquery.js"></script>
-    <script src="resources/js/abn_tree_directive.js"></script>
-    <script src="resources/js/bootstrap.js"></script>
-    <script src="resources/js/bootstrap-colorpicker-module.js"></script>
-    <script src="resources/js/dhis2-library.js"></script>
-
-    <!-- Angular Material Dependencies -->
-    <link href="resources/css/colorpicker.css" rel="stylesheet" />
-    <link href="resources/css/abn_tree.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="resources/js/jquery/jquery-ui.min.css"/>
-    <link rel="stylesheet" href="resources/angular-material/angular-text.min.css"/>
-    <link rel="stylesheet" href="resources/css/style.css"/>
-    <link rel="stylesheet" href="resources/css/bootstrap.css"/>
-    <link rel="stylesheet" href="resources/css/bootstrap-theme.css"/>
     <link href="resources/DataTables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="resources/bootstrap/bootstrap.css" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="resources/css/font-awesome/css/font-awesome.min.css" />
-
-    <style>
-        .container {
-            padding:0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            background: url('img/background.jpg');
-            height: 100%;
-            width: 100%;
-        }
-        .container > md-content > md-toobar{
-            background-color: #8BC34A !important;
-        }
-        .main {
-            position: absolute;
-            width: 75%;
-            min-height: 800px;
-            background-color: white;
-            left: 12.5%;
-            top: 20px;
-            overflow: hidden;
-        }
-
-        md-card, .content {
-            padding: 0;
-        }
-
-        md-toolbar {
-            padding:8px;
-        }
-        .menu-button{
-            width:56px;
-            height:56px;
-            border-radius:50% !important;
-        }
-        .sub-menu-button{
-            width:100%;
-            height: 40px;
-            text-align: left;
-            padding-left: 20px;
-            text-transform: none;
-        }
-        md-icon{
-            margin-top:0;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="../../../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
+    <link type="text/css" rel="stylesheet" media="screen" href="../../../dhis-web-commons/css/widgets.css"/>
+    <link type="text/css" rel="stylesheet" media="screen" href="../../../dhis-web-commons/css/menu.css">
+    <!-- Required For The Tables -->
+    <link rel="stylesheet" type="text/css" href="resources/table/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="resources/table/style.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="resources/table/mws-style.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="resources/table/icol16.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="resources/table/icol32.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="resources/table/mws-theme.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="resources/table/themer.css" media="screen">
+    <!-- Required For The Tables -->
 
     <script>
+        window.dhis2 = window.dhis2 || {};
+        dhis2.settings = dhis2.settings || {};
+        dhis2.settings.baseUrl = 'demo';
+    </script>
 
+    <script>
         var dhisConfigs = {
-            baseUrl:"demo",
-            refferencePrefix:"Program_",
-            onLoad : function(){
-                //$scope.onInitialize();
-            }
-        };
-
+            baseUrl :"../../../",
+            refferencePrefix :"Program_"
+        }
     </script>
-
-    <script ng-repeat="app in app.routes" ng-src="{{getControllerSrc(app.controller)}}"></script>
-    <script>
-        var routeProvider = null;
-
-        var mainModule = angular.module('configApp', ['ngMaterial', "ngRoute","ui.date","datatables","angularFileUpload","angularBootstrapNavTree","ngAnimate" ,"colorpicker.module"]).config(function ($routeProvider) {
-
-            routeProvider = $routeProvider;
-        });
-
-        mainModule.controller('AppCtrl', function($scope, $http, $mdSidenav, $log,$route) {
-            //When menu button is clicked show the left menu
-            $scope.toggleLeft = function() {
-                $mdSidenav('left').toggle();
-            };
-            $scope.app = {};
-
-            //setting active link on top menu
-            $scope.isActive = function (viewLocation) {
-                var active = (viewLocation === $location.path());
-                return active;
-            };
-
-            $scope.addTwo = function(one,two){
-                return parseInt(one) + parseInt(two);
-            }
-
-            $scope.matchName = function(query) {
-                return function(friend) { return friend.region_id == query; }
-            };
-
-            $scope.getWards = function(id){
-                $http.get("/wards/district/"+id).success(function(distr){
-                    $scope.data.disward = distr;
-                });
-            }
-
-            $scope.getVillages = function(id){
-                $http.get("/village/ward/"+id).success(function(distr){
-                    $scope.data.disvillage = distr;
-                });
-            }
-
-            $scope.findSum = function(kata){
-                return Math.floor(kata.male) + Math.floor(kata.female);
-            }
-            $scope.findDiff = function(answer){
-                if(answer/2 > 5){
-                    return 5
-                }else{
-                    return answer/2
-                }
-            }
-
-            $scope.getDetails =function(region){
-                if(region.districts == null){
-                    $http.get("/districts/region/"+region.id).success(function(distr){
-                        region.districts = distr;
-                        angular.forEach(region.districts,function(val){
-                            var district = val;
-                            $http.get("/people/district/"+val.id).success(function(ppl){
-                                district.people = ppl;
-                            });
-                        });
-                    });
-                }
-            }
-
-            $scope.closeNav = function() {
-                $mdSidenav('left').close();
-            };
-
-        });
-    </script>
-
-    <script src="routes.js"></script>
-    <script src="controllers/configController.js"></script>
-    <script src="controllers/accConfig.js"></script>
-    <script src="controllers/OrgUnitAppCtrl.js"></script>
-    <script src="controllers/InsuranceCtrl.js"></script>
-    <script src="controllers/InspectionController.js"></script>
 
 </head>
 
 <body>
+<d2-header-bar></d2-header-bar>
 
+<div ng-view></div>
 
-<div class="container">
-    <md-content>
-        <md-toolbar class="md-tall md-warn md-hue-3" style="background-color:#CE93D8 !important"> </md-toolbar>
-    </md-content>
-</div>
-<md-card class="main">
-    <md-card-content class="content">
-        <section layout="row" flex>
-            <md-sidenav class="md-sidenav-left md-whiteframe-z2"
-                        md-component-id="left">
-                <md-toolbar class="md-theme-light" style="background-color:#9C27B0 !important">
-                    <h1 class="md-toolbar-tools">Menu</h1>
-                </md-toolbar>
-                <md-list>
-                    <!-- Menu buttons -->
-                    <md-item>
-                        <md-item-content>
-                            <a href="#/home" style="width:100%;font-size:14px"><md-button class="sub-menu-button" ng-click="closeNav()">Home</md-button></a>
-                        </md-item-content>
-                    </md-item>
+<!-- JavaScript Plugins  -->
 
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
 
-                </md-list>
-            </md-sidenav>
-            <md-toolbar style="background-color:#9C27B0 !important">
-                <div layout="row" >
-                    <div flex>
-                        <md-button class="menu-button" aria-label="Profile" ng-click="toggleLeft()"> <md-icon
-                                icon="img/ic_menu_black_48dp.png"
-                                style="width: 24px; height: 24px;"></md-icon> </md-button>
-                    </div>
-                    <div flex>
-                        <h2 class="md-toolbar-tools">
-                            <center><span style="color:black">INSURANCE COMPANIES CAPTURE</span></center>
-                        </h2>
-                    </div>
-                </div>
-            </md-toolbar>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.picker.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.plus.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.picker.ext.js"></script>
 
-        </section>
-        <!-- Put app content here -->
-        <ng-view />
-    </md-card-content>
-</md-card>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.coptic.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.ethiopian.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.islamic.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.julian.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.nepali.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.thai.min.js"></script>
 
+<link type="text/css" rel="stylesheet" href="../../../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css">
 
+<script type="text/javascript" src="../../../dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-resource.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-route.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-cookies.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-animate.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/ui-bootstrap-tpls-0.10.0-draggable-modal.js"></script>
+
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/moment/moment-with-langs.min.js"></script>
+
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/underscore.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/commons.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/commons.ajax.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/lists.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/periodType.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/date.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/json2.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/validationRules.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.array.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.select.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.availability.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.trigger.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.sharing.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.validation.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.storage.ss.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.storage.ls.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.storage.idb.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.storage.memory.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.storage.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.contextmenu.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.appcache.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/ouwt/ouwt.js"></script>
+<script type="text/javascript" src="controllers/event-capture.js"></script>
+
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/dhis2/directives.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/dhis2/filters.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/dhis2/services.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/dhis2/controllers.js"></script>
+
+<!-- Angular Material Dependencies -->
+<script src="resources/jquery-ui/jquery-ui.js"></script>
+<script src="resources/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="resources/angular-ui-date/src/date.js"></script>
+<script src="resources/js/angular-multi-select.js"></script>
+<!--<script src="libraries/angular-datatables/dist/angular-datatables.js"></script>-->
+<script src="resources/angular-aria/angular-aria.min.js"></script>
+<script src="resources/angular/angular-messages.min.js"></script>
+<script src="resources/highcharts-ng/src/highcharts-custom.js"></script>
+<script src="resources/highcharts-ng/src/highcharts-ng.js"></script>
+
+<!-- Angular Material Javascript now available via Google CDN; version 0.6 used here -->
+
+<script src="resources/angular-material/angular-material.min.js"></script>
+<script src="resources/angular-material/angular-text.min.js"></script>
+<script src="resources/angular-datatables/dist/angular-datatables.min.js"></script>
+<script src="resources/js/angular-file-upload.min.js"></script>
+<script src="resources/js/dhis2-library.js"></script>
+
+<!--<link rel="stylesheet"href="resources/angular-material/angular-text.min.css">-->
+
+<script type="text/javascript" src="controllers/app.js"></script>
+<script type="text/javascript" src="controllers/services.js"></script>
+<script type="text/javascript" src="controllers/directives.js"></script>
+<script type="text/javascript" src="controllers/controller.js"></script>
+<script type="text/javascript" src="controllers/notes-controller.js"></script>
+<script type="text/javascript" src="controllers/filters.js"></script>
+
+<!-- Menu scripts -->
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.js"></script>
+<script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
+<script src="resources/js/flowplayer.min.js" type="text/javascript"></script>
+
+<!-- JavaScript Plugins  -->
 </body>
-
-
 </html>

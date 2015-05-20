@@ -2,7 +2,7 @@
  *
  * 	@author Vincent P. Minde
  *
- *	This is Library to ease the use of dhis2
+ *	This is Library to ease the use of iroad2
  *
  */
 
@@ -37,31 +37,10 @@ if (typeof String.prototype.endsWith != 'function') {
 }
 /**
  *
- * This is the dhis2 main object
+ * This is the iroad2 main object
  *
  */
-dhis2 = {
-    /**
-     *	Function to be envoked when initializing dhis2 data
-     *
-     *	@param config eg. config{ baseUrl,refferencePrefix,onLoad(function)}
-     *
-     */
-    Init : function(config){
-        dhis2.config = config;
-        //Fetch dataElements from the dhis server
-        http.get(dhis2.config.baseUrl + "api/dataElements?paging=false", function(results) {
-            //Set the dhis data elements
-            dhis2.data.dataElements = results.dataElements;
-            //Fetch programs from the dhis server
-            http.get(dhis2.config.baseUrl + "api/programs?paging=false", function(results2) {
-                //Set the dhis programs
-                dhis2.data.programs = results2.programs;
-                //Load the scripts to use from user
-                dhis2.config.onLoad();
-            });
-        });
-    },
+iroad2 = {
     //Holds specific dhis data and objects related to data
     data : {
 
@@ -69,15 +48,96 @@ dhis2 = {
 
 }
 /**
- *
- *	This is the modal that reflects a program in the database
- *
- *	@param string modalName (Name of the Program in dhis2 to be mirrored)
- *
- *	@param array relations (Array of relationships of the program Should be in the form [{"name":"Program Name","type" : "ONE_MANY | MANY_MANY"}])
+ *	Function to be envoked when initializing iroad2 data
+ *	@constructor
+ *	@param config {array} eg. config{ baseUrl,refferencePrefix,onLoad(function)}
  *
  */
-dhis2.data.Modal = function (modalName,relations) {
+iroad2.Init = function(config){
+    iroad2.config = config;
+    //Fetch dataElements from the dhis server
+    http.get(iroad2.config.baseUrl + "api/dataElements?paging=false&fields=id,name,type,code,optionSet[id,name,code,options[id,name]]", function(results) {
+        //Set the dhis data elements
+        iroad2.data.dataElements = results.dataElements;
+        //Fetch programs from the dhis server
+        http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
+            //Set the dhis programs
+            iroad2.data.programs = results2.programs;
+            //Load the scripts to use from user
+            iroad2.config.onLoad();
+        });
+    });
+}
+/**
+ *
+ *	This is the relationship with a program in the database for a many to many relationship
+ *	@constructor
+ *
+ *	@param modalName {string} Name of the Program in iroad2 to form a relationship
+ *
+ *	@param [pivotModalName] {string} Name of the Program in iroad2 as the pivot table
+ *
+ *	@example <caption>Example usage of initializing a relationship of one to many.</caption>
+ *	var driverRelation = new iroad2.data.Relation("Driver");
+ *
+ *	@example <caption>Example usage of initializing a relationship of many to many.</caption>
+ *	var offenceRelation = new iroad2.data.Relation("Offence Event","Offence");
+ *
+ */
+iroad2.data.Relation = function () {
+    var selfRelation = this;
+    this.name = arguments[0];
+    if(arguments.length == 1){
+        this.type = "ONE_MANY";
+    }else if(arguments.length == 2){
+        this.type = "MANY_MANY";
+        this.pivot = arguments[1];
+    }
+    this.isOneToMany = function(){
+        return (selfRelation.type == "ONE_MANY");
+    }
+    this.isManyToMany = function(){
+        return (selfRelation.type == "MANY_MANY");
+    }
+}
+
+/**
+ *
+ *	This is the Search criteria used to search for events in a program
+ *
+ *	@constructor
+ *
+ *	@param dataElementName {string} Name of the data element in iroad2 to be searched
+ *
+ *	@param operator {string} Operator to be used to search
+ *
+ *	@param value {string} Value that is being searched
+ *
+ *	@example <caption>Example usage of initializing a search criteria.</caption>
+ *	var driverLicenceSearch = new iroad2.data.SearchCriteria("Driver License Number","=","4002566389");
+ *
+ */
+iroad2.data.SearchCriteria = function (dataElementName,operator,value) {
+    this.dataElementName = dataElementName;
+    this.operator = operator;
+    this.value = value;
+}
+
+/**
+ *
+ *	This is the modal that reflects a program in the database
+ *	@param modalName {string} Name of the Program in iroad2 to be mirrored
+ *
+ *	@param relations {iroad2.data.Relation[]}  Array of relationships of the program.
+ *
+ *	@example <caption>Example usage of initializing a modal.</caption>
+ *	var driver = new iroad2.data.Modal("Driver",[]);
+ *	@example <caption>Example usage of initializing a modal wih one to many relationship.</caption>
+ *	var driver = new iroad2.data.Modal("Driver",[{name:"Offence Event",type:"ONE_MANY"}]);<br />
+ *	@example <caption>Example usage of initializing a modal wih many to many relationship.</caption>
+ *	var driver = new iroad2.data.Modal("Driver",[{name:"Offence Event",type:"MANY_MANY",pivot:"Offence"}]);
+ */
+iroad2.data.Modal = function (modalName,relations) {
     //Set self to get refference of this object
     self = this;
     //Set the modal name
@@ -93,7 +153,15 @@ dhis2.data.Modal = function (modalName,relations) {
         return modalName;
     }
     /**
-     * Get a program from the list of dhis2 programs by its name
+     * Get the Modal Relationships
+     *
+     * @return {iroad2.data.Relation[]} modal name
+     */
+    this.getRelationships = function(){
+        return relations;
+    }
+    /**
+     * Get a program from the list of iroad2 programs by its name
      *
      * @param string name
      *
@@ -101,46 +169,44 @@ dhis2.data.Modal = function (modalName,relations) {
      */
     this.getProgramByName = function(name){
         name = name.replace("_"," ");
-        for(i = 0;i < dhis2.data.programs.length;i++){
-            if(dhis2.data.programs[i].name == name){
-                return dhis2.data.programs[i];
+        for(i = 0;i < iroad2.data.programs.length;i++){
+            if(iroad2.data.programs[i].name == name){
+                return iroad2.data.programs[i];
             }
         }
-        console.error("Program '" +name+ "' does'nt exist.");
     }
     /**
-     * Get a data element from the list of dhis2 dataElements by its id
+     * Get a data element from the list of iroad2 dataElements by its id
      *
-     * @param string id
+     * @param id {string} This is the dataElement id
      *
-     * @return dataElement
+     * @return {object} The data element as a jsonObject
      */
     this.getDataElement = function(id) {
-        for (i = 0; i < dhis2.data.dataElements.length; i++) {
-            if (dhis2.data.dataElements[i].id == id) {
-                return dhis2.data.dataElements[i];
+        for (i = 0; i < iroad2.data.dataElements.length; i++) {
+            if (iroad2.data.dataElements[i].id == id) {
+                return iroad2.data.dataElements[i];
             }
         }
     }
     /**
-     * Get a data element from the list of dhis2 dataElements by its name
+     * Get a data element from the list of iroad2 dataElements by its name
      *
-     * @param string name
+     * @param dataElementName {string} This is the name of the data element
      *
-     * @return dataElement
+     * @return {object} The data element as a jsonObject
      */
     this.getDataElementByName = function(name) {
-        for (i = 0; i < dhis2.data.dataElements.length; i++) {
-            if (dhis2.data.dataElements[i].name == name) {
-                return dhis2.data.dataElements[i];
+        for (i = 0; i < iroad2.data.dataElements.length; i++) {
+            if (iroad2.data.dataElements[i].name == name) {
+                return iroad2.data.dataElements[i];
             }
         }
-        console.error("Data Element '" +name+ "' does'nt exist.");
     }
     /**
      * Gets all rows of a program
      *
-     * @param function onResult (Callback after the result is returned)
+     * @param onResult {function}  Callback function after the result is returned
      *
      */
     this.getAll = function(onResult){
@@ -157,7 +223,7 @@ dhis2.data.Modal = function (modalName,relations) {
             }
         }
         //Get events of the program from the server
-        http.get(dhis2.config.baseUrl + "api/events?program="+program.id,function(result){
+        http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result){
             for (j = 0; j < result.events.length; j++) {//For each event render to entity column json
                 var event = result.events[j];
                 selfGetAll.resCount.push(1);
@@ -184,12 +250,13 @@ dhis2.data.Modal = function (modalName,relations) {
     /**
      * Search events of a program
      *
-     * @param object where (Search criteria)
+     * @param criteria {iroad2.data.SearchCriteria} Array of search criterias where each element in the array is an object in the form {name,operator,value}
      *
-     * @param function onResult (Callback after the result is returned)
+     * @param onResult {function} Callback after the result is returned
      *
      */
-    this.get = function(where,onResult){
+    this.get = function(criteria,onResult){
+
         //Get program by name
         var program = self.getProgramByName(self.modalName);
         // Stores the rows of an entity
@@ -202,12 +269,13 @@ dhis2.data.Modal = function (modalName,relations) {
                 onResult(selfGet.events);
             }
         }
+
         //Get events of the program from the server
-        http.get(dhis2.config.baseUrl + "api/events?program="+program.id,function(result2){
+        http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result2){
             for (j = 0; j < result2.events.length; j++) {//For each event render to entity column json
                 var event = result2.events[j];
                 for (k = 0; k < event.dataValues.length; k++) {
-                    if(event.dataValues[k].value == where.value){//Checks the conditions provided
+                    if(event.dataValues[k].value == criteria.value){//Checks the conditions provided
 
                         selfGet.getCount.push(1);
                         //Render events to appropriate Modal
@@ -232,16 +300,16 @@ dhis2.data.Modal = function (modalName,relations) {
     /**
      * Find events of a program by id
      *
-     * @param string id
+     * @param id {string} Identifier of an event
      *
-     * @param function onResult (Callback after the result is returned)
+     * @param onResult {function} Callback function after the result is returned.
      *
      */
     this.find = function(uid, onResult) {
         //Get program by name
         var program = self.getProgramByName(modalName);
         //Get events of the program from the server
-        http.get(dhis2.config.baseUrl + "api/events/" + uid + ".json",
+        http.get(iroad2.config.baseUrl + "api/events/" + uid + ".json",
             function(result) {
                 //Render to entity column json
                 self.renderToJSON(result, function(object) {
@@ -269,9 +337,11 @@ dhis2.data.Modal = function (modalName,relations) {
         /**
          * Helper to fetch refference program
          *
-         * @param dhis2.data.Modal programModal
+         * @constructor
          *
-         * @param string id
+         * @param programModal {iroad2.data.Modal} Program to fetch from
+         *
+         * @param id {string} Identifier of the event to be fetched from the program
          */
         var RefferenceProgram = function(programModal, id) {
             this.program = programModal;
@@ -295,15 +365,15 @@ dhis2.data.Modal = function (modalName,relations) {
 
             var dataValue = event.dataValues[k];
             var dataElement = self.getDataElement(dataValue.dataElement);
-            if (!dataElement.name.startsWith(dhis2.config.refferencePrefix)) {//If dataElement is not a foregin key
+            if (!dataElement.name.startsWith(iroad2.config.refferencePrefix)) {//If dataElement is not a foregin key
                 //Set the value in the object
                 selfrenderToJSON.object[dataElement.name] = dataValue.value;
             } else {//If dataElement is a foregin key fetch the refferencing program
 
                 //Remove the refferencePrefix prefix to get the program for reffencing
-                var program = dataElement.name.substring(dhis2.config.refferencePrefix.length);
+                var program = dataElement.name.substring(iroad2.config.refferencePrefix.length);
                 //Initialize the Modal from the program name
-                var programModal = new dhis2.data.Modal(program, []);
+                var programModal = new iroad2.data.Modal(program, []);
                 //Push the RefferenceProgram to hel the fetch
                 selfrenderToJSON.count.push(new RefferenceProgram(programModal,dataValue.value));
             }
@@ -312,17 +382,18 @@ dhis2.data.Modal = function (modalName,relations) {
         //
 
         for (k = 0; k < relations.length; k++) {//For each relation
-
             var relation = relations[k];
             var programModal = null;
+
             if(relation.type == "ONE_MANY"){//If relationship is one to many
-                programModal = new dhis2.data.Modal(relation.name, []);
-            }else if(relation.type == "MANY_MANY"){//If relationship is many to many
+                programModal = new iroad2.data.Modal(relation.name, []);
+            }else if(relation.isManyToMany()){//If relationship is many to many
+                programModal = new iroad2.data.Modal(relation.pivot, [new iroad2.data.Relation(relation.name)]);
                 //Create modal with one to many relation with the pivot entity
-                programModal = new dhis2.data.Modal(relation.pivot, [{
-                    "name" : relation.name,
-                    "type" : "ONE_MANY"
-                }]);
+                /*programModal = new iroad2.data.Modal(relation.pivot, [{
+                 "name" : relation.name,
+                 "type" : "ONE_MANY"
+                 }]);*/
             }
             //Initialize the RefferenceProgram from the program name
             var refProgram = new RefferenceProgram(programModal,dataValue.value);
@@ -341,60 +412,148 @@ dhis2.data.Modal = function (modalName,relations) {
         }
         selfrenderToJSON.checkAllResultsFetched();
     }
-    this.convertToEvent = function(object){
-        program = self.getProgramByName(self.modalName);
+    /**
+     * Converts a json object to an event representation in dhis
+     *
+     * @param object {object} Json object to convert
+     *
+     * @param otherData {object} Additional data to be added to the event like program,eventDate,orgUnit etc
+     */
+    this.convertToEvent = function(modalName,object,otherData){
+        program = self.getProgramByName(modalName);
+        var selfConvertToEvent = this;
         var date = new Date();
         var event = {
             program:program.id,
-            orgUnit:"ij7JMOFbePH",
-            status: "COMPLETED",
-            storedBy: "admin",
-            eventDate:date,
             dataValues:[]
         };
+        for(var key in otherData){
+            event[key] = otherData[key];
+        }
         for(var key in object){
             var element ={};
-            if(typeof object[key] == "object"){
-                var dataElement = self.getDataElementByName(dhis2.config.refferencePrefix + key.replace(" ","_"));
+            if(key == "id"){
+                event.event = object[key];
+            }else if(typeof object[key] == "object"){
+                var dataElement = self.getDataElementByName(iroad2.config.refferencePrefix + key.replace(" ","_"));
                 if(dataElement != undefined)
                 {
                     element.dataElement = dataElement.id;
                     element.value = object[key].id;
                 }else{
-                    alert("good");
                     dataElement = self.getDataElementByName(key);
-                    element.dataElement = dataElement.id;
-                    element.value = object[key];
+                    if(dataElement != undefined)
+                    {
+                        element.dataElement = dataElement.id;
+                        element.value = object[key];
+                    }
                 }
-            }else{
-                var dataElement = self.getDataElementByName(key);
+            }else if(key.indexOf("_") > -1){
+                var dataElement = self.getDataElementByName(iroad2.config.refferencePrefix + key.replace(" ","_"));
                 element.dataElement = dataElement.id;
                 element.value = object[key];
+            }
+            else{
+                try{
+                    var dataElement = self.getDataElementByName(key);
+                    element.dataElement = dataElement.id;
+                    element.value = object[key];
+                }catch(e){
+                    console.error("Invalid key '" + key +"' bypassed.");
+                }
             }
             event.dataValues.push(element);
         }
         return event;
     }
-    this.save = function(data,onSuccess,onError){
-        var event = self.convertToEvent(data);
-        console.log("Event:" + JSON.stringify(event));
-        http.post(dhis2.config.baseUrl + "api/events",data,function(results){
-            onSuccess(results);
-        },function(results){
-            onError(results);
-        });
+    /**
+     * Save an event from a json object
+     *
+     * @param data {object | array} Json object to be saved
+     *
+     * @param onSuccess {function} Callback function after the result is returned successfully.
+     *
+     * @param (Optional) onError {function} Callback function an error has occured.
+     */
+    this.save = function(data,otherData,onSuccess,onError,modalName){
+        var savingModal = modalName;
+        if(savingModal == undefined){
+            savingModal = self.getModalName();
+        }
+        var sendData = {};
+        var saveUrl = iroad2.config.baseUrl + "api/events";
+        if(Array.isArray(data)){
+            var events = [];
+
+            for(count = 0; count < data.length;count++){
+                events.push(self.convertToEvent(savingModal,data[count],otherData));
+            }
+            sendData.events = events;
+        }else{
+            sendData = self.convertToEvent(savingModal,data,otherData);
+        }
+
+        //var event = self.convertToEvent(data);
+        if(sendData.event){
+            saveUrl += "/" +sendData.event;
+            alert("here");
+            http.put(saveUrl,JSON.stringify(sendData),function(results){
+                onSuccess(results);
+            },function(results){
+                onError(results);
+            });
+            //delete sendData.event;
+        }else{
+            console.log("Saving Data:" + JSON.stringify(sendData));
+            http.post(saveUrl,JSON.stringify(sendData),function(results){
+                onSuccess(results);
+            },function(results){
+                onError(results);
+            });
+        }
     }
 };
-
+/**
+ *
+ *	Makes http requests
+ *
+ *	@constructor
+ *
+ */
 http = {
-    request:function(url,method,data,onSuccess,onError){
+    /**
+     * Makes a http request
+     *
+     * @param url {string} Url for the request
+     *
+     * @param method {string} Method to be used.
+     *
+     * @param data {object} Data to be sent to the server.
+     *
+     * @param onSuccess {function} Callback function after the result is returned successfully.
+     *
+     * @param (Optional) onError {function} Callback function an error has occured.
+     */
+    request : function(url,method,data,onSuccess,onError){
         var xmlhttp = new XMLHttpRequest();
+
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
                 try{
                     onSuccess(JSON.parse(xmlhttp.responseText));
                 }catch(e){
-                    onError(e);
+                    if(xmlhttp.responseText.startsWith("Event updated: ")){
+                        onSuccess({"status":"SUCCESS","updatedEvent":xmlhttp.responseText.replace("Event updated: ","").replace("\r\n","")})
+                    }else{
+                        console.error("Returned:" + xmlhttp.responseText);
+                        if(onError == undefined){
+                            console.error(e);
+                        }else
+                        {
+                            onError(e);
+                        }
+                    }
                 }
 
             }
@@ -403,10 +562,40 @@ http = {
         xmlhttp.setRequestHeader("Content-Type", "application/json");
         xmlhttp.send(data);
     },
-    get:function(url, onSuccess,onError) {
+    /**
+     * Makes a http get request
+     *
+     * @param url {string} Url for the request
+     *
+     * @param onSuccess {function} Callback function after the result is returned successfully.
+     *
+     * @param (Optional) onError {function} Callback function an error has occured.
+     */
+    get : function(url, onSuccess,onError) {
         this.request(url,"GET",null,onSuccess,onError);
     },
-    post:function(url, data,onSuccess,onError) {
+    /**
+     * Makes a http post request
+     *
+     * @param url {string} Url for the request
+     *
+     * @param onSuccess {function} Callback function after the result is returned successfully.
+     *
+     * @param (Optional)onError {function} Callback function an error has occured.
+     */
+    post : function(url, data,onSuccess,onError) {
         this.request(url,"POST",data,onSuccess,onError);
+    },
+    /**
+     * Makes a http put request
+     *
+     * @param url {string} Url for the request
+     *
+     * @param onSuccess {function} Callback function after the result is returned successfully.
+     *
+     * @param (Optional)onError {function} Callback function an error has occured.
+     */
+    put : function(url, data,onSuccess,onError) {
+        this.request(url,"PUT",data,onSuccess,onError);
     }
 }
