@@ -65,15 +65,12 @@ eventCaptureControllers.controller('MainController',
             $scope.recentAccidents = new Array();
 
             accidentEventModal.getAll(function(result){
-                console.log("Accidents:" + JSON.stringify(result));
+                //console.log("Accidents:" + JSON.stringify(result));
                 $scope.data.accidents = result;
                 $scope.$apply();
 
                 angular.forEach($scope.data.accidents, function (recent_accident) {
-                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
-                    recent_accident['Accident']['latitude'] = -6.7841000000000005 ;
-                    recent_accident['Accident']['longitude'] = 39.208666666666666 ;
-                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    console.log('recent_accident:' + JSON.stringify(recent_accident));
                     $scope.recentAccidents.push(recent_accident);
                 });
 
@@ -128,7 +125,7 @@ eventCaptureControllers.controller('MainController',
                 // Add the markers and infowindows to the map
                 for (var i = 0; i < accidents.length; i++) {
                     var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(accidents[i]['Accident']['latitude'], accidents[i]['Accident']['longitude']),
+                        position: new google.maps.LatLng(accidents[i]['Accident']['Latitude'], accidents[i]['Accident']['Longitude']),
                         animation:google.maps.Animation.BOUNCE,
                         map: map,
                         icon: iconURLPrefix + 'green-dot.png'
