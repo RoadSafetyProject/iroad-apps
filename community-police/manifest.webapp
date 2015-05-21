@@ -1,0 +1,21 @@
+{
+    "version": "1.0",
+    "name": "Community Police",
+    "description": "Community Police",
+    "launch_path": "index.html",
+    "icons": {
+        "16": "/img/icon.png",
+        "48": "/img/icon.png",
+        "128": "/img/icon.png"
+    },
+    "developer": {
+        "name": "Kelvin Mbwilo",
+        "url": "http://kelvinmbwilo.tk"
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": ".."
+        }
+    }
+}

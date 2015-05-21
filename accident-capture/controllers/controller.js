@@ -1,6 +1,6 @@
 
 'use strict';
-
+var accidentPopup = [];
 /* Controllers */
 var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date"]);
 
@@ -13,6 +13,7 @@ eventCaptureControllers.controller('MainController',
         var accidentEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
         //var accidentEventModal = new iroad2.data.Modal("Accident",[]);
         //selected org unit
+
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
@@ -58,11 +59,113 @@ eventCaptureControllers.controller('MainController',
             return false;
         }
 
+
         $scope.onInitializeAccident = function(){
+
+            $scope.recentAccidents = new Array();
+
             accidentEventModal.getAll(function(result){
-            //console.log("Accidents:" + JSON.stringify(result));
+                console.log("Accidents:" + JSON.stringify(result));
                 $scope.data.accidents = result;
                 $scope.$apply();
+
+                angular.forEach($scope.data.accidents, function (recent_accident) {
+                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    recent_accident['Accident']['latitude'] = -6.7841000000000005 ;
+                    recent_accident['Accident']['longitude'] = 39.208666666666666 ;
+                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    $scope.recentAccidents.push(recent_accident);
+                });
+
+
+
+                //Map
+                // Define your accidents: HTML content for the info window, latitude, longitude
+
+
+                var accidents = $scope.recentAccidents ;
+
+            /*    var accidents = [
+                    ['Bondi Accident', -6.63883676, 39.19136727],
+                    ['Coogee Accident', -6.7841000000000005, 39.208666666666666],
+                    ['Cronulla Accident',-6.77151607, 39.23985423]
+                ];
+            */
+                // Setup the different icons and shadows
+                var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
+
+                var icons = [
+                    iconURLPrefix + 'red-dot.png',
+                    iconURLPrefix + 'green-dot.png',
+                    iconURLPrefix + 'blue-dot.png',
+                    iconURLPrefix + 'orange-dot.png',
+                    iconURLPrefix + 'purple-dot.png',
+                    iconURLPrefix + 'pink-dot.png',
+                    iconURLPrefix + 'yellow-dot.png'
+                ]
+                var iconsLength = icons.length;
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 20,
+                    center: new google.maps.LatLng(-37.92, 151.25),
+                    mapTypeId: google.maps.MapTypeId.HYBRID,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    panControl: false,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.LEFT_BOTTOM
+                    }
+                });
+
+                var infowindow = new google.maps.InfoWindow({
+                    maxWidth: 160
+                });
+
+                var markers = new Array();
+
+                var iconCounter = 0;
+
+                // Add the markers and infowindows to the map
+                for (var i = 0; i < accidents.length; i++) {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(accidents[i]['Accident']['latitude'], accidents[i]['Accident']['longitude']),
+                        animation:google.maps.Animation.BOUNCE,
+                        map: map,
+                        icon: iconURLPrefix + 'green-dot.png'
+                    });
+
+                    markers.push(marker);
+
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                        return function() {
+                            //infowindow.setContent( accidents[i]['Accident Registration Number'] + "</a>" );
+                            //infowindow.open(map, marker);
+                            $scope.ViewAccident(accidents[i]);
+                            //accidentPopup.push({callback:$scope.ViewAccident(accidents[i])});
+                        }
+                    })(marker, i));
+
+                    iconCounter++;
+                    // We only have a limited number of possible icon colors, so we may have to restart the counter
+                    if(iconCounter >= iconsLength) {
+                        iconCounter = 0;
+                    }
+                }
+
+                function autoCenter() {
+                    //  Create a new viewpoint bound
+                    var bounds = new google.maps.LatLngBounds();
+                    //  Go through each...
+                    for (var i = 0; i < markers.length; i++) {
+                        bounds.extend(markers[i].position);
+                    }
+                    //  Fit these bounds to the map
+                    map.fitBounds(bounds);
+                }
+                autoCenter();
+
+                //End Map
+
             });
 
         }
@@ -77,6 +180,7 @@ eventCaptureControllers.controller('MainController',
         }
 
         iroad2.Init(dhisConfigs);
+
 
         $scope.normalClass= "mws-panel grid_8";
 
@@ -104,7 +208,11 @@ eventCaptureControllers.controller('MainController',
             });
 
         //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Accident Date']};
+            var otherData = {orgUnit:"zs9X8YYBOnK",
+                             status: "COMPLETED",
+                             storedBy: "admin",
+                             eventDate:$scope.editingEvent['Accident Date']};
+
             var saveEvent = $scope.editingEvent;
             accidentEventModal.save(saveEvent,otherData,function(result){
             //console.log("Update Made:" + JSON.stringify(result));
@@ -318,6 +426,8 @@ eventCaptureControllers.controller('AccidentController',
             $modalInstance.close();
         };
     });
+
+
 
 eventCaptureControllers.controller('AccidentFormController',function($scope,$modal,$modalInstance,dhis2Event){
 
@@ -681,14 +791,14 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
 
-    //console.log("Saving Data:" + JSON.stringify(saveEvent));
+    console.log("Saving Data:" + JSON.stringify(saveEvent));
 
         accidentVehicleEventModal.save(saveEvent,otherData,function(result){
             $scope.VehicleCurrentSaving = false;
             $scope.VehicleSavingSuccess = true;
             $scope.VehicleSavingFailure = false;
 
-            //console.log("Save Made:" + JSON.stringify(result));
+            console.log("Save Made:" + JSON.stringify(result));
             result['accident_id'] = $scope.accident_reg_id ;
             $scope.close();
             $scope.addAccidentPassenger(result);
@@ -1090,3 +1200,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
 
 
 });
+function viewAccident(i){
+    console.log(JSON.stringify(accidentPopup[i]));
+    accidentPopup[i].callback();
+}
