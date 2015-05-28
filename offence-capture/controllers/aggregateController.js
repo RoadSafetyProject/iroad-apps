@@ -2,10 +2,48 @@ angular.module('aggregate', ['ui.date'],function($locationProvider) {
     $locationProvider.html5Mode(true);
 	})
 	.controller('AccidentReportController',function($scope,$http,$location){
-		$scope.year = $location.search().pe;
 		$scope.orgUnit = {};
-		$scope.data = {};
+		//$scope.data = {};
 		$scope.accident = {};
+		$scope.data ={
+				year:(new Date()).getFullYear(),
+				month:(new Date()).getMonth(),
+				startDate:new Date(),
+				endDate:new Date()
+			}
+		$scope.years = [];
+		for(i = $scope.data.year; i > 1980;i--){
+			$scope.years.push({name:i});
+		}
+		$scope.months = [
+		                {name:"January",value:"1"},
+		                {name:"February",value:"2"},
+		                {name:"March",value:"3"},
+		                {name:"April",value:"4"},
+		                {name:"May",value:"5"},
+		                {name:"June",value:"6"},
+		                {name:"July",value:"7"},
+		                {name:"August",value:"8"},
+		                {name:"September",value:"9"},
+		                {name:"October",value:"10"},
+		                {name:"November",value:"11"},
+		                {name:"December",value:"12"}
+		             ];
+		$scope.periodType = 1;
+		$scope.periods = [
+		    {
+			   name: 'Yearly',
+			   value: 1
+			}, 
+			{
+			   name: 'Monthly',
+			   value: 2
+			}, 
+			{
+				name: 'Date Range',
+				value: 3
+			}
+		];
 		$scope.getAccidentDimensionString = function(){
 			var program = $scope.accident.metadata;
 			var returnStr = "";
@@ -40,50 +78,86 @@ angular.module('aggregate', ['ui.date'],function($locationProvider) {
 						});
 					}
 				});
-				$scope.$watch("startDate", function (newValue, oldValue) {
-					
-					$http.get("/demo/api/analytics/events/query/"+$scope.accident.metadata.id
-							+"?startDate="+$location.search().pe+"-01-01&endDate="+$location.search().pe
-							+"-12-31&dimension=ou:"+$location.search().ou+$scope.getAccidentDimensionString()).success(function(results) {
-						$scope.data = results;
-						$scope.data.dataRows = [];
-						$scope.data.evaluations = {};
-						$scope.addEvaluation = function(optionSet,dataRow){
-							
-							angular.forEach(optionSet,function(option){
-								if($scope.data.evaluations[option.name] == undefined){
-									
-									$scope.data.evaluations[option.name] = {"killed":0,"injured":0};
-								}
-								if(option.name == dataRow["Weather"] || option.name == dataRow["Cause of Accident"] || option.name == dataRow["Accident Class"]){
-									$scope.data.evaluations[option.name].killed += parseInt(dataRow["Number of Fatal Injuries"]);
-									$scope.data.evaluations[option.name].injured += parseInt(dataRow["Number of Severe Injuries"]);
-								}
-								
-							});
-						}
-						angular.forEach($scope.data.rows,function(row){
-							var dataRow = {};
-							for(var i = 0;i < $scope.data.headers.length;i++){
-								var header = $scope.data.headers[i];
-								dataRow[header.column] = row[i];
-							}
-							
-							$scope.addEvaluation($scope.accident.weatherOptionSet,dataRow);
-							$scope.addEvaluation($scope.accident.causeOptionSet,dataRow);
-							$scope.addEvaluation($scope.accident.classesOptionSet,dataRow);
-							$scope.data.dataRows.push(dataRow);
-						});
-						console.log("dataRows:" + JSON.stringify($scope.data.dataRows));
-						console.log("BREAK");
-						console.log("evalualtion:" + JSON.stringify($scope.data.evaluations));
-					}).error(function(error) {
-						console.log(error);
-					});
-				});
+				$scope.startWatching();
 		}).error(function(error) {
 			console.log(error);
 		});
+		$scope.watch= function(modal){
+			$scope.$watch(modal, function (newValue, oldValue) {
+				$scope.makeRequest(newValue);
+			});
+		}
+		$scope.startWatching = function(){
+			$scope.watch("data.year");
+			$scope.watch("data.month");
+			$scope.watch("data.startDate");
+			$scope.watch("data.endDate");
+		}
+		$scope.getDates = function(){
+			var dateString = "?startDate=";
+			if($scope.periodType == 2){
+				var mon = "";
+				if($scope.data.month < 10){
+					mon = "0" + $scope.data.month;
+				}else{
+					mon = "" + $scope.data.month;
+				}
+				
+				var lastDay = new Date($scope.data.year, parseInt(mon) + 1, 0);
+				var day = "";
+				if(lastDay.getDate() < 10)
+				{
+					day += "0" + lastDay.getDate();
+				}else{
+					day += lastDay.getDate();
+				}
+				dateString += $scope.data.year +"-"+mon+"-01&endDate=" + $scope.data.year +"-"+mon+"-" + day;
+			}else if($scope.periodType == 3){
+				dateString += getDateString($scope.data.startDate) +"&endDate=" + getDateString($scope.data.endDate);
+			}else{
+				dateString += $scope.data.year +"-01-01&endDate=" + $scope.data.year +"-12-31";
+			}
+			return dateString
+		}
+		$scope.makeRequest = function(value){
+			if(value == undefined)
+				return;
+			$http.get("/demo/api/analytics/events/query/"+$scope.accident.metadata.id
+					+ $scope.getDates()
+					+"&dimension=ou:"+$location.search().ou+$scope.getAccidentDimensionString()).success(function(results) {
+				$scope.data.results = results;
+				$scope.data.dataRows = [];
+				$scope.data.evaluations = {};
+				$scope.addEvaluation = function(optionSet,dataRow){
+					
+					angular.forEach(optionSet,function(option){
+						if($scope.data.evaluations[option.name] == undefined){
+							
+							$scope.data.evaluations[option.name] = {"killed":0,"injured":0};
+						}
+						if(option.name == dataRow["Weather"] || option.name == dataRow["Cause of Accident"] || option.name == dataRow["Accident Class"]){
+							$scope.data.evaluations[option.name].killed += parseInt(dataRow["Number of Fatal Injuries"]);
+							$scope.data.evaluations[option.name].injured += parseInt(dataRow["Number of Severe Injuries"]);
+						}
+						
+					});
+				}
+				angular.forEach($scope.data.results.rows,function(row){
+					var dataRow = {};
+					for(var i = 0;i < $scope.data.results.headers.length;i++){
+						var header = $scope.data.results.headers[i];
+						dataRow[header.column] = row[i];
+					}
+					
+					$scope.addEvaluation($scope.accident.weatherOptionSet,dataRow);
+					$scope.addEvaluation($scope.accident.causeOptionSet,dataRow);
+					$scope.addEvaluation($scope.accident.classesOptionSet,dataRow);
+					$scope.data.dataRows.push(dataRow);
+				});
+			}).error(function(error) {
+				console.log(error);
+			});
+		}
 		
 	});
 	function getDateString(date){
