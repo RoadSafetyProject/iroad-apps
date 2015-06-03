@@ -1,9 +1,56 @@
-angular.module('aggregate', ['ui.date'],function($locationProvider) {
+angular.module('aggregate', ['ui.date','ya.treeview', 'ya.treeview.tpls', 'ya.treeview.breadcrumbs', 'ya.treeview.breadcrumbs.tpls'],function($locationProvider) {
     $locationProvider.html5Mode(true);
 	})
 	.controller('AccidentReportController',function($scope,$http,$location){
-		$scope.orgUnit = {};
-		//$scope.data = {};
+		
+
+			  $scope.options = {
+			      onSelect: function($event, node, context) {
+			          if ($event.ctrlKey) {
+			              var idx = context.selectedNodes.indexOf(node);
+			              if (context.selectedNodes.indexOf(node) === -1) {
+			                  context.selectedNodes.push(node);
+			                  
+			              } else {
+			                  context.selectedNodes.splice(idx, 1);
+			              }
+			          } else {
+			              context.selectedNodes = [node];
+			          }
+			          //alert(node);
+			          console.log(node.$model.name);
+			          $scope.makeRequest(node.$model.name);
+			      }
+			  };
+
+			  $scope.model = [{
+			      label: 'parent1',
+			      children: [{
+			          label: 'child'
+			      }]
+			  }, {
+			      label: 'parent2',
+			      children: [{
+			          label: 'child',
+			          children: [{
+			              label: 'innerChild'
+			          }]
+			      }]
+			  }, {
+			      label: 'parent3'
+			  }];
+		$scope.tree = {};
+		$scope.tree.modal = [];
+		$scope.tree.context = {
+				selectedNodes: []
+			  };
+		$scope.orgUnits = [];
+		$http.get("/demo/api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,children[id,name,children[id,name,children[id,name]]]")
+			.success(function(result) {
+				$scope.tree.modal = result.organisationUnits;
+		}).error(function(error) {
+			console.log(error);
+		});
 		$scope.accident = {};
 		$scope.data ={
 				year:(new Date()).getFullYear(),
@@ -88,6 +135,7 @@ angular.module('aggregate', ['ui.date'],function($locationProvider) {
 			});
 		}
 		$scope.startWatching = function(){
+			$scope.watch("tree.context");
 			$scope.watch("data.year");
 			$scope.watch("data.month");
 			$scope.watch("data.startDate");
@@ -119,12 +167,24 @@ angular.module('aggregate', ['ui.date'],function($locationProvider) {
 			}
 			return dateString
 		}
+		$scope.getOrganisationUnits = function(){
+			var retString = "";
+			angular.forEach($scope.tree.context.selectedNodes,function(node){
+				if(retString == ""){
+					retString = node.$model.id;
+				}else{
+					retString += ";" + node.$model.id;
+				}
+			});
+			console.log(retString);
+			return retString;
+		}
 		$scope.makeRequest = function(value){
 			if(value == undefined)
 				return;
 			$http.get("/demo/api/analytics/events/query/"+$scope.accident.metadata.id
 					+ $scope.getDates()
-					+"&dimension=ou:"+$location.search().ou+$scope.getAccidentDimensionString()).success(function(results) {
+					+"&dimension=ou:"+$scope.getOrganisationUnits()+$scope.getAccidentDimensionString()).success(function(results) {
 				$scope.data.results = results;
 				$scope.data.dataRows = [];
 				$scope.data.evaluations = {};
