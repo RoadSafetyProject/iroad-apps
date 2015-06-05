@@ -21,16 +21,18 @@
 ================================================== */
 
 .mws-panel .mws-panel-header {
-    background-image: url(images/mws-panel-header-bg.png);
+    /*background-image: url(images/mws-panel-header-bg.png);*/
     background-repeat: repeat-x;
     height: 25px;
     position: relative;
     padding: 12px 12px 10px 12px;
-    border-bottom: 2px solid #35353a;
+    /*border-bottom: 2px solid #35353a;*/
     font-size: 14px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    background-image: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
+    font-weight:bold;
 }
 
 .mws-panel .mws-panel-header span {
