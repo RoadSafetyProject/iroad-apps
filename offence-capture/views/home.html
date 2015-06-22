@@ -238,7 +238,7 @@
         </div>	
         <div class="mws-panel grid_2 rightPanel" ng-if="panel.edit">
 			<div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Driver Involved in Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
+                <span>Add New Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
             </div>
      
             <table  class="mws-datatable-fn mws-table">
@@ -300,7 +300,7 @@
             <tr>
             	<td>
             		<label>Offence Date</label><br />
-            		<input ui-date="dateOptions" class="form-control"  ng-model="editingEvent['Offence Date']" />
+            		<input ui-date="dateOptions" ui-date-format="yy-MM-dd"class="form-control"  ng-model="editingEvent['Offence Date']" />
             	</td>
             </tr>
             <tr>

@@ -193,16 +193,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.getOffences = function(offences){
 			return offences;
 		}
-		/*$scope.search = {
-				payment: "all";
-		};
-		$scope.searchFilter = function (item) {
-			if($scope.search.payment == "all"){
-				return true;
-			}else{
-				return false;
-			}
-		};*/
 		$scope.showOffence = function(aOffence){
 			$scope.offence = aOffence;
 			var modalInstance = $modal.open({
@@ -318,19 +308,48 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             });*/
     		
     		//$scope.editingEvent = out;
-    		console.log("Output:" + JSON.stringify($scope.editingEvent));
+    		
         }
 		$scope.data.editingOutputModal = [];
 		$scope.save = function(){
+			console.log("JSON Before:" + JSON.stringify($scope.editingEvent));
+			var canSave = true;
 			angular.forEach($scope.savableEventData, function (savableData) {
-				delete $scope.editingEvent[savableData.name];
-            	$scope.editingEvent[savableData.key] = savableData.value;
+				if(savableData.value == null){
+					alert("The "+savableData.name+" does not exist.");
+					canSave = false;
+				}
+				
             });
+			if(canSave){
+				angular.forEach($scope.savableEventData, function (savableData) {
+					delete $scope.editingEvent[savableData.name];
+		            $scope.editingEvent[savableData.key] = savableData.value;
+	            });
+			}else{
+				return;
+			}
+			$scope.editingEvent["Full Name"] = $scope.editingEvent.Driver["Full Name"];
+			$scope.editingEvent["Driver License Number"] = $scope.editingEvent.Driver["Driver License Number"];
+			$scope.editingEvent["Gender"] = $scope.editingEvent.Driver["Gender"];
+			$scope.editingEvent["Date of Birth"] = $scope.editingEvent.Driver["Date of Birth"];
 			
+			$scope.editingEvent["Vehicle Plate Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number"];
+			$scope.editingEvent["Vehicle Owner Name"] = $scope.editingEvent.Vehicle["Vehicle Owner Name"];
+			$scope.editingEvent["Model"] = $scope.editingEvent.Vehicle["Model"];
+			$scope.editingEvent["Make"] = $scope.editingEvent.Vehicle["Make"];
+			$scope.editingEvent["Vehicle Class"] = $scope.editingEvent.Vehicle["Vehicle Class"];
+			$scope.editingEvent["Vehicle Ownership Category"] = $scope.editingEvent.Vehicle["Vehicle Ownership Category"];
+			
+			
+			console.log("JSON After:" + JSON.stringify($scope.editingEvent));
 			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
+			console.log($scope.editingEvent);
 			$scope.offenceEventModal.save($scope.editingEvent,otherData,function(result){
+				$scope.data.offences.push($scope.editingEvent);
+				$scope.$apply();
 				console.log("Save Made Result:" + JSON.stringify(result));
 				if(!result.updatedEvent){
 					$scope.editingEvent.id = result.importSummaries[0].reference;
