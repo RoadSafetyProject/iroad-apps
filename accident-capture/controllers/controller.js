@@ -11,7 +11,8 @@ eventCaptureControllers.controller('MainController',
              CustomFormService,ErrorMessageService,ModalService,DialogService)
     {
         var accidentEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
-        //var accidentEventModal = new iroad2.data.Modal("Accident",[]);
+        //var accidentEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
+        //var accidentEventModal = new iroad2.data.Modal("Accident",[new iroad2.data.Relation("Accident Vehicle","Accident")]);
         //selected org unit
 
         $scope.today = DateUtils.getToday();
@@ -70,7 +71,7 @@ eventCaptureControllers.controller('MainController',
                 $scope.$apply();
 
                 angular.forEach($scope.data.accidents, function (recent_accident) {
-                    console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
                     $scope.recentAccidents.push(recent_accident);
                 });
 
@@ -79,15 +80,23 @@ eventCaptureControllers.controller('MainController',
                 //Map
                 // Define your accidents: HTML content for the info window, latitude, longitude
 
+                $scope.getCoordinates = function(){
+                    var coordinates = {};
+                    $http.get("http://roadsafety.udsm.ac.tz/demo/api/events.json?program=&paging=false")
+                        .success(function(data){
+                            coordinates = data;
 
+                        });
+                }
                 var accidents = $scope.recentAccidents ;
+                console.log(JSON.stringify(accidents));
 
-            /*    var accidents = [
-                    ['Bondi Accident', -6.63883676, 39.19136727],
-                    ['Coogee Accident', -6.7841000000000005, 39.208666666666666],
-                    ['Cronulla Accident',-6.77151607, 39.23985423]
+                var coords = [
+                    [-2.70983759,32.56214991],[-3.13522,33.51909],[-3.65987,33.42725],[-4.16357,37.88895],[-9.32722,33.75265],[-10.37176,38.22909],[-2.74362014,32.05487111],[-7.74146,39.34485],[-3.1806,37.619526],
+                    [-4.95957,29.75764]
+
                 ];
-            */
+
                 // Setup the different icons and shadows
                 var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
 
@@ -103,12 +112,13 @@ eventCaptureControllers.controller('MainController',
                 var iconsLength = icons.length;
 
                 var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 20,
+                    zoom: 15,
                     center: new google.maps.LatLng(-37.92, 151.25),
                     mapTypeId: google.maps.MapTypeId.HYBRID,
                     mapTypeControl: false,
                     streetViewControl: false,
                     panControl: false,
+                    disableDoubleClickZoom: true,
                     zoomControlOptions: {
                         position: google.maps.ControlPosition.LEFT_BOTTOM
                     }
@@ -121,24 +131,44 @@ eventCaptureControllers.controller('MainController',
                 var markers = new Array();
 
                 var iconCounter = 0;
+                google.maps.Marker.prototype.startBlinking=function(){
+                    var mar = this;
+                    this.interval = setInterval(function(){mar.setVisible(!mar.visible)}, 500);
+                };
+                google.maps.Marker.prototype.stopBlinking=function(){
 
+                    clearInterval(this.interval);
+                    this.setVisible(true);
+                };
                 // Add the markers and infowindows to the map
-                for (var i = 0; i < accidents.length; i++) {
+                for (var i = 0; i < coords.length; i++) {
+
+                    var image = new google.maps.MarkerImage(
+                        '../resources/images/marker.png',
+                        null, // size
+                        null, // origin
+                        new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
+                        new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
+                    );
+
+
                     var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(accidents[i]['Accident']['Latitude'], accidents[i]['Accident']['Longitude']),
-                        animation:google.maps.Animation.BOUNCE,
+                        position: new google.maps.LatLng(coords[i][0], coords[i][1]),
                         map: map,
-                        icon: iconURLPrefix + 'green-dot.png'
+                        optimized: false,
+                        icon: iconURLPrefix + 'green-dot.png',
+                        interval:0,
+                        visible:true
                     });
 
+                    marker.startBlinking();
                     markers.push(marker);
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                         return function() {
-                            //infowindow.setContent( accidents[i]['Accident Registration Number'] + "</a>" );
-                            //infowindow.open(map, marker);
+
                             $scope.ViewAccident(accidents[i]);
-                            //accidentPopup.push({callback:$scope.ViewAccident(accidents[i])});
+                            marker.stopBlinking();
                         }
                     })(marker, i));
 
@@ -193,7 +223,8 @@ eventCaptureControllers.controller('MainController',
                         }
                     });
                 }
-            });console.log('Event Accident' + event);
+            });
+            //console.log('Event Accident' + event);
             $scope.enableEdit(event);
         }
 
@@ -204,19 +235,21 @@ eventCaptureControllers.controller('MainController',
                 $scope.editingEvent[savableData.key] = savableData.value;
             });
 
-        //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"zs9X8YYBOnK",
-                             status: "COMPLETED",
-                             storedBy: "admin",
-                             eventDate:$scope.editingEvent['Accident Date']};
+            //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
+            var otherData = {orgUnit:"wardNwId314",
+                status: "COMPLETED",
+                storedBy: "admin",
+                eventDate:$scope.editingEvent['Accident Date']};
 
+            $scope.editingEvent['Accident']['Latitude'] = -6.63883676;
+            $scope.editingEvent['Accident']['Longitude'] = 39.19136727 ;
             var saveEvent = $scope.editingEvent;
             accidentEventModal.save(saveEvent,otherData,function(result){
-            //console.log("Update Made:" + JSON.stringify(result));
+                //console.log("Update Made:" + JSON.stringify(result));
                 $scope.CurrentSaving = false;
                 $scope.UpdatedSuccess = true;
                 $scope.UpdateFailure = false;
-            //console.log($scope.CurrentSaving);
+                //console.log($scope.CurrentSaving);
 
                 //$scope.editing = false;
                 //$scope.normalClass= "mws-panel grid_8";
@@ -255,6 +288,7 @@ eventCaptureControllers.controller('MainController',
             //console.log('Editing' + JSON.stringify(event));
             for (var key in event) {
                 if (typeof event[key] == "object") {
+
                     var program = accidentEventModal.getProgramByName(key);
                     angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                         if (dataElement.dataElement.code) {
@@ -425,7 +459,6 @@ eventCaptureControllers.controller('AccidentController',
     });
 
 
-
 eventCaptureControllers.controller('AccidentFormController',function($scope,$modal,$modalInstance,dhis2Event){
 
 
@@ -591,18 +624,18 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
             $scope.editingEvent[savableData.key] = savableData.value;
         });
 
-    //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Time of Accident']};
+        //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
+        var otherData = {orgUnit:"wardNwId314",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Time of Accident']};
         var saveEvent = $scope.editingEvent;
 
-    //console.log("Save Made:" + JSON.stringify(saveEvent));
+        //console.log("Save Made:" + JSON.stringify(saveEvent));
 
         accidentEventModal.save(saveEvent,otherData,function(result){
             $scope.AccCurrentSaving = false;
             $scope.AccSavingSuccess = true;
             $scope.AccSavingFailure = false;
 
-        //console.log("Save Made:" + JSON.stringify(result.importSummaries[0].reference));
+            //console.log("Save Made:" + JSON.stringify(result.importSummaries[0].reference));
             $scope.accident_id = result.importSummaries[0].reference;
             $scope.close();
             $scope.addAccidentVehicle(result);
@@ -783,12 +816,12 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"wardNwId314",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
 
-    console.log("Saving Data:" + JSON.stringify(saveEvent));
+        console.log("Saving Data:" + JSON.stringify(saveEvent));
 
         accidentVehicleEventModal.save(saveEvent,otherData,function(result){
             $scope.VehicleCurrentSaving = false;
@@ -976,7 +1009,7 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"wardNwId314",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
@@ -1169,7 +1202,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
             $scope.editingEventVehicle[savableData.key] = savableData.value;
         });
 
-        var otherData = {orgUnit:"zs9X8YYBOnK",status: "COMPLETED",storedBy: "admin"};
+        var otherData = {orgUnit:"wardNwId314",status: "COMPLETED",storedBy: "admin"};
 
         $scope.editingEventVehicle.Accident['id'] = $scope.accident_reg_id ;
         var saveEvent = $scope.editingEventVehicle;
