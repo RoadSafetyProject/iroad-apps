@@ -43,8 +43,8 @@
                 <tbody>
                 <tr ng-repeat="event in data.offences">
                     <td>{{ $index+1 }}</td>
-                    <td>{{event.Driver["Driver License Number"]}}</td>
-                    <td>{{event.Driver.Person["First Name"]}} {{event.Driver.Person["Last Name"]}}</td>
+                    <td>{{event["Driver License Number"]}}</td>
+                    <td>{{event["Full Name"]}}</td>
                     <td>{{event["Offence Place"]}}</td>
                     <td>{{event["Offence Date"] | date:'dd MMM yyyy'}}</td>
                     <!-- <td ng-repeat="datas in events.dataValues | filter:{name:'Make'}">{{ datas.value }}</td>
