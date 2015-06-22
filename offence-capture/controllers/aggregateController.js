@@ -44,7 +44,6 @@ angular.module('aggregate', ['ui.date','ya.treeview', 'ya.treeview.tpls', 'ya.tr
 		$scope.tree.context = {
 				selectedNodes: []
 			  };
-		$scope.orgUnits = [];
 		$http.get("/demo/api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,children[id,name,children[id,name,children[id,name]]]")
 			.success(function(result) {
 				$scope.tree.modal = result.organisationUnits;
