@@ -97,6 +97,57 @@
     </section>
 </script>
 
+<!--Display list of items-->
+<section class="pure-u-1-6 map-control" style="width: 35%;position: absolute;right: 0px;top:0px;margin-top: 50px" ng-controller="showTodoCtrl">
+
+    <header>
+        <h3>Reports From Community</h3>
+    </header>
+
+        <table datatable="ng" class="table table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Report Date</th>
+                <th>Type</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Video</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  ng-repeat="events in programtouse.dataValues.events">
+                <td>{{ $index+1 }}</td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.eventDate | date:'dd MMM yyyy' }}</span></td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Title'].value }}</span></td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Description'].value }}</span> </td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Type'].value }}</span></td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Image'].value }}</span></td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Video'].value }}</span></td>
+            </tr>
+            <!--<tr ng-repeat="todo in todos.filtered()" >-->
+                <!--<td><label ng-click="controls.openInfoWindowByTodoId(todo.id)"  ng-dblclick="controls.editTodoById(todo.id)">{{todo.title}}</label></td>-->
+                <!--<td>{{ todo.phone }}</td>-->
+                <!--<td>{{ todo.email }}</td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+
+    <!--<footer>-->
+        <!--<span ng-show="todos.remainingCount()">-->
+          <!--<strong>{{todos.remainingCount()}}</strong>-->
+          <!--<span ng-pluralize count="todos.remainingCount()" when="{ one: 'item left', other: 'items left' }"></span>-->
+        <!--</span>-->
+        <!--<hr />-->
+        <!--&lt;!&ndash;<button class="pure-button" ng-click="todos.prune()" ng-show="todos.remainingCount() < todos.items.length">&ndash;&gt;-->
+        <!--&lt;!&ndash;Clear completed ({{todos.items.length - todos.remainingCount()}})&ndash;&gt;-->
+        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+        <!--<button class="pure-button pure-button-success" ng-click="controls.newTodo()" ng-hide="controls.editTodo">Add New</button>-->
+    <!--</footer>-->
+</section>
+
+
 <script type="text/html" id="infoWindowTemplate">
     <div class="google-map">
         <h3>{{infow.data.title}}</h3>
@@ -207,8 +258,8 @@
 <script>
     window.dhis2 = window.dhis2 || {};
     dhis2.settings = dhis2.settings || {};
-    //dhis2.settings.baseUrl = '../../..';
-    dhis2.settings.baseUrl = 'demo';
+    dhis2.settings.baseUrl = '../../..';
+    //dhis2.settings.baseUrl = 'demo';
 </script>
 
 <script type="text/javascript">
@@ -635,6 +686,88 @@ mapApp.directive('todoMaps', function ($compile) {
         }
     };
 });
+
+mapApp.controller('showTodoCtrl', function ($http,$scope, mapService, todosService, infoWindowService, mapControlsService, NEW_TODO_ID) {
+    $scope.data = {};
+    $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+   $http.get($scope.programUrl).success(function(data){
+        $scope.data.programs = {};
+        var resultProg = data.programs;
+        angular.forEach(data.programs, function(program1){
+            $scope.data.programs[program1.name] = {};
+
+            $scope.data.programs[program1.name].name= program1.name;
+            $scope.data.programs[program1.name].id= program1.id;
+            $scope.data.programs[program1.name].version= 1;
+            $scope.data.programs[program1.name].programStages= program1.programStages;
+        });
+//            $scope.data.programs = data.programs;
+        angular.forEach($scope.data.programs,function(program){
+            if($scope.data.programs['Community Police'].id == program.id){
+
+            program.dataValues = {};
+            program.dataValues.events = [];
+            $http.get('../../../api/events.json?program='+program.id).success(function(data){
+                if(data.events){
+                    angular.forEach(data.events,function(datas){
+                        var event = datas.event;
+                        var program1 = datas.program;
+                        var programstage = datas.programStage;
+                        var orgunit = datas.orgUnit;
+                        var orgunitName = datas.orgUnitName;
+                        var eventDate = datas.eventDate;
+                        var datavalues = {};
+                        angular.forEach(program.programStages[0].programStageDataElements, function (dataVal) {
+                            var dataelement = {};
+                            datavalues[dataVal.dataElement.name] = {}
+                            dataelement.id = dataVal.dataElement.id;
+                            dataelement.name = dataVal.dataElement.name;
+                            dataelement.type = dataVal.dataElement.type;
+                            dataelement.sortOrder = dataVal.sortOrder;
+                            if(dataVal.dataElement.optionSet){
+                                dataelement.optionSet = dataVal.dataElement.optionSet;
+                            }
+
+                            angular.forEach(datas.dataValues, function (newDatval) {
+                                if (newDatval.dataElement == dataVal.dataElement.id) {
+                                        dataelement.value = newDatval.value;
+                                }
+                            })
+                            datavalues[dataVal.dataElement.name] =  dataelement;
+                        })
+                        program.dataValues.events.push({event: event, program: program1, programStage: programstage, orgUnit: orgunit, orgUnitName: orgunitName, eventDate: eventDate, dataValues: datavalues});
+
+                    });
+
+                }
+            });
+            }else{
+
+            }
+        });
+       $scope.programtouse = $scope.data.programs['Community Police'];
+       //console.log($scope.data.programs['Community Police']);
+    });
+
+    $scope.openInfoWindowByEvent =function(id){
+        var editPinImage,
+                editMarker;
+        editPinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "55FF00",
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
+
+        editMarker = new google.maps.Marker({
+            title: "Drag Me",
+            draggable: true,
+            clickable: false,
+            icon: editPinImage,
+            position: new google.maps.LatLng(0, 0)
+        });
+    }
+
+});
+
 </script>
 </body>
 </html>
