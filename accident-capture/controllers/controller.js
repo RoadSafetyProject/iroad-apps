@@ -69,8 +69,8 @@ eventCaptureControllers.controller('MainController',
                     var d = new Date();
                     if(d.toDateString() == otherDate.toDateString() && !$scope.isAccidentIdLoaded(recent_accident.Accident.id))
                     {
-                    	recent_accident.Accident.Longitude = 39.240643;
-                    	recent_accident.Accident.Latitude = -6.771275;
+                    	//recent_accident.Accident.Longitude = 39.240643;
+                    	//recent_accident.Accident.Latitude = -6.771275;
                     	$scope.recentAccidents.push(recent_accident);
                     	$scope.loadedAccidentIds.push(recent_accident.Accident.id);
                     	var image = new google.maps.MarkerImage(
@@ -84,7 +84,7 @@ eventCaptureControllers.controller('MainController',
 
                             var marker = new google.maps.Marker({
                                 //position: new google.maps.LatLng(coords[i][0], coords[i][1]),
-                            	position: new google.maps.LatLng(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
+                            	position: new google.maps.LatLng(recent_accident.Accident.coordinate.latitude, recent_accident.Accident.coordinate.longitude),//(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
                                 map: $scope.map,
                                 optimized: false,
                                 icon: $scope.iconURLPrefix + 'green-dot.png',

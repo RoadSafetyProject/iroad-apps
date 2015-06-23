@@ -368,6 +368,10 @@ iroad2.data.Modal = function (modalName,relations) {
             }
         }
         this.object["id"] = event.event;
+        if(event.coordinate != undefined){
+        	this.object["coordinate"] = event.coordinate;
+        }
+        
 
         for (k = 0; k < event.dataValues.length; k++) {
 
