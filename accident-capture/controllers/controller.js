@@ -174,7 +174,7 @@ eventCaptureControllers.controller('MainController',
             $scope.markers = new Array();
             $scope.accidentEventModal.getAll(function(result){
                 $scope.data.accidents = result;
-            });
+            },"Accident Vehicle");
             //$scope.loadAccidents();
             $interval($scope.loadAccidents,5000);
             //$scope.loadAccidents();
