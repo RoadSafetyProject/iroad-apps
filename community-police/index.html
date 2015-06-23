@@ -117,7 +117,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr  ng-repeat="events in programtouse.dataValues.events">
+            <tr  ng-repeat="events in programtouse.dataValues.events" >
                 <td>{{ $index+1 }}</td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.eventDate | date:'dd MMM yyyy' }}</span></td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Title'].value }}</span></td>
@@ -258,8 +258,8 @@
 <script>
     window.dhis2 = window.dhis2 || {};
     dhis2.settings = dhis2.settings || {};
-    dhis2.settings.baseUrl = '../../..';
-    //dhis2.settings.baseUrl = 'demo';
+    //dhis2.settings.baseUrl = '../../..';
+    dhis2.settings.baseUrl = 'demo';
 </script>
 
 <script type="text/javascript">
@@ -748,6 +748,10 @@ mapApp.controller('showTodoCtrl', function ($http,$scope, mapService, todosServi
        $scope.programtouse = $scope.data.programs['Community Police'];
        //console.log($scope.data.programs['Community Police']);
     });
+
+    $scope.checkimage = function(name){
+            return true;
+    }
 
     $scope.openInfoWindowByEvent =function(id){
         var editPinImage,
