@@ -157,10 +157,10 @@ eventCaptureControllers.controller('MainController',
                         iconCounter = 0;
                     }
                 }
-                google.maps.event.trigger(map, 'resize');
+                /*google.maps.event.trigger(map, 'resize');
                 var reCenter = new google.maps.LatLng(-6.184234, 35.676095);
                 $scope.map.setCenter(reCenter);
-                $scope.autoCenter();
+                $scope.autoCenter();*/
 
                 //End Map
 
