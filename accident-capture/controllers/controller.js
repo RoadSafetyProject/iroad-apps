@@ -80,7 +80,7 @@ eventCaptureControllers.controller('MainController',
                     	recent_accident.Accident.Longitude = 39.240643;
                     	recent_accident.Accident.Latitude = -6.771275;
                     	
-                    	$scope.recentAccidents.push(recent_accident);
+                    	//$scope.recentAccidents.push(recent_accident);
                     }
                     
                 });
@@ -157,6 +157,9 @@ eventCaptureControllers.controller('MainController',
                         iconCounter = 0;
                     }
                 }
+                google.maps.event.trigger(map, 'resize');
+                var reCenter = new google.maps.LatLng(-6.184234, 35.676095);
+                $scope.map.setCenter(reCenter);
                 $scope.autoCenter();
 
                 //End Map
@@ -186,19 +189,19 @@ eventCaptureControllers.controller('MainController',
                 $scope.iconURLPrefix + 'yellow-dot.png'
             ]
             $scope.iconsLength = $scope.icons.length;
-
-            $scope.map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: new google.maps.LatLng(-37.92, 151.25),
-                mapTypeId: google.maps.MapTypeId.HYBRID,
-                mapTypeControl: false,
-                streetViewControl: false,
-                panControl: false,
-                disableDoubleClickZoom: true,
-                zoomControlOptions: {
-                    position: google.maps.ControlPosition.LEFT_BOTTOM
-                }
-            });
+            var options = {
+                    zoom: 8,
+                    center: { lat: -6.184234, lng: 35.676095}/*,
+                    mapTypeId: google.maps.MapTypeId.HYBRID,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    panControl: false,
+                    disableDoubleClickZoom: true,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.LEFT_BOTTOM
+                    }*/
+                };
+            $scope.map = new google.maps.Map(document.getElementById('map'),options );
             google.maps.Marker.prototype.startBlinking=function(){
                 var mar = this;
                 this.interval = setInterval(function(){mar.setVisible(!mar.visible)}, 500);
@@ -211,8 +214,9 @@ eventCaptureControllers.controller('MainController',
             $scope.recentAccidents = new Array();
             console.log("Modal Name:" + $scope.accidentEventModal.getModalName());
             $scope.markers = new Array();
-            //$scope.loadAccidents();
-            $interval($scope.loadAccidents,5000);
+            
+            $scope.loadAccidents();
+            //$interval($scope.loadAccidents,5000);
             //$scope.loadAccidents();
         }
 
