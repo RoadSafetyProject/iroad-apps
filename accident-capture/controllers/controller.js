@@ -61,74 +61,61 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.loadAccidents = function(){
-        	
-        	
         	$scope.accidentEventModal.getAll(function(result){
         		$scope.recentAccidents = [];
-        		
-
-                angular.forEach(result, function (recent_accident) {
+        		angular.forEach(result, function (recent_accident) {
                     console.log('recent_accident:' + JSON.stringify(recent_accident));
                     var otherDate = new Date(recent_accident.Accident["Time of Accident"]);
                     var d = new Date();
-                    if(d.toDateString() == otherDate.toDateString())
+                    if(d.toDateString() == otherDate.toDateString() && !$scope.isAccidentIdLoaded(recent_accident.Accident.id))
                     {
                     	recent_accident.Accident.Longitude = 39.240643;
                     	recent_accident.Accident.Latitude = -6.771275;
-                    	
                     	$scope.recentAccidents.push(recent_accident);
+                    	$scope.loadedAccidentIds.push(recent_accident.Accident.id);
+                    	var image = new google.maps.MarkerImage(
+                                '../resources/images/marker.png',
+                                null, // size
+                                null, // origin
+                                new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
+                                new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
+                            );
+
+
+                            var marker = new google.maps.Marker({
+                                //position: new google.maps.LatLng(coords[i][0], coords[i][1]),
+                            	position: new google.maps.LatLng(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
+                                map: $scope.map,
+                                optimized: false,
+                                icon: $scope.iconURLPrefix + 'green-dot.png',
+                                interval:0,
+                                visible:true
+                            });
+
+                            marker.startBlinking();
+                            $scope.markers.push(marker);
+
+                            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                                return function() {
+
+                                    $scope.ViewAccident(recent_accident);
+                                    marker.stopBlinking();
+                                }
+                            })(marker, i));
+
+                            iconCounter++;
+                            // We only have a limited number of possible icon colors, so we may have to restart the counter
+                            if(iconCounter >=  $scope.iconsLength) {
+                                iconCounter = 0;
+                            }
                     }
                     
                 });
-                angular.forEach($scope.markers, function (marker) {
-            		marker.setMap(null);
-                });
-                var iconCounter = 0;
-                for (var i = 0; i < $scope.recentAccidents.length; i++) {
-
-                    var image = new google.maps.MarkerImage(
-                        '../resources/images/marker.png',
-                        null, // size
-                        null, // origin
-                        new google.maps.Point( 8, 8 ), // anchor (move to center of marker)
-                        new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
-                    );
-
-
-                    var marker = new google.maps.Marker({
-                        //position: new google.maps.LatLng(coords[i][0], coords[i][1]),
-                    	position: new google.maps.LatLng($scope.recentAccidents[i].Accident.Latitude, $scope.recentAccidents[i].Accident.Longitude),
-                        map: $scope.map,
-                        optimized: false,
-                        icon: $scope.iconURLPrefix + 'green-dot.png',
-                        interval:0,
-                        visible:true
-                    });
-
-                    marker.startBlinking();
-                    $scope.markers.push(marker);
-
-                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
-                        return function() {
-
-                            $scope.ViewAccident($scope.recentAccidents[i]);
-                            marker.stopBlinking();
-                        }
-                    })(marker, i));
-
-                    iconCounter++;
-                    // We only have a limited number of possible icon colors, so we may have to restart the counter
-                    if(iconCounter >=  $scope.iconsLength) {
-                        iconCounter = 0;
-                    }
-                }
                 /*google.maps.event.trigger(map, 'resize');
                 var reCenter = new google.maps.LatLng(-6.184234, 35.676095);
                 $scope.map.setCenter(reCenter);
                 $scope.autoCenter();*/
-                $scope.autoCenter();
-
-                //End Map
+                //$scope.autoCenter();
 
             },"Accident Vehicle");
         }
@@ -160,6 +147,7 @@ eventCaptureControllers.controller('MainController',
                     center: { lat: -6.184234, lng: 35.676095}
                 };
             $scope.map = new google.maps.Map(document.getElementById('map'),options );
+            google.maps.Marker.prototype.accidentId = null;
             google.maps.Marker.prototype.startBlinking=function(){
                 var mar = this;
                 this.interval = setInterval(function(){mar.setVisible(!mar.visible)}, 500);
@@ -176,10 +164,18 @@ eventCaptureControllers.controller('MainController',
                 $scope.data.accidents = result;
             },"Accident Vehicle");
             //$scope.loadAccidents();
+            $scope.loadedAccidentIds = [];
             $interval($scope.loadAccidents,5000);
             //$scope.loadAccidents();
         }
-
+        $scope.isAccidentIdLoaded = function(id){
+        	for(var i = 0;i < $scope.loadedAccidentIds.length;i++){
+        		if($scope.loadedAccidentIds[i] == id){
+        			return true;
+        		}
+        	}
+        	else false;
+        }
         /*
          dhisConfigs.onLoad = function(){
          $scope.onInitializeAccident();
