@@ -341,11 +341,11 @@
 
             <tr>
                 <td class="my_heading" style="border-width:0px;padding-right:5%">A : SCENE OF ACCIDENT & SEVERITY</td>
-                <td style="width:11%;background-color: #ffffff;text-align:left!important">Acc Register</td>
+                <td style="width:11%;background-color: #ffffff;text-align:left">Acc Register</td>
                 <td style="width:22%">{{dhis2Event.Accident['Accident Registration Number']}}</td>
-                <td style="width:8.5%;text-align:left!important">OCS Check</td>
+                <td style="width:8.5%;text-align:left">OCS Check</td>
                 <td style="width:8.5%">{{dhis2Event.Accident['OCS Check']}}</td>
-                <td  style="width:8.5%;text-align:left!important">S.visor Check</td>
+                <td  style="width:8.5%;text-align:left">S.visor Check</td>
                 <td style="width:8.5%">{{dhis2Event.Accident['Supervisor Check']}}</td>
             </tr>
 
@@ -381,13 +381,13 @@
                 <td class="my_td"  style="width: 10%">District </td>
                 <td style="width: 10%"></td>
                 <td class="my_td"  style="width: 10%">Police Officer </td>
-                <td style="width: 11%">{{dhis2Event.Accident.Police['Rank Number']}}</td>
-                <td style="width: 11%">{{dhis2Event.Accident.Police.Person['First Name'] + ' ' + dhis2Event.Accident.Police.Person['Middle Name'] + ' ' + dhis2Event.Accident.Police.Person['Last Name']}}</td>
-                <td style="width: 11%">{{dhis2Event.Accident['Time of Accident'] | date:'dd MM yyyy'}}</td>
+                <td style="width: 11%;text-align:left">{{dhis2Event.Accident.Police['Rank Number']}}</td>
+                <td style="width: 11%;text-align:left">{{dhis2Event.Accident.Police.Person['First Name'] + ' ' + dhis2Event.Accident.Police.Person['Middle Name'] + ' ' + dhis2Event.Accident.Police.Person['Last Name']}}</td>
+                <td style="width: 11%;text-align:left">{{dhis2Event.Accident['Time of Accident'] | date:'dd MM yyyy'}}</td>
                 <td style="width: 8.5%;text-align:left">Fatal(n)</td>
-                <td  style="width:8.5%">{{ dhis2Event.Accident['Number of Fatal Injuries'] }}</td>
+                <td  style="width:8.5%;text-align:left">{{ dhis2Event.Accident['Number of Fatal Injuries'] }}</td>
                 <td  style="width: 8.5%;text-align:left">Simple(n)</td>
-                <td style="width: 8.5%">{{ dhis2Event.Accident['Number of Simple Injuries'] }}</td>
+                <td style="width: 8.5%;text-align:left">{{ dhis2Event.Accident['Number of Simple Injuries'] }}</td>
 
             </tr>
 
@@ -398,9 +398,9 @@
                 <td class="my_td" >Accident Cause</td>
                 <td style="text-align:left">{{ dhis2Event.Accident['Cause of Accident'] }}</td>
                 <td class="my_td" >Weather Conditions</td>
-                <td>{{ dhis2Event.Accident['Weather'] }}</td>
+                <td style="text-align:left">{{ dhis2Event.Accident['Weather'] }}</td>
                 <td class="my_td" >Severe Injury</td>
-                <td>{{ dhis2Event.Accident['Number of Severe Injuries'] }}</td>
+                <td style="text-align:left" >{{ dhis2Event.Accident['Number of Severe Injuries'] }}</td>
                 <td class="my_td" >Only Damage</td>
                 <td>{{accident_only_damage}}</td>
             </tr>
@@ -419,11 +419,11 @@
 
             <tr>
                 <td class="my_heading" style="border-width:0px;padding-right:12%">B : TIME AND LOCATION</td>
-                <td style="width:11%;text-align:left!important">Latitude</td>
-                <td style="width:11%"> {{dhis2Event.Accident['Latitude']}} </td>
-                <td style="width:11%;text-align:left!important">Longitude</td>
-                <td style="width:8.5%">{{dhis2Event.Accident['Longitude']}} </td>
-                <td style="width:12.75%;text-align:left!important">Hit & Run</td>
+                <td style="width:11%;text-align:left">Latitude</td>
+                <td style="width:11%;text-align:left"> {{dhis2Event.Accident['Latitude']}} </td>
+                <td style="width:11%;text-align:left">Longitude</td>
+                <td style="width:8.5%;text-align:left">{{dhis2Event.Accident['Longitude']}} </td>
+                <td style="width:12.75%;text-align:left">Hit & Run</td>
                 <td style="width:12.75%"> {{}}</td>
             </tr>
 
@@ -443,8 +443,8 @@
 
             <tr>
                 <td class="number" style="border-width:0px">1</td>
-                <td style="width: 15%">Accident Date</td>
-                <td style="width: 15%">Accident Time</td>
+                <td style="width: 15%;text-align:left">Accident Date</td>
+                <td style="width: 15%;text-align:left">Accident Time</td>
                 <td class="my_td"  style="width: 33%">Area Of Accident </td>
                 <td class="my_td"  style="width: 8.5%">Road </td>
                 <td class="my_td"  style="width:12.75%">Intersection</td>
@@ -459,40 +459,40 @@
             <tr>
                 <td class="number" style="border-width:0px">2</td>
                 <td class="my_td"  style="width: 10%">Day</td>
-                <td style="width:5%">{{dhis2Event.Accident['Time of Accident']  | date:'dd'}} </td>
+                <td style="width:5%;text-align:left">{{dhis2Event.Accident['Time of Accident']  | date:'dd'}} </td>
                 <td style="width: 10%;text-align: left">Hour(24)</td>
-                <td style="width:5%"> {{dhis2Event.Accident['Time of Accident'] | date:'yyyy'}} </td>
+                <td style="width:5%;text-align:left"> {{dhis2Event.Accident['Time of Accident'] | date:'yyyy'}} </td>
                 <td class="my_td"  style="width: 11%">Area Name</td>
-                <td style="width:11%">{{ dhis2Event.Accident['Area of Accident']}}</td>
-                <td style="width: 11%;text-align:left!important">Name </td>
-                <td style="width:8.5%">{{ dhis2Event.Accident['Road Name'] }}</td>
-                <td style="width:12.75%">{{ dhis2Event.Accident['Intersection Name'] }}</td>
+                <td style="width:11%;text-align:left">{{ dhis2Event.Accident['Area of Accident']}}</td>
+                <td style="width: 11%;text-align:left">Name </td>
+                <td style="width:8.5%;text-align:left">{{ dhis2Event.Accident['Road Name'] }}</td>
+                <td style="width:12.75%;text-align:left">{{ dhis2Event.Accident['Intersection Name'] }}</td>
             </tr>
 
             <tr>
                 <td class="number" style="border-width:0px">3</td>
                 <td class="my_td"  >Month</td>
-                <td > {{dhis2Event.Accident['Time of Accident'] | date:'MMM'}} </td>
+                <td style="text-align: left"> {{dhis2Event.Accident['Time of Accident'] | date:'MMM'}} </td>
                 <td style="text-align: left">Min(60)</td>
                 <td> </td>
                 <td class="my_td" >City/Region</td>
                 <td>  </td>
-                <td style="text-align:left!important">No </td><td>{{ dhis2Event.Accident['Road Number']}}</td>
-                <td>{{ dhis2Event.Accident['Intersection Number'] }}</td>
+                <td style="text-align:left">No </td><td>{{ dhis2Event.Accident['Road Number']}}</td>
+                <td style="text-align:left">{{ dhis2Event.Accident['Intersection Number'] }}</td>
             </tr>
 
 
             <tr>
                 <td class="number" style="border-width:0px">4</td>
                 <td class="my_td"  >Year</td>
-                <td > {{dhis2Event.Accident['Time of Accident']  | date:'yyyy'}} </td>
+                <td style="text-align: left"> {{dhis2Event.Accident['Time of Accident']  | date:'yyyy'}} </td>
                 <td class="my_td" ></td>
                 <td></td>
                 <td class="my_td" >District</td>
                 <td> {{}} </td>
-                <td style="text-align:left!important">Kilometer(Mark) </td>
-                <td>{{ dhis2Event.Accident['Road Mark'] }}</td>
-                <td>{{ dhis2Event.Accident['Intersection Mark'] }}</td>
+                <td style="text-align:left">Kilometer(Mark) </td>
+                <td style="text-align: left">{{ dhis2Event.Accident['Road Mark'] }}</td>
+                <td style="text-align: left">{{ dhis2Event.Accident['Intersection Mark'] }}</td>
             </tr>
 
             </tbody>
@@ -511,13 +511,13 @@
         <tbody>
         <tr>
             <td class="my_heading2" style="border-width:0px">C : SCENE OF ACCIDENT & SEVERITY</td>
-            <td style="width:5%;text-align:left!important"> Fatal</td>
+            <td style="width:5%;text-align:left"> Fatal</td>
             <td style="width:11%"></td>
-            <td style="width:5.5%;text-align:left!important"> Severe</td>
+            <td style="width:5.5%;text-align:left"> Severe</td>
             <td style="width:5.5%"></td>
-            <td style="width:5.5%;text-align:left!important"> Simple</td>
+            <td style="width:5.5%;text-align:left"> Simple</td>
             <td style="width:5.5%;text-align:left"></td>
-            <td  style="width:21.25%;text-align:left!important">None</td>
+            <td  style="width:21.25%;text-align:left">None</td>
             <td style="width:12.75%"></td>
 
         </tr>
@@ -544,9 +544,9 @@
         <tr>
             <td class="number" style="border-width:0px">2</td>
             <td style="width: 15%" class="my_td">Driving License ID </td>
-            <td style="width: 15%">{{ dhis2Event.Driver['Driver License Number'] }}</td>
+            <td style="width: 15%;text-align:left">{{ dhis2Event.Driver['Driver License Number'] }}</td>
             <td style="width: 16.5%" class="my_td">Vehicle Registration Number </td>
-            <td style="width: 16.5%">{{ dhis2Event.Vehicle['Vehicle Plate Number'] }}</td>
+            <td style="width: 16.5%;text-align:left">{{ dhis2Event.Vehicle['Vehicle Plate Number'] }}</td>
             <td style="width: 17%" class="my_td">Insurance Company</td>
             <td style="width: 17%" class="my_td">{{}}</td>
         </tbody>
