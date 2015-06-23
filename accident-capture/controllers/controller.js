@@ -85,7 +85,7 @@ eventCaptureControllers.controller('MainController',
                     
                 });
 
-                alert("Markers:" + $scope.recentAccidents.length);
+                console.log("Markers:" + $scope.recentAccidents.length);
 
                 //Map
                 // Define your accidents: HTML content for the info window, latitude, longitude
