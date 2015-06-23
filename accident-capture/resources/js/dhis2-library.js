@@ -203,15 +203,18 @@ iroad2.data.Modal = function (modalName,relations) {
             }
         }
     }
+    this.getAll = function(onResult){
+    	self.getAll(onResult,self.modalName);
+    }
     /**
      * Gets all rows of a program
      *
      * @param onResult {function}  Callback function after the result is returned
      *
      */
-    this.getAll = function(onResult){
+    this.getAll = function(onResult,programName){
         //Get program by name
-        var program = self.getProgramByName(self.modalName);
+        var program = self.getProgramByName(programName);
         // Stores the rows of an entity
         this.events = [];
         var selfGetAll = this;
