@@ -8,9 +8,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 eventCaptureControllers.controller('MainController',
     function($scope,$modal,$timeout,$translate,$anchorScroll,storage,Paginator,OptionSetService,ProgramFactory,ProgramStageFactory,
              DHIS2EventFactory,DHIS2EventService,ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
-             CustomFormService,ErrorMessageService,ModalService,DialogService)
+             CustomFormService,ErrorMessageService,ModalService,DialogService,$interval)
     {
-        var accidentEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
+        $scope.accidentEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
         //var accidentEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         //var accidentEventModal = new iroad2.data.Modal("Accident",[new iroad2.data.Relation("Accident Vehicle","Accident")]);
         //selected org unit
@@ -60,22 +60,32 @@ eventCaptureControllers.controller('MainController',
             return false;
         }
 
-
-        $scope.onInitializeAccident = function(){
-
-            $scope.recentAccidents = new Array();
-
-            accidentEventModal.getAll(function(result){
+        $scope.loadAccidents = function(){
+        	
+        	
+        	$scope.accidentEventModal.getAll(function(result){
+        		angular.forEach($scope.markers, function (marker) {
+            		marker.setMap(null);
+                });
                 //console.log("Accidents:" + JSON.stringify(result));
                 $scope.data.accidents = result;
                 $scope.$apply();
 
                 angular.forEach($scope.data.accidents, function (recent_accident) {
-                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
-                    $scope.recentAccidents.push(recent_accident);
+                    console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    var otherDate = new Date(recent_accident.Accident["Time of Accident"]);
+                    var d = new Date();
+                    if(d.toDateString() == otherDate.toDateString())
+                    {
+                    	recent_accident.Accident.Longitude = 39.240643;
+                    	recent_accident.Accident.Latitude = -6.771275;
+                    	
+                    	$scope.recentAccidents.push(recent_accident);
+                    }
+                    
                 });
 
-
+                alert("Markers:" + $scope.recentAccidents.length);
 
                 //Map
                 // Define your accidents: HTML content for the info window, latitude, longitude
@@ -89,7 +99,7 @@ eventCaptureControllers.controller('MainController',
                         });
                 }
                 var accidents = $scope.recentAccidents ;
-                console.log(JSON.stringify(accidents));
+                //console.log(JSON.stringify(accidents));
 
                 var coords = [
                     [-2.70983759,32.56214991],[-3.13522,33.51909],[-3.65987,33.42725],[-4.16357,37.88895],[-9.32722,33.75265],[-10.37176,38.22909],[-2.74362014,32.05487111],[-7.74146,39.34485],[-3.1806,37.619526],
@@ -98,50 +108,18 @@ eventCaptureControllers.controller('MainController',
                 ];
 
                 // Setup the different icons and shadows
-                var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
-
-                var icons = [
-                    iconURLPrefix + 'red-dot.png',
-                    iconURLPrefix + 'green-dot.png',
-                    iconURLPrefix + 'blue-dot.png',
-                    iconURLPrefix + 'orange-dot.png',
-                    iconURLPrefix + 'purple-dot.png',
-                    iconURLPrefix + 'pink-dot.png',
-                    iconURLPrefix + 'yellow-dot.png'
-                ]
-                var iconsLength = icons.length;
-
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
-                    center: new google.maps.LatLng(-37.92, 151.25),
-                    mapTypeId: google.maps.MapTypeId.HYBRID,
-                    mapTypeControl: false,
-                    streetViewControl: false,
-                    panControl: false,
-                    disableDoubleClickZoom: true,
-                    zoomControlOptions: {
-                        position: google.maps.ControlPosition.LEFT_BOTTOM
-                    }
-                });
+                
 
                 var infowindow = new google.maps.InfoWindow({
                     maxWidth: 160
                 });
 
-                var markers = new Array();
+                
 
                 var iconCounter = 0;
-                google.maps.Marker.prototype.startBlinking=function(){
-                    var mar = this;
-                    this.interval = setInterval(function(){mar.setVisible(!mar.visible)}, 500);
-                };
-                google.maps.Marker.prototype.stopBlinking=function(){
-
-                    clearInterval(this.interval);
-                    this.setVisible(true);
-                };
+                
                 // Add the markers and infowindows to the map
-                for (var i = 0; i < coords.length; i++) {
+                for (var i = 0; i < $scope.recentAccidents.length; i++) {
 
                     var image = new google.maps.MarkerImage(
                         '../resources/images/marker.png',
@@ -153,48 +131,89 @@ eventCaptureControllers.controller('MainController',
 
 
                     var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(coords[i][0], coords[i][1]),
-                        map: map,
+                        //position: new google.maps.LatLng(coords[i][0], coords[i][1]),
+                    	position: new google.maps.LatLng($scope.recentAccidents[i].Accident.Latitude, $scope.recentAccidents[i].Accident.Longitude),
+                        map: $scope.map,
                         optimized: false,
-                        icon: iconURLPrefix + 'green-dot.png',
+                        icon: $scope.iconURLPrefix + 'green-dot.png',
                         interval:0,
                         visible:true
                     });
 
                     marker.startBlinking();
-                    markers.push(marker);
+                    $scope.markers.push(marker);
 
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
                         return function() {
 
-                            $scope.ViewAccident(accidents[i]);
+                            $scope.ViewAccident($scope.recentAccidents[i]);
                             marker.stopBlinking();
                         }
                     })(marker, i));
 
                     iconCounter++;
                     // We only have a limited number of possible icon colors, so we may have to restart the counter
-                    if(iconCounter >= iconsLength) {
+                    if(iconCounter >=  $scope.iconsLength) {
                         iconCounter = 0;
                     }
                 }
-
-                function autoCenter() {
-                    //  Create a new viewpoint bound
-                    var bounds = new google.maps.LatLngBounds();
-                    //  Go through each...
-                    for (var i = 0; i < markers.length; i++) {
-                        bounds.extend(markers[i].position);
-                    }
-                    //  Fit these bounds to the map
-                    map.fitBounds(bounds);
-                }
-                autoCenter();
+                $scope.autoCenter();
 
                 //End Map
 
-            });
+            },"Accident Vehicle");
+        }
+        $scope.autoCenter = function(){
+        //  Create a new viewpoint bound
+            var bounds = new google.maps.LatLngBounds();
+            //  Go through each...
+            for (var i = 0; i < $scope.markers.length; i++) {
+                bounds.extend($scope.markers[i].position);
+            }
+            //  Fit these bounds to the map
+            $scope.map.fitBounds(bounds);
+        }
+        $scope.onInitializeAccident = function(){
+        	$scope.iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
 
+            $scope.icons = [
+                $scope.iconURLPrefix + 'red-dot.png',
+                $scope.iconURLPrefix + 'green-dot.png',
+                $scope.iconURLPrefix + 'blue-dot.png',
+                $scope.iconURLPrefix + 'orange-dot.png',
+                $scope.iconURLPrefix + 'purple-dot.png',
+                $scope.iconURLPrefix + 'pink-dot.png',
+                $scope.iconURLPrefix + 'yellow-dot.png'
+            ]
+            $scope.iconsLength = $scope.icons.length;
+
+            $scope.map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: new google.maps.LatLng(-37.92, 151.25),
+                mapTypeId: google.maps.MapTypeId.HYBRID,
+                mapTypeControl: false,
+                streetViewControl: false,
+                panControl: false,
+                disableDoubleClickZoom: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_BOTTOM
+                }
+            });
+            google.maps.Marker.prototype.startBlinking=function(){
+                var mar = this;
+                this.interval = setInterval(function(){mar.setVisible(!mar.visible)}, 500);
+            };
+            google.maps.Marker.prototype.stopBlinking=function(){
+
+                clearInterval(this.interval);
+                this.setVisible(true);
+            };
+            $scope.recentAccidents = new Array();
+            console.log("Modal Name:" + $scope.accidentEventModal.getModalName());
+            $scope.markers = new Array();
+            //$scope.loadAccidents();
+            $interval($scope.loadAccidents,5000);
+            //$scope.loadAccidents();
         }
 
         /*
@@ -244,7 +263,7 @@ eventCaptureControllers.controller('MainController',
             $scope.editingEvent['Accident']['Latitude'] = -6.63883676;
             $scope.editingEvent['Accident']['Longitude'] = 39.19136727 ;
             var saveEvent = $scope.editingEvent;
-            accidentEventModal.save(saveEvent,otherData,function(result){
+            $scope.accidentEventModal.save(saveEvent,otherData,function(result){
                 //console.log("Update Made:" + JSON.stringify(result));
                 $scope.CurrentSaving = false;
                 $scope.UpdatedSuccess = true;

@@ -168,6 +168,7 @@ iroad2.data.Modal = function (modalName,relations) {
      * @return Program
      */
     this.getProgramByName = function(name){
+    	console.log("Program in Question:" + name);
         name = name.replace("_"," ");
         for(i = 0;i < iroad2.data.programs.length;i++){
             if(iroad2.data.programs[i].name == name){
@@ -312,13 +313,18 @@ iroad2.data.Modal = function (modalName,relations) {
         //Get program by name
         var program = self.getProgramByName(modalName);
         //Get events of the program from the server
-        http.get(iroad2.config.baseUrl + "api/events/" + uid + ".json",
-            function(result) {
-                //Render to entity column json
-                self.renderToJSON(result, function(object) {
-                    onResult(object);
-                });
-            });
+        try{
+        	http.get(iroad2.config.baseUrl + "api/events/" + uid + ".json",
+                    function(result) {
+                        //Render to entity column json
+                        self.renderToJSON(result, function(object) {
+                            onResult(object);
+                        });
+                    });
+        }catch(e){
+        	onResult({});
+        }
+        
     }
 
     this.renderToJSON = function(event, onSuccess) {
