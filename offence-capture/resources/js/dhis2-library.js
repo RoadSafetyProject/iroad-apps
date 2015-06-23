@@ -277,6 +277,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		
 		//Get events of the program from the server
 		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result2){
+			if(result2.events != undefined)
 			for(var j = 0; j < result2.events.length; j++) {//For each event render to entity column json
 				var event = result2.events[j];
 				for(var k = 0; k < event.dataValues.length; k++) {
@@ -320,6 +321,8 @@ iroad2.data.Modal = function (modalName,relations) {
 			self.renderToJSON(result, function(object) {
 				onResult(object);
 			});
+		},function(error){
+			onResult({});
 		});
 	}
 

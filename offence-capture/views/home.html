@@ -19,7 +19,7 @@
         </div>
 
         <div class="mws-panel-header"  style="height: 48px !important;">
-            <span style="color: #fff0ff !important;"><i class="icon-table"></i> Offence Events Registered<button ng-click="addNew()" class="btn btn-primary btn-xs pull-right" style="color:#fff0ff;font-size: 11px"> Add New </button></span>
+            <span>Offence Events Registered<button ng-click="addNew()" class="btn btn-primary btn-xs pull-right" style="color:#fff0ff;font-size: 11px"> Add New </button></span>
         </div>
 
         <div class="mws-panel-body no-padding">
@@ -43,8 +43,8 @@
                 <tbody>
                 <tr ng-repeat="event in data.offences">
                     <td>{{ $index+1 }}</td>
-                    <td>{{event.Driver["Driver License Number"]}}</td>
-                    <td>{{event.Driver.Person["First Name"]}} {{event.Driver.Person["Last Name"]}}</td>
+                    <td>{{event["Driver License Number"]}}</td>
+                    <td>{{event["Full Name"]}}</td>
                     <td>{{event["Offence Place"]}}</td>
                     <td>{{event["Offence Date"] | date:'dd MMM yyyy'}}</td>
                     <!-- <td ng-repeat="datas in events.dataValues | filter:{name:'Make'}">{{ datas.value }}</td>
@@ -84,7 +84,7 @@
 		
         <div ng-if="panel.offences" style="margin-top:20px">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> List of offences</span>
+                <span>List of offences</span>
             </div>
 
             <div class="mws-panel-body no-padding">
@@ -130,7 +130,7 @@
 </div>
 	<div ng-if="panel.driver" class="mws-panel grid_2 rightPanel">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence</span>
+                <span>Driver Involved in Offence</span>
             </div>
 
             <div class="mws-panel-body no-padding">
@@ -153,7 +153,7 @@
         </div>
         <div ng-if="panel.vehicle" class="mws-panel grid_2 rightPanel">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Vehicle Involved in Offence </span>
+                <span>Vehicle Involved in Offence </span>
             </div>
 
             <div class="mws-panel-body no-padding">
@@ -176,7 +176,7 @@
         </div>
         <div class="mws-panel grid_2 rightPanel" ng-if="panel.payment">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Offence Payment </span>
+                <span>Offence Payment </span>
             </div>
 
             <div class="mws-panel-body no-padding">
@@ -238,7 +238,7 @@
         </div>	
         <div class="mws-panel grid_2 rightPanel" ng-if="panel.edit">
 			<div class="mws-panel-header"  style="height: 48px !important;">
-                <span  style="color: #fff0ff !important;"><i class="icon-table"></i> Driver Involved in Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
+                <span>Add New Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
             </div>
      
             <table  class="mws-datatable-fn mws-table">
@@ -300,7 +300,7 @@
             <tr>
             	<td>
             		<label>Offence Date</label><br />
-            		<input ui-date="dateOptions" class="form-control"  ng-model="editingEvent['Offence Date']" />
+            		<input ui-date="dateOptions" ui-date-format="yy-MM-dd"class="form-control"  ng-model="editingEvent['Offence Date']" />
             	</td>
             </tr>
             <tr>
