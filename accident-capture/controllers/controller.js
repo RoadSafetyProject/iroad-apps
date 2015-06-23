@@ -65,14 +65,9 @@ eventCaptureControllers.controller('MainController',
         	
         	$scope.accidentEventModal.getAll(function(result){
         		$scope.recentAccidents = [];
-        		angular.forEach($scope.markers, function (marker) {
-            		marker.setMap(null);
-                });
-                //console.log("Accidents:" + JSON.stringify(result));
-                $scope.data.accidents = result;
-                $scope.$apply();
+        		
 
-                angular.forEach($scope.data.accidents, function (recent_accident) {
+                angular.forEach(result, function (recent_accident) {
                     console.log('recent_accident:' + JSON.stringify(recent_accident));
                     var otherDate = new Date(recent_accident.Accident["Time of Accident"]);
                     var d = new Date();
@@ -85,41 +80,10 @@ eventCaptureControllers.controller('MainController',
                     }
                     
                 });
-
-                console.log("Markers:" + $scope.recentAccidents.length);
-
-                //Map
-                // Define your accidents: HTML content for the info window, latitude, longitude
-
-                $scope.getCoordinates = function(){
-                    var coordinates = {};
-                    $http.get("http://roadsafety.udsm.ac.tz/demo/api/events.json?program=&paging=false")
-                        .success(function(data){
-                            coordinates = data;
-
-                        });
-                }
-                var accidents = $scope.recentAccidents ;
-                //console.log(JSON.stringify(accidents));
-
-                var coords = [
-                    [-2.70983759,32.56214991],[-3.13522,33.51909],[-3.65987,33.42725],[-4.16357,37.88895],[-9.32722,33.75265],[-10.37176,38.22909],[-2.74362014,32.05487111],[-7.74146,39.34485],[-3.1806,37.619526],
-                    [-4.95957,29.75764]
-
-                ];
-
-                // Setup the different icons and shadows
-                
-
-                var infowindow = new google.maps.InfoWindow({
-                    maxWidth: 160
+                angular.forEach($scope.markers, function (marker) {
+            		marker.setMap(null);
                 });
-
-                
-
                 var iconCounter = 0;
-                
-                // Add the markers and infowindows to the map
                 for (var i = 0; i < $scope.recentAccidents.length; i++) {
 
                     var image = new google.maps.MarkerImage(
@@ -162,6 +126,7 @@ eventCaptureControllers.controller('MainController',
                 var reCenter = new google.maps.LatLng(-6.184234, 35.676095);
                 $scope.map.setCenter(reCenter);
                 $scope.autoCenter();*/
+                $scope.autoCenter();
 
                 //End Map
 
@@ -192,15 +157,7 @@ eventCaptureControllers.controller('MainController',
             $scope.iconsLength = $scope.icons.length;
             var options = {
                     zoom: 8,
-                    center: { lat: -6.184234, lng: 35.676095}/*,
-                    mapTypeId: google.maps.MapTypeId.HYBRID,
-                    mapTypeControl: false,
-                    streetViewControl: false,
-                    panControl: false,
-                    disableDoubleClickZoom: true,
-                    zoomControlOptions: {
-                        position: google.maps.ControlPosition.LEFT_BOTTOM
-                    }*/
+                    center: { lat: -6.184234, lng: 35.676095}
                 };
             $scope.map = new google.maps.Map(document.getElementById('map'),options );
             google.maps.Marker.prototype.startBlinking=function(){
@@ -215,7 +172,9 @@ eventCaptureControllers.controller('MainController',
             $scope.recentAccidents = new Array();
             console.log("Modal Name:" + $scope.accidentEventModal.getModalName());
             $scope.markers = new Array();
-            
+            $scope.accidentEventModal.getAll(function(result){
+                $scope.data.accidents = result;
+            });
             //$scope.loadAccidents();
             $interval($scope.loadAccidents,5000);
             //$scope.loadAccidents();
