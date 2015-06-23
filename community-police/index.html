@@ -123,8 +123,8 @@
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Title'].value }}</span></td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Description'].value }}</span> </td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Type'].value }}</span></td>
-                <td><span ng-click="openInfoWindowByEvent(events)" ng-show="checkimage(events.dataValues['Community Report Image'].value)">{{ events.dataValues['Community Report Image'].value }}</span></td>
-                <td><span ng-click="openInfoWindowByEvent(events)" ng-show="checkimage(events.dataValues['Community Report Video'].value)">{{ events.dataValues['Community Report Video'].value }}</span></td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Image'].value }}</span></td>
+                <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Video'].value }}</span></td>
             </tr>
             <!--<tr ng-repeat="todo in todos.filtered()" >-->
                 <!--<td><label ng-click="controls.openInfoWindowByTodoId(todo.id)"  ng-dblclick="controls.editTodoById(todo.id)">{{todo.title}}</label></td>-->
@@ -750,11 +750,7 @@ mapApp.controller('showTodoCtrl', function ($http,$scope, mapService, todosServi
     });
 
     $scope.checkimage = function(name){
-        if (name.indexOf("http") > -1) {
             return true;
-        }else{
-            return false;
-        }
     }
 
     $scope.openInfoWindowByEvent =function(id){
