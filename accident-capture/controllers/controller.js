@@ -174,7 +174,7 @@ eventCaptureControllers.controller('MainController',
         			return true;
         		}
         	}
-        	else false;
+        	return false;
         }
         /*
          dhisConfigs.onLoad = function(){
