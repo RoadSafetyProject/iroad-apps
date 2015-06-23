@@ -83,6 +83,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			$scope.data.payment['Offence Reciept Reciept'] = "";
 		}
 		$scope.savePayment = function(){
+			$scope.data.payment['Offence Paid'] = true;
+			alert("Payment made successfully.")
+			$scope.show("offences")
 			if($scope.data.payment['Offence Reciept Amount'] != "" && $scope.data.payment['Offence Reciept Reciept'] != ""){
 				$scope.data.payment['Offence Paid'] = true;
 				var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
