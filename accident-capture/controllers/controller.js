@@ -64,6 +64,7 @@ eventCaptureControllers.controller('MainController',
         	
         	
         	$scope.accidentEventModal.getAll(function(result){
+        		$scope.recentAccidents = [];
         		angular.forEach($scope.markers, function (marker) {
             		marker.setMap(null);
                 });
