@@ -215,8 +215,8 @@ eventCaptureControllers.controller('MainController',
             console.log("Modal Name:" + $scope.accidentEventModal.getModalName());
             $scope.markers = new Array();
             
-            $scope.loadAccidents();
-            //$interval($scope.loadAccidents,5000);
+            //$scope.loadAccidents();
+            $interval($scope.loadAccidents,5000);
             //$scope.loadAccidents();
         }
 
