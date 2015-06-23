@@ -168,7 +168,6 @@ iroad2.data.Modal = function (modalName,relations) {
      * @return Program
      */
     this.getProgramByName = function(name){
-    	console.log("Program in Question:" + name);
         name = name.replace("_"," ");
         for(i = 0;i < iroad2.data.programs.length;i++){
             if(iroad2.data.programs[i].name == name){
