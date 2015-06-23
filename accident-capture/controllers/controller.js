@@ -80,7 +80,7 @@ eventCaptureControllers.controller('MainController',
                     	recent_accident.Accident.Longitude = 39.240643;
                     	recent_accident.Accident.Latitude = -6.771275;
                     	
-                    	//$scope.recentAccidents.push(recent_accident);
+                    	$scope.recentAccidents.push(recent_accident);
                     }
                     
                 });
