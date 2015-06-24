@@ -64,7 +64,7 @@ eventCaptureControllers.controller('MainController',
         	$scope.accidentEventModal.getAll(function(result){
         		$scope.recentAccidents = [];
         		angular.forEach(result, function (recent_accident) {
-                    console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
                     var otherDate = new Date(recent_accident.Accident["Time of Accident"]);
                     var d = new Date();
                     if(d.toDateString() == otherDate.toDateString() && !$scope.isAccidentIdLoaded(recent_accident.Accident.id))
