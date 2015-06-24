@@ -123,11 +123,11 @@
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Title'].value }}</span></td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Description'].value }}</span> </td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Type'].value }}</span></td>
-                <td><span ng-click="openInfoWindowByEvent(events)" ng-hide="checkimage(events.dataValues['Community Report Image'].value)"><img alt='no-image' src="geturl(events.dataValues['Community Report Image'].value)" style="height:100px; width:130px"></span></td>
+                <td><span ng-click="openInfoWindowByEvent(events)" ng-hide="checkimage(events.dataValues['Community Report Image'].value)"><img alt='no-image'  ng-src="geturl(events.dataValues['Community Report Image'].value)" style="height:100px; width:130px"></span></td>
                 <td><span ng-click="openInfoWindowByEvent(events)" ng-hide="checkimage(events.dataValues['Community Report Video'].value)">
                     <video width="150" height="100" controls>
-                      <source src="geturl(events.dataValues['Community Report Video'].value)" type="video/mp4">
-                      <source src="geturl(events.dataValues['Community Report Video'].value)" type="video/ogg">
+                      <source ng-src="geturl(events.dataValues['Community Report Video'].value)" type="video/mp4">
+                      <source ng-src="geturl(events.dataValues['Community Report Video'].value)" type="video/ogg">
                     Your browser does not support the video tag.
                     </video>
                     </span></td>
