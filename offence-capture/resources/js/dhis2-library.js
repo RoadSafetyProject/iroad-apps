@@ -127,6 +127,13 @@ iroad2.data.SearchCriteria = function (dataElementName,operator,value) {
 	this.value = value;
 }
 
+iroad2.data.DataResult = function (pager,data) {
+	this.pager = pager;
+	this.data = data;
+}
+
+
+
 /**
  * 
  *	This is the modal that reflects a program in the database
@@ -214,21 +221,40 @@ iroad2.data.Modal = function (modalName,relations) {
 	 * @param onResult {function}  Callback function after the result is returned
 	 * 
 	 */
-	this.getAll = function(onResult){
+	this.getAll = function(){//}(onResult,pageSize,page){
+		var onResult = arguments[0];
 		//Get program by name
 		var program = self.getProgramByName(self.modalName);
+		
+		var url = "api/events?program="+program.id;
+		
+		if(arguments.length > 1){
+			
+			url = "api/events?programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
+		}
 		// Stores the rows of an entity
 		this.events = [];
 		var selfGetAll = this;
+		if(arguments.length == 4){
+			selfGetAll.dataResults = new iroad2.data.DataResult();
+		}
 		//Checks that all requests are made
 		this.resCount = [];
 		this.resultsFetched = function(){
 			if (selfGetAll.resCount.length == 0) {
-				onResult(selfGetAll.events);
+				if(selfGetAll.dataResults != undefined){
+					selfGetAll.dataResults.data = selfGetAll.events;
+					onResult(selfGetAll.dataResults);
+				}else{
+					onResult(selfGetAll.events);
+				}
 			}
 		}
 		//Get events of the program from the server
-		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result){
+		http.get(iroad2.config.baseUrl + url,function(result){
+			if(selfGetAll.dataResults != undefined){
+				selfGetAll.dataResults.pager = result.pager;
+			}
 			for(var j = 0; j < result.events.length; j++) {//For each event render to entity column json
 				var event = result.events[j];
 				selfGetAll.resCount.push(1);
@@ -252,6 +278,50 @@ iroad2.data.Modal = function (modalName,relations) {
 		});
 		return;
 	}
+	/**
+	 * Gets all rows of a program
+	 * 
+	 * @param onResult {function}  Callback function after the result is returned
+	 * 
+	 */
+	/*this.getAll = function(pageSize,page,onResult){
+		//Get program by name
+		var program = self.getProgramByName(self.modalName);
+		// Stores the rows of an entity
+		this.events = [];
+		var selfGetAll = this;
+		//Checks that all requests are made
+		this.resCount = [];
+		this.resultsFetched = function(){
+			if (selfGetAll.resCount.length == 0) {
+				onResult(selfGetAll.events);
+			}
+		}
+		//Get events of the program from the server
+		http.get(iroad2.config.baseUrl + "api/events?programStage="+program.programStages[0].id+"&pageSize="+pageSize+"&page=1" + page,function(result){
+			for(var j = 0; j < result.events.length; j++) {//For each event render to entity column json
+				var event = result.events[j];
+				selfGetAll.resCount.push(1);
+				
+				//Render events to appropriate Modal
+				self.renderToJSON(event, function(object) {
+					//Push object to events
+					
+					//document.getElementById("result").innerHTML += JSON.stringify(selfGet.events) +"<br /><br />";
+					selfGetAll.events.push(object);
+					
+					//Pop count to signify
+					selfGetAll.resCount.pop();
+					
+					//Check if all results from the server are fetched
+					selfGetAll.resultsFetched();
+				});
+			}
+			//Check if all results from the server are fetched
+			selfGetAll.resultsFetched();
+		});
+		return;
+	}*/
 	/**
 	 * Search events of a program
 	 * 

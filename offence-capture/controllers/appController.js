@@ -9,7 +9,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
-    	
+    	$scope.pageSize = 10;
+    	$scope.pageChanged = function(page) {
+    	                	$scope.fetchOffences($scope.pageSize,page);
+    	                };
     	$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
         //selected org unit
         $scope.today = DateUtils.getToday();
@@ -26,19 +29,30 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         	}
         	$scope.panel[panel] = true;
         }
+        $scope.pager = {};
         $scope.data = {};
+        $scope.fetchOffences = function(pageSize,page){
+        	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
+        	$scope.offenceEventModal.getAll(function(result){
+        		console.log("Page:" + JSON.stringify(result));
+        		$scope.pager = result.pager;
+				$scope.data.offences = result.data;
+				$scope.$apply();
+			},pageSize,page,true);
+        }
         $scope.onInitialize = function(){
         	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         	$scope.offenceEventModal.getAll(function(result){
-        		console.log("Result:" + JSON.stringify(result));
-				$scope.data.offences = result;
+        		console.log("Result here:" + JSON.stringify(result));
+        		$scope.pager = result.pager;
+				$scope.data.offences = result.data;
 				$scope.$apply();
 				var registries = new iroad2.data.Modal("Offence Registry",[]);
 	        	registries.getAll(function(result){
 					$scope.data.registries = result;
 					$scope.$apply();
 				});
-			});
+			},$scope.pageSize,1,true);
         	/*var registries = new iroad2.data.Modal("Offence Registry",[]);
         	registries.getAll(function(result){
 				$scope.data.registries = result;
