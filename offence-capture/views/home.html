@@ -45,7 +45,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="event in data.offences">
-                    <td>{{ $index+1 }}</td>
+                    <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
                     <td>{{event["Driver License Number"]}}</td>
                     <td>{{event["Full Name"]}}</td>
                     <td>{{event["Offence Place"]}}</td>
