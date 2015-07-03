@@ -636,7 +636,12 @@ http = {
 		}
 		xmlhttp.open(method, url, true);
 		xmlhttp.setRequestHeader("Content-Type", "application/json");
-		xmlhttp.send(data);
+		try{
+			xmlhttp.send(data);
+		}catch(e){
+			onError(e);
+		}
+		
 	},
 	/**
 	 * Makes a http get request
