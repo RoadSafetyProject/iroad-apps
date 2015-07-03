@@ -392,6 +392,7 @@ iroad2.data.Modal = function (modalName,relations) {
 				onResult(object);
 			});
 		},function(error){
+			alert("Here")
 			onResult({});
 		});
 	}
