@@ -102,7 +102,9 @@
                         <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements  | orderBy:'sortOrder'">
                         <td >
                             <label>{{ list.dataElement.name }}</label>
-                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='string'" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='int'" ng-blur="validateNewCarInt(list.dataElement)" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <input  class="form-control" ng-focus="focusMe(list.dataElement.name)"  ng-if="list.dataElement.type=='date'" ui-date="dateOptions1"  ng-model="data.newCarValue[list.dataElement.id]" >
                             <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                           </td>
                         </tr>

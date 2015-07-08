@@ -164,6 +164,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.normalClass= "col-sm-12";
         $scope.normalStyle= { "z-index": '1000'};
         $scope.data.color = [];
+        $scope.validateNewCarInt = function(value){
+        	if(!isInt($scope.data.newCarValue[value.id])){
+        		alert(value.name + " should be an integer value.")
+        		$scope.data.newCarValue[value.id] = "";
+        	}
+        }
         $scope.enableEdit  = function(events){
             $scope.cancelEdit();
             $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
@@ -835,3 +841,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
 
     });
+function isInt(value) {
+	  return !isNaN(value) && 
+	         parseInt(Number(value)) == value && 
+	         !isNaN(parseInt(value, 10));
+	}
