@@ -64,7 +64,7 @@ eventCaptureControllers.controller('MainController',
         	$scope.accidentEventModal.getAll(function(result){
         		$scope.recentAccidents = [];
         		angular.forEach(result, function (recent_accident) {
-                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    console.log('recent_accident:' + JSON.stringify(recent_accident));
                     var otherDate = new Date(recent_accident.Accident["Time of Accident"]);
                     var d = new Date();
                     if(d.toDateString() == otherDate.toDateString() && !$scope.isAccidentIdLoaded(recent_accident.Accident.id))
@@ -111,11 +111,6 @@ eventCaptureControllers.controller('MainController',
                     }
                     
                 });
-                /*google.maps.event.trigger(map, 'resize');
-                var reCenter = new google.maps.LatLng(-6.184234, 35.676095);
-                $scope.map.setCenter(reCenter);
-                $scope.autoCenter();*/
-                //$scope.autoCenter();
 
             },"Accident Vehicle");
         }
@@ -128,6 +123,23 @@ eventCaptureControllers.controller('MainController',
             }
             //  Fit these bounds to the map
             $scope.map.fitBounds(bounds);
+        }
+        $scope.pageSize = 10;
+        $scope.pageChanged = function(page) {
+        	$scope.fetchAccidents($scope.pageSize,page);
+        	
+        };
+        $scope.data.accidents = []
+        $scope.fetchAccidents = function(pageSize,page){
+        	$scope.accidentEventModal.getAll(function(result){
+        		console.log("Accidents:" + JSON.stringify(result.data));
+        		$scope.setAccidents(result);
+            },pageSize,page,true);
+        }
+        $scope.setAccidents = function(result){
+        	$scope.pager = result.pager;
+        	$scope.data.accidents = result.data;
+        	$scope.$apply();
         }
         $scope.onInitializeAccident = function(){
         	$scope.iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
@@ -160,13 +172,14 @@ eventCaptureControllers.controller('MainController',
             $scope.recentAccidents = new Array();
             console.log("Modal Name:" + $scope.accidentEventModal.getModalName());
             $scope.markers = new Array();
-            $scope.accidentEventModal.getAll(function(result){
+            /*$scope.accidentEventModal.getAll(function(result){
+            	console.log("Result:"+ JSON.stringify(result));
                 $scope.data.accidents = result;
-            },"Accident Vehicle");
-            //$scope.loadAccidents();
+            });*/
+            $scope.fetchAccidents($scope.pageSize,1);
+            
             $scope.loadedAccidentIds = [];
-            $interval($scope.loadAccidents,5000);
-            //$scope.loadAccidents();
+            //$interval($scope.loadAccidents,5000);
         }
         $scope.isAccidentIdLoaded = function(id){
         	for(var i = 0;i < $scope.loadedAccidentIds.length;i++){
