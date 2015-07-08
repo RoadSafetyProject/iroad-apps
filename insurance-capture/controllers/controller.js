@@ -15,8 +15,17 @@ eventCaptureControllers.controller('MainController',
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.data = {};
-
-
+        $scope.pageSize = 10;
+    	$scope.pageChanged = function(page) {
+    	                	$scope.fetchCompanies($scope.pageSize,page);
+    	                };
+    	$scope.fetchCompanies = function(pageSize,page){
+    		insuranceCompanyModal.getAll(function(result){
+            	console.log("Companies:" + JSON.stringify(result));
+                $scope.data.insurance = result.data;
+                $scope.$apply();
+            },pageSize,page,true);
+    	}
         $scope.isInteger = function(key){
             return $scope.is(key,"int");
         }
@@ -28,7 +37,7 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.is = function(key,dataType){
-            for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
                     if(iroad2.data.dataElements[j].type == dataType){
                         return true;
@@ -42,7 +51,7 @@ eventCaptureControllers.controller('MainController',
             return $scope.is(key,"bool");
         }
         $scope.hasDataSets = function(key){
-            for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
                     return (iroad2.data.dataElements[j].optionSet != undefined);
                 }
@@ -59,19 +68,8 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.onInitializeAccident = function(){
-            insuranceCompanyModal.getAll(function(result){
-            console.log("Companies:" + JSON.stringify(result));
-                $scope.data.insurance = result;
-                $scope.$apply();
-            });
-
+            $scope.fetchCompanies($scope.pageSize,1);
         }
-
-        /*
-         dhisConfigs.onLoad = function(){
-         $scope.onInitializeAccident();
-         }
-         */
         dhisConfigs.onLoad = function(){
             $scope.onInitializeAccident();
         }
@@ -135,13 +133,21 @@ eventCaptureControllers.controller('MainController',
             });
 
             console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin"};
+            var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
             var saveEvent = $scope.editingEvent;
             insuranceCompanyModal.save(saveEvent,otherData,function(result){
-            console.log("Update Made:" + JSON.stringify(result));
-                $scope.CurrentSaving = false;
-                $scope.UpdatedSuccess = true;
-                $scope.UpdateFailure = false;
+            	console.log("Update Made:" + JSON.stringify(saveEvent));
+            	if(result.importSummaries[0].status == "SUCCESS")
+            	{
+            		$scope.CurrentSaving = false;
+                    $scope.UpdatedSuccess = true;
+                    $scope.UpdateFailure = false;
+                    saveEvent.id = result.importSummaries[0].reference;
+                    console.log("Adding to list:" + JSON.stringify(saveEvent));
+                    $scope.data.insurance.push(saveEvent);
+                    alert("Insurance information saved successfully.");
+            	}
+                
 
             },function(error){
                 $scope.CurrentSaving = false;

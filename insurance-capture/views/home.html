@@ -51,6 +51,10 @@
             </tr>
             </tbody>
         </table>
+        <pagination class="pull-right" total-items="pager.total" page="pager.page"
+          max-size="5" boundary-links="true"
+          on-select-page="pageChanged(page)" items-per-page="pager.pageSize" class="pagination-sm">
+        </pagination>
     </div>
 
 </div>
