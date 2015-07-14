@@ -1,9 +1,10 @@
 
-<div class="modal-header page">
-    <button type="button" class="close" data-ng-click="close()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-</div>
+<!--<div class="modal-header page">
+    
+</div>-->
 
 <div class="modal-body page"> 
+	<button type="button" class="close" data-ng-click="close()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	<h3 align = "center">Driver Information</h3><br>
 	<table class="table">
 		<thead></thead>
@@ -26,30 +27,29 @@
 			<tr>
 				<td><b>Gender</b></td>
 				<td>{{ events.dataValues['Gender'].value }}</td>
-			</tr>
+			</tr>			
 
 			<tr>
-				<td><b>Driver License Number</b></td>
-				<td>{{ events.dataValues['Driver License Number'].value }}</td>
+				<td><b>Date Of Birth</b></td>
+				<td>{{ events.dataValues['Date of Birth'].value }}</td>
 			</tr>
 
 			<tr>
 				<td><b>TIN Number</b></td>
 				<td>{{ events.dataValues['TIN Number'].value }}</td>
 			</tr>
-
+			
 			<tr>
-				<td><b>Date Of Birth</b></td>
-				<td>{{ events.dataValues['Date Of Birth'].value }}</td>
-			</tr>
+				<td><b>Driver License Number</b></td>
+				<td>{{ events.dataValues['Driver License Number'].value }}</td>
+			</tr>			
 
 			<tr>
 				<td><b>Driving Class Name</b></td>
-				<td>{{ events.dataValues['Driving Class Name'].value }}</td>
+				<td>{{ events.dataValues['Driving Class Name'].value | uppercase }}</td>
 			</tr>
 		</tbody>
 	</table>  
-   {{events}}
 </div>
 <!--
 <div class="modal-footer page">        
