@@ -449,17 +449,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         //display modal for view info 
         $scope.showDriverInfo = function(events){
-            
+           // alert(events.dataValues['Gender'].value);
             var modalInstance = $modal.open({
                 templateUrl: 'views/showDriverInfo.html',
                 controller: 'ShowDriverInfoController',
 
-                resolve: {                    
+                resolve: {
+                    
                     events: function () {
                         return events;
                     }
                 }
-                
+                                
             });
 
             modalInstance.result.then(function (){

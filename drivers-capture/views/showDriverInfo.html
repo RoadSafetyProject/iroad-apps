@@ -1,13 +1,57 @@
+
 <div class="modal-header page">
-    <h3>View Driver Info</h3>
+    <button type="button" class="close" data-ng-click="close()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 
-<div class="modal-body page">   
-    <h3>Driver informations</h3>
+<div class="modal-body page"> 
+	<h3 align = "center">Driver Information</h3><br>
+	<table class="table">
+		<thead></thead>
+		<tbody>
+			<tr>
+				<td><b>Full Name</b> </td>
+				<td>{{ events.dataValues['Full Name'].value }}</td>
+			</tr>
 
-    <p>{{ events.dataValues['Full Name'].value }}</p>
+			<tr>
+				<td><b>Phone Number</b></td>
+				<td>{{ events.dataValues['Phone Number'].value }}</td>
+			</tr>
+
+			<tr>
+				<td><b>Postal Address</b></td>
+				<td>{{ events.dataValues['Postal Address'].value }}</td>
+			</tr>
+
+			<tr>
+				<td><b>Gender</b></td>
+				<td>{{ events.dataValues['Gender'].value }}</td>
+			</tr>
+
+			<tr>
+				<td><b>Driver License Number</b></td>
+				<td>{{ events.dataValues['Driver License Number'].value }}</td>
+			</tr>
+
+			<tr>
+				<td><b>TIN Number</b></td>
+				<td>{{ events.dataValues['TIN Number'].value }}</td>
+			</tr>
+
+			<tr>
+				<td><b>Date Of Birth</b></td>
+				<td>{{ events.dataValues['Date Of Birth'].value }}</td>
+			</tr>
+
+			<tr>
+				<td><b>Driving Class Name</b></td>
+				<td>{{ events.dataValues['Driving Class Name'].value }}</td>
+			</tr>
+		</tbody>
+	</table>  
+   {{events}}
 </div>
-
+<!--
 <div class="modal-footer page">        
     <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
-</div>
+</div>-->
