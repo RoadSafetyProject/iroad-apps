@@ -81,7 +81,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }
                 program.dataValues = {};
                 program.dataValues.events = [];
-                $http.get('../../../api/events.json?program='+program.id).success(function(data){
+                $http.get('../../../api/events.json?program='+program.id+'&pageSize=10').success(function(data){
                     if($scope.data.programs['Driver'].id == program.id){
                         $scope.hideProgresMessage();
                     }
@@ -445,6 +445,26 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             modalInstance.result.then(function (){
             });
         };
+
+
+        //display modal for view info 
+        $scope.showDriverInfo = function(events){
+            
+            var modalInstance = $modal.open({
+                templateUrl: 'views/showDriverInfo.html',
+                controller: 'ShowDriverInfoController',
+
+                resolve: {                    
+                    events: function () {
+                        return events;
+                    }
+                }
+                
+            });
+
+            modalInstance.result.then(function (){
+            });
+        }
 
         //display a model to view offences
         $scope.ViewOffences = function(dhis2Event){
