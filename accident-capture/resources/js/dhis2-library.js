@@ -571,7 +571,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		//var event = self.convertToEvent(data);
 		if(sendData.event){
-			console.log("Updating Data "+savingModal+":" + JSON.stringify(sendData));
+			//console.log("Updating Data "+savingModal+":" + JSON.stringify(sendData));
 			saveUrl += "/" +sendData.event;
 			http.put(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
@@ -580,7 +580,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			});
 			//delete sendData.event;
 		}else{
-			console.log("Saving Data "+savingModal+":" + JSON.stringify(sendData));
+			//console.log("Saving Data "+savingModal+":" + JSON.stringify(sendData));
 			http.post(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
 			},function(results){
@@ -626,9 +626,9 @@ http = {
 										"Event updated: ", "").replace("\r\n", "")
 							})
 						} else {
-							console.error("Returned:" + xmlhttp.responseText);
+							//console.error("Returned:" + xmlhttp.responseText);
 							if (onError == undefined) {
-								console.error(e);
+								//console.error(e);
 							} else {
 								onError(e);
 							}
