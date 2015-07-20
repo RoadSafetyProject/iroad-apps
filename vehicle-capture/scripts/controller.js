@@ -401,7 +401,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
@@ -472,7 +472,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
@@ -544,7 +544,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
@@ -615,7 +615,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
