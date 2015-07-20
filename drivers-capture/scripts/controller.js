@@ -81,7 +81,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }
                 program.dataValues = {};
                 program.dataValues.events = [];
-                $http.get('../../../api/events.json?program='+program.id+'&pageSize=10').success(function(data){
+                $http.get('../../../api/events.json?program='+program.id).success(function(data){
                     if($scope.data.programs['Driver'].id == program.id){
                         $scope.hideProgresMessage();
                     }
@@ -254,14 +254,28 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     'failure':failureCallback
                 });
             };
-            $scope.showProgresMessage('Adding Driver.....')
+            $scope.showProgresMessage('Adding Driver.....');
             $.postJSON('../../../api/events',dhis2Event,function(response){
-                $scope.adding = false;
+
+                for(var key in $scope.data.newDriverValue){
+                    $scope.data.newDriverValue[key] = "";
+                }
                 $scope.hideProgresMessage();
-                $scope.data.programs['Driver'].dataValues.events.push($scope.prepareOneEvent($scope.data.programs['Driver'].programStages[0].programStageDataElements,dhis2Event))
+
+                $scope.data.programs['Driver'].dataValues.events.push($scope.prepareOneEvent($scope.data.programs['Driver'].programStages[0].programStageDataElements,dhis2Event));
+                  
+                $scope.cancelAdd();
+                $scope.hideProgresMessage();
+                $scope.showSuccessfullAddingMessage('You have successful adding a new driver');
+
+
+
             },function(response){
                 $scope.hideProgresMessage();
             });
+
+            
+
         }
 
 //
@@ -445,6 +459,28 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             modalInstance.result.then(function (){
             });
         };
+
+
+
+        //display successfull adding message
+        $scope.showSuccessfullAddingMessage = function(message){
+
+            var modalInstance = $modal.open({
+                templateUrl: 'views/showSuccessfullAddingMessage.html',
+                controller :  'ShowSuccessInfoController',
+                
+                resolve : {
+
+                    message: function(){
+
+                        return message;
+                    }
+                }               
+            });
+
+            modalInstance.result.then(function (){
+            });
+        }
 
 
         //display modal for view info 

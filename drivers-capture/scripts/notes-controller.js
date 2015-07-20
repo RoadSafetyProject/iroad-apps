@@ -23,6 +23,15 @@ eventCaptureControllers.controller('ShowDriverInfoController',
         };
     });
 
+eventCaptureControllers.controller('ShowSuccessInfoController', function($scope,$modalInstance,message){
+
+    $scope.message = message;
+
+    $scope.close = function(){
+        $modalInstance.close();       
+    }; 
+});
+
 eventCaptureControllers.controller('DeleteController',
     function($scope,
             $modalInstance,
