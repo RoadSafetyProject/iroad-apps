@@ -14,6 +14,25 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
     	                	$scope.fetchOffences($scope.pageSize,page);
     	                };
     	$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
+    	$scope.feedBack = false;
+        $scope.progresMessage = false;
+        $scope.showFeedback = function(data){
+            $scope.messagess = data;
+            $scope.feedBack = true;
+
+            $timeout( function(){
+                $scope.feedBack = false;
+            }, 3000);
+        }
+        $scope.showProgresMessage = function(data){
+        	alert("here");
+            $scope.progresMessagess = data;
+            $scope.progresMessage = true;
+        }
+        $scope.hideProgresMessage = function(){
+            $scope.progresMessagess = "";
+            $scope.progresMessage = false;
+        }
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.panel = {vehicle:false,driver : false,offences:false,edit:false,payment:false};
@@ -31,28 +50,34 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         }
         $scope.pager = {};
         $scope.data = {};
-        $scope.fetchOffences = function(pageSize,page){
+        
+        $scope.fetchOffences = function(page){
+        	$scope.showProgresMessage("Loading Offences...");
         	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         	$scope.offenceEventModal.getAll(function(result){
+        		
         		console.log("Page:" + JSON.stringify(result));
         		$scope.pager = result.pager;
 				$scope.data.offences = result.data;
 				$scope.$apply();
-			},pageSize,page,true);
+				$scope.hideProgresMessage();
+			},$scope.pageSize,page,true);
         }
         $scope.onInitialize = function(){
-        	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
+        	/*$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         	$scope.offenceEventModal.getAll(function(result){
-        		console.log("Result here:" + JSON.stringify(result));
         		$scope.pager = result.pager;
 				$scope.data.offences = result.data;
 				$scope.$apply();
-				var registries = new iroad2.data.Modal("Offence Registry",[]);
-	        	registries.getAll(function(result){
-					$scope.data.registries = result;
-					$scope.$apply();
-				});
-			},$scope.pageSize,1,true);
+				
+			},$scope.pageSize,1,true);*/
+			var registries = new iroad2.data.Modal("Offence Registry",[]);
+        	registries.getAll(function(result){
+				$scope.data.registries = result;
+				$scope.$apply();
+				$scope.fetchOffences(1);
+			});
+        	
         	/*var registries = new iroad2.data.Modal("Offence Registry",[]);
         	registries.getAll(function(result){
 				$scope.data.registries = result;
