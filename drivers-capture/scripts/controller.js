@@ -290,7 +290,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         }
 
-//
+        $http.get('/demo/api/me.json').
+        success(function(data) {
+        	$scope.orgUnit = data.organisationUnits[0];
+        }).
+        error(function(data) {
+        	
+        });
         $scope.addLicenceInfo = function(value,driverId){
             var program = $scope.data.programs['Driver License History'].id;
             var programStage = $scope.data.programs['Driver License History'].programStages[0].id;
@@ -336,7 +342,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };

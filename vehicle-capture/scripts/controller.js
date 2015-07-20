@@ -296,7 +296,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.addingInspection = false;
             $scope.vieInformation = false;
         }
-
+        $http.get('/demo/api/me.json').
+        success(function(data) {
+        	$scope.orgUnit = data.organisationUnits[0];
+        }).
+        error(function(data) {
+        	
+        });
         //adding a new Vehicle
         $scope.AddVehicle =function(value){
             var program = $scope.data.programs['Vehicle'].id;
@@ -323,7 +329,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
