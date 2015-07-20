@@ -56,27 +56,28 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.progresMessagess = "";
             $scope.progresMessage = false;
         }
-        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
-        $scope.showProgresMessage('Loading progams Metadata.....')
-        $http.get($scope.programUrl).success(function(data){
-            $scope.data.programs = {};
-            var resultProg = data.programs;
-            angular.forEach(data.programs, function(program1){
-                $scope.data.programs[program1.name] = {};
-                $scope.data.programs[program1.name].name= program1.name;
-                 $scope.data.programs[program1.name].id= program1.id;
-                 $scope.data.programs[program1.name].version= 1;
-                 $scope.data.programs[program1.name].programStages= program1.programStages;
-            });
-//            $scope.data.programs = data.programs;
-
-            angular.forEach($scope.data.programs,function(program){
+        $scope.pageSize = 10;
+        $scope.pager = {};
+        $scope.pageChanged = function(page) {
+        	$scope.fetchVehicles(page);
+        };
+        $scope.fetchVehicles = function(page){
+        	angular.forEach($scope.data.programs,function(program){
                 if($scope.data.programs['Vehicle'].id == program.id){
                     $scope.showProgresMessage('Loading Vehicles.....')
+                }else if($scope.data.programs['Offence Event'].id == program.id || 
+                		$scope.data.programs['Accident Vehicle'].id == program.id || 
+                		$scope.data.programs['Vehicle Insurance History'].id == program.id || 
+                		$scope.data.programs['Bussiness License History'].id == program.id){
+                	
+                }else{
+                	console.log(JSON.stringify(program.name));
+                	return;
                 }
                 program.dataValues = {};
                 program.dataValues.events = [];
-                $http.get('../../../api/events.json?program='+program.id).success(function(data){
+                $http.get('../../../api/events.json?program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
+                	$scope.pager = data.pager;
                     if($scope.data.programs['Vehicle'].id == program.id){
                         $scope.hideProgresMessage();
                     }
@@ -115,7 +116,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                                 var orgunitName1 = data1.orgUnitName;
                                                 var eventDate1 = data1.eventDate;
                                                 var datavalues1 = {};
-                                                angular.forEach(resultProg,function(value2){
+                                                angular.forEach($scope.data.programs,function(value2){
                                                     if(value2.id == program11){
                                                         angular.forEach(value2.programStages[0].programStageDataElements, function (dataVal1) {
                                                             var dataelement1 = {};
@@ -157,8 +158,20 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     }
                 });
             });
-
-
+        }
+        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.showProgresMessage('Loading progams Metadata.....')
+        $http.get($scope.programUrl).success(function(data){
+            $scope.data.programs = {};
+            var resultProg = data.programs;
+            angular.forEach(data.programs, function(program1){
+                $scope.data.programs[program1.name] = {};
+                $scope.data.programs[program1.name].name= program1.name;
+                 $scope.data.programs[program1.name].id= program1.id;
+                 $scope.data.programs[program1.name].version= 1;
+                 $scope.data.programs[program1.name].programStages= program1.programStages;
+            });
+            $scope.fetchVehicles(1);
         });
 
         $scope.normalClass= "col-sm-12";
@@ -283,7 +296,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.addingInspection = false;
             $scope.vieInformation = false;
         }
-
+        $http.get('/demo/api/me.json').
+        success(function(data) {
+        	$scope.orgUnit = data.organisationUnits[0];
+        }).
+        error(function(data) {
+        	
+        });
         //adding a new Vehicle
         $scope.AddVehicle =function(value){
             var program = $scope.data.programs['Vehicle'].id;
@@ -310,7 +329,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };

@@ -65,7 +65,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
-            var resultProg = data.programs;
             angular.forEach(data.programs, function(program1){
                 $scope.data.programs[program1.name] = {};
 
@@ -88,20 +87,18 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             angular.forEach($scope.data.programs,function(program){
                 if($scope.data.programs['Driver'].id == program.id){
                     $scope.showProgresMessage('Loading Drivers.....')
-                }/*else{
+                }else if($scope.data.programs['Offence Event'].id == program.id || 
+                		$scope.data.programs['Accident Vehicle'].id == program.id || 
+                		$scope.data.programs['Driver License History'].id == program.id){
+                	
+                }else{
                 	return;
-                }*/
+                }
                 program.dataValues = {};
                 program.dataValues.events = [];
                 $http.get('../../../api/events.json?program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
-                	console.log(JSON.stringify(data));
-                    if($scope.data.programs['Driver'].id == program.id){
-                    	$scope.pager = data.pager;
+                	$scope.pager = data.pager;
                         $scope.hideProgresMessage();
-                    }/*else{
-                    	console.log("Wierd tha it was needed.");
-                    	return;
-                    }*/
                     if(data.events){
 
                         angular.forEach(data.events,function(datas){
@@ -138,7 +135,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                                 var orgunitName1 = data1.orgUnitName;
                                                 var eventDate1 = data1.eventDate;
                                                 var datavalues1 = {};
-                                                angular.forEach(resultProg,function(value2){
+                                                //if(resultProg != undefined)
+                                                angular.forEach($scope.data.programs,function(value2){
                                                     if(value2.id == program11){
                                                         angular.forEach(value2.programStages[0].programStageDataElements, function (dataVal1) {
                                                             var dataelement1 = {};
@@ -292,7 +290,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
         }
 
-//
+        $http.get('/demo/api/me.json').
+        success(function(data) {
+        	$scope.orgUnit = data.organisationUnits[0];
+        }).
+        error(function(data) {
+        	
+        });
         $scope.addLicenceInfo = function(value,driverId){
             var program = $scope.data.programs['Driver License History'].id;
             var programStage = $scope.data.programs['Driver License History'].programStages[0].id;
@@ -338,7 +342,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: "ij7JMOFbePH",
+                orgUnit: $scope.orgUnit.id,
                 eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
