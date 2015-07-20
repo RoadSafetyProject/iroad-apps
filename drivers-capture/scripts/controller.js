@@ -75,16 +75,33 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.data.programs[program1.name].programStages= program1.programStages;
             });
 //            $scope.data.programs = data.programs;
+            $scope.fetchDrivers(1);
+
+
+        });
+        $scope.pageSize = 10;
+        $scope.pager = {};
+        $scope.pageChanged = function(page) {
+        	$scope.fetchDrivers(page);
+        };
+        $scope.fetchDrivers = function(page){
             angular.forEach($scope.data.programs,function(program){
                 if($scope.data.programs['Driver'].id == program.id){
                     $scope.showProgresMessage('Loading Drivers.....')
-                }
+                }/*else{
+                	return;
+                }*/
                 program.dataValues = {};
                 program.dataValues.events = [];
-                $http.get('../../../api/events.json?program='+program.id).success(function(data){
+                $http.get('../../../api/events.json?program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
+                	console.log(JSON.stringify(data));
                     if($scope.data.programs['Driver'].id == program.id){
+                    	$scope.pager = data.pager;
                         $scope.hideProgresMessage();
-                    }
+                    }/*else{
+                    	console.log("Wierd tha it was needed.");
+                    	return;
+                    }*/
                     if(data.events){
 
                         angular.forEach(data.events,function(datas){
@@ -163,10 +180,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     }
                 });
             });
-
-
-        });
-
+        }
 
 
         $scope.normalClass= "col-sm-12";

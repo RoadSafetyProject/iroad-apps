@@ -1,3 +1,8 @@
+<style>
+.dataTables_paginate,.dataTables_info{
+    	display:none !important;
+    }
+</style>
 <div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1200;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="feedBack">{{ messagess }}</div>
 <div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="progresMessage">{{ progresMessagess }}</div>
 
@@ -17,22 +22,22 @@
                         <th>Phone Number</th>
                         <th>Address</th>
                         <th>Tin Number</th>
-                        <th>Accidents</th>
-                        <th>Offences</th>
+                        <!-- <th>Accidents</th>
+                        <th>Offences</th> -->
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="events in data.programs['Driver'].dataValues.events" style="background-color: {{ data.color[events.event] }}">
-                        <td>{{ $index+1 }}</td>
+                        <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
                         <td>{{ events.dataValues['Driver License Number'].value }}</td>
                         <td>{{ events.dataValues['Full Name'].value }} </td>
                         <td>{{ events.dataValues['Gender'].value }}</td>
                         <td>{{ events.dataValues['Phone Number'].value }}</td>
                         <td>{{ events.dataValues['Postal Address'].value }}</td>
                         <td>{{ events.dataValues['TIN Number'].value }}</td>
-                        <td><a ng-click="ViewAccident(events)">{{ getRelatedObjectsNumber(events.event,'Accident Vehicle') }}</a></td>
-                        <td><a ng-click="ViewOffences(events)">{{ getRelatedObjectsNumber(events.event,'Offence Event') }}</a></td>
+                        <!-- <td><a ng-click="ViewAccident(events)">{{ getRelatedObjectsNumber(events.event,'Accident Vehicle') }}</a></td>
+                        <td><a ng-click="ViewOffences(events)">{{ getRelatedObjectsNumber(events.event,'Offence Event') }}</a></td> -->
                         <td>
                             <div class="btn-group dropdown">
                                 <button type="button" class="btn btn-default">Action</button>
@@ -54,6 +59,10 @@
                     </tr>
                     </tbody>
                 </table>
+                <pagination class="pull-right" total-items="pager.total" page="pager.page"
+          max-size="5" boundary-links="true"
+          on-select-page="pageChanged(page)" items-per-page="pager.pageSize" class="pagination-sm">
+        </pagination>
             </div>
         </div>
 
