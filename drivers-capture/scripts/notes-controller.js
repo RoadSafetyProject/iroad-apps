@@ -11,6 +11,27 @@ eventCaptureControllers.controller('NotesController',
     };
 });
 
+//controller for provide viewing informatation of a given
+eventCaptureControllers.controller('ShowDriverInfoController',
+    function($scope,$modalInstance,events){       
+
+        $scope.events = events;
+        
+        $scope.close = function(){
+            $modalInstance.close();       
+
+        };
+    });
+
+eventCaptureControllers.controller('ShowSuccessInfoController', function($scope,$modalInstance,message){
+
+    $scope.message = message;
+
+    $scope.close = function(){
+        $modalInstance.close();       
+    }; 
+});
+
 eventCaptureControllers.controller('DeleteController',
     function($scope,
             $modalInstance,
