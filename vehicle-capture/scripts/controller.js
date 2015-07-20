@@ -65,6 +65,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         	angular.forEach($scope.data.programs,function(program){
                 if($scope.data.programs['Vehicle'].id == program.id){
                     $scope.showProgresMessage('Loading Vehicles.....')
+                }else if($scope.data.programs['Offence Event'].id == program.id || 
+                		$scope.data.programs['Accident Vehicle'].id == program.id || 
+                		$scope.data.programs['Vehicle Insurance History'].id == program.id || 
+                		$scope.data.programs['Bussiness License History'].id == program.id){
+                	
+                }else{
+                	console.log(JSON.stringify(program.name));
+                	return;
                 }
                 program.dataValues = {};
                 program.dataValues.events = [];
