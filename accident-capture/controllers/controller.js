@@ -132,7 +132,7 @@ eventCaptureControllers.controller('MainController',
         $scope.data.accidents = []
         $scope.fetchAccidents = function(pageSize,page){
         	$scope.accidentEventModal.getAll(function(result){
-        		console.log("Accidents:" + JSON.stringify(result.data));
+        		//console.log("Accidents:" + JSON.stringify(result.data));
         		$scope.setAccidents(result);
             },pageSize,page,true);
         }
@@ -158,7 +158,7 @@ eventCaptureControllers.controller('MainController',
                     zoom: 8,
                     center: { lat: -6.184234, lng: 35.676095}
                 };
-            $scope.map = new google.maps.Map(document.getElementById('map'),options );
+            /*$scope.map = new google.maps.Map(document.getElementById('map'),options );
             google.maps.Marker.prototype.accidentId = null;
             google.maps.Marker.prototype.startBlinking=function(){
                 var mar = this;
