@@ -25,7 +25,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             }, 3000);
         }
         $scope.showProgresMessage = function(data){
-        	alert("here");
             $scope.progresMessagess = data;
             $scope.progresMessage = true;
         }
@@ -55,12 +54,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         	$scope.showProgresMessage("Loading Offences...");
         	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         	$scope.offenceEventModal.getAll(function(result){
-        		
-        		console.log("Page:" + JSON.stringify(result));
+        		$scope.hideProgresMessage();
         		$scope.pager = result.pager;
 				$scope.data.offences = result.data;
 				$scope.$apply();
-				$scope.hideProgresMessage();
+				
 			},$scope.pageSize,page,true);
         }
         $scope.onInitialize = function(){
@@ -123,8 +121,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		}
 		$scope.savePayment = function(){
 			$scope.data.payment['Offence Paid'] = true;
-			alert("Payment made successfully.")
-			$scope.show("offences")
+			//alert("Payment made successfully.")
+			$scope.show("offences");
 			if($scope.data.payment['Offence Reciept Amount'] != "" && $scope.data.payment['Offence Reciept Reciept'] != ""){
 				$scope.data.payment['Offence Paid'] = true;
 				var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
@@ -237,6 +235,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		}
 		$scope.showOffence = function(aOffence){
 			$scope.offence = aOffence;
+			console.log(JSON.stringify(aOffence));
 			var modalInstance = $modal.open({
 				
                 templateUrl: 'views/offenceForm.html',

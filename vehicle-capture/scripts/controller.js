@@ -351,6 +351,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             };
             $.postJSON('../../../api/events',dhis2Event,function(response){
                 alert("success");
+                $scope.data.programs['Driver'].dataValues.events.push($scope.prepareOneEvent($scope.data.programs['Driver'].programStages[0].programStageDataElements,dhis2Event));
                 $scope.cancelEdit();
             },function(response){
                  alert("failed");
