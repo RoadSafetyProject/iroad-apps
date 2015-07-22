@@ -473,6 +473,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
     }
 
     $scope.is = function(key,dataType){
+        var j;
         for(j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 if(iroad2.data.dataElements[j].type == dataType){
@@ -487,6 +488,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
         return $scope.is(key,"bool");
     }
     $scope.hasDataSets = function(key){
+        var j;
         for(j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return (iroad2.data.dataElements[j].optionSet != undefined);
@@ -495,6 +497,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
         return false;
     }
     $scope.getOptionSets = function(key){
+        var j;
         for(j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return iroad2.data.dataElements[j].optionSet.options;
@@ -652,6 +655,8 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
     //console.log(dhis2Event.importSummaries[0].reference);
     $scope.accident_reg_id = dhis2Event.importSummaries[0].reference;
     //console.log($scope.accident_reg_id);
+
+    console.log(dhis2Event);
 
     $scope.close = function () {
         $modalInstance.close();
