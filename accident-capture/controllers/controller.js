@@ -30,7 +30,7 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.is = function(key,dataType){
-            for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
                     if(iroad2.data.dataElements[j].type == dataType){
                         return true;
@@ -44,7 +44,7 @@ eventCaptureControllers.controller('MainController',
             return $scope.is(key,"bool");
         }
         $scope.hasDataSets = function(key){
-            for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
                     return (iroad2.data.dataElements[j].optionSet != undefined);
                 }
@@ -52,7 +52,7 @@ eventCaptureControllers.controller('MainController',
             return false;
         }
         $scope.getOptionSets = function(key){
-            for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+            for(var j= 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
                     return iroad2.data.dataElements[j].optionSet.options;
                 }
@@ -129,6 +129,12 @@ eventCaptureControllers.controller('MainController',
         	$scope.fetchAccidents($scope.pageSize,page);
         	
         };
+
+        //getting user Information
+        $http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
+            $scope.logedInUser = data;
+        })
+
         $scope.data.accidents = []
         $scope.fetchAccidents = function(pageSize,page){
         	$scope.accidentEventModal.getAll(function(result){
@@ -228,13 +234,15 @@ eventCaptureControllers.controller('MainController',
             });
 
             //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-            var otherData = {orgUnit:"wardNwId314",
+            var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,
                 status: "COMPLETED",
                 storedBy: "admin",
                 eventDate:$scope.editingEvent['Accident Date']};
 
             $scope.editingEvent['Accident']['Latitude'] = -6.63883676;
             $scope.editingEvent['Accident']['Longitude'] = 39.19136727 ;
+
+            
             var saveEvent = $scope.editingEvent;
             $scope.accidentEventModal.save(saveEvent,otherData,function(result){
                 //console.log("Update Made:" + JSON.stringify(result));
@@ -271,7 +279,7 @@ eventCaptureControllers.controller('MainController',
             $scope.normalStyleMedia= { "padding": '0px'};
             //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
-                if (program.name == accidentEventModal.getModalName()) {
+                if (program.name == $scope.accidentEventModal.getModalName()) {
                     $scope.editingProgram = program;
                 }
             });
@@ -281,7 +289,7 @@ eventCaptureControllers.controller('MainController',
             for (var key in event) {
                 if (typeof event[key] == "object") {
 
-                    var program = accidentEventModal.getProgramByName(key);
+                    var program = $scope.accidentEventModal.getProgramByName(key);
                     angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                         if (dataElement.dataElement.code) {
                             if(dataElement.dataElement.code.startsWith("id_")){
@@ -451,7 +459,7 @@ eventCaptureControllers.controller('AccidentController',
     });
 
 
-eventCaptureControllers.controller('AccidentFormController',function($scope,$modal,$modalInstance,dhis2Event){
+eventCaptureControllers.controller('AccidentFormController',function($scope,$modal,$http,$modalInstance,dhis2Event){
 
 
     var accidentEventModal = new iroad2.data.Modal("Accident",[]);
@@ -474,7 +482,7 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
 
     $scope.is = function(key,dataType){
         var j;
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 if(iroad2.data.dataElements[j].type == dataType){
                     return true;
@@ -607,6 +615,11 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
 
     $scope.addNewAccident();
 
+    //get user infromation
+    //getting user Information
+    $http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
+        $scope.logedInUser = data;
+    })
 
     $scope.saveAccident = function(){
 
@@ -620,8 +633,12 @@ eventCaptureControllers.controller('AccidentFormController',function($scope,$mod
         });
 
         //console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
-        var otherData = {orgUnit:"wardNwId314",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Time of Accident']};
+        console.log(JSON.stringify($scope.logedInUser));
+
+        var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Time of Accident']};
         var saveEvent = $scope.editingEvent;
+
+        //console.log(otherData);
 
         //console.log("Save Made:" + JSON.stringify(saveEvent));
 
@@ -673,7 +690,7 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
     }
 
     $scope.is = function(key,dataType){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 if(iroad2.data.dataElements[j].type == dataType){
                     return true;
@@ -687,7 +704,7 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
         return $scope.is(key,"bool");
     }
     $scope.hasDataSets = function(key){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return (iroad2.data.dataElements[j].optionSet != undefined);
             }
@@ -695,7 +712,7 @@ eventCaptureControllers.controller('VehicleFormController',function($scope,$moda
         return false;
     }
     $scope.getOptionSets = function(key){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return iroad2.data.dataElements[j].optionSet.options;
             }
@@ -866,7 +883,7 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
     }
 
     $scope.is = function(key,dataType){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 if(iroad2.data.dataElements[j].type == dataType){
                     return true;
@@ -880,7 +897,7 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
         return $scope.is(key,"bool");
     }
     $scope.hasDataSets = function(key){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return (iroad2.data.dataElements[j].optionSet != undefined);
             }
@@ -888,7 +905,7 @@ eventCaptureControllers.controller('PassengerFormController',function($scope,$mo
         return false;
     }
     $scope.getOptionSets = function(key){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return iroad2.data.dataElements[j].optionSet.options;
             }
@@ -1058,7 +1075,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
     }
 
     $scope.is = function(key,dataType){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 if(iroad2.data.dataElements[j].type == dataType){
                     return true;
@@ -1072,7 +1089,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
         return $scope.is(key,"bool");
     }
     $scope.hasDataSets = function(key){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return (iroad2.data.dataElements[j].optionSet != undefined);
             }
@@ -1080,7 +1097,7 @@ eventCaptureControllers.controller('WitnessFormController',function($scope,$moda
         return false;
     }
     $scope.getOptionSets = function(key){
-        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
             if(iroad2.data.dataElements[j].name == key){
                 return iroad2.data.dataElements[j].optionSet.options;
             }
