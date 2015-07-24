@@ -1,0 +1,28 @@
+{
+    "version":"1.0",
+    "name":"Accident View",
+    "description":"Accident View is used o view real-time accidents on the map",
+    "icons":{
+        "16":"leaf.png",
+        "48":"leaf.png",
+        "128":"leaf.png"
+    },
+    "developer":{
+        "url":"http://roadsafety.udsm.ac.tz/about/team/vincent/",
+        "name":"Vincent P. Minde",
+        "company":"University of Dar es salaam",
+        "email":"vincentminde@gmail.com"
+    },
+    "activities":{
+        "dhis":{
+            "href":".."
+        }
+    },
+    "folderName":null,
+    "baseUrl":null,
+    "launchUrl":null,
+    "key":null,
+    "launch_path":"index.html",
+    "installs_allowed_from":null,
+    "default_locale":"en"
+}
