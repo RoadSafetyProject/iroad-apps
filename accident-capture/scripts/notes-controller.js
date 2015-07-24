@@ -7,9 +7,9 @@ eventCaptureControllers.controller('AccidentController',
     	$scope.VehicleData = angular.element("#offenceScope").scope().VehicleData;
     	$scope.DriverData = angular.element("#offenceScope").scope().DriverData;
 
-
-
-
+		console.log('Driver '+JSON.stringify($scope.DriverData)+'\n');    	
+		console.log('Vehicle '+JSON.stringify($scope.VehicleData)+'\n');    	
+		console.log('accident '+JSON.stringify($scope.AccidentData)+'\n');    	
     });
 
 
