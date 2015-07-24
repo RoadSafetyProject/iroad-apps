@@ -239,8 +239,8 @@ eventCaptureControllers.controller('MainController',
                 storedBy: "admin",
                 eventDate:$scope.editingEvent['Accident Date']};
 
-            $scope.editingEvent['Accident']['Latitude'] = -6.63883676;
-            $scope.editingEvent['Accident']['Longitude'] = 39.19136727 ;
+            //$scope.editingEvent['Accident']['Latitude'] = -6.63883676;
+            //scope.editingEvent['Accident']['Longitude'] = 39.19136727 ;
 
             
             var saveEvent = $scope.editingEvent;
@@ -261,7 +261,7 @@ eventCaptureControllers.controller('MainController',
                 $scope.UpdatedSuccess = false;
                 $scope.UpdateFailure = true;
 
-            },accidentEventModal.getModalName());
+            },$scope.accidentEventModal.getModalName());
 
 
 
