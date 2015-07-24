@@ -1,0 +1,72 @@
+<style>
+	.md-dialog-container{
+		position: fixed;
+		height: 100%;
+	}
+	.show-details{
+		/* float: right; */
+		cursor: pointer;
+		padding: 20px;
+		color: blue;
+	}
+	.show-details:hover{
+		text-decoration: underline;
+	}
+	.expiry{
+		border: 2px solid #F44336;
+		background: #E57373;
+		height: 40px;
+		display: inline-block;
+		width: 100%;
+		text-align: center;
+		/* vertical-align: middle; */
+		font-size: 24px;
+	}
+</style>
+	<div ng-controller="AccidentController">
+	<center>
+		<h2>Accident Report</h2>
+	</center>
+		<div style="padding:50px;padding-top:0">
+
+			<!-- panel for  basic info for an accident -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Accident info </div>
+				<div class = "panel-body">{{AccidentData}}</div>
+			</div>		
+
+			<!-- panel for  vehicles invloved-->
+			<div class="panel panel-default">
+				<div class="panel-heading">Vehicle Involved </div>
+				<div class = "panel-body">{{VehicleData}}</div>
+			</div>	
+
+			<!-- panel for  Drivers invloved-->
+			<div class="panel panel-default">
+				<div class="panel-heading">Driver Involved </div>
+				<div class = "panel-body">{{DriverData}}</div>
+			</div>		
+
+			<!-- panel for  -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Police register</div>
+				<div class = "panel-body">{{AccidentData.Police}}</div>
+			</div>	
+
+			<!-- panel for  Po
+			<div class="panel panel-default">
+				<div class="panel-heading"> </div>
+				<div class = "panel-body"></div>
+			</div>		
+
+			<!-- panel for  
+			<div class="panel panel-default">
+				<div class="panel-heading"> </div>
+				<div class = "panel-body"></div>
+			</div>	
+			-->
+
+		</div>
+	</div>
+
+    

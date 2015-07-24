@@ -41,13 +41,13 @@
                     <th> Action</th>
                 </thead>
                 <tbody>
-                {{ event}}
+               
                 <tr ng-repeat="event in data.accidents">
                     <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
-                    <td>{{event["Accident Registration Number"]}}</td>
-                    <td>{{event["Area of Accident"]}}</td>
-                    <td>{{event["Cause of Accident"]}}</td>
-                    <td>{{event["Time of Accident"] | date:'dd MMM yyyy'}}</td>
+                    <td>{{event.Accident["Accident Registration Number"]}}</td>
+                    <td>{{event.Accident["Area of Accident"]}}</td>
+                    <td>{{event.Accident["Cause of Accident"]}}</td>
+                    <td>{{event.Accident["Time of Accident"] | date:'dd MMM yyyy'}}</td>
                     <td>
                         <div class="btn-group dropdown">
                             <button type="button" class="btn btn-default">Action</button>
@@ -56,26 +56,32 @@
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
+
+                                <li><a ng-click="viewAccidentInfo(event)">Info</a></li>
+                                <li><a  ng-click="enableEdit(accident.Accident)">Edit</a> </li>
+                                <li><a ng-click="showVehicle(accident)">View Vehicle(s) Involved</a> </li>
+                                <li><a ng-click="showDriver(accident)">View Driver(s) Involved</a> </li>
+                                <li><a ng-click="showMedia()">View Accident Media</a> </li>
                             	
-                            	<li><a ng-click="showOffence(event)">Info </a> </li>
+                            	<!--<li><a ng-click="showOffence(event)">Info </a> </li>
                                 <li><a  ng-click="enableEdit(event)">Edit</a> </li>
                          
                                 <li><a ng-click="showRegistries(event.Offence)">View Offences </a> </li>
                                 <li><a ng-click="showPayment(event)">View Payment </a> </li>
                                 <li><a ng-click="showDriver(event.Driver)">View Driver</a> </li>
                                 <li><a ng-click="showVehicle(event.Vehicle)">View Vehicle</a> </li>
-                                <li><a >Delete</a> </li>
+                                <li><a >Delete</a> </li>-->
                             </ul>
                         </div>
                     </td>
+
                 </tr>
                 </tbody>
             </table>
             <pagination class="pull-right" total-items="pager.total" page="pager.page"
           max-size="5" boundary-links="true"
           on-select-page="pageChanged(page)" items-per-page="pager.pageSize" class="pagination-sm">
-        </pagination>
-        </div>
+        </pagination>       
 
     </div>
 
@@ -332,4 +338,4 @@
              </tr>
             </table>
         </div>
-     
+  

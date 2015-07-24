@@ -1,10 +1,14 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select"])
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select"]);
+
+
+
+
 
 //Controller for settings page
-    .controller('MainController',
+eventCaptureControllers.controller('MainController',
     function($scope,$modal,$timeout,$translate,$anchorScroll,storage,Paginator,
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
@@ -49,19 +53,19 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         }
         $scope.pager = {};
         $scope.data = {};
-        
+
+        //function to fetch accident accident details includes police,Driver,vehicle 
         $scope.fetchAccidents = function(page){
         	$scope.showProgresMessage("Loading Accidents...");
         	//new iroad2.data.Relation('Accident Passenger','Accident Vehicle','Police')
-        	$scope.AcccidentEventModal = new iroad2.data.Modal("Accident",[]);
-        	$scope.AcccidentEventModal.getAll(function(result){
+        	$scope.AccidentModal = new iroad2.data.Modal("Accident Vehicle",[]);
+        	$scope.AccidentModal.getAll(function(result){
         		$scope.hideProgresMessage();
         		$scope.pager = result.pager;
 				$scope.data.accidents = result.data;
-
-				console.log(JSON.stringify(result.data));
+				//console.log(JSON.stringify(result.data));
+				$scope.hideProgresMessage();
 				$scope.$apply();
-
 				
 			},$scope.pageSize,page,true);
         }
@@ -87,8 +91,37 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		}
 		iroad2.Init(dhisConfigs);
 		$scope.normalClass= "mws-panel grid_8";
+
+		// view information of agiven accident 
+		$scope.viewAccidentInfo = function(dhis2Event){
+            
+            //$scope.Vehicle = dhis2Event;
+            $scope.AccidentData = dhis2Event.Accident;
+            $scope.VehicleData = dhis2Event.Vehicle;
+            $scope.DriverData = dhis2Event.Driver;
+            
+            var modalInstance = $modal.open({
+                templateUrl: 'views/viewAccidentInfo.html',
+                controller: 'AccidentController',
+                resolve: {
+                    AccidentData: function () {
+                        return $scope.AccidentData;
+                    },
+                    VehicleData : function(){
+                    	return  $scope.VehicleData;
+                    },
+                    DriverData : function(){
+                    	return $scope.DriverData;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        }
+
 		$scope.addNew = function(){
-			var modalName = $scope.AcccidentEventModal.getModalName();
+			var modalName = $scope.AccidentModal.getModalName();
 			var event = {};
 			angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == modalName) {
@@ -102,11 +135,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
                     });
                 }
             });
-			angular.forEach($scope.AcccidentEventModal.getRelationships(), function (relationship) {
+            /*
+			angular.forEach($scope.AccidentModal.getRelationships(), function (relationship) {
 				if(relationship.pivot){
 					event[relationship.pivot] = [];
 				}
-			});
+			});*/
+			console.log(JSON.stringify(event));
+			
 			$scope.enableEdit(event);
 		}
 		$scope.makePayment = false;
@@ -126,7 +162,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			if($scope.data.payment['Offence Reciept Amount'] != "" && $scope.data.payment['Offence Reciept Reciept'] != ""){
 				$scope.data.payment['Offence Paid'] = true;
 				var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
-				$scope.AcccidentEventModal.save($scope.data.payment,otherData,function(result){
+				$scope.AccidentModal.save($scope.data.payment,otherData,function(result){
 	        		console.log("Result:" + JSON.stringify(result));
 	        		$scope.makePayment = false;
 	        		$scope.$apply();
@@ -154,7 +190,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 		$scope.inputModal = {};
 		$scope.multiselectBools = {};
 		$scope.isManyRelation = function(key){
-			var relationships = $scope.AcccidentEventModal.getRelationships();
+			var relationships = $scope.AccidentModal.getRelationships();
 			for(var z = 0;z < relationships.length;z++) {
 				var relationship = relationships[z];
 				if(relationship.pivot){
@@ -269,7 +305,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			}
             $scope.show("edit");
             angular.forEach(iroad2.data.programs, function (program) {
-                if (program.name == $scope.AcccidentEventModal.getModalName()) {
+                if (program.name == $scope.AccidentModal.getModalName()) {
                     $scope.editingProgram = program;
                 }
             });
@@ -280,7 +316,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             	if(Array.isArray(event[key])){
             		$scope.multiselectBools[key] = $scope.isManyRelation(key);
             	}else if(typeof event[key] == "object") {
-            		var program = $scope.AcccidentEventModal.getProgramByName(key);
+            		var program = $scope.AccidentModal.getProgramByName(key);
             		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                         if (dataElement.dataElement.code) {
                         	if(dataElement.dataElement.code.startsWith("id_")){
@@ -388,7 +424,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
 			console.log($scope.editingEvent);
-			$scope.AcccidentEventModal.save($scope.editingEvent,otherData,function(result){
+			$scope.AccidentModal.save($scope.editingEvent,otherData,function(result){
 				$scope.data.offences.push($scope.editingEvent);
 				$scope.$apply();
 				console.log("Save Made Result:" + JSON.stringify(result));
@@ -417,7 +453,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 				},offence.getModalName());
 			},function(error){
 				console.log("Error Saving:" + JSON.stringify(error));
-			},$scope.AcccidentEventModal.getModalName());
+			},$scope.AccidentModal.getModalName());
 			$scope.cancelEdit();
         }
 		$scope.cancelEdit = function(){
@@ -480,3 +516,6 @@ if (typeof String.prototype.endsWith != 'function') {
 	    return this.slice(-str.length) == str;
 	};
 }
+
+
+

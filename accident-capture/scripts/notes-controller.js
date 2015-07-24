@@ -1,4 +1,18 @@
 //Controller for notes
+eventCaptureControllers.controller('AccidentController',
+    function($scope){
+
+    	//taking data to the popo view for viewing info for a given accident
+    	$scope.AccidentData = angular.element("#offenceScope").scope().AccidentData;
+    	$scope.VehicleData = angular.element("#offenceScope").scope().VehicleData;
+    	$scope.DriverData = angular.element("#offenceScope").scope().DriverData;
+
+
+
+
+    });
+
+
 eventCaptureControllers.controller('offenceFormController',
 	function($scope) {
 	//console.log(JSON.stringify($scope));
