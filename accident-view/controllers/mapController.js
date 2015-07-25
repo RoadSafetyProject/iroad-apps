@@ -49,7 +49,8 @@ trackerApp.controller('mapCtrl', function ($scope,$http,$interval) {
             $scope.windowOptions.visible = false;
     };
 	$scope.markerExists = function(accident){
-		if(accident.coordinate == undefined){
+		if(('coordinate' in accident)){
+			alert("here");
 			return true;
 		}
 		for(var i = 0;i < $scope.markers.length;i++){
@@ -75,6 +76,7 @@ trackerApp.controller('mapCtrl', function ($scope,$http,$interval) {
             }
             //map.fitBounds(bounds);
     }
+	$scope.markerControl ={};
 	$http.get('/demo/api/programs.json').
 	  success(function(result){
 			angular.forEach(result.programs,function(program){
@@ -88,22 +90,28 @@ trackerApp.controller('mapCtrl', function ($scope,$http,$interval) {
 	  error(function(err){
 			console.log("Error:" + err);
 	  });
+	
 	$scope.getPathList = function(){
 		var url = "/demo/api/events.json?progam=" + $scope.accidentProgram.id; //&startDate=2011-12-13&endDate=2011-12-13
 		$http.get(url).
 		  success(function(result){
-			  //console.log("Marker:" + JSON.stringify(result));
+			  
 				angular.forEach(result.events,function(accident){
 					if(!$scope.markerExists(accident)){
-//						console.log("Marker:" + JSON.stringify(accident));
-						var smarker = {
-								id:accident.event,
-								coordinates:{latitude:accident.coordinate.latitude,longitude:accident.coordinate.longitude},
-								events:{
-									
-								}
-							};
-						$scope.markers.push(smarker);
+						try{
+							//console.log("Marker:" + JSON.stringify(accident));
+							var smarker = {
+									id:accident.event,
+									coordinates:{latitude:accident.coordinate.latitude,longitude:accident.coordinate.longitude},
+									events:{
+										
+									}
+								};
+							$scope.markers.push(smarker);
+						}catch(e){
+							
+						}
+						//console.log($scope.map.markerControl.getGMarkers());
 						//$scope.autoCenter();
 					}
 				});
@@ -112,6 +120,38 @@ trackerApp.controller('mapCtrl', function ($scope,$http,$interval) {
 		  error(function(err){
 				console.log("Error:" + err);
 		  });
+	}
+	$scope.blinkTriggeredMarkers = [];
+	$scope.markerExists = function(marker){
+		var marked = false;
+		angular.forEach($scope.blinkTriggeredMarkers,function(blinkingMarkerKey){
+			if(blinkingMarkerKey == marker.key){
+				marked = true;
+			}
+		});
+		return marked
+	}
+	$scope.markerShow = function(element){
+		try{
+			
+			//if($scope.isValid)
+			{
+				var markers = $scope.map.markerControl.getGMarkers();
+				angular.forEach(markers,function(marker){
+					if(!$scope.markerExists(marker)){
+						console.log(marker);
+						$scope.blinkTriggeredMarkers.push(marker.key);
+						$interval(function(){
+							marker.setVisible(!marker.getVisible());
+								
+						}, 5000);
+					}
+					
+				});
+			}
+		}catch(e){
+			
+		}
 	}
 	var baseOptions = {
             'maxZoom': 15,
@@ -125,7 +165,7 @@ trackerApp.controller('mapCtrl', function ($scope,$http,$interval) {
             'style': 'SMALL'
             }
         };
-        $scope.map = {center: {latitude: -6.771430, longitude: 39.239946}, options:baseOptions, zoom:8, showTraffic: true,  show: true,mapObject:{}};
+        $scope.map = {center: {latitude: -6.771430, longitude: 39.239946}, options:baseOptions, zoom:8, showTraffic: true,  show: true,control:{},markerControl:{}};
         //$scope.getPathList();
         //$interval($scope.getPathList, 3000);
         

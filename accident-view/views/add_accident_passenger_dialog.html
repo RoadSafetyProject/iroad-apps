@@ -1,0 +1,38 @@
+<style>
+    .modal-dialog{
+        width: 90%;
+    }
+</style>
+
+<div class="modal-header" style="background-color: #276696">
+    <span  style="color: #fff0ff !important;"><i class="icon-table"></i><strong>Add Passenger</strong>  </span></span>
+</div>
+
+<div  class="modal-body page">
+    <table  class="mws-datatable-fn mws-table">
+        <tr  class="todelete"  >
+            <td >
+                <div class="col-sm-3" ng-repeat="(key, value) in editingEventVehicle" ng-if="(key != 'id')">
+                    <label style="font-size: 0.8em">{{key}}</label><br />
+                    <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEventVehicle[key]" class="form-control input-sm" />
+                    <input ng-if="isInteger(key)"  ng-model="editingEventVehicle[key]" class="form-control input-sm" />
+                    <select  ng-if="isBoolean(key)"  ng-model="editingEventVehicle[key]" class="form-control input-sm">
+                        <option value="true">Yes</option><option value="false">No</option>
+                    </select>
+                    <select  ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" class="form-control input-sm" />
+                    <input ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEventVehicle[key]"/>
+                    <multi-select  ng-if="multiselectBools[key]" class="form-control input-sm" input-model="inputModal[key]" output-model="editingEvent[key]"item-label="name" button-label="button" tick-property="selected" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="pull-left" ng-if="PassengerCurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
+                <span class="pull-left text-success" ng-if="PassengerSavingSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
+                <span class="pull-left text-danger" ng-if="PassengerSavingFailure"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
+                <button class="btn btn-sm btn-primary pull-right" ng-click="saveAccidentPassenger(editingEventVehicle)">Save and Proceed</button>
+            </td>
+        </tr>
+    </table>
+
+</div>

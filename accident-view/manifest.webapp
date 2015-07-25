@@ -1,17 +1,17 @@
 {
     "version":"1.0",
-    "name":"Accident View",
-    "description":"Accident View is used o view real-time accidents on the map",
+    "name":"Accident Capture",
+    "description":"Accident Capture is used to enter, update and view accident data",
     "icons":{
         "16":"leaf.png",
         "48":"leaf.png",
         "128":"leaf.png"
     },
     "developer":{
-        "url":"http://roadsafety.udsm.ac.tz/about/team/vincent/",
-        "name":"Vincent P. Minde",
+        "url":"http://roadsafety.udsm.ac.tz/about/team/paul/",
+        "name":"Paul Peter",
         "company":"University of Dar es salaam",
-        "email":"vincentminde@gmail.com"
+        "email":"pnyairema@gmail.com"
     },
     "activities":{
         "dhis":{

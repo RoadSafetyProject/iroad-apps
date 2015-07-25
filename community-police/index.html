@@ -117,7 +117,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr  ng-repeat="events in programtouse.dataValues.events" >
+            <tr  ng-repeat="events in programtouse.dataValues.events" ng-click="">
                 <td>{{ $index+1 }}</td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.eventDate | date:'dd MMM yyyy' }}</span></td>
                 <td><span ng-click="openInfoWindowByEvent(events)">{{ events.dataValues['Community Report Title'].value }}</span></td>
@@ -790,3 +790,5 @@ mapApp.controller('showTodoCtrl', function ($http,$scope, mapService, todosServi
 </script>
 </body>
 </html>
+
+     
