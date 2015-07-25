@@ -21,16 +21,11 @@
 
 
         <div class="mws-panel-header"  style="height: 48px !important;">
-            <span>Accidents Registered<button ng-click="addNew()" class="btn btn-primary btn-xs pull-right" style="color:#fff0ff;font-size: 11px"> Add New </button></span>
+            <span>Accidents Events<button ng-click="addAccident()" class="btn btn-primary btn-xs pull-right" style="color:#fff0ff;font-size: 11px"> Add New </button></span>
         </div>
 
         <div class="mws-panel-body no-padding">
-        	<!-- Payment Search
-        	<select ng-modal="search.payment">
-        		<option value="all">All</option>
-        		<option value="paid">Paid</option>
-        		<option value="notpaid">Not Paid</option>
-        	</select> -->
+        	
             <table datatable="ng" class="mws-datatable-fn mws-table">
                 <thead>
                     <th>#</th>
@@ -58,19 +53,12 @@
                             <ul class="dropdown-menu" role="menu">
 
                                 <li><a ng-click="viewAccidentInfo(event)">Info</a></li>
-                                <li><a  ng-click="enableEdit(accident.Accident)">Edit</a> </li>
-                                <li><a ng-click="showVehicle(accident)">View Vehicle(s) Involved</a> </li>
-                                <li><a ng-click="showDriver(accident)">View Driver(s) Involved</a> </li>
-                                <li><a ng-click="showMedia()">View Accident Media</a> </li>
+                                <li><a  ng-click="enableEdit()">Edit</a> </li>
+                               <!--  <li><a ng-click="showVehicle(event.Vehicle)">View Vehicle(s) Involved</a> </li>
+                                <li><a ng-click="showDriver(event.Driver)">View Driver(s) Involved</a> </li>
+                               <li><a ng-click="showMedia()">View Accident Media</a> </li>-->
                             	
-                            	<!--<li><a ng-click="showOffence(event)">Info </a> </li>
-                                <li><a  ng-click="enableEdit(event)">Edit</a> </li>
-                         
-                                <li><a ng-click="showRegistries(event.Offence)">View Offences </a> </li>
-                                <li><a ng-click="showPayment(event)">View Payment </a> </li>
-                                <li><a ng-click="showDriver(event.Driver)">View Driver</a> </li>
-                                <li><a ng-click="showVehicle(event.Vehicle)">View Vehicle</a> </li>
-                                <li><a >Delete</a> </li>-->
+                            	
                             </ul>
                         </div>
                     </td>
@@ -84,100 +72,11 @@
         </pagination>       
 
     </div>
-
-		
-        <div ng-if="panel.offences" style="margin-top:20px">
-            <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>List of offences</span>
-            </div>
-
-            <div class="mws-panel-body no-padding">
-                <table datatable="ng" class="mws-datatable-fn mws-table">
-                    <thead>
-                        <tr>
-                            <th># </th>
-                            <th>Section</th>
-                            <th>Nature</th>
-                            <th>Amount</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="event in data.offenceRegistries">
-                            <td>{{ $index+1 }}</td>
-                    		<td>{{event.Offence_Registry.Section}}</td>
-                    		<td>{{event.Offence_Registry.Nature}}</td>
-                    		<td>{{event.Offence_Registry.Amount}}</td>
-                    		<td>
-                                <!-- <div class="btn-group dropdown">
-                                    <button type="button" class="btn btn-default">Action</button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a  ng-click="enableEdit(events)">Edit</a> </li>
-                                        <li><a >Delete</a> </li>
-                                        <li><a >Add Insurance</a> </li>
-                                        <li><a >Add Inspection</a> </li>
-                                        <li><a>Add Business Licence </a> </li>
-                                        <li><a >Add Vehicle Licence </a> </li>
-                                    </ul>
-                                </div> -->
-                            </td>
-                        </tr>
-                        </tbody>
-                </table>
-            </div>
-        </div>
+        
         
 </div>
-	<div ng-if="panel.driver" class="mws-panel grid_2 rightPanel">
-            <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Driver Involved in Offence</span>
-            </div>
-
-            <div class="mws-panel-body no-padding">
-                <table datatable="ng" class="mws-datatable-fn mws-table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        <tr ng-if="(key != 'id')" ng-repeat="(key, value) in data.driver">
-			            	<td>
-			            		<label>{{key}}</label>
-			            	</td>
-			                <td >
-			                	<label>{{value}}</label>
-			                </td>
-		            	</tr>
-                        </tbody>
-                </table>
-            </div>
-
-        </div>
-        <div ng-if="panel.vehicle" class="mws-panel grid_2 rightPanel">
-            <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Vehicle Involved in Offence </span>
-            </div>
-
-            <div class="mws-panel-body no-padding">
-                <table datatable="ng" class="mws-datatable-fn mws-table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        <tr ng-if="(key != 'id')" class="todelete"  ng-repeat="(key, value) in data.vehicle">
-			            	<td>
-			            		<label>{{key}}</label>
-			            	</td>
-			                <td >
-			                	<label>{{value}}</label>
-			                </td>
-			            	</tr>
-                        </tbody>
-                </table>
-            </div>
-
-        </div>
+</div>
+	
         <div class="mws-panel grid_2 rightPanel" ng-if="panel.payment">
             <div class="mws-panel-header"  style="height: 48px !important;">
                 <span>Offence Payment </span>

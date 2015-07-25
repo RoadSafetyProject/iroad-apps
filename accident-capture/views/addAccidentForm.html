@@ -1,0 +1,56 @@
+<style>
+	.md-dialog-container{
+		position: fixed;
+		height: 100%;
+	}
+	.show-details{
+		/* float: right; */
+		cursor: pointer;
+		padding: 20px;
+		color: blue;
+	}
+	.show-details:hover{
+		text-decoration: underline;
+	}
+	.expiry{
+		border: 2px solid #F44336;
+		background: #E57373;
+		height: 40px;
+		display: inline-block;
+		width: 100%;
+		text-align: center;
+		/* vertical-align: middle; */
+		font-size: 24px;
+	}
+</style>
+
+<div ng-controller="AddAccidentController">
+	<center>
+		<h3>Accident Registering</h3>
+	</center>
+	<div style="padding:50px;padding-top:0">
+		<div class = "panel panel-default">
+			<div class = "panel-heading"></div>
+			<div class = "panel-body">
+			{{emptyForm}}
+
+			<hr>
+			<div class="col-sm-3" ng-repeat="(key, value) in emptyForm | orderBy:'sortOrder'" ng-if="(key != 'id')">
+				<label style="font-size: 0.8em">{{key}}</label><br />
+				<input ng-if="isInteger(key)"  ng-model="newEvent[key]" class="form-control input-sm" />
+				
+				<select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control input-sm">
+                    <option value="true">Yes</option><option value="false">No</option>
+                </select>
+
+               
+
+                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEvent[key]"/>
+                <multi-select  ng-if="multiselectBools[key]" class="form-control input-sm" input-model="inputModal[key]" output-model="editingEvent[key]"item-label="name" button-label="button" tick-property="selected" />
+
+			</div>
+			</div>
+		</div>		
+	</div>	
+</div>

@@ -63,7 +63,7 @@ eventCaptureControllers.controller('MainController',
         		$scope.hideProgresMessage();
         		$scope.pager = result.pager;
 				$scope.data.accidents = result.data;
-				//console.log(JSON.stringify(result.data));
+				console.log(JSON.stringify(result.data));
 				$scope.hideProgresMessage();
 				$scope.$apply();
 				
@@ -120,7 +120,38 @@ eventCaptureControllers.controller('MainController',
             });
         }
 
+        //function to add new accident
+        $scope.addAccident = function(){
+
+        	$scope.accident = new iroad2.data.Modal('Accident',[]);
+        	var modalName = $scope.accident.getModalName();
+			var event = {};
+
+			angular.forEach(iroad2.data.programs, function (program) {
+                if (program.name == modalName) {
+                	console.log(JSON.stringify(program));
+                	angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+                		if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+                			event[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+                		}else{
+                			event[dataElement.dataElement.name] = "";
+                		}
+                       
+                    });
+                }
+            });
+			$scope.formData = event;
+        	var modalInstance = $modal.open({
+        		templateUrl: 'views/addAccidentForm.html',
+        		controller:'AddAccidentController'
+        	});
+
+        }
+
+
 		$scope.addNew = function(){
+
+
 			var modalName = $scope.AccidentModal.getModalName();
 			var event = {};
 			angular.forEach(iroad2.data.programs, function (program) {
@@ -141,43 +172,13 @@ eventCaptureControllers.controller('MainController',
 					event[relationship.pivot] = [];
 				}
 			});*/
+
 			console.log(JSON.stringify(event));
 			
-			$scope.enableEdit(event);
+			//$scope.enableEdit(event);
 		}
-		$scope.makePayment = false;
-		$scope.startPayment = function(){
-			$scope.makePayment = true;
-			console.log(JSON.stringify($scope.data.payment));
-		}
-		$scope.cancelPayment  = function(){
-			$scope.makePayment = false;
-			$scope.data.payment['Offence Reciept Amount'] = "";
-			$scope.data.payment['Offence Reciept Reciept'] = "";
-		}
-		$scope.savePayment = function(){
-			$scope.data.payment['Offence Paid'] = true;
-			//alert("Payment made successfully.")
-			$scope.show("offences");
-			if($scope.data.payment['Offence Reciept Amount'] != "" && $scope.data.payment['Offence Reciept Reciept'] != ""){
-				$scope.data.payment['Offence Paid'] = true;
-				var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.data.payment['Offence Date']};
-				$scope.AccidentModal.save($scope.data.payment,otherData,function(result){
-	        		console.log("Result:" + JSON.stringify(result));
-	        		$scope.makePayment = false;
-	        		$scope.$apply();
-				});
-			}
-		}
-		$scope.showRegistries = function(registries){
-			$scope.show("offences");
-			$scope.data.offenceRegistries = registries;
-		}
-		$scope.showPayment = function(offence){
-			$scope.show("payment");
-			console.log(JSON.stringify(offence));
-			$scope.data.payment = offence;
-		}
+		
+		
 		$scope.isInteger = function(key){
 			return $scope.is(key,"int");
 		}
@@ -266,38 +267,27 @@ eventCaptureControllers.controller('MainController',
 			};
 			return object;
 		}
-		$scope.getOffences = function(offences){
-			return offences;
-		}
-		$scope.showOffence = function(aOffence){
-			$scope.offence = aOffence;
-			console.log(JSON.stringify(aOffence));
-			var modalInstance = $modal.open({
-				
-                templateUrl: 'views/offenceForm.html',
-                controller: 'offenceFormController',
-                resolve: {
-                    aOffence : function () {
-                        return aOffence;
-                    }
-                }
-            });
-			
-            modalInstance.result.then(function (){
-            });
-		}
+		
+
 		$scope.showDriver = function(driver){
 			$scope.show("driver");
 			$scope.data.driver = driver;
+
+			console.log(JSON.stringify($scope.data.driver));
+			
 			for(var key in driver.Person){
 				$scope.data.driver[key] = driver.Person[key]; 
 			}
 			delete driver.Person;
 		}
+		//function to show vichicle involved
 		$scope.showVehicle = function(vehicle){
 			$scope.show("vehicle");
 			$scope.data.vehicle = vehicle;
+
+			console.log(JSON.stringify($scope.data.vehicle));
 		}
+
 		$scope.enableEdit  = function(e){
 			if(iroad2.data.user.organisationUnits.length == 0){
 				alert("You cannot perform this action. You are not assigned an organisation unit.");
