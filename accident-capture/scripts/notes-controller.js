@@ -15,7 +15,7 @@ eventCaptureControllers.controller('AccidentController',
     });
 
 ///controller for AddAccidentController
-eventCaptureControllers.controller('AddAccidentController',function($scope){
+eventCaptureControllers.controller('AddAccidentController',function($scope,$http){
 
 	$scope.emptyForm = angular.element("#offenceScope").scope().formData;
 
@@ -108,6 +108,11 @@ eventCaptureControllers.controller('AddAccidentController',function($scope){
 			return object;
 		}
 
+		//getting user Information
+	    $http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
+	        $scope.logedInUser = data;
+	    });
+
 
 		$scope.saveAccident = function(){
 
@@ -117,7 +122,29 @@ eventCaptureControllers.controller('AddAccidentController',function($scope){
 	            $scope.newAccident[savableData.key] = savableData.value;
 	        });
 
-	        console.log("Saving Data:" + JSON.stringify($scope.newAccident));
+	        var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "Admin",eventDate:$scope.newAccident['Time of Accident']};
+       		var saveEvent = $scope.newAccident;
+
+
+       		console.log('otherData : ' + JSON.stringify(otherData));
+
+       		console.log("Saving Data:" + JSON.stringify($scope.newAccident));
+
+       		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);	
+
+       		$scope.accidentEventModal.save(saveEvent,otherData,function(result){
+	            
+
+	            console.log("Save Made:" + JSON.stringify(result.importSummaries[0].reference));
+	            $scope.accident_id = result.importSummaries[0].reference;
+
+	            alert('success');
+	            
+	        },function(error){
+	            alert('fail to add');
+
+	        },$scope.accidentEventModal.getModalName());
+
         } 
 
 }) 
