@@ -16,7 +16,7 @@ var eventCapture = angular.module('mapComponentsApp',
           'd2Controllers',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate',
-          'd2HeaderBar',"datatables",'datatables.bootstrap','ui.date'])
+          'd2HeaderBar',"datatables",'datatables.bootstrap','ui.date','ya.treeview', 'ya.treeview.tpls', 'ya.treeview.breadcrumbs', 'ya.treeview.breadcrumbs.tpls'])
 .value('DHIS2URL', '../../..')
 
 .config(function($routeProvider, $translateProvider) {    

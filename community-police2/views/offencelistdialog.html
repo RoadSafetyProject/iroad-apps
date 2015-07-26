@@ -1,0 +1,17 @@
+<md-dialog aria-label="Mango (Fruit)"  ng-controller="offenceFormController">
+	<md-toolbar class="md-theme-light" style="background-color:#B39DDB !important">
+				<h1 class="md-toolbar-tools">Select Offences Committed</h1>
+	</md-toolbar> 
+  <md-content>
+  <md-checkbox ng-repeat="off in offenceRegistry" ng-click="checkClick(off)" aria-label="Checkbox 2">
+    {{off.Nature}}
+  </md-checkbox>
+  
+    
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button ng-click="hide()" class="md-primary">
+      Close
+    </md-button>
+  </div>
+</md-dialog>

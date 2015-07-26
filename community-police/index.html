@@ -28,7 +28,10 @@
     <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>-->
     <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular.js"></script>
- 
+ 	
+	<link rel="stylesheet" href="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview.css" />
+    <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-tpls.js"></script>
+    <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>
     <style type="text/css">
         html { height: 100% }
         body { height: 100%; margin: 0px; padding: 0px }
@@ -48,6 +51,12 @@
         <header>
             <h3>Police,Fire and Hospitals</h3>
             <small>Double click area title or marker to edit.</small>
+			<div class="col-sm-6" style="">
+				Organisation Unit:
+		      	<div class="org-unit-control" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
+		          	<span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
+		      	</div>
+			</div>
             <div class="pure-menu pure-menu-open pure-menu-horizontal">
                 <ul>
                     <li ng-class="{'pure-menu-selected': location.path() == '/'} "><a href="#/">Police Stations</a></li>
@@ -103,7 +112,7 @@
     <header>
         <h3>Reports From Community</h3>
     </header>
-
+		<!-- 
         <table datatable="ng" class="table table-bordered">
             <thead>
             <tr>
@@ -136,9 +145,9 @@
                 <!--<td><label ng-click="controls.openInfoWindowByTodoId(todo.id)"  ng-dblclick="controls.editTodoById(todo.id)">{{todo.title}}</label></td>-->
                 <!--<td>{{ todo.phone }}</td>-->
                 <!--<td>{{ todo.email }}</td>-->
-            <!--</tr>-->
+            <!--</tr>
             </tbody>
-        </table>
+        </table> -->
 
     <!--<footer>-->
         <!--<span ng-show="todos.remainingCount()">-->
@@ -694,7 +703,19 @@ mapApp.directive('todoMaps', function ($compile) {
 });
 
 mapApp.controller('showTodoCtrl', function ($http,$scope, mapService, todosService, infoWindowService, mapControlsService, NEW_TODO_ID) {
-    $scope.data = {};
+	$scope.tree = {};
+	$scope.tree.modal = [];
+	$scope.tree.context = {
+			selectedNodes: []
+		  };
+	$http.get("/demo/api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,children[id,name,children[id,name,children[id,name]]]")
+		.success(function(result) {
+			alert("");
+			$scope.tree.modal = result.organisationUnits;
+	}).error(function(error) {
+		console.log(error);
+	});
+	$scope.data = {};
     $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
    $http.get($scope.programUrl).success(function(data){
         $scope.data.programs = {};
