@@ -60,12 +60,14 @@ eventCaptureControllers.controller('MainController',
         	//new iroad2.data.Relation('Accident Passenger','Accident Vehicle','Police')
         	$scope.AccidentModal = new iroad2.data.Modal("Accident Vehicle",[]);
         	$scope.AccidentModal.getAll(function(result){
-        		$scope.hideProgresMessage();
+        		
         		$scope.pager = result.pager;
 				$scope.data.accidents = result.data;
-				console.log(JSON.stringify(result.data));
-				$scope.hideProgresMessage();
+				//console.log(JSON.stringify(result.data));
+				
 				$scope.$apply();
+
+				$scope.hideProgresMessage();
 				
 			},$scope.pageSize,page,true);
         }
@@ -123,13 +125,13 @@ eventCaptureControllers.controller('MainController',
         //function to add new accident
         $scope.addAccident = function(){
 
-        	$scope.accident = new iroad2.data.Modal('Accident',[]);
+        	$scope.accident = new iroad2.data.Modal('Accident Vehicle',[]);
         	var modalName = $scope.accident.getModalName();
 			var event = {};
 
 			angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == modalName) {
-                	//console.log(JSON.stringify(program));
+                	console.log(JSON.stringify(program));
                 	angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                 		if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
                 			event[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
@@ -143,7 +145,7 @@ eventCaptureControllers.controller('MainController',
 
 			$scope.formData = event;
 
-			//console.log(JSON.stringify($scope.formData));
+			console.log(JSON.stringify($scope.formData));
         	var modalInstance = $modal.open({
         		templateUrl: 'views/addAccidentForm.html',
         		controller:'AddAccidentController'
@@ -151,11 +153,6 @@ eventCaptureControllers.controller('MainController',
 
         }
 
-        $scope.saveAccident = function(){
-
-        	
-        	console.log('Sent Data :  ' + $scope.newEvent);
-        }
 
 
 		$scope.addNew = function(){

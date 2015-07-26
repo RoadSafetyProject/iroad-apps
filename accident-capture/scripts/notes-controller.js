@@ -7,9 +7,11 @@ eventCaptureControllers.controller('AccidentController',
     	$scope.VehicleData = angular.element("#offenceScope").scope().VehicleData;
     	$scope.DriverData = angular.element("#offenceScope").scope().DriverData;
 
-		console.log('Driver '+JSON.stringify($scope.DriverData)+'\n');    	
-		console.log('Vehicle '+JSON.stringify($scope.VehicleData)+'\n');    	
-		console.log('accident '+JSON.stringify($scope.AccidentData)+'\n');    	
+		//console.log('Driver '+JSON.stringify($scope.DriverData)+'\n');    	
+		//console.log('Vehicle '+JSON.stringify($scope.VehicleData)+'\n');    	
+		//console.log('accident '+JSON.stringify($scope.AccidentData)+'\n'); 
+
+
     });
 
 ///controller for AddAccidentController
@@ -105,6 +107,18 @@ eventCaptureControllers.controller('AddAccidentController',function($scope){
 			};
 			return object;
 		}
+
+
+		$scope.saveAccident = function(){
+
+			console.log('data before : ' + JSON.stringify($scope.newAccident));
+	        angular.forEach($scope.savableEventData, function (savableData) {
+	            delete $scope.newAccident[savableData.name];
+	            $scope.newAccident[savableData.key] = savableData.value;
+	        });
+
+	        console.log("Saving Data:" + JSON.stringify($scope.newAccident));
+        } 
 
 }) 
 eventCaptureControllers.controller('offenceFormController',
