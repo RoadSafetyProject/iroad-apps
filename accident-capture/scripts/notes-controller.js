@@ -124,9 +124,10 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	        var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "Admin",eventDate:$scope.newAccident['Time of Accident']};
        		var saveEvent = $scope.newAccident;
        		//console.log('otherData : ' + JSON.stringify(otherData));
-       		console.log(" Data  Accident :" + JSON.stringify($scope.newAccident));
+       		//console.log(" Data  Accident :" + JSON.stringify($scope.newAccident));
        		//console.log("Saving Data New Accident Vehicle :" + JSON.stringify($scope.newAccidentVehicle));
        		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);	
+       		$scope.accident_id = null;
        		$scope.accidentEventModal.save(saveEvent,otherData,function(result){            
 
 	            console.log("acciednt id :" + JSON.stringify(result.importSummaries[0].reference));
@@ -154,7 +155,6 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 								$scope.newAccidentVehicle['Full Name'] = $scope.newAccidentVehicle.Driver['Full Name'];
 								$scope.newAccidentVehicle['Gender'] = $scope.newAccidentVehicle.Driver['Gender'];
 								$scope.newAccidentVehicle['Date of Birth'] = $scope.newAccidentVehicle.Driver['Date of Birth'];
-								$scope.newAccidentVehicle['Expiered driving licence'] = $scope.newAccidentVehicle.Driver['Current License Expiry Date'];
 								//vehicle
 								$scope.newAccidentVehicle['Vehicle Ownership Category'] = $scope.newAccidentVehicle.Vehicle['Vehicle Ownership Category'];
 								$scope.newAccidentVehicle['Vehicle Owner Name'] = $scope.newAccidentVehicle.Vehicle['Vehicle Owner Name'];
@@ -166,28 +166,42 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 								//asving model
 								$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
 								$scope.accidentVehicleEventModal.save($scope.newAccidentVehicle,otherData,function(result){
-
-									alert('success');
+									//alert('success');
 									console.log("\naccident vehicle id : " + JSON.stringify(result.importSummaries[0].reference));
-
 								},function(error){
 									
 							        alert('fail to add');
 							        },$scope.accidentVehicleEventModal.getModalName());
 
+
+								//saving witnes in an accident
+								$scope.accidentWitnessModel = new iroad2.data.Modal('Accident Witness',[]);
+								$scope.newAccidentWitness.Accident = $scope.newAccident;
+								$scope.accidentWitnessModel.save($scope.newAccidentWitness,otherData,function(result){
+
+									console.log('Success to add the witness to the accident');
+									console.log('Witness added : ' + JSON.stringify($scope.newAccidentWitness));
+									console.log("\nWitness id : " + JSON.stringify(result.importSummaries[0].reference));
+
+								},function(error){
+									
+							        console.log('Fail to add the witness to the accident');
+							        },$scope.accidentWitnessModel.getModalName());
+
 								console.log('\nData Import for accident: ' + JSON.stringify($scope.newAccidentVehicle));
-							};											
+							}											
 						});
 					}
 				});	
 	            
 	        },function(error){
-	            alert('fail to add');
+	            //alert('fail to add');
 
 	        },$scope.accidentEventModal.getModalName());
+			
         } 
 
-}) 
+}) ;
 eventCaptureControllers.controller('offenceFormController',
 	function($scope) {
 	//console.log(JSON.stringify($scope));
