@@ -116,50 +116,75 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 		$scope.saveAccident = function(){
 
-			console.log('data before : ' + JSON.stringify($scope.newAccident));
+			//start saving accident
 	        angular.forEach($scope.savableEventData, function (savableData) {
 	            delete $scope.newAccident[savableData.name];
 	            $scope.newAccident[savableData.key] = savableData.value;
 	        });
-
 	        var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "Admin",eventDate:$scope.newAccident['Time of Accident']};
        		var saveEvent = $scope.newAccident;
-
-
-       		console.log('otherData : ' + JSON.stringify(otherData));
-
-       		console.log("Saving Data New Accident :" + JSON.stringify($scope.newAccident));
-
-
-       		console.log("Saving Data New Accident Vehicle :" + JSON.stringify($scope.newAccidentVehicle));
-
+       		//console.log('otherData : ' + JSON.stringify(otherData));
+       		console.log(" Data  Accident :" + JSON.stringify($scope.newAccident));
+       		//console.log("Saving Data New Accident Vehicle :" + JSON.stringify($scope.newAccidentVehicle));
        		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);	
+       		$scope.accidentEventModal.save(saveEvent,otherData,function(result){            
 
-       		/*$scope.accidentEventModal.save(saveEvent,otherData,function(result){
-	            
-
-	            console.log("Save Made id :" + JSON.stringify(result.importSummaries[0].reference));
+	            console.log("acciednt id :" + JSON.stringify(result.importSummaries[0].reference));
 	            $scope.accident_id = result.importSummaries[0].reference;
+	            //saving vehicle acciednt model
+	            $scope.driver = null;
+				$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
+				$scope.driverModel.get({value:$scope.newAccidentVehicle['Licence Number']},function(result){										
+					if($scope.driver != null){
+						$scope.message = "Ok";
+					}else{
+						$scope.driver = result[0];
+						$scope.newAccidentVehicle.Driver = $scope.driver;
+						//fetching vehicle
+						$scope.vehicle = null;
+						$scope.vehicleDriver = new iroad2.data.Modal('Vehicle',[]);
+						$scope.vehicleDriver.get({value:$scope.newAccidentVehicle['Vehicle Plate Number']},function(result){
+							if ($scope.vehicle != null) {
+								$scope.message = "Ok";
+							} else{
+								$scope.vehicle = result[0];
+								$scope.newAccidentVehicle.Vehicle = $scope.vehicle;
+								//add more data for new vehicle accident
+								//for driver
+								$scope.newAccidentVehicle['Full Name'] = $scope.newAccidentVehicle.Driver['Full Name'];
+								$scope.newAccidentVehicle['Gender'] = $scope.newAccidentVehicle.Driver['Gender'];
+								$scope.newAccidentVehicle['Date of Birth'] = $scope.newAccidentVehicle.Driver['Date of Birth'];
+								$scope.newAccidentVehicle['Expiered driving licence'] = $scope.newAccidentVehicle.Driver['Current License Expiry Date'];
+								//vehicle
+								$scope.newAccidentVehicle['Vehicle Ownership Category'] = $scope.newAccidentVehicle.Vehicle['Vehicle Ownership Category'];
+								$scope.newAccidentVehicle['Vehicle Owner Name'] = $scope.newAccidentVehicle.Vehicle['Vehicle Owner Name'];
+								$scope.newAccidentVehicle['Vehicle Class'] = $scope.newAccidentVehicle.Vehicle['Vehicle Class'];
+								$scope.newAccidentVehicle['Make'] = $scope.newAccidentVehicle.Vehicle['Make'];
+								$scope.newAccidentVehicle['Model'] = $scope.newAccidentVehicle.Vehicle['Model'];
+								$scope.newAccident['id'] = $scope.accident_id;
+								$scope.newAccidentVehicle.Accident = $scope.newAccident;
+								//asving model
+								$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
+								$scope.accidentVehicleEventModal.save($scope.newAccidentVehicle,otherData,function(result){
 
-	            alert('success');
+									alert('success');
+									console.log("\naccident vehicle id : " + JSON.stringify(result.importSummaries[0].reference));
+
+								},function(error){
+									
+							        alert('fail to add');
+							        },$scope.accidentVehicleEventModal.getModalName());
+
+								console.log('\nData Import for accident: ' + JSON.stringify($scope.newAccidentVehicle));
+							};											
+						});
+					}
+				});	
 	            
 	        },function(error){
 	            alert('fail to add');
 
-	        },$scope.accidentEventModal.getModalName());*/
-
-			//fetch driver using driver Licence Number
-			$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
-			$scope.driverModel.get({value:$scope.newAccidentVehicle.Driver['Licence Number']},function(result){
-
-			
-				console.log('Driver result : ' + JSON.stringify(result));
-			
-			});
-
-			//console.log('Driver new: ' + JSON.stringify($scope.newAccidentVehicle.Driver));
-
-
+	        },$scope.accidentEventModal.getModalName());
         } 
 
 }) 
