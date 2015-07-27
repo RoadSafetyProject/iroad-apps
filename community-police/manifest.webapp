@@ -1,21 +1,23 @@
 {
-    "version": "1.0",
-    "name": "Community Police",
-    "description": "Community Police",
-    "launch_path": "index.html",
-    "icons": {
-        "16": "/img/icon.png",
-        "48": "/img/icon.png",
-        "128": "/img/icon.png"
+    "version":"1.0",
+    "name":"Offence Capture",
+    "description":"Offence Capture is used to enter, update and view offense data",
+    "icons":{
+        "16":"icon16.png",
+        "48":"icon16.png",
+        "128":"icon16.png"
     },
-    "developer": {
-        "name": "Kelvin Mbwilo",
-        "url": "http://kelvinmbwilo.tk"
+    "developer":{
+        "url":"http://roadsafety.udsm.ac.tz/about/team/vincent/",
+        "name":"Vincent Minde",
+        "company":"University of Dar es salaam",
+        "email":"vincentminde@gmail.com"
     },
-    "default_locale": "en",
-    "activities": {
-        "dhis": {
-            "href": ".."
+    "activities":{
+        "dhis":{
+            "href":".."
         }
-    }
+    },
+    "launch_path":"index.html",
+    "default_locale":"en"
 }
