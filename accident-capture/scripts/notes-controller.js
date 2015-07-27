@@ -152,8 +152,12 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 			$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
 			$scope.driverModel.get({value:$scope.newAccidentVehicle.Driver['Licence Number']},function(result){
 
-				console.log('Driver : '+JSON.stringify(result[0]));
+			
+				console.log('Driver result : ' + JSON.stringify(result));
+			
 			});
+
+			//console.log('Driver new: ' + JSON.stringify($scope.newAccidentVehicle.Driver));
 
 
         } 
