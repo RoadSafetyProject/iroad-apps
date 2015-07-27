@@ -1,11 +1,11 @@
 {
     "version":"1.0",
-    "name":"Accident Capture",
+    "name":"Accident View",
     "description":"Accident Capture is used to enter, update and view accident data",
     "icons":{
-        "16":"leaf.png",
-        "48":"leaf.png",
-        "128":"leaf.png"
+        "16":"icon16.png",
+        "48":"icon16.png",
+        "128":"icon16.png"
     },
     "developer":{
         "url":"http://roadsafety.udsm.ac.tz/about/team/paul/",
