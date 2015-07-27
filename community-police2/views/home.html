@@ -1,345 +1,172 @@
 <style>
-    a:hover{
-        text-underline: none;
-    }
-    .rightPanel{
-    	white;margin-top:125px;
-    }
-    .modal-dialog{
-        margin-left: 8%;
-        margin-right: 8%;
-        width: 84%
-    }
-    .dataTables_paginate,.dataTables_info{
-    	display:none !important;
-    }
-</style>
-<div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="feedBack">{{ messagess }}</div>
-<div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="progresMessage">{{ progresMessagess }}</div>
-<div ng-class="normalClass" ng-style="normalStyle" style="margin-bottom:40px;"  id="offenceScope">
-<div style="margin-top: 50px !important;">
+  .angular-google-map-container { margin-top:45px;height: 100%; min-height:1000px;}
+  .form{
+  	position:fixed;
+  	top: 65px;
+  	left:100px;
+  	z-index:100;
+  }
+  .form2{
+  	position:fixed;
+  	top: 65px;
+  	left:450px;
+  	z-index:100;
+  }
+  .keys{
+  	position: fixed;
+  bottom: 0px;
+  right: 10px;
+  z-index: 100;
+  }
+  .table img{
+  	height:20px
+  }
+  .selected {
+  background-color: #aaddff;
+  font-weight: bold;
+}
+	.org-unit-control {
+	  display: block;
+	  width: 300px;
+	  height: 240px !important;
+	  padding: 6px 12px;
+	  font-size: 14px;
+	  line-height: 1.428571429;
+	  color: #555;
+	  vertical-align: middle;
+	  background-color: #fff;
+	  background-image: none;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	  overflow-y:auto;height:100px
+	}
+	.org-unit-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+}
+.form-control{
+	width:100%;
+}
+.policingPanel{
+	position: absolute;
+    z-index: 100;
+    width: 500px;
+    top: 65px;
+    right: 5px;
+}
+  </style>
+<div class="angular-google-map-container">
 
-        <div class="panel-heading">
-            <h3>Offence Capture</h3>
-        </div>
-
-        <div class="mws-panel-header"  style="height: 48px !important;">
-            <span>Offence Events Registered<button ng-click="addNew()" class="btn btn-primary btn-xs pull-right" style="color:#fff0ff;font-size: 11px"> Add New </button></span>
-        </div>
-
-        <div class="mws-panel-body no-padding">
-        	<!-- Payment Search
-        	<select ng-modal="search.payment">
-        		<option value="all">All</option>
-        		<option value="paid">Paid</option>
-        		<option value="notpaid">Not Paid</option>
-        	</select> -->
-            <table datatable="ng" class="mws-datatable-fn mws-table">
+<div class="form">
+	<div class="panel panel-default">
+  <div class="panel-heading">Vehicle Tracking Filter</div>
+  
+  <div class="panel-body">
+		<div class="row">
+		<div class="col-sm-6" style="">
+			Organisation Unit:
+		      <div class="org-unit-control" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
+		          <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
+		      </div>
+		</div>
+		</div>
+		<div class="row">
+		<button ng-if="!isAddingFacility" ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
+		</div>
+	</div>
+</div>
+</div>
+<div ng-if="isAddingFacility" class="form2">
+<div class="panel panel-default">
+  <div class="panel-heading">Create New Facility</div>
+  
+  <div class="panel-body">
+		<div class="row">
+		<div class="col-sm-12" style="">
+			<div class="form-group">
+				<label>Facility Name</label><br />
+            	<input ng-model="newFacility.name" class="form-control col-sm-12" />
+            </div>
+            <div class="form-group">
+				<label>Latitude</label><br />
+            	<input ng-model="newFacility.coordinates.latitude" class="form-control col-sm-12" />
+            </div>
+            <div class="form-group">
+				<label>Longitude</label><br />
+            	<input ng-model="newFacility.coordinates.longitude" class="form-control col-sm-12" />
+            </div>
+		</div>
+		</div>
+		<div class="row">
+		<button ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Save Facility</button>
+		</div>
+	</div>
+</div>
+</div>
+<div class="policingPanel">
+	<div class="panel panel-default">
+  <div class="panel-heading">Community Policing Reports</div>
+  
+  <div class="panel-body">
+		<div class="row">
+		<table datatable="ng" class="mws-datatable-fn mws-table">
                 <thead>
                 <tr>
                     <th># </th>
-                    <th>Driver License</th>
-                    <th>Driver Name</th>
-                    <th>Place</th>
-                    <th>Date</th>
-                    <th></th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Description</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="event in data.offences">
-                    <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
-                    <td>{{event["Driver License Number"]}}</td>
-                    <td>{{event["Full Name"]}}</td>
-                    <td>{{event["Offence Place"]}}</td>
-                    <td>{{event["Offence Date"] | date:'dd MMM yyyy'}}</td>
-                    <!-- <td ng-repeat="datas in events.dataValues | filter:{name:'Make'}">{{ datas.value }}</td>
-                    <td ng-repeat="datas in events.dataValues | filter:{name:'Model'}">{{ datas.value }}</td>
-                    <td ng-repeat="datas in events.dataValues | filter:{name:'Body Type'}">{{ datas.value }}</td>
-                    <td ng-repeat="datas in events.dataValues | filter:{name:'Chassis Number'}">{{ datas.value }}</td>
-                    <td ng-repeat="datas in events.dataValues | filter:{name:'Class'}">{{ datas.value }}</td>
-                    <td ng-repeat="datas in events.dataValues | filter:{name:'Year of Manufacture'}">{{ datas.value }}</td>
-                    <td ng-repeat="datas in events.dataValues | filter:{name:'Fuel'}">{{ datas.value }}</td> -->
-                    <td>
-                        <div class="btn-group dropdown">
-                            <button type="button" class="btn btn-default">Action</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                            	
-                            	<li><a ng-click="showOffence(event)">Info </a> </li>
-                                <li><a  ng-click="enableEdit(event)">Edit</a> </li>
-                         
-                                <li><a ng-click="showRegistries(event.Offence)">View Offences </a> </li>
-                                <li><a ng-click="showPayment(event)">View Payment </a> </li>
-                                <li><a ng-click="showDriver(event.Driver)">View Driver</a> </li>
-                                <li><a ng-click="showVehicle(event.Vehicle)">View Vehicle</a> </li>
-                                <li><a >Delete</a> </li>
-                            </ul>
-                        </div>
-                    </td>
+                <tr ng-repeat="event in events" ng-click="addMarker(event)">
+                	<td>{{$index + 1}}</td>
+                	<td>{{getDataValue(event,"Community Report Title")}}</td>
+                	<td>{{getDataValue(event,"Community Report Type")}}</td>
+                	<td>{{getDataValue(event,"Community Report Description")}}</td>
                 </tr>
                 </tbody>
-            </table>
-            <pagination class="pull-right" total-items="pager.total" page="pager.page"
-          max-size="5" boundary-links="true"
-          on-select-page="pageChanged(page)" items-per-page="pager.pageSize" class="pagination-sm">
-        </pagination>
-        </div>
-
-    </div>
-
-		
-        <div ng-if="panel.offences" style="margin-top:20px">
-            <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>List of offences</span>
-            </div>
-
-            <div class="mws-panel-body no-padding">
-                <table datatable="ng" class="mws-datatable-fn mws-table">
-                    <thead>
-                        <tr>
-                            <th># </th>
-                            <th>Section</th>
-                            <th>Nature</th>
-                            <th>Amount</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="event in data.offenceRegistries">
-                            <td>{{ $index+1 }}</td>
-                    		<td>{{event.Offence_Registry.Section}}</td>
-                    		<td>{{event.Offence_Registry.Nature}}</td>
-                    		<td>{{event.Offence_Registry.Amount}}</td>
-                    		<td>
-                                <!-- <div class="btn-group dropdown">
-                                    <button type="button" class="btn btn-default">Action</button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a  ng-click="enableEdit(events)">Edit</a> </li>
-                                        <li><a >Delete</a> </li>
-                                        <li><a >Add Insurance</a> </li>
-                                        <li><a >Add Inspection</a> </li>
-                                        <li><a>Add Business Licence </a> </li>
-                                        <li><a >Add Vehicle Licence </a> </li>
-                                    </ul>
-                                </div> -->
-                            </td>
-                        </tr>
-                        </tbody>
-                </table>
-            </div>
-        </div>
-        
+        </table>
+		</div>
+	</div>
 </div>
-	<div ng-if="panel.driver" class="mws-panel grid_2 rightPanel">
-            <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Driver Involved in Offence</span>
-            </div>
-
-            <div class="mws-panel-body no-padding">
-                <table datatable="ng" class="mws-datatable-fn mws-table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        <tr ng-if="(key != 'id')" ng-repeat="(key, value) in data.driver">
-			            	<td>
-			            		<label>{{key}}</label>
-			            	</td>
-			                <td >
-			                	<label>{{value}}</label>
-			                </td>
-		            	</tr>
-                        </tbody>
-                </table>
-            </div>
-
-        </div>
-        <div ng-if="panel.vehicle" class="mws-panel grid_2 rightPanel">
-            <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Vehicle Involved in Offence </span>
-            </div>
-
-            <div class="mws-panel-body no-padding">
-                <table datatable="ng" class="mws-datatable-fn mws-table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        <tr ng-if="(key != 'id')" class="todelete"  ng-repeat="(key, value) in data.vehicle">
-			            	<td>
-			            		<label>{{key}}</label>
-			            	</td>
-			                <td >
-			                	<label>{{value}}</label>
-			                </td>
-			            	</tr>
-                        </tbody>
-                </table>
-            </div>
-
-        </div>
-        <div class="mws-panel grid_2 rightPanel" ng-if="panel.payment">
-            <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Offence Payment </span>
-            </div>
-
-            <div class="mws-panel-body no-padding">
-                <table class="mws-datatable-fn mws-table">
-                    <tr ng-if="(data.payment['Offence Paid'] == 'false') && !makePayment">
-			            	<td>
-			            		<label>Is am</label>
-			            	</td>
-			                <td >
-			                	<label>Payment is not yet made</label>
-			                </td>
-			                <td >
-			                	<button  class="btn btn-primary" ng-click="startPayment()">Pay</button>
-			                </td>
-			            	</tr>
-                        <tr ng-if="data.payment['Offence Paid']">
-			            	<td>
-			            		<label>Offence Reciept Number</label>
-			            	</td>
-			                <td >
-			                	<label>{{data.payment['Offence Reciept Number']}}</label>
-			                </td>
-			            	</tr>
-			            <tr ng-if="data.payment['Offence Paid']">
-			            	<td>
-			            		<label>Amount Paid</label>
-			            	</td>
-			                <td >
-			                	<label>{{data.payment['Offence Reciept Amount']}}</label>
-			                </td>
-			            </tr>
-			            <tr ng-if="makePayment">
-			            	<td>
-			            		<label>Reciept Number</label>
-			            	</td>
-			                <td >
-			                	<input ng-model="data.payment['Offence Reciept Number']" class="form-control" />
-			                </td>
-			            </tr>
-			            <tr ng-if="makePayment">
-			            	<td>
-			            		<label>Amount Paid</label>
-			            	</td>
-			                <td >
-			                	<input ng-model="data.payment['Offence Reciept Amount']" class="form-control" />
-			                </td>
-			            </tr>
-			            <tr ng-if="makePayment">
-			            	<td>
-			            		
-			            	</td>
-			                <td >
-			                	<button class="btn btn-danger" ng-click="cancelPayment()">Cancel</button><button  ng-click="savePayment()" style="margin-left:20px" class="btn btn-primary">Save</button>
-			                </td>
-			            </tr>
-                </table>
-            </div>
-
-        </div>	
-        <div class="mws-panel grid_2 rightPanel" ng-if="panel.edit">
-			<div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Add New Offence<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
-            </div>
-     
-            <table  class="mws-datatable-fn mws-table">
-            <!-- <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
-            	<td ng-if="(key != 'id')">
-            		<label>{{key}}</label><br />
-                    <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control" />
-                    <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
-                    <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" >
-                    	<option value="true">Yes</option><option value="false">No</option>
-                    </select>
-                    <select  ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
-                    <input ng-if="isDate(key)" ui-date="dateOptions" class="form-control" ng-model="editingEvent[key]"/>
-                    <multi-select  ng-if="multiselectBools[key]" class="form-control" input-model="inputModal[key]" output-model="editingEvent[key]"item-label="name" button-label="button" tick-property="selected" />
-                </td>
-            </tr> -->
-            <tr>
-            	<td>
-            		<label>Driver License Number</label><br />
-                    <input ng-model="editingEvent['Driver License Number']" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Vehicle Plate Number</label><br />
-            		<input ng-model="editingEvent['Vehicle Plate Number']" class="form-control" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Rank Number</label><br />
-            		<input ng-model="editingEvent['Rank Number']" class="form-control" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Offence Facts</label><br />
-            		<input ng-model="editingEvent['Offence Facts']" class="form-control" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Offences</label><br />
-            		<multi-select class="form-control" input-model="editInputModal" output-model="data.editingOutputModal" item-label="Nature" button-label="Section" tick-property="selected" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Offence Admission Status</label><br />
-            		<select ng-options="item.name as item.name for item in getOptionSets('Offence Admission Status')" ng-model="editingEvent['Offence Admission Status']" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Offence Place</label><br />
-            		<input ng-model="editingEvent['Offence Place']" class="form-control" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Offence Date</label><br />
-            		<input ui-date="dateOptions" ui-date-format="yy-MM-dd"class="form-control"  ng-model="editingEvent['Offence Date']" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<label>Offence Paid</label><br />
-            		<select ng-model="editingEvent['Offence Paid']" >
-            			<option value="true">Yes</option>
-            			<option value="false">No</option>
-            		</select>
-            	</td>
-            </tr>
-            <tr ng-if="editingEvent['Offence Paid']">
-            	<td>
-            		<label>Offence Reciept Number</label><br />
-            		<input ng-model="editingEvent['Offence Reciept Number']" class="form-control" />
-            	</td>
-            </tr>
-            <tr ng-if="editingEvent['Offence Paid']">
-            	<td>
-            		<label>Offence Reciept Amount</label><br />
-            		<input ng-model="editingEvent['Offence Reciept Amount']" class="form-control" />
-            	</td>
-            </tr>
-            <tr>
-            	<td>
-            		<!-- <multi-select  ng-if="multiselectBools[item[0]]" class="form-control" input-model="inputModal[key]" output-model="item"item-label="name" button-label="button" tick-property="selected" /> -->
-                </td>
-            </tr>
-             <tr>
-                 <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Done</button> </td>
-             </tr>
-            </table>
-        </div>
+</div>
+<ui-gmap-google-map control='mapObject' center='map.center' zoom='map.zoom'>
+	
+	<ui-gmap-marker options="marker.options" ng-repeat="marker in markers" coords="marker.coords" idkey="marker.id">
+		<ui-gmap-window options="windowOptions" closeClick="closeClick()">
+			<div>
+			Vehicle {{plate_number}}
+			<div class="row">
+	        	<div class="form-group col-sm-6">
+			  		<label>Latitude:</label>
+					<div class="">{{marker.latitude}}</div>
+				</div>
+				<div class="form-group col-sm-6">
+			  		<label >Longitude:</label>
+					<div class="">{{marker.longitude}}</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-sm-6">
+			  		<label>Altitude:</label>
+					<div class="">{{marker.altitude}}m above sea level</div>
+				</div>
+				<div class="form-group col-sm-6">
+			  		<label>Velocity:</label>
+					<div class="">{{marker.velocity}}km/hr</div>
+				</div>
+			</div>
+			</div>
+        </ui-gmap-window>
+    </ui-gmap-marker>
+    <ui-gmap-marker ng-if="isAddingFacility" options="newFacility.options" draggable="true" coords="newFacility.coordinates" idkey="newFacility.id">
+    </ui-gmap-marker>
+</ui-gmap-google-map>
+</div>
