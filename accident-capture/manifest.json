@@ -1,9 +1,4 @@
-{
-	"name": "Accident APP",
-	"description": "This extension shows a Google Image search result for the current page",
-	"version": "1.0",
-	"icons":{
-		"small":"leaf.png"
+{"name": "Offence App","description": "This extension shows a Google Image search result for the current page","version": "1.0","launch_path": "index.html","icons":{"16":"icon16.png"
 	},
 	"developer": {
         "name": "Me",
@@ -16,20 +11,24 @@
         }
     },
 	"menu":[
-		{"name":"Home","route":"/home"},
-		{"name":"Report Accident","route":"/report"},
-		{"name":"View Accidents Reported","route":"/reported"},
-		{"name":"View Accident Statistics","route":"/statistics"},
+		{"name":"Home","route":"/list"},
+		{"name":"Offence List","route":"/list"},
+		{"name":"Report Offence","route":"/report"},
+		{"name":"Registry","route":"/registry"}	
 	],
 	"routes":[
-		{"name":"Home","route":"/home","view":"views/home.html","controller":"controllers/AccidentStatisticsCtrl"},
-		{"name":"Report Accident","route":"/report","view":"views/index.html"},
-		{"name":"View Accidents Reported","route":"/reported","view":"views/accident.html"},
-		{"name":"View Accident Statistics","route":"/statistics","view":"views/statistics.html","controller":"controller/AccidentReportController"}
+		{"route":"/home","view":"/stats.html"},
+		{"route":"/list","view":"/offencelist.html"},
+		{"route":"/report","view":"/offenceForm.html","controller":"offenceListController"},
+		{"route":"/offence/:request/:id","view":"/offenceForm.html"},
+		{"route":"/registry","view":"/offenceReg.html"},
+		{"route":"/registry/:id/offences","view":"/offencelist.html"},
+		{"route":"/offence/report","view":"/offenceReport.html"},
+		{"route":"/offence/payments","view":"/offencePayments.html"},
+		{"route":"/offence/statistics","view":"/statistics.html","controller":"statisticsController"}
 	],
 	"color":{
-		"c500":"#00F5FF",
-		"c200":"#B0E0E6"
+		"c500":"#673AB7",
+		"c200":"#B39DDB"
 	}
-
 }

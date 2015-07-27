@@ -8,21 +8,16 @@
         "128":"leaf.png"
     },
     "developer":{
-        "url":"http://roadsafety.udsm.ac.tz/about/team/paul/",
-        "name":"Paul Peter",
+        "url":"http://roadsafety.udsm.ac.tz/about/team/vincent/",
+        "name":"Vincent Minde",
         "company":"University of Dar es salaam",
-        "email":"pnyairema@gmail.com"
+        "email":"vincentminde@gmail.com"
     },
     "activities":{
         "dhis":{
             "href":".."
         }
     },
-    "folderName":null,
-    "baseUrl":null,
-    "launchUrl":null,
-    "key":null,
     "launch_path":"index.html",
-    "installs_allowed_from":null,
     "default_locale":"en"
 }

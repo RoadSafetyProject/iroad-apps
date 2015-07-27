@@ -1,0 +1,266 @@
+<style>
+	.md-dialog-container{
+		position: fixed;
+		height: 100%;
+	}
+	.show-details{
+		/* float: right; */
+		cursor: pointer;
+		padding: 20px;
+		color: blue;
+	}
+	.show-details:hover{
+		text-decoration: underline;
+	}
+	.expiry{
+		border: 2px solid #F44336;
+		background: #E57373;
+		height: 40px;
+		display: inline-block;
+		width: 100%;
+		text-align: center;
+		/* vertical-align: middle; */
+		font-size: 24px;
+	}
+</style>
+	<div ng-controller="AccidentController">
+	<center>
+		<h2>Accident Report</h2>
+	</center>
+		<div style="padding:50px;padding-top:0">
+
+			<!-- panel for  basic info for an accident -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Accident info </div>
+				<div class = "panel-body">
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Accident Type</label><br />
+						{{ AccidentData['Accident Type'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Accident Type Detail</label><br /> 
+						{{ AccidentData['Accident Type Detail'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Accident Registration Number</label><br /> 
+						{{ AccidentData['Accident Registration Number'] }}										
+						</div>
+					</div>
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Accident Class</label><br /> 
+						{{ AccidentData['Accident Class'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Area of Accident</label><br /> 
+						{{ AccidentData['Area of Accident'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Time of Accident</label><br /> 
+						{{ AccidentData['Time of Accident'] }}										
+						</div>
+					</div>
+					<div class = "row">	
+						<div class="col-sm-4"> 
+						<label>Number of Fatal Injuries</label><br /> 
+						{{ AccidentData['Number of Fatal Injuries'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Number of Simple Injuries</label><br /> 
+						{{ AccidentData['Number of Simple Injuries'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Number of Severe Injuries</label><br /> 
+						{{ AccidentData['Number of Severe Injuries'] }}										
+						</div>
+					</div>	
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Cause of Accident</label><br />
+						{{ AccidentData['Cause of Accident'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Road Name</label><br />
+						{{ AccidentData['Road Name'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Intersection Name</label><br /> 
+						{{ AccidentData['Intersection Name'] }}										
+						</div>
+					</div>
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Weather</label><br /> 
+						{{ AccidentData['Weather'] }}										
+						</div>
+					</div>
+				</div>		
+
+			<!-- panel for  vehicles invloved-->
+			<div class="panel panel-default">
+				<div class="panel-heading">Vehicle(s) Involved </div>
+				<div class = "panel-body">
+
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Make</label><br />
+						{{ VehicleData['Make'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Model</label><br />
+						{{ VehicleData['Model'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Model number</label><br /> 
+						{{ VehicleData['Model number'] }}										
+						</div>
+					</div>
+
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Color</label><br />
+						{{ VehicleData['Color'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Body Type</label><br />
+						{{ VehicleData['Body Type'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Engine Number</label><br /> 
+						{{ VehicleData['Engine Number'] }}										
+						</div>
+					</div>
+
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Vehicle Owner Name</label><br />
+						{{ VehicleData['Vehicle Owner Name'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Vehicle Owner Address</label><br />
+						{{ VehicleData['Vehicle Owner Address'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Vehicle Ownership Category</label><br /> 
+						{{ VehicleData['Vehicle Ownership Category'] }}										
+						</div>
+					</div>
+
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Current Insurance Expiry Date</label><br />
+						{{ VehicleData['Current Insurance Expiry Date'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Last Inspection Date</label><br />
+						{{ VehicleData['Last Inspection Date'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Vehicle Ownership Category</label><br /> 
+						{{ VehicleData['Last Inspecton Result'] }}										
+						</div>
+					</div>
+
+				</div>
+			</div>	
+
+			<!-- panel for  Drivers invloved-->
+			<div class="panel panel-default">
+				<div class="panel-heading">Driver(s) Involved </div>
+				<div class = "panel-body">
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Full Name</label><br />
+						{{ DriverData['Full Name'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Gender</label><br /> 
+						{{ DriverData['Gender'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>TIN Number</label><br /> 
+						{{ DriverData['TIN Number'] }}										
+						</div>
+					</div>
+
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Driver License Number</label><br />
+						{{ DriverData['Driver License Number'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Current License Expiry Date</label><br />
+						{{ DriverData['Current License Expiry Date'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Driving Class Name</label><br />
+						{{ DriverData['Driving Class Name'] }}										
+						</div>
+						
+					</div>
+
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Postal Address</label><br />
+						{{ DriverData['Postal Address'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Phone Number</label><br />
+						{{ DriverData['Phone Number'] }}										
+						</div>
+						
+					</div>
+
+				</div>
+			</div>		
+
+			<!-- panel for  -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Police register</div>
+				<div class = "panel-body">
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Full Name</label><br />
+						{{ AccidentData.Police.Person['First Name'] }}  {{ AccidentData.Police.Person['Middle Name'] }}  {{ AccidentData.Police.Person['Last Name'] }}				
+						</div>
+						<div class="col-sm-4"> 
+						<label>Rank Number</label><br />
+						{{AccidentData.Police['Rank Number']}}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Gender</label><br />
+						{{ AccidentData.Police.Person['Gender'] }}										
+						</div>						
+					</div>
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Phone Number</label><br />
+						{{ AccidentData.Police.Person['Phone Number'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>National Id</label><br />
+						{{ AccidentData.Police.Person['National Id'] }}										
+						</div>
+												
+					</div>
+				</div>
+			</div>	
+
+			<!-- panel for  Po
+			<div class="panel panel-default">
+				<div class="panel-heading"> </div>
+				<div class = "panel-body"></div>
+			</div>		
+
+			<!-- panel for  
+			<div class="panel panel-default">
+				<div class="panel-heading"> </div>
+				<div class = "panel-body"></div>
+			</div>	
+			-->
+
+		</div>
+	</div>
+
+    
