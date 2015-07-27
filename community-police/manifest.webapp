@@ -1,7 +1,7 @@
 {
     "version":"1.0",
-    "name":"Offence Capture",
-    "description":"Offence Capture is used to enter, update and view offense data",
+    "name":"Community Policing",
+    "description":"Community Policing is used to view reports from the community and add new facilities.",
     "icons":{
         "16":"icon16.png",
         "48":"icon16.png",
