@@ -167,7 +167,7 @@ eventCaptureControllers.controller('MainController',
             });
 
 
-            var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEventInsured['Accident Date']};
+            var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEventInsured['Accident Date']};
             var saveEvent = $scope.editingEventInsured;
             insuranceCompanyModal.save(saveEvent,otherData,function(result){
                 //console.log("Update Made:" + JSON.stringify(result));
