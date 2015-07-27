@@ -188,6 +188,7 @@
 					<h5 style = "padding-left:2%;">Driver details</h5>				
 					<div class="col-sm-4">
 						<label style="font-size: 0.8em">Licence Number</label><br />
+<<<<<<< HEAD
 						<input  ng-model="newAccidentVehicle['Licence Number']" class="form-control input-sm" />
 					</div>
 
@@ -220,6 +221,36 @@
 				<div class="col-sm-4">
 					<label style="font-size: 0.8em">Vehicle Plate Number</label><br />
 					<input  ng-model="newAccidentVehicle['Vehicle Plate Number']" class="form-control input-sm" />
+=======
+						<input  ng-model="newAccidentVehicle.Driver['Licence Number']" class="form-control input-sm" />
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Phone Use</label><br />
+						<select   ng-model="newAccidentVehicle['Phone Use']" class="form-control input-sm">
+		                    <option value="true">Yes</option><option value="false">No</option>
+		                </select>
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Seat Belt</label><br />
+						<select   ng-model="newAccidentVehicle['Seat Belt']" class="form-control input-sm">
+		                    <option value="true">Yes</option><option value="false">No</option>
+		                </select>
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Alcohol Level</label><br />
+						<select class="form-control input-sm" ng-options="item.name as item.name for item in getOptionSets('Alcohol Level')" ng-model="newAccidentVehicle['Alcohol Level']" />
+					</div>
+				</div>
+
+				<div class = "row"> 
+				<h5 style = "padding-left:2%;">Vehicke Details</h5>
+				<div class="col-sm-4">
+					<label style="font-size: 0.8em">Vehicle Plate Number</label><br />
+					<input  ng-model="newAccidentVehicle.Vehicle['Vehicle Plate Number']" class="form-control input-sm" />
+>>>>>>> branch 'master' of https://github.com/RoadSafetyProject/iroad-apps.git
 				</div>
 				<div class="col-sm-4">
 					<label style="font-size: 0.8em">Damage</label><br />
