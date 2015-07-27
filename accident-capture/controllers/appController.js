@@ -131,7 +131,7 @@ eventCaptureControllers.controller('MainController',
 
 			angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == modalName) {
-                	console.log(JSON.stringify(program));
+                	console.log('Porgram ' + JSON.stringify(program));
                 	angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                 		if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
                 			event[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
@@ -145,7 +145,7 @@ eventCaptureControllers.controller('MainController',
 
 			$scope.formData = event;
 
-			console.log(JSON.stringify($scope.formData));
+			console.log('\nForm ' + JSON.stringify($scope.formData));
         	var modalInstance = $modal.open({
         		templateUrl: 'views/addAccidentForm.html',
         		controller:'AddAccidentController'

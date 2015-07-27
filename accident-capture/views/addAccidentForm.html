@@ -158,18 +158,88 @@
 		
 
 		<div class = "panel panel-default">
-			<div class = "panel-heading">Vehicle(s) Information</div>
-			<div class = "panel-body"></div>
+			<div class = "panel-heading">Vehicle(s) and Driver(s) Information</div>
+			<div class = "panel-body">
+				<div class = "row">
+					<h5 style = "padding-left:2%;"> Injured People</h5>
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Number of Fatal Injuries</label><br />
+						<input  ng-model="newAccidentVehicle['Number of Fatal Injuries']" class="form-control input-sm" />
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Number of Not Injuried</label><br />
+						<input  ng-model="newAccidentVehicle['Number of Not Damaged']" class="form-control input-sm" />
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Number of Severe Injuries</label><br />
+						<input  ng-model="newAccidentVehicle['Number of Severe Injuries']" class="form-control input-sm" />
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Number of Simple Injuries</label><br />
+						<input  ng-model="newAccidentVehicle['Number of Simple Injuries']" class="form-control input-sm" />
+					</div>
+
+				</div>
+
+				<div class = "row">
+					<h5 style = "padding-left:2%;">Driver details</h5>				
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Licence Number</label><br />
+						<input  ng-model="newAccidentVehicle.Driver['Licence Number']" class="form-control input-sm" />
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Phone Use</label><br />
+						<select   ng-model="newAccidentVehicle['Phone Use']" class="form-control input-sm">
+		                    <option value="true">Yes</option><option value="false">No</option>
+		                </select>
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Seat Belt</label><br />
+						<select   ng-model="newAccidentVehicle['Seat Belt']" class="form-control input-sm">
+		                    <option value="true">Yes</option><option value="false">No</option>
+		                </select>
+					</div>
+
+					<div class="col-sm-4">
+						<label style="font-size: 0.8em">Alcohol Level</label><br />
+						<select class="form-control input-sm" ng-options="item.name as item.name for item in getOptionSets('Alcohol Level')" ng-model="newAccidentVehicle['Alcohol Level']" />
+					</div>
+				</div>
+
+				<div class = "row"> 
+				<h5 style = "padding-left:2%;">Vehicke Details</h5>
+				<div class="col-sm-4">
+					<label style="font-size: 0.8em">Vehicle Plate Number</label><br />
+					<input  ng-model="newAccidentVehicle.Vehicle['Vehicle Plate Number']" class="form-control input-sm" />
+				</div>
+				<div class="col-sm-4">
+					<label style="font-size: 0.8em">Damage</label><br />
+					<input  ng-model="newAccidentVehicle['Damage']" class="form-control input-sm" />
+				</div>
+				<!--<div class="col-sm-4">
+					<label style="font-size: 0.8em"></label><br />
+					<input  ng-model="newAccidentVehicle['']" class="form-control input-sm" />
+				</div>
+				</div>-->
+			</div>
 		</div>
+	</div>	
 
 		<div class = "panel panel-default">
-			<div class = "panel-heading">Driver(s) Information</div>
+			<div class = "panel-heading">Information</div>
 			<div class = "panel-body">
 				<div class=""></div>
 			</div>
 		</div>	
-
-		<button ng-click = "saveAccident(newAccident)">Click</button>		
+		<center>
+			<button ng-click = "saveAccident() " class="btn btn-primary btn-xs" style="color:#fff0ff;margin-bottom:2%;">Add new Accident</button>	
+		</center>
+		
 
 			<div class="col-sm-3" ng-repeat="(key, value) in emptyForm | orderBy:'sortOrder'" ng-if="(key != 'id')">
 				<!--<label style="font-size: 0.8em">{{key}}</label><br />
