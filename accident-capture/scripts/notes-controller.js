@@ -128,24 +128,6 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
        		console.log('otherData : ' + JSON.stringify(otherData));
 
-<<<<<<< HEAD
-       		console.log("Saving Data:" + JSON.stringify($scope.newAccident));
-
-       		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);	
-
-       		/*$scope.accidentEventModal.save(saveEvent,otherData,function(result){
-	            
-
-	            console.log("Save Made id :" + JSON.stringify(result.importSummaries[0].reference));
-	            $scope.accident_id = result.importSummaries[0].reference;
-
-	            alert('success');
-	            
-	        },function(error){
-	            alert('fail to add');
-
-	        },$scope.accidentEventModal.getModalName());*/
-=======
        		console.log("Saving Data New Accident :" + JSON.stringify($scope.newAccident));
 
 
@@ -167,13 +149,20 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	        },$scope.accidentEventModal.getModalName());*/
 
 			//fetch driver using driver Licence Number
+			$scope.driver = [];
 			$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
 			$scope.driverModel.get({value:$scope.newAccidentVehicle.Driver['Licence Number']},function(result){
 
-				console.log('Driver : '+JSON.stringify(result[0]));
+			
+				console.log('Driver result : ' + JSON.stringify(result));
+				$scope.driver = result;
+
+
+			
 			});
 
->>>>>>> branch 'master' of https://github.com/RoadSafetyProject/iroad-apps.git
+			console.log('Driver new: ' + JSON.stringify($scope.driver));
+
 
         } 
 
