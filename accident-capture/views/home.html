@@ -39,10 +39,10 @@
                
                 <tr ng-repeat="event in data.accidents">
                     <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
-                    <td>{{event.Accident["Accident Registration Number"]}}</td>
-                    <td>{{event.Accident["Area of Accident"]}}</td>
-                    <td>{{event.Accident["Cause of Accident"]}}</td>
-                    <td>{{event.Accident["Time of Accident"] | date:'dd MMM yyyy'}}</td>
+                    <td>{{event["Accident Registration Number"]}}</td>
+                    <td>{{event["Area of Accident"]}}</td>
+                    <td>{{event["Cause of Accident"]}}</td>
+                    <td>{{event["Time of Accident"] | date:'dd MMM yyyy'}}</td>
                     <td>
                         <div class="btn-group dropdown">
                             <button type="button" class="btn btn-default">Action</button>

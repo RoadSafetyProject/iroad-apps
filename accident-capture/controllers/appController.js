@@ -58,16 +58,16 @@ eventCaptureControllers.controller('MainController',
         $scope.fetchAccidents = function(page){
         	$scope.showProgresMessage("Loading Accidents...");
         	//new iroad2.data.Relation('Accident Passenger','Accident Vehicle','Police')
-        	$scope.AccidentModal = new iroad2.data.Modal("Accident Vehicle",[]);
+        	$scope.AccidentModal = new iroad2.data.Modal("Accident",[]);
         	$scope.AccidentModal.getAll(function(result){
-        		
+				$scope.hideProgresMessage();
         		$scope.pager = result.pager;
 				$scope.data.accidents = result.data;
-				//console.log(JSON.stringify(result.data));
+				//console.log(JSON.stringify(result));
 				
 				$scope.$apply();
 
-				$scope.hideProgresMessage();
+
 				
 			},$scope.pageSize,page,true);
         }
@@ -98,34 +98,30 @@ eventCaptureControllers.controller('MainController',
 		$scope.viewAccidentInfo = function(dhis2Event){
             
             //$scope.Vehicle = dhis2Event;
-            $scope.AccidentData = dhis2Event.Accident;
-            $scope.VehicleData = dhis2Event.Vehicle;
-            $scope.DriverData = dhis2Event.Driver;
-            
-            var modalInstance = $modal.open({
-                templateUrl: 'views/viewAccidentInfo.html',
-                controller: 'AccidentController',
-                resolve: {
-                    AccidentData: function () {
-                        return $scope.AccidentData;
-                    },
-                    VehicleData : function(){
-                    	return  $scope.VehicleData;
-                    },
-                    DriverData : function(){
-                    	return $scope.DriverData;
+            $scope.AccidentData = dhis2Event;
+            //$scope.VehicleData = dhis2Event.Vehicle;
+            //$scope.DriverData = dhis2Event.Driver;
+             var modalInstance = $modal.open({
+                    templateUrl: 'views/viewAccidentInfo.html',
+                    controller: 'AccidentController',
+                    resolve: {
+                        AccidentData: function () {
+                            return $scope.AccidentData;
+                        }                  
                     }
-                }
-            });
+                });
 
-            modalInstance.result.then(function (){
-            });
+                modalInstance.result.then(function (){
+                });
+            
+            
         }
+
 
         //function to add new accident
         $scope.addAccident = function(){
 
-        	$scope.accident = new iroad2.data.Modal('Accident Witness',[]);
+        	$scope.accident = new iroad2.data.Modal('Accident Passenger',[]);
         	var modalName = $scope.accident.getModalName();
 			var event = {};
 
