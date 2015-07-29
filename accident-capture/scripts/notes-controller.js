@@ -60,7 +60,8 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 	//prepare variable and model for fetching accident Vehicle
 	$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
-	$scope.editedAcciedentVehicle = [];
+	$scope.editedAcciedentVehicles = [];
+
 
 	//fetching accident vehicle
 	$scope.accidentVehicleEventModal.get({value:$scope.accident_id},function(result){
@@ -69,7 +70,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 		console.log('data : ' + JSON.stringify($scope.data));
 
-		$scope.editedAcciedentVehicle.push($scope.data);
+		$scope.editedAcciedentVehicles.push($scope.data);
 
 		$scope.$apply();
 
@@ -78,10 +79,13 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	//function to save changes on accident information
 	$scope.saveEditing = function(){
 
-		console.log("edited accident : " + JSON.stringify($scope.editedAccident) +'\n');
+		console.log("edited accident : " + JSON.stringify($scope.editedAccident) );
 
 		console.log('edited vehicle : ' + JSON.stringify($scope.editedAcciedentVehicle));
 	}
+
+	//function to close the model
+
 
 	$scope.hasDataSets = function(key){
 		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){

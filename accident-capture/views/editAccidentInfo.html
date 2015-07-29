@@ -27,6 +27,7 @@
     <h3 align="center">Accident Editing</h3>
     <div style="padding:50px;padding-top:0">
 
+        <!---- basic information form-->
         <div class = "panel panel-default">
             <div class = "panel-heading">Basic Information Accident</div>
             <div class = "panel-body">
@@ -116,6 +117,7 @@
                 <div class="col-sm-4">
                     <label style="font-size: 0.8em">OCS Check</label><br />
                     <select   ng-model="editedAccident['OCS Check']" class="form-control input-sm">
+                        <option value = "{{ editedAccident['OCS Check'] }}">{{ editedAccident['OCS Check'] == true? 'Yes':'No' }}</option>
                         <option value="true">Yes</option><option value="false">No</option>
                     </select>
                 </div>
@@ -123,7 +125,9 @@
                 <div class="col-sm-4">
                     <label style="font-size: 0.8em">Supervisor Check</label><br />
                     <select   ng-model="editedAccident['Supervisor Check']" class="form-control input-sm">
-                        <option value="true">Yes</option><option value="false">No</option>
+                        <option value = "{{ editedAccident['Supervisor Check'] }}">{{ editedAccident['Supervisor Check'] == true? 'Yes':'No' }}</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
                     </select>
                 </div>
 
@@ -160,14 +164,92 @@
             </div>
         </div>
 
+        <div class = "panel panel-default">
+            <div class = "panel-heading">Accident Vehicle(s) Information</div>
+            <div class = "panel-body" ng-repeat="editedAcciedentVehicle in editedAcciedentVehicles">
+                <div class = "row">
+                    <h5 style = "padding-left:2%;"> Injured People</h5>
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Number of Fatal Injuries</label><br />
+                        <input  ng-model="editedAcciedentVehicle['Number of Fatal Injuries']" class="form-control input-sm" value = "{{ editedAcciedentVehicle['Number of Fatal Injuries'] }}" />
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Number of Not Injuried</label><br />
+                        <input  ng-model="editedAcciedentVehicle['Number of Not Damaged']" class="form-control input-sm" value = "{{ editedAcciedentVehicle['Number of Not Damaged'] }}" />
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Number of Severe Injuries</label><br />
+                        <input  ng-model="editedAcciedentVehicle['Number of Severe Injuries']" class="form-control input-sm" value = "{{ editedAcciedentVehicle['Number of Severe Injuries'] }}" />
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Number of Simple Injuries</label><br />
+                        <input  ng-model="editedAcciedentVehicle['Number of Simple Injuries']" class="form-control input-sm" value = "{{ editedAcciedentVehicle['Number of Simple Injuries']}}" />
+                    </div>
+                </div>
+
+                <div class = "row">
+                    <h5 style = "padding-left:2%;">Accident Vehicle's Driver details</h5>
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Licence Number</label><br />
+                        <input  ng-model="editedAcciedentVehicle.Driver['Driver Licence Number']" value = "{{ editedAcciedentVehicle.Driver['Driver License Number'] }}" class="form-control input-sm" />
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Phone Use</label><br />
+                        <select   ng-model="editedAcciedentVehicle['Phone Use']" class="form-control input-sm">
+                            <option value = "{{ editedAcciedentVehicle['Phone Use'] }}">{{ editedAcciedentVehicle['Phone Use'] == true? 'Yes':'No' }}</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Seat Belt</label><br />
+                        <select   ng-model="editedAcciedentVehicle['Seat Belt']" class="form-control input-sm">
+                            <option value = "{{ editedAcciedentVehicle['Seat Belt'] }}">{{ editedAcciedentVehicle['Seat Belt'] == true? 'Yes':'No' }}</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Alcohol Level</label><br />
+                        <select class="form-control input-sm" ng-options="item.name as item.name for item in getOptionSets('Alcohol Level')" ng-model="editedAcciedentVehicle['Alcohol Level']" >
+                            <option value = "editedAcciedentVehicle['Alcohol Level']"> {{ editedAcciedentVehicle['Alcohol Level'] }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Expiered driving licence</label><br />
+                        <select   ng-model="editedAcciedentVehicle['Expiered driving licence']" class="form-control input-sm">
+                            <option value = "{{ editedAcciedentVehicle['Expiered driving licence'] }}">{{ editedAcciedentVehicle['Expiered driving licence'] == true? 'Yes':'No' }}</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class = "row">
+                    <h5 style = "padding-left:2%;">Accident Vehicle Details</h5>
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Vehicle Plate Number</label><br />
+                        <input  ng-model="editedAcciedentVehicle.Vehicle['Vehicle Plate Number']" value = "editedAcciedentVehicle.Vehicle['Vehicle Plate Number']" class="form-control input-sm" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label style="font-size: 0.8em">Damage</label><br />
+                        <input  ng-model="editedAcciedentVehicle['Damage']" value = "editedAcciedentVehicle['Damage']" class="form-control input-sm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-
-    <div class = "panel panel-default">
-    accident : {{ editedAccident }}
-        <hr>
-    accident vehicle : {{ editedAcciedentVehicle }}
+    <div style = "text-align: center" >
+        <button ng-click="saveEditing()"class="btn btn-primary btn-xs" style="color:#fff0ff;margin-bottom:2%;">save changes</button>
     </div>
 
-    <button ng-click="saveEditing()">save changes</button>
 </div>

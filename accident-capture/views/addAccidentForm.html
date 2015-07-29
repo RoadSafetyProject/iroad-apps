@@ -235,11 +235,6 @@
 					<label style="font-size: 0.8em">Damage</label><br />
 					<input  ng-model="newAccidentVehicle['Damage']" class="form-control input-sm" />
 				</div>
-				<!--<div class="col-sm-4">
-					<label style="font-size: 0.8em"></label><br />
-					<input  ng-model="newAccidentVehicle['']" class="form-control input-sm" />
-				</div>
-				</div>-->
 			</div>
 		</div>
 	</div>	
@@ -285,25 +280,8 @@
 		<center>
 			<button ng-click = "saveAccident() " class="btn btn-primary btn-xs" style="color:#fff0ff;margin-bottom:2%;">Add new Accident</button>	
 		</center>
-		
 
-			<div class="col-sm-3" ng-repeat="(key, value) in emptyForm | orderBy:'sortOrder'" ng-if="(key != 'id')">
-				<!--<label style="font-size: 0.8em">{{key}}</label><br />
-				<input ng-if="isInteger(key)"  ng-model="newAccident[key]" class="form-control input-sm" />
-				<input ng-if="isString(key)"  ng-model="newAccident[key]" class="form-control input-sm" />
-				
-				<select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control input-sm">
-                    <option value="true">Yes</option><option value="false">No</option>
-                </select>
-
-               
-
-                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
-                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEvent[key]"/>
-                <multi-select  ng-if="multiselectBools[key]" class="form-control input-sm" input-model="inputModal[key]" output-model="editingEvent[key]"item-label="name" button-label="button" tick-property="selected" />
-				-->
-			</div>
 			
 			
-	</div>	
+	</div>
 </div>
