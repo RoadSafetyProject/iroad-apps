@@ -14,7 +14,7 @@
     }
     .expiry{
         border: 2px solid #F44336;
-        background: #E57373;
+        background-color: #E57373;
         height: 40px;
         display: inline-block;
         width: 100%;
@@ -25,8 +25,149 @@
 </style>
 <div ng-controller="EditAccidentController">
     <h3 align="center">Accident Editing</h3>
+    <div style="padding:50px;padding-top:0">
 
-    <div class = "panel panel-default">
+        <div class = "panel panel-default">
+            <div class = "panel-heading">Basic Information Accident</div>
+            <div class = "panel-body">
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Accident Registration Number</label><br />
+                    <input  ng-model="editedAccident['Accident Registration Number']" class="form-control input-sm" value = "{{editedAccident['Accident Registration Number']}}" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Accident Class</label><br />
+                    <select class="form-control input-sm" ng-if="hasDataSets('Accident Class')"  ng-options="item.name as item.name for item in getOptionSets('Accident Class')" ng-model="editedAccident['Accident Class']" >
+                        <option value="{{ editedAccident['Accident Class'] }}">{{ editedAccident['Accident Class'] }}</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Accident Type</label><br />
+                    <select class="form-control input-sm" ng-if="hasDataSets('Accident Type')"  ng-options="item.name as item.name for item in getOptionSets('Accident Type')" ng-model="editedAccident['Accident Type']" >
+                        <option value = "editedAccident['Accident Type']">{{ "editedAccident['Accident Type']" }}</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Accident Type Detail</label><br />
+                    <select class="form-control input-sm" ng-if="hasDataSets('Accident Type Detail')"  ng-options="item.name as item.name for item in getOptionSets('Accident Type Detail')" ng-model="editedAccident['Accident Type Detail']" >
+                        <option value = "{{ editedAccident['Accident Type Detail'] }}">{{ editedAccident['Accident Type Detail'] }}</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Area of Accident</label><br />
+                    <input  ng-model="editedAccident['Area of Accident']" class="form-control input-sm" value = "editedAccident['Area of Accident']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Cause of Accident</label><br />
+                    <select class="form-control input-sm" ng-if="hasDataSets('Cause of Accident')"  ng-options="item.name as item.name for item in getOptionSets('Cause of Accident')" ng-model="editedAccident['Cause of Accident']" >
+                        <option value = "{{ editedAccident['Cause of Accident'] }}">{{ editedAccident['Cause of Accident'] }}</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Intersection Mark</label><br />
+                    <input  ng-model="editedAccident['Intersection Mark']" class="form-control input-sm" value = "editedAccident['Intersection Mark']"/>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Intersection Name</label><br />
+                    <input  ng-model="editedAccident['Intersection Name']" class="form-control input-sm" value = "editedAccident['Intersection Name']"/>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Intersection Number</label><br />
+                    <input  ng-model="editedAccident['Intersection Number']" class="form-control input-sm" value = "editedAccident['Intersection Number']"  />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Road Mark</label><br />
+                    <input  ng-model="editedAccident['Road Mark']" class="form-control input-sm" value = "editedAccident['Road Mark']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Road Name</label><br />
+                    <input  ng-model="editedAccident['Road Name']" class="form-control input-sm" value = "editedAccident['Road Name']"/>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Road Number</label><br />
+                    <input  ng-model="editedAccident['Road Number']" class="form-control input-sm" value = "editedAccident['Road Number']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">'Number of Fatal Injuries</label><br />
+                    <input  ng-model="editedAccident['Number of Fatal Injuries']" class="form-control input-sm" value = "editedAccident['Number of Fatal Injuries']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Number of Severe Injuries</label><br />
+                    <input  ng-model="editedAccident['Number of Severe Injuries']" class="form-control input-sm" value = "editedAccident['Number of Severe Injuries']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Number of Simple Injuries</label><br />
+                    <input  ng-model="editedAccident['Number of Simple Injuries']" class="form-control input-sm" value = "editedAccident['Number of Simple Injuries']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">OCS Check</label><br />
+                    <select   ng-model="editedAccident['OCS Check']" class="form-control input-sm">
+                        <option value="true">Yes</option><option value="false">No</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Supervisor Check</label><br />
+                    <select   ng-model="editedAccident['Supervisor Check']" class="form-control input-sm">
+                        <option value="true">Yes</option><option value="false">No</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Time of Accident</label><br />
+                    <input ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccident['Time of Accident']" value = "editedAccident['Time of Accident']"/>
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Weather</label><br />
+                    <input  ng-model="editedAccident['Weather']" class="form-control input-sm" value = "editedAccident['Weather']"  />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Accident Image</label><br />
+                    <input  ng-model="editedAccident['Accident Image']" class="form-control input-sm" value = "editedAccident['Accident Image']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Accident Description Image</label><br />
+                    <input  ng-model="editedAccident['Accident Description Image']" class="form-control input-sm" value = "editedAccident['Accident Description Image']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Accident Video</label><br />
+                    <input  ng-model="editedAccident['Accident Video']" class="form-control input-sm" value = "editedAccident['Accident Video']" />
+                </div>
+
+                <div class="col-sm-4">
+                    <label style="font-size: 0.8em">Signature</label><br />
+                    <input  ng-model="editedAccident['Signature']" class="form-control input-sm" value = "editedAccident['Signature']" />
+                </div>
+
+            </div>
+        </div>
 
     </div>
+
+
+    <div class = "panel panel-default">
+    accident : {{ editedAccident }}
+        <hr>
+    accident vehicle : {{ editedAcciedentVehicle }}
+    </div>
+
+    <button ng-click="saveEditing()">save changes</button>
 </div>

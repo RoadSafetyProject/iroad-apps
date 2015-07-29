@@ -55,28 +55,50 @@ eventCaptureControllers.controller('AccidentController',
 //controller for edit accident information
 eventCaptureControllers.controller('EditAccidentController',function($scope,$http){
 
-	$scope.accident = angular.element("#offenceScope").scope().accident;
-	$scope.accident_id = $scope.accident['id'];
+	$scope.editedAccident = angular.element("#offenceScope").scope().accident;
+	$scope.accident_id = $scope.editedAccident['id'];
 
 	//prepare variable and model for fetching accident Vehicle
 	$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
-	$scope.VehicleData = [];
-	$scope.DriverData = [];
+	$scope.editedAcciedentVehicle = [];
 
-	var vehicledata = [];
-	var driverdata = [];
 	//fetching accident vehicle
 	$scope.accidentVehicleEventModal.get({value:$scope.accident_id},function(result){
 
 		$scope.data = result[0];
-		vehicledata.push($scope.data.Vehicle);
-		driverdata.push($scope.data.Driver);
 
-		$scope.VehicleData = vehicledata;
-		$scope.DriverData = driverdata;
+		console.log('data : ' + JSON.stringify($scope.data));
+
+		$scope.editedAcciedentVehicle.push($scope.data);
+
 		$scope.$apply();
 
 	});
+
+	//function to save changes on accident information
+	$scope.saveEditing = function(){
+
+		console.log("edited accident : " + JSON.stringify($scope.editedAccident) +'\n');
+
+		console.log('edited vehicle : ' + JSON.stringify($scope.editedAcciedentVehicle));
+	}
+
+	$scope.hasDataSets = function(key){
+		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+			if(iroad2.data.dataElements[j].name == key){
+				return (iroad2.data.dataElements[j].optionSet != undefined);
+			}
+		};
+		return false;
+	}
+	$scope.getOptionSets = function(key){
+		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+			if(iroad2.data.dataElements[j].name == key){
+				return iroad2.data.dataElements[j].optionSet.options;
+			}
+		};
+		return false;
+	}
 
 
 });
