@@ -97,18 +97,11 @@ eventCaptureControllers.controller('MainController',
 		// view information of agiven accident 
 		$scope.viewAccidentInfo = function(dhis2Event){
             
-            //$scope.Vehicle = dhis2Event;
             $scope.AccidentData = dhis2Event;
-            //$scope.VehicleData = dhis2Event.Vehicle;
-            //$scope.DriverData = dhis2Event.Driver;
              var modalInstance = $modal.open({
                     templateUrl: 'views/viewAccidentInfo.html',
-                    controller: 'AccidentController',
-                    resolve: {
-                        AccidentData: function () {
-                            return $scope.AccidentData;
-                        }                  
-                    }
+                    controller: 'AccidentController'
+
                 });
 
                 modalInstance.result.then(function (){
@@ -121,7 +114,7 @@ eventCaptureControllers.controller('MainController',
         //function to add new accident
         $scope.addAccident = function(){
 
-        	$scope.accident = new iroad2.data.Modal('Accident Passenger',[]);
+        	$scope.accident = new iroad2.data.Modal('Accident Witness',[]);
         	var modalName = $scope.accident.getModalName();
 			var event = {};
 
@@ -138,16 +131,35 @@ eventCaptureControllers.controller('MainController',
                     });
                 }
             });
-
 			$scope.formData = event;
-
-			console.log('\nForm ' + JSON.stringify($scope.formData));
         	var modalInstance = $modal.open({
         		templateUrl: 'views/addAccidentForm.html',
         		controller:'AddAccidentController'
         	});
 
         }
+
+
+		//function to edit acciednt information
+		$scope.editAccidentInfo = function(accident){
+			$scope.accident = accident;
+
+			console.log(JSON.stringify($scope.accident));
+
+			var modalInstance = $modal.open({
+				templateUrl: 'views/editAccidentInfo.html',
+				controller: 'EditAccidentController',
+				resolve: {
+					accident: function () {
+						return $scope.accident;
+					}
+				}
+			});
+
+			modalInstance.result.then(function (){
+			});
+
+		}
 
 
 
