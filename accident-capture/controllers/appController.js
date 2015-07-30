@@ -114,7 +114,7 @@ eventCaptureControllers.controller('MainController',
         //function to add new accident
         $scope.addAccident = function(){
 
-        	$scope.accident = new iroad2.data.Modal('Accident Witness',[]);
+        	$scope.accident = new iroad2.data.Modal('Accident',[]);
         	var modalName = $scope.accident.getModalName();
 			var event = {};
 

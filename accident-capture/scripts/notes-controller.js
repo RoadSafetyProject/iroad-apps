@@ -58,6 +58,10 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	$scope.editedAccident = angular.element("#offenceScope").scope().accident;
 	$scope.accident_id = $scope.editedAccident['id'];
 
+
+
+	console.log('accident values : ' + JSON.stringify($scope.editedAccident));
+
 	//prepare variable and model for fetching accident Vehicle
 	$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
 	$scope.editedAcciedentVehicles = [];
@@ -65,6 +69,8 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 	//fetching accident vehicle
 	$scope.accidentVehicleEventModal.get({value:$scope.accident_id},function(result){
+
+
 
 		$scope.data = result[0];
 
@@ -76,12 +82,40 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 	});
 
+	//getting user Information
+	$http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
+		$scope.logedInUser = data;
+	});
+
+	$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);
 	//function to save changes on accident information
 	$scope.saveEditing = function(){
 
-		console.log("edited accident : " + JSON.stringify($scope.editedAccident) );
+		angular.forEach($scope.savableEventData, function (savableData) {
+			delete $scope.editedAccident[savableData.name];
+			$scope.editedAccident[savableData.key] = savableData.value;
+		});
 
-		console.log('edited vehicle : ' + JSON.stringify($scope.editedAcciedentVehicle));
+		delete $scope.editedAccident['$$hashKey'];
+		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
+
+		var saveEvent = $scope.editedAccident;
+
+		console.log('data : ' + JSON.stringify(saveEvent));
+
+		$scope.accidentEventModal.save(saveEvent,otherData,function(result){
+
+			console.log("\naccident vehicle id : " + JSON.stringify(result.importSummaries[0].reference));
+			alert('edit basic info:');
+
+		},function(error){
+			//alert('fail to add');
+
+		},$scope.accidentEventModal.getModalName());
+
+			//console.log("edited accident : " + JSON.stringify($scope.editedAccident) );
+
+			console.log('otherData : ' + JSON.stringify(otherData));
 	}
 
 	//function to close the model
