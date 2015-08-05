@@ -91,12 +91,15 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	//function to save changes on accident information
 	$scope.saveEditing = function(){
 
+		var x = [];
 		angular.forEach($scope.savableEventData, function (savableData) {
+			x.push(savableData.name);
 			delete $scope.editedAccident[savableData.name];
 			$scope.editedAccident[savableData.key] = savableData.value;
 		});
 
-		delete $scope.editedAccident['$$hashKey'];
+		console.log('x : ' + JSON.stringify(x));
+		//delete $scope.editedAccident['$$hashKey'];
 		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
 
 		var saveEvent = $scope.editedAccident;

@@ -63,25 +63,26 @@
   </style>
 <div class="angular-google-map-container">
 
-<div class="form">
-	<div class="panel panel-default">
-  <div class="panel-heading">Vehicle Tracking Filter</div>
-  
-  <div class="panel-body">
-		<div class="row">
-		<div class="col-sm-6" style="">
-			Organisation Unit:
-		      <div class="org-unit-control" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
-		          <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
-		      </div>
-		</div>
-		</div>
-		<div class="row">
-		<button ng-if="!isAddingFacility" ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
+	<div class="form">
+		<div class="panel panel-default">
+	  <div class="panel-heading">Vehicle Tracking Filter</div>
+
+	  <div class="panel-body">
+			<div class="row">
+			<div class="col-sm-6" style="">
+				Organisation Unit:
+				  <div class="org-unit-control" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
+					  <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
+				  </div>
+			</div>
+			</div>
+			<div class="row">
+			<button ng-if="!isAddingFacility" ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
+			</div>
 		</div>
 	</div>
-</div>
-</div>
+	</div>
+
 <div ng-if="isAddingFacility" class="form2">
 <div class="panel panel-default">
   <div class="panel-heading">Create New Facility</div>
