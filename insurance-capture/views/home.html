@@ -18,7 +18,10 @@
     </div>
 
     <div class="mws-panel-body no-padding">
-        <table  class="mws-datatable-fn mws-table">
+        <span class = "pull-right" style="margin:1%;">
+           Search: <input type = "text" class="btn-sm" ng-model = "search">
+        </span>
+        <table class="mws-datatable-fn mws-table">
             <thead>
             <tr>
                 <th>#</th>
@@ -31,14 +34,14 @@
             </thead>
 
             <tbody>
-            <tr ng-repeat="insurance in data.insurance ">
+            <tr ng-repeat="insurance in data.insurance |filter:search">
                 <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize) }}</td>
                 <td>{{ insurance['Company Name'] }}</td>
                 <td>{{ insurance['Company Type'] }}</td>
                 <td>{{ insurance['Phone Number']}}</td>
                 <td>{{insurance['Policy Period']}}</td>
                 <td>
-                    <div class="btn-group dropdown">
+                    <!--<div class="btn-group dropdown">
                         <button type="button" class="btn btn-default">Action</button>
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <span class="caret"></span>
@@ -48,7 +51,7 @@
                             <li><a ng-click="ViewInsurance(insurance)">Info</a></li>
                             <li><a  ng-click="enableEdit(insurance)">Edit</a> </li>
                         </ul>
-                    </div>
+                    </div>-->
                 </td>
             </tr>
             </tbody>
