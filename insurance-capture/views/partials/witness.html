@@ -1,0 +1,70 @@
+
+<div ng-controller="SideCtrl" class="buttondemoBasicUsage" style="padding: 0px;border:0px;margin: 0px">
+
+
+    <table class="table table-bordered table-striped " id="driver">
+
+        <tbody>
+        <tr>
+            <td class="my_heading2" style="border-width:0px;width: 100%">F:WITNESS</td>
+        </tr>
+        </tbody>
+
+    </table>
+
+
+    <table class="table table-bordered table-striped table-condensed" >
+
+        <tbody>
+        <tr>
+            <td class="number" style="border-width:0px">1</td>
+            <td style="width: 15%" class="my_td">Name </td>
+            <td style="width:15%"> <input class="ingizo-driver"  type="text" required  ng-model="accident.witness_name"/> </td>
+            <td style="width: 16.5%" class="my_td">Gender</td>
+            <td style="width:16.5%">
+                <select style="width: 100%" ng-model = "accident.witness_gender">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </td>
+            <td style="width: 17%" class="my_td">Date of Birth </td>
+            <td style="width:17%">
+                <input ui-date="dateOptions" ng-model="accident.witness_dob" name="Date"  placeholder="birthdate" required>
+
+        <tr>
+
+            <td class="number" style="border-width:0px">2</td>
+            <td style="width: 15%" class="my_td">Physical Address </td>
+            <td style="width:15%"> <input class="ingizo-driver"  type="text" required ng-model="accident.witness_p_address"/> </td>
+            <td style="width: 16.5%" class="my_td">Address</td>
+            <td style="width:16.5%"> <input class="ingizo-driver"  type="text" required  ng-model="accident.witness_address"/> </td>
+            <td style="width: 17%" class="my_td">Nationality/ID  </td>
+            <td style="width:17%"> <input class="ingizo-driver"  type="text" required ng-model="accident.witness_nationality"/> </td>
+        </tr>
+        <tr>
+
+            <td class="number" style="border-width:0px">3</td>
+            <td style="width: 15%" class="my_td">Phone Number </td>
+            <td style="width:15%"> <input class="ingizo-driver" ng-model="accident.witness_phone" type="text" required/> </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+
+
+    <div class="row" style="padding: 0px;margin: 0px">
+
+        <section style="padding: 0px;margin: 0px" ng-controller="SideCtrl" layout="row" layout-sm="column" layout-align="center center">
+            <md-button class="md-raised md-primary" ng-click="addWitness(tab,1)"> Add Witness</md-button>
+            <md-button class="md-raised md-warn" ng-click="removeTab(tab)">Remove</md-button>
+
+        </section>
+
+
+    </div>
+
+
+</div>
