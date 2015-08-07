@@ -150,6 +150,7 @@ eventCaptureControllers.controller('MainController',
                     saveEvent.id = result.importSummaries[0].reference;
                     console.log("Adding to list:" + JSON.stringify(saveEvent));
                     $scope.data.insurance.push(saveEvent);
+                    $scope.$apply();
                     alert("Insurance information saved successfully.");
             	}
                 
@@ -164,6 +165,7 @@ eventCaptureControllers.controller('MainController',
             //iniate hiding form for adding or editing insurance comapany
             $scope.editing = false;
             $scope.normalClass= "mws-panel grid_8";
+            $scope.viewinsuranceComp = false;
         }
 
         $scope.saveInsuredVehicle = function(){
@@ -189,7 +191,10 @@ eventCaptureControllers.controller('MainController',
 
             },insuranceCompanyModal.getModalName());
 
-            $scope.register = false ;$scope.normalClass= "mws-panel grid_8";
+            //hiding aside form and view for manupulation of
+            $scope.register = false ;
+            $scope.normalClass= "mws-panel grid_8";
+            $scope.viewinsuranceComp = false;
 
         }
 
@@ -234,6 +239,7 @@ eventCaptureControllers.controller('MainController',
         $scope.registerInsurance = function(event){
             $scope.header = "Add New Insurance Company";
             $scope.editing = "true";
+            $scope.viewinsuranceComp = "false";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "mws-panel grid_6";
             $scope.normalClassDriver= "mws-panel grid_6";
@@ -271,6 +277,7 @@ eventCaptureControllers.controller('MainController',
         //function for editng insurance company
         $scope.enableEdit  = function(event){
             $scope.editing = "true";
+            $scope.viewinsuranceComp = "false";
             $scope.header = "Edit Insurance Company";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "mws-panel grid_6";
@@ -342,44 +349,22 @@ eventCaptureControllers.controller('MainController',
             }
         }
 
-
+        //function to cancel sidebar nav
         $scope.cancelEdit = function(){
             $scope.normalClass= "mws-panel grid_8";
             $scope.editing = "false";
-            $scope.register = "false";
+            $scope.viewinsuranceComp = "false";
         }
 
 
-        $scope.addAccident = function(dhis2Event){
-            // console.log(JSON.stringify(dhis2Event));
-            var modalInstance = $modal.open({
-                templateUrl: 'views/add_accident_dialog.html',
-                controller: 'AccidentFormController',
-                resolve: {
-                    dhis2Event: function () {
-                        return dhis2Event;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function (){
-            });
-        };
-
+        //function to view insurance comapany profile
         $scope.ViewInsurance = function(dhis2Event){
             //console.log(JSON.stringify(dhis2Event));
-            var modalInstance = $modal.open({
-                templateUrl: 'views/insurance_dialog.html',
-                controller: 'InsuranceController',
-                resolve: {
-                    dhis2Event: function () {
-                        return dhis2Event;
-                    }
-                }
-            });
+            $scope.editing = "false";
+            $scope.viewinsuranceComp = "true";
+            $scope.normalClass= "mws-panel grid_6";
+            $scope.event = dhis2Event;
 
-            modalInstance.result.then(function (){
-            });
         };
 
         $scope.watchEditing = function(program,dataElement){

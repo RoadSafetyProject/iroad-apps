@@ -1,4 +1,53 @@
+
 <style>
+.md-dialog-container{
+position: fixed;
+height: 100%;
+}
+.show-details{
+/* float: right; */
+cursor: pointer;
+padding: 20px;
+color: blue;
+}
+.show-details:hover{
+text-decoration: underline;
+}
+.expiry{
+border: 2px solid #F44336;
+background-color: #e57373;
+height: 40px;
+display: inline-block;
+width: 100%;
+text-align: center;
+/* vertical-align: middle; */
+font-size: 24px;
+}
+</style>
+<div>
+
+    <div style="padding:50px;padding-top:2%">
+        {{dhis2Event}}
+        <div class="panel panel-default">
+            <div class = "panel-heading">
+                Insurance Company View
+            </div>
+            <div class = "panel-body">
+                <div class = "row">
+                    <div class="col-sm-4" ng-repeat=" (key, value) in dhis2Event">
+                        {{Key}}
+                        <div ng-if = "key != 'id'">
+                            <label>{{  }}</label><br>
+                            {{ value }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<style>
 .modal-dialog{
     width: 80%;
 }
@@ -86,4 +135,4 @@ p{
 
 </div>
 
-</div>
+</div>-->
