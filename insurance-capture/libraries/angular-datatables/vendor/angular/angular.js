@@ -1409,7 +1409,7 @@ function angularInit(element, bootstrap) {
  *     Each item in the array should be the name of a predefined module or a (DI annotated)
  *     function that will be invoked by the injector as a run block.
  *     See: {@link angular.module modules}
- * @param {Object=} config an object for defining configuration options for the application. The
+ * @param {Object=} config an object for defining config options for the application. The
  *     following keys are supported:
  *
  *     - `strictDi`: disable automatic function annotation for the application. This is meant to
@@ -1714,7 +1714,7 @@ function setupModuleLoader(window) {
      *
      * # Module
      *
-     * A module is a collection of services, directives, controllers, filters, and configuration information.
+     * A module is a collection of services, directives, controllers, filters, and config information.
      * `angular.module` is used to configure the {@link auto.$injector $injector}.
      *
      * ```js
@@ -1743,8 +1743,8 @@ function setupModuleLoader(window) {
      *
      * @param {!string} name The name of the module to create or retrieve.
      * @param {!Array.<string>=} requires If specified then new module is being created. If
-     *        unspecified then the module is being retrieved for further configuration.
-     * @param {Function=} configFn Optional configuration function for the module. Same as
+     *        unspecified then the module is being retrieved for further config.
+     * @param {Function=} configFn Optional config function for the module. Same as
      *        {@link angular.Module#config Module#config()}.
      * @returns {module} new module with the {@link angular.Module} api.
      */
@@ -1938,7 +1938,7 @@ function setupModuleLoader(window) {
            * @name angular.Module#config
            * @module ng
            * @param {Function} configFn Execute this function on module load. Useful for service
-           *    configuration.
+           *    config.
            * @description
            * Use this method to register work which needs to be performed on module loading.
            * For more about how to configure services, see
@@ -3625,7 +3625,7 @@ function annotate(fn, strictDi, name) {
  * correct **service provider**, instantiating it and then calling its `$get` **service factory**
  * function to get the instance of the **service**.
  *
- * Often services have no configuration options and there is no need to add methods to the service
+ * Often services have no config options and there is no need to add methods to the service
  * provider.  The provider will be no more than a constructor function with a `$get` property. For
  * these cases the {@link auto.$provide $provide} service has additional helper methods to register
  * services without specifying a provider.
@@ -3659,7 +3659,7 @@ function annotate(fn, strictDi, name) {
  * For example, the {@link ng.$log $log} service has a provider called
  * {@link ng.$logProvider $logProvider}.
  *
- * Service provider objects can have additional methods which allow configuration of the provider
+ * Service provider objects can have additional methods which allow config of the provider
  * and its service. Importantly, you can configure what kind of service is created by the `$get`
  * method, or how that service will act. For example, the {@link ng.$logProvider $logProvider} has a
  * method {@link ng.$logProvider#debugEnabled debugEnabled}
@@ -3828,7 +3828,7 @@ function annotate(fn, strictDi, name) {
  * service**.
  *
  * Value services are similar to constant services, except that they cannot be injected into a
- * module configuration function (see {@link angular.Module#config}) but they can be overridden by
+ * module config function (see {@link angular.Module#config}) but they can be overridden by
  * an Angular
  * {@link auto.$provide#decorator decorator}.
  *
@@ -3857,7 +3857,7 @@ function annotate(fn, strictDi, name) {
  *
  * Register a **constant service**, such as a string, a number, an array, an object or a function,
  * with the {@link auto.$injector $injector}. Unlike {@link auto.$provide#value value} it can be
- * injected into a module configuration function (see {@link angular.Module#config}) and it cannot
+ * injected into a module config function (see {@link angular.Module#config}) and it cannot
  * be overridden by an Angular {@link auto.$provide#decorator decorator}.
  *
  * @param {string} name The name of the constant.
@@ -5874,7 +5874,7 @@ function $TemplateCacheProvider() {
  * #### `controllerAs`
  * Controller alias at the directive scope. An alias for the controller so it
  * can be referenced at the directive template. The directive needs to define a scope for this
- * configuration to be used. Useful in the case when directive is used as component.
+ * config to be used. Useful in the case when directive is used as component.
  *
  *
  * #### `restrict`
@@ -8697,7 +8697,7 @@ function $HttpProvider() {
      *
      *
      * ## General usage
-     * The `$http` service is a function which takes a single argument — a configuration object —
+     * The `$http` service is a function which takes a single argument — a config object —
      * that is used to generate an HTTP request and returns  a {@link ng.$q promise}
      * with two $http specific methods: `success` and `error`.
      *
@@ -8773,8 +8773,8 @@ function $HttpProvider() {
      * ## Setting HTTP Headers
      *
      * The $http service will automatically add certain HTTP headers to all requests. These defaults
-     * can be fully configured by accessing the `$httpProvider.defaults.headers` configuration
-     * object, which currently contains this default configuration:
+     * can be fully configured by accessing the `$httpProvider.defaults.headers` config
+     * object, which currently contains this default config:
      *
      * - `$httpProvider.defaults.headers.common` (headers that are common for all requests):
      *   - `Accept: application/json, text/plain, * / *`
@@ -8783,7 +8783,7 @@ function $HttpProvider() {
      * - `$httpProvider.defaults.headers.put` (header defaults for PUT requests)
      *   - `Content-Type: application/json`
      *
-     * To add or overwrite these defaults, simply add or remove a property from these configuration
+     * To add or overwrite these defaults, simply add or remove a property from these config
      * objects. To add headers for an HTTP method other than POST or PUT, simply add a new object
      * with the lowercased HTTP method name as the key, e.g.
      * `$httpProvider.defaults.headers.get = { 'My-Header' : 'value' }.
@@ -8821,7 +8821,7 @@ function $HttpProvider() {
      *
      * Request transformations (`$httpProvider.defaults.transformRequest` and `$http.defaults.transformRequest`):
      *
-     * - If the `data` property of the request configuration object contains an object, serialize it
+     * - If the `data` property of the request config object contains an object, serialize it
      *   into JSON format.
      *
      * Response transformations (`$httpProvider.defaults.transformResponse` and `$http.defaults.transformResponse`):
@@ -8833,7 +8833,7 @@ function $HttpProvider() {
      * ### Overriding the Default Transformations Per Request
      *
      * If you wish override the request/response transformations only for a single request then provide
-     * `transformRequest` and/or `transformResponse` properties on the configuration object passed
+     * `transformRequest` and/or `transformResponse` properties on the config object passed
      * into `$http`.
      *
      * Note that if you provide these properties on the config object the default transformations will be
@@ -8865,7 +8865,7 @@ function $HttpProvider() {
      *
      * ## Caching
      *
-     * To enable caching, set the request configuration `cache` property to `true` (to use default
+     * To enable caching, set the request config `cache` property to `true` (to use default
      * cache) or to a custom cache object (built with {@link ng.$cacheFactory `$cacheFactory`}).
      * When the cache is enabled, `$http` stores the response from the server in the specified
      * cache. The next time the same request is made, the response is served from the cache without
@@ -9076,7 +9076,7 @@ function $HttpProvider() {
      *     functions.
      *   - **status** – `{number}` – HTTP status code of the response.
      *   - **headers** – `{function([headerName])}` – Header getter function.
-     *   - **config** – `{Object}` – The configuration object that was used to generate the request.
+     *   - **config** – `{Object}` – The config object that was used to generate the request.
      *   - **statusText** – `{string}` – HTTP status text of the response.
      *
      * @property {Array.<Object>} pendingRequests Array of config objects for currently pending
@@ -9305,7 +9305,7 @@ function $HttpProvider() {
      * Shortcut method to perform `GET` request.
      *
      * @param {string} url Relative or absolute URL specifying the destination of the request
-     * @param {Object=} config Optional configuration object
+     * @param {Object=} config Optional config object
      * @returns {HttpPromise} Future object
      */
 
@@ -9317,7 +9317,7 @@ function $HttpProvider() {
      * Shortcut method to perform `DELETE` request.
      *
      * @param {string} url Relative or absolute URL specifying the destination of the request
-     * @param {Object=} config Optional configuration object
+     * @param {Object=} config Optional config object
      * @returns {HttpPromise} Future object
      */
 
@@ -9329,7 +9329,7 @@ function $HttpProvider() {
      * Shortcut method to perform `HEAD` request.
      *
      * @param {string} url Relative or absolute URL specifying the destination of the request
-     * @param {Object=} config Optional configuration object
+     * @param {Object=} config Optional config object
      * @returns {HttpPromise} Future object
      */
 
@@ -9342,7 +9342,7 @@ function $HttpProvider() {
      *
      * @param {string} url Relative or absolute URL specifying the destination of the request.
      *                     The name of the callback should be the string `JSON_CALLBACK`.
-     * @param {Object=} config Optional configuration object
+     * @param {Object=} config Optional config object
      * @returns {HttpPromise} Future object
      */
     createShortMethods('get', 'delete', 'head', 'jsonp');
@@ -9356,7 +9356,7 @@ function $HttpProvider() {
      *
      * @param {string} url Relative or absolute URL specifying the destination of the request
      * @param {*} data Request content
-     * @param {Object=} config Optional configuration object
+     * @param {Object=} config Optional config object
      * @returns {HttpPromise} Future object
      */
 
@@ -9369,7 +9369,7 @@ function $HttpProvider() {
      *
      * @param {string} url Relative or absolute URL specifying the destination of the request
      * @param {*} data Request content
-     * @param {Object=} config Optional configuration object
+     * @param {Object=} config Optional config object
      * @returns {HttpPromise} Future object
      */
 
@@ -9382,7 +9382,7 @@ function $HttpProvider() {
       *
       * @param {string} url Relative or absolute URL specifying the destination of the request
       * @param {*} data Request content
-      * @param {Object=} config Optional configuration object
+      * @param {Object=} config Optional config object
       * @returns {HttpPromise} Future object
       */
     createShortMethodsWithData('post', 'put', 'patch');
@@ -9392,7 +9392,7 @@ function $HttpProvider() {
          * @name $http#defaults
          *
          * @description
-         * Runtime equivalent of the `$httpProvider.defaults` property. Allows configuration of
+         * Runtime equivalent of the `$httpProvider.defaults` property. Allows config of
          * default headers, withCredentials as well as request and response transformations.
          *
          * See "Setting HTTP Headers" and "Transforming Requests and Responses" sections above.
@@ -14769,7 +14769,7 @@ function adjustMatchers(matchers) {
  *   `http://srv01.assets.example.com/`,  `http://srv02.assets.example.com/`, etc.
  * - and you have an open redirect at `http://myapp.example.com/clickThru?...`.
  *
- * Here is what a secure configuration for this scenario might look like:
+ * Here is what a secure config for this scenario might look like:
  *
  * ```
  *  angular.module('myApp', []).config(function($sceDelegateProvider) {

@@ -1,5 +1,5 @@
 // Karma configuration
-// http://karma-runner.github.io/0.10/config/configuration-file.html
+// http://karma-runner.github.io/0.10/config/config-file.html
 
 module.exports = function(config) {
     'use strict';

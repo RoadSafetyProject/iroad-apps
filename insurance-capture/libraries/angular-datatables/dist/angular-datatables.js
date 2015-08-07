@@ -1,5 +1,5 @@
 /*!
- * angular-datatables - v0.4.2
+ * angular-datatables - v0.4.0
  * https://github.com/l-lin/angular-datatables
  * License: MIT
  */
@@ -411,10 +411,11 @@ angular.module('datatables.instances', [])
 function dtInstances($q) {
     var _instances = {};
     // Promise for fetching the last DT instance
-    var _deferLastDTInstance = $q.defer();
+    var _deferLastDTInstances = null;
     var _lastDTInstance = null;
     // Promise for fetching the list of DT instances
-    var _deferDTInstances = $q.defer();
+    var _deferDTInstances = null;
+    var _dtInstances = null;
     return {
         register: register,
         getLast: getLast,
@@ -427,34 +428,37 @@ function dtInstances($q) {
         dtInstance.dataTable = result.dataTable;
 
         _instances[dtInstance.id] = dtInstance;
-        _lastDTInstance = dtInstance;
-
-        //previous promise
-        _deferDTInstances.resolve(_instances);
-        _deferLastDTInstance.resolve(_lastDTInstance);
-
-        //new promise
-        _deferDTInstances = $q.defer();
-        _deferLastDTInstance = $q.defer();
-
-        _deferDTInstances.resolve(_instances);
-        _deferLastDTInstance.resolve(_lastDTInstance);
-
+        if (_deferLastDTInstances) {
+            _deferLastDTInstances.resolve(dtInstance);
+        }
+        if (_deferDTInstances) {
+            _deferDTInstances.resolve(_instances);
+        }
         return dtInstance;
     }
 
     function getLast() {
         var defer = $q.defer();
-        _deferLastDTInstance.promise.then(function(lastInstance) {
-            defer.resolve(lastInstance);
+        if (!_lastDTInstance) {
+            _deferLastDTInstances = $q.defer();
+            _lastDTInstance = _deferLastDTInstances.promise;
+        }
+        _lastDTInstance.then(function(dtInstance) {
+            defer.resolve(dtInstance);
+            // Reset the promise
+            _deferLastDTInstances = null;
+            _lastDTInstance = null;
         });
         return defer.promise;
     }
 
     function getList() {
         var defer = $q.defer();
-        _deferDTInstances.promise.then(function(instances) {
+        _dtInstances.then(function(instances) {
             defer.resolve(instances);
+            // Reset the promise
+            _deferDTInstances = null;
+            _dtInstances = null;
         });
         return defer.promise;
     }
@@ -737,7 +741,7 @@ function dtRendererService(DTLoadingTemplate) {
 
     function renderDataTable($elem, options) {
         var dtId = '#' + $elem.attr('id');
-        if ($.fn.dataTable.isDataTable(dtId) && angular.isObject(options)) {
+        if ($.fn.dataTable.isDataTable(dtId)) {
             options.destroy = true;
         }
         // See http://datatables.net/manual/api#Accessing-the-API to understand the difference between DataTable and dataTable
@@ -765,7 +769,7 @@ function dtRendererService(DTLoadingTemplate) {
     }
 
     function postRender(options, result) {
-        angular.forEach(plugins, function(plugin) {
+        plugins.forEach(function(plugin) {
             if (angular.isFunction(plugin.postRender)) {
                 plugin.postRender(options, result);
             }
@@ -773,7 +777,7 @@ function dtRendererService(DTLoadingTemplate) {
     }
 
     function preRender(options) {
-        angular.forEach(plugins, function(plugin) {
+        plugins.forEach(function(plugin) {
             if (angular.isFunction(plugin.preRender)) {
                 plugin.preRender(options);
             }
@@ -1005,13 +1009,7 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
                 var data = result;
                 // In case the data is nested in an object
                 if (renderer.options.sAjaxDataProp) {
-                    var properties = renderer.options.sAjaxDataProp.split('.');
-                    while (properties.length) {
-                        var property = properties.shift();
-                        if (property in data) {
-                            data = data[property];
-                        }
-                    }
+                    data = result[renderer.options.sAjaxDataProp];
                 }
                 _loadedPromise = null;
                 defer.resolve(_doRender(renderer.options, _$elem, data, callback));
@@ -1229,7 +1227,7 @@ function dtPropertyUtil($q) {
         } else {
             resolvedObj = angular.extend(resolvedObj, obj);
             for (var prop in resolvedObj) {
-                if (resolvedObj.hasOwnProperty(prop) && $.inArray(prop, excludedProp) === -1) {
+                if (resolvedObj.hasOwnProperty(prop) && excludedProp.indexOf(prop) === -1) {
                     if (angular.isArray(resolvedObj[prop])) {
                         promises.push(resolveArrayPromises(resolvedObj[prop]));
                     } else {
@@ -1240,7 +1238,7 @@ function dtPropertyUtil($q) {
             $q.all(promises).then(function(result) {
                 var index = 0;
                 for (var prop in resolvedObj) {
-                    if (resolvedObj.hasOwnProperty(prop) && $.inArray(prop, excludedProp) === -1) {
+                    if (resolvedObj.hasOwnProperty(prop) && excludedProp.indexOf(prop) === -1) {
                         resolvedObj[prop] = result[index++];
                     }
                 }
@@ -1262,7 +1260,7 @@ function dtPropertyUtil($q) {
         if (!angular.isArray(array)) {
             defer.resolve(array);
         } else {
-            angular.forEach(array, function(item) {
+            array.forEach(function(item) {
                 if (angular.isObject(item)) {
                     promises.push(resolveObjectPromises(item));
                 } else {
@@ -1270,7 +1268,7 @@ function dtPropertyUtil($q) {
                 }
             });
             $q.all(promises).then(function(result) {
-                angular.forEach(result, function(item) {
+                result.forEach(function(item) {
                     resolveArray.push(item);
                 });
                 defer.resolve(resolveArray);

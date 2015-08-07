@@ -41,7 +41,7 @@ function dtRendererService(DTLoadingTemplate) {
 
     function renderDataTable($elem, options) {
         var dtId = '#' + $elem.attr('id');
-        if ($.fn.dataTable.isDataTable(dtId) && angular.isObject(options)) {
+        if ($.fn.dataTable.isDataTable(dtId)) {
             options.destroy = true;
         }
         // See http://datatables.net/manual/api#Accessing-the-API to understand the difference between DataTable and dataTable
@@ -69,7 +69,7 @@ function dtRendererService(DTLoadingTemplate) {
     }
 
     function postRender(options, result) {
-        angular.forEach(plugins, function(plugin) {
+        plugins.forEach(function(plugin) {
             if (angular.isFunction(plugin.postRender)) {
                 plugin.postRender(options, result);
             }
@@ -77,7 +77,7 @@ function dtRendererService(DTLoadingTemplate) {
     }
 
     function preRender(options) {
-        angular.forEach(plugins, function(plugin) {
+        plugins.forEach(function(plugin) {
             if (angular.isFunction(plugin.preRender)) {
                 plugin.preRender(options);
             }
@@ -306,13 +306,7 @@ function dtPromiseRenderer($q, $timeout, $log, DTRenderer, DTRendererService, DT
                 var data = result;
                 // In case the data is nested in an object
                 if (renderer.options.sAjaxDataProp) {
-                    var properties = renderer.options.sAjaxDataProp.split('.');
-                    while (properties.length) {
-                        var property = properties.shift();
-                        if (property in data) {
-                            data = data[property];
-                        }
-                    }
+                    data = result[renderer.options.sAjaxDataProp];
                 }
                 _loadedPromise = null;
                 defer.resolve(_doRender(renderer.options, _$elem, data, callback));

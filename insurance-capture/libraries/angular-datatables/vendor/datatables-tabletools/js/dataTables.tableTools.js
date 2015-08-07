@@ -893,8 +893,8 @@ TableTools.prototype = {
 
 	/**
 	 * Get the title of the document - useful for file names. The title is retrieved from either
-	 * the configuration object's 'title' parameter, or the HTML document title
-	 *  @param   {Object} oConfig Button configuration object
+	 * the config object's 'title' parameter, or the HTML document title
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns {String} Button title
 	 */
 	"fnGetTitle": function( oConfig )
@@ -925,7 +925,7 @@ TableTools.prototype = {
 	 * Calculate a unity array with the column width by proportion for a set of columns to be
 	 * included for a button. This is particularly useful for PDF creation, where we can use the
 	 * column widths calculated by the browser to size the columns in the PDF.
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns {Array} Unity array of column ratios
 	 */
 	"fnCalcColRatios": function ( oConfig )
@@ -957,7 +957,7 @@ TableTools.prototype = {
 
 	/**
 	 * Get the information contained in a table as a string
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns {String} Table data as a string
 	 */
 	"fnGetTableData": function ( oConfig )
@@ -1219,7 +1219,7 @@ TableTools.prototype = {
 	/**
 	 * Create and configure a TableTools button
 	 *  @method  _fnCreateButton
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns {Node} Button element
 	 *  @private 
 	 */
@@ -1252,7 +1252,7 @@ TableTools.prototype = {
 	/**
 	 * Create the DOM needed for the button and apply some base properties. All buttons start here
 	 *  @method  _fnButtonBase
-	 *  @param   {o} oConfig Button configuration object
+	 *  @param   {o} oConfig Button config object
 	 *  @returns {Node} DIV element for the button
 	 *  @private
 	 */
@@ -1326,7 +1326,7 @@ TableTools.prototype = {
 	/**
 	 * Create a collection button, when activated will present a drop down list of other buttons
 	 *  @param   {Node} nButton Button to use for the collection activation
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns void
 	 *  @private
 	 */
@@ -1345,7 +1345,7 @@ TableTools.prototype = {
 	/**
 	 * Show a button collection
 	 *  @param   {Node} nButton Button to use for the collection
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns void
 	 *  @private
 	 */
@@ -1416,7 +1416,7 @@ TableTools.prototype = {
 	/**
 	 * Hide a button collection
 	 *  @param   {Node} nButton Button to use for the collection
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns void
 	 *  @private
 	 */
@@ -1739,7 +1739,7 @@ TableTools.prototype = {
 	 * Configure a text based button for interaction events
 	 *  @method  _fnTextConfig
 	 *  @param   {Node} nButton Button element which is being considered
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns void
 	 *  @private 
 	 */
@@ -1804,7 +1804,7 @@ TableTools.prototype = {
 	 * Configure a flash based button for interaction events
 	 *  @method  _fnFlashConfig
 	 *  @param   {Node} nButton Button element which is being considered
-	 *  @param   {o} oConfig Button configuration object
+	 *  @param   {o} oConfig Button config object
 	 *  @returns void
 	 *  @private 
 	 */
@@ -1994,7 +1994,7 @@ TableTools.prototype = {
 	/**
 	 * New line character(s) depend on the platforms
 	 *  @method  method
-	 *  @param   {Object} oConfig Button configuration object - only interested in oConfig.sNewLine
+	 *  @param   {Object} oConfig Button config object - only interested in oConfig.sNewLine
 	 *  @returns {String} Newline character
 	 */
 	"_fnNewline": function ( oConfig )
@@ -2013,7 +2013,7 @@ TableTools.prototype = {
 	/**
 	 * Get data from DataTables' internals and format it for output
 	 *  @method  _fnGetDataTablesData
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @param   {String} oConfig.sFieldBoundary Field boundary for the data cells in the string
 	 *  @param   {String} oConfig.sFieldSeperator Field separator for the data cells
 	 *  @param   {String} oConfig.sNewline New line options
@@ -2241,7 +2241,7 @@ TableTools.prototype = {
 	 * Show print display
 	 *  @method  _fnPrintStart
 	 *  @param   {Event} e Event object
-	 *  @param   {Object} oConfig Button configuration object
+	 *  @param   {Object} oConfig Button config object
 	 *  @returns void
 	 *  @private 
 	 */
@@ -2871,7 +2871,7 @@ TableTools.BUTTONS = {
 /*
  *  on* callback parameters:
  *     1. node - button element
- *     2. object - configuration object for this button
+ *     2. object - config object for this button
  *     3. object - ZeroClipboard reference (flash button only)
  *     4. string - Returned string from Flash (flash button only - and only on 'complete')
  */

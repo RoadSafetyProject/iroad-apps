@@ -35,7 +35,7 @@ module.exports = function (grunt) {
     });
   });
 
-  // Project configuration.
+  // Project config.
   grunt.initConfig({
 
     // Metadata.
@@ -48,7 +48,7 @@ module.exports = function (grunt) {
     jqueryCheck: configBridge.config.jqueryCheck.join('\n'),
     jqueryVersionCheck: configBridge.config.jqueryVersionCheck.join('\n'),
 
-    // Task configuration.
+    // Task config.
     clean: {
       dist: 'dist',
       docs: 'docs/dist'

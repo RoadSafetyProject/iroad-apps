@@ -79,7 +79,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
       return state.params;
     },
 
-    // If there is no explicit multi-view configuration, make one up so we don't have
+    // If there is no explicit multi-view config, make one up so we don't have
     // to handle both cases in the view directive later. Note that having an explicit
     // 'views' property will mean the default unnamed view properties are ignored. This
     // is also a good time to resolve view names to absolute names, so everything is a
@@ -303,7 +303,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * - **params** `{object}` - returns an array of state params that are ensured to 
    *   be a super-set of parent's params.
    * - **views** `{object}` - returns a views object where each key is an absolute view 
-   *   name (i.e. "viewName@stateName") and each value is the config object 
+   *   name (i.e. "viewName@stateName") and each value is the config object
    *   (template, controller) for the view. Even when you don't use the views object 
    *   explicitly on a state config, one is still created for you internally.
    *   So by decorating this builder function you have access to decorating template 
@@ -376,7 +376,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * @methodOf ui.router.state.$stateProvider
    *
    * @description
-   * Registers a state configuration under a given state name. The stateConfig object
+   * Registers a state config under a given state name. The stateConfig object
    * has the following acceptable properties.
    *
    * <a id='template'></a>
@@ -475,7 +475,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    *
    * <a id='data'></a>
    *
-   * - **`data`** - {object=} - Arbitrary data object, useful for custom configuration.
+   * - **`data`** - {object=} - Arbitrary data object, useful for custom config.
    *
    * @example
    * <pre>
@@ -500,7 +500,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    *
    * @param {string} name A unique state name, e.g. "home", "about", "contacts". 
    * To create a parent/child state use a dot, e.g. "about.sales", "home.newest".
-   * @param {object} definition State configuration object.
+   * @param {object} definition State config object.
    */
   this.state = state;
   function state(name, definition) {
@@ -524,7 +524,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    *
    * @property {object} params A param object, e.g. {sectionId: section.id)}, that 
    * you'd like to test against the current active state.
-   * @property {object} current A reference to the state's config object. However 
+   * @property {object} current A reference to the state's config object. However
    * you passed it in. Useful for accessing custom data.
    * @property {object} transition Currently pending transition. A promise that'll 
    * resolve or reject.
@@ -1127,11 +1127,11 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * @methodOf ui.router.state.$state
      *
      * @description
-     * Returns the state configuration object for any specific state or all states.
+     * Returns the state config object for any specific state or all states.
      *
      * @param {string|object=} stateOrName If provided, will only get the config for
      * the requested state. If not provided, returns an array of ALL state configs.
-     * @returns {object|array} State configuration object or array of all objects.
+     * @returns {object|array} State config object or array of all objects.
      */
     $state.get = function (stateOrName, context) {
       if (!isDefined(stateOrName)) {

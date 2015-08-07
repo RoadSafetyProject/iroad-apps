@@ -210,7 +210,7 @@ angular.mock.$Browser.prototype = {
  *
  * @description
  * Mock implementation of {@link ng.$exceptionHandler} that rethrows or logs errors passed
- * to it. See {@link ngMock.$exceptionHandlerProvider $exceptionHandlerProvider} for configuration
+ * to it. See {@link ngMock.$exceptionHandlerProvider $exceptionHandlerProvider} for config
  * information.
  *
  *
@@ -2176,7 +2176,7 @@ if (window.jasmine || window.mocha) {
    * *NOTE*: This function is also published on window for easy access.<br>
    * *NOTE*: This function is declared ONLY WHEN running tests with jasmine or mocha
    *
-   * This function registers a module configuration code. It collects the configuration information
+   * This function registers a module config code. It collects the config information
    * which will be used when the injector is created by {@link angular.mock.inject inject}.
    *
    * See {@link angular.mock.inject inject} for usage example

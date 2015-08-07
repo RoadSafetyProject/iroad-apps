@@ -3,7 +3,7 @@ angular.module('showcase.usages', ['ngResource'])
 .constant('USAGES', {
     basic: [{
         name: 'zeroConfig',
-        label: 'Zero configuration'
+        label: 'Zero config'
     }, {
         name: 'withOptions',
         label: 'With options'

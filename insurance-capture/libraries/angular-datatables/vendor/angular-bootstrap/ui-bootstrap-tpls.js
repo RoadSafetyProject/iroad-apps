@@ -2290,7 +2290,7 @@ angular.module('ui.bootstrap.pagination', [])
          return; // do nothing if no ng-model
       }
 
-      // Setup configuration parameters
+      // Setup config parameters
       var maxSize = angular.isDefined(attrs.maxSize) ? scope.$parent.$eval(attrs.maxSize) : paginationConfig.maxSize,
           rotate = angular.isDefined(attrs.rotate) ? scope.$parent.$eval(attrs.rotate) : paginationConfig.rotate;
       scope.boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$parent.$eval(attrs.boundaryLinks) : paginationConfig.boundaryLinks;
@@ -2437,7 +2437,7 @@ angular.module( 'ui.bootstrap.tooltip', [ 'ui.bootstrap.position', 'ui.bootstrap
   var globalOptions = {};
 
   /**
-   * `options({})` allows global configuration of all tooltips in the
+   * `options({})` allows global config of all tooltips in the
    * application.
    *
    *   var app = angular.module( 'App', ['ui.bootstrap.tooltip'], function( $tooltipProvider ) {

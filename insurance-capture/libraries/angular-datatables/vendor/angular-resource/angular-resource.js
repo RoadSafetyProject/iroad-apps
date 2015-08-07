@@ -357,7 +357,7 @@ angular.module('ngResource', ['ng']).
       // Strip slashes by default
       stripTrailingSlashes: true,
 
-      // Default actions configuration
+      // Default actions config
       actions: {
         'get': {method: 'GET'},
         'save': {method: 'POST'},
@@ -584,7 +584,7 @@ angular.module('ngResource', ['ng']).
                 // jshint -W018
                 if (angular.isArray(data) !== (!!action.isArray)) {
                   throw $resourceMinErr('badcfg',
-                      'Error in resource configuration for action `{0}`. Expected response to ' +
+                      'Error in resource config for action `{0}`. Expected response to ' +
                       'contain an {1} but got an {2}', name, action.isArray ? 'array' : 'object',
                     angular.isArray(data) ? 'array' : 'object');
                 }

@@ -18,7 +18,7 @@ function $TemplateFactory(  $http,   $templateCache,   $injector) {
    * @methodOf ui.router.util.$templateFactory
    *
    * @description
-   * Creates a template from a configuration object. 
+   * Creates a template from a config object.
    *
    * @param {object} config Configuration object for which to load a template. 
    * The following properties are search in the specified order, and the first one 
