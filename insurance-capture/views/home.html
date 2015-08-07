@@ -32,7 +32,7 @@
 
             <tbody>
             <tr ng-repeat="insurance in data.insurance ">
-                <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
+                <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize) }}</td>
                 <td>{{ insurance['Company Name'] }}</td>
                 <td>{{ insurance['Company Type'] }}</td>
                 <td>{{ insurance['Phone Number']}}</td>
@@ -64,7 +64,7 @@
 <div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="editing" >
 
     <div class="mws-panel-header"  style="height: 48px !important;">
-        <span  style="color: #000 !important;">Editing Insurance
+        <span  style="color: #000 !important;">{{ header }}
            <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
         </span>
     </div>
@@ -97,7 +97,7 @@
 
  </div>
 </div>
-
+<!--
 <div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="register" >
 
     <div class="mws-panel-header"  style="height: 48px !important;">
@@ -108,7 +108,7 @@
     <div class="mws-panel-body no-padding">
 
         <table class="mws-datatable-fn mws-table">
-            <tr  class="todelete"  ng-repeat="(key, value) in editingEventInsured">
+            <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
                 <td >
                     <label>{{key}}</label><br>
                     <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm"/>
@@ -132,4 +132,4 @@
         </table>
 
     </div>
-</div>
+</div>-->
