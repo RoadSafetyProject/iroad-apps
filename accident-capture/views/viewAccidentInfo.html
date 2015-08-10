@@ -14,7 +14,7 @@
 	}
 	.expiry{
 		border: 2px solid #F44336;
-		background: #E57373;
+		background: #e57373;
 		height: 40px;
 		display: inline-block;
 		width: 100%;
@@ -31,7 +31,7 @@
 
 			<!-- panel for  basic info for an accident -->
 			<div class="panel panel-default">
-				<div class="panel-heading">Accident info </div>
+				<div class="panel-heading">Basic Information Accident</div>
 				<div class = "panel-body">
 					<div class = "row">
 						<div class="col-sm-4"> 
@@ -99,118 +99,122 @@
 
 			<!-- panel for  vehicles invloved-->
 			<div class="panel panel-default">
-				<div class="panel-heading">Vehicle(s) Involved </div>
+				<div class="panel-heading">Accident Vehicle Details </div>
 				<div class = "panel-body">
+					<div ng-repeat="vehicle in VehicleData">
+						<div class = "row">
+							<div class="col-sm-4">
+								<label>Make</label><br />
+								{{ vehicle['Make'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Model</label><br />
+								{{ vehicle['Model'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Model number</label><br />
+								{{ vehicle['Model number'] }}
+							</div>
+						</div>
 
-					<div class = "row">
-						<div class="col-sm-4"> 
-						<label>Make</label><br />
-						{{ VehicleData['Make'] }}										
+						<div class = "row">
+							<div class="col-sm-4">
+								<label>Color</label><br />
+								{{ vehicle['Color'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Body Type</label><br />
+								{{ vehicle['Body Type'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Engine Number</label><br />
+								{{ vehicle['Engine Number'] }}
+							</div>
 						</div>
-						<div class="col-sm-4"> 
-						<label>Model</label><br />
-						{{ VehicleData['Model'] }}										
+
+						<div class = "row">
+							<div class="col-sm-4">
+								<label>Vehicle Owner Name</label><br />
+								{{ vehicle['Vehicle Owner Name'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Vehicle Owner Address</label><br />
+								{{ vehicle['Vehicle Owner Address'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Vehicle Ownership Category</label><br />
+								{{ vehicle['Vehicle Ownership Category'] }}
+							</div>
 						</div>
-						<div class="col-sm-4"> 
-						<label>Model number</label><br /> 
-						{{ VehicleData['Model number'] }}										
+
+						<div class = "row">
+							<div class="col-sm-4">
+								<label>Current Insurance Expiry Date</label><br />
+								{{ vehicle['Current Insurance Expiry Date'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Last Inspection Date</label><br />
+								{{ vehicle['Last Inspection Date'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Vehicle Ownership Category</label><br />
+								{{ vehicle['Last Inspecton Result'] }}
+							</div>
 						</div>
+
 					</div>
-
-					<div class = "row">
-						<div class="col-sm-4"> 
-						<label>Color</label><br />
-						{{ VehicleData['Color'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Body Type</label><br />
-						{{ VehicleData['Body Type'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Engine Number</label><br /> 
-						{{ VehicleData['Engine Number'] }}										
-						</div>
-					</div>
-
-					<div class = "row">
-						<div class="col-sm-4"> 
-						<label>Vehicle Owner Name</label><br />
-						{{ VehicleData['Vehicle Owner Name'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Vehicle Owner Address</label><br />
-						{{ VehicleData['Vehicle Owner Address'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Vehicle Ownership Category</label><br /> 
-						{{ VehicleData['Vehicle Ownership Category'] }}										
-						</div>
-					</div>
-
-					<div class = "row">
-						<div class="col-sm-4"> 
-						<label>Current Insurance Expiry Date</label><br />
-						{{ VehicleData['Current Insurance Expiry Date'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Last Inspection Date</label><br />
-						{{ VehicleData['Last Inspection Date'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Vehicle Ownership Category</label><br /> 
-						{{ VehicleData['Last Inspecton Result'] }}										
-						</div>
-					</div>
-
 				</div>
 			</div>	
 
 			<!-- panel for  Drivers invloved-->
 			<div class="panel panel-default">
-				<div class="panel-heading">Driver(s) Involved </div>
+				<div class="panel-heading">Accident Vehicle's Drivers details </div>
 				<div class = "panel-body">
-					<div class = "row">
-						<div class="col-sm-4"> 
-						<label>Full Name</label><br />
-						{{ DriverData['Full Name'] }}										
+					<div ng-repeat="driver in DriverData">
+						<div class = "row">
+							<div class="col-sm-4">
+								<label>Full Name</label><br />
+								{{ driver['Full Name'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Gender</label><br />
+								{{ driver['Gender'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>TIN Number</label><br />
+								{{ driver['TIN Number'] }}
+							</div>
 						</div>
-						<div class="col-sm-4"> 
-						<label>Gender</label><br /> 
-						{{ DriverData['Gender'] }}										
+
+						<div class = "row">
+							<div class="col-sm-4">
+								<label>Driver License Number</label><br />
+								{{ driver['Driver License Number'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Current License Expiry Date</label><br />
+								{{ driver['Current License Expiry Date'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Driving Class Name</label><br />
+								{{ driver['Driving Class Name'] }}
+							</div>
+
 						</div>
-						<div class="col-sm-4"> 
-						<label>TIN Number</label><br /> 
-						{{ DriverData['TIN Number'] }}										
+
+						<div class = "row">
+							<div class="col-sm-4">
+								<label>Postal Address</label><br />
+								{{ driver['Postal Address'] }}
+							</div>
+							<div class="col-sm-4">
+								<label>Phone Number</label><br />
+								{{ driver['Phone Number'] }}
+							</div>
+
 						</div>
 					</div>
 
-					<div class = "row">
-						<div class="col-sm-4"> 
-						<label>Driver License Number</label><br />
-						{{ DriverData['Driver License Number'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Current License Expiry Date</label><br />
-						{{ DriverData['Current License Expiry Date'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Driving Class Name</label><br />
-						{{ DriverData['Driving Class Name'] }}										
-						</div>
-						
-					</div>
-
-					<div class = "row">
-						<div class="col-sm-4"> 
-						<label>Postal Address</label><br />
-						{{ DriverData['Postal Address'] }}										
-						</div>
-						<div class="col-sm-4"> 
-						<label>Phone Number</label><br />
-						{{ DriverData['Phone Number'] }}										
-						</div>
-						
-					</div>
 
 				</div>
 			</div>		
@@ -262,5 +266,5 @@
 
 		</div>
 	</div>
+</div>
 
-    

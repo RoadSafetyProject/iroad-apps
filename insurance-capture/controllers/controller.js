@@ -12,9 +12,13 @@ eventCaptureControllers.controller('MainController',
     {
         var insuranceEventModal = new iroad2.data.Modal("Vehicle Insurance History",[]);
         var insuranceCompanyModal = new iroad2.data.Modal("Insurance Company",[]);
+
+
+
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.data = {};
+        $scope.pager = {};
         $scope.pageSize = 10;
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchCompanies($scope.pageSize,page);
@@ -23,6 +27,7 @@ eventCaptureControllers.controller('MainController',
     		insuranceCompanyModal.getAll(function(result){
             	console.log("Companies:" + JSON.stringify(result));
                 $scope.data.insurance = result.data;
+                $scope.pager = result.pager;
                 $scope.$apply();
             },pageSize,page,true);
     	}
@@ -98,7 +103,7 @@ eventCaptureControllers.controller('MainController',
                     event[relationship.pivot] = [];
                 }
             });
-            $scope.enableEdit(event);
+            $scope.registerInsurance(event);
         }
 
         $scope.InsureNewVehicle= function(){
@@ -145,6 +150,7 @@ eventCaptureControllers.controller('MainController',
                     saveEvent.id = result.importSummaries[0].reference;
                     console.log("Adding to list:" + JSON.stringify(saveEvent));
                     $scope.data.insurance.push(saveEvent);
+                    $scope.$apply();
                     alert("Insurance information saved successfully.");
             	}
                 
@@ -156,7 +162,10 @@ eventCaptureControllers.controller('MainController',
 
             },insuranceCompanyModal.getModalName());
 
-            $scope.editing = false;$scope.normalClass= "mws-panel grid_8";
+            //iniate hiding form for adding or editing insurance comapany
+            $scope.editing = false;
+            $scope.normalClass= "mws-panel grid_8";
+            $scope.viewinsuranceComp = false;
         }
 
         $scope.saveInsuredVehicle = function(){
@@ -182,7 +191,10 @@ eventCaptureControllers.controller('MainController',
 
             },insuranceCompanyModal.getModalName());
 
-            $scope.register = false ;$scope.normalClass= "mws-panel grid_8";
+            //hiding aside form and view for manupulation of
+            $scope.register = false ;
+            $scope.normalClass= "mws-panel grid_8";
+            $scope.viewinsuranceComp = false;
 
         }
 
@@ -222,8 +234,51 @@ eventCaptureControllers.controller('MainController',
             }
         }
 
+
+        //function to enable adding new insurance company
+        $scope.registerInsurance = function(event){
+            $scope.header = "Add New Insurance Company";
+            $scope.editing = "true";
+            $scope.viewinsuranceComp = "false";
+            $scope.normalStyle= { "z-index": '10'};
+            $scope.normalClass= "mws-panel grid_6";
+            $scope.normalClassDriver= "mws-panel grid_6";
+            $scope.normalClassVehicle= "mws-panel grid_6";
+            $scope.normalClassMedia= "mws-panel grid_6";
+            $scope.normalStyleDriver= { "padding": '0px'};
+            $scope.normalStyleVehicle= { "padding": '0px'};
+            $scope.normalStyleMedia= { "padding": '0px'};
+            //console.log(JSON.stringify(iroad2.data.programs));
+            angular.forEach(iroad2.data.programs, function (program) {
+                if (program.name == insuranceCompanyModal.getModalName()) {
+                    $scope.editingProgram = program;
+                }
+            });
+            $scope.savableEventData = [];
+            $scope.editingEvent = event;
+            //console.log('Editing' + JSON.stringify(event));
+            for (var key in event) {
+                if (typeof event[key] == "object") {
+                    var program = insuranceCompanyModal.getProgramByName(key);
+                    angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+                        if (dataElement.dataElement.code) {
+                            if(dataElement.dataElement.code.startsWith("id_")){
+                                $scope.editingEvent[dataElement.dataElement.name] = event[key][dataElement.dataElement.name];
+                                $scope.savableEventData.push({"name":dataElement.dataElement.name,"key":key,"value":event[key]});
+                                $scope.watchEditing(program,dataElement.dataElement);
+                                delete $scope.editingEvent[key];
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        //function for editng insurance company
         $scope.enableEdit  = function(event){
             $scope.editing = "true";
+            $scope.viewinsuranceComp = "false";
+            $scope.header = "Edit Insurance Company";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "mws-panel grid_6";
             $scope.normalClassDriver= "mws-panel grid_6";
@@ -294,43 +349,22 @@ eventCaptureControllers.controller('MainController',
             }
         }
 
-
+        //function to cancel sidebar nav
         $scope.cancelEdit = function(){
             $scope.normalClass= "mws-panel grid_8";
             $scope.editing = "false";
+            $scope.viewinsuranceComp = "false";
         }
 
 
-        $scope.addAccident = function(dhis2Event){
-            // console.log(JSON.stringify(dhis2Event));
-            var modalInstance = $modal.open({
-                templateUrl: 'views/add_accident_dialog.html',
-                controller: 'AccidentFormController',
-                resolve: {
-                    dhis2Event: function () {
-                        return dhis2Event;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function (){
-            });
-        };
-
+        //function to view insurance comapany profile
         $scope.ViewInsurance = function(dhis2Event){
             //console.log(JSON.stringify(dhis2Event));
-            var modalInstance = $modal.open({
-                templateUrl: 'views/insurance_dialog.html',
-                controller: 'InsuranceController',
-                resolve: {
-                    dhis2Event: function () {
-                        return dhis2Event;
-                    }
-                }
-            });
+            $scope.editing = "false";
+            $scope.viewinsuranceComp = "true";
+            $scope.normalClass= "mws-panel grid_6";
+            $scope.event = dhis2Event;
 
-            modalInstance.result.then(function (){
-            });
         };
 
         $scope.watchEditing = function(program,dataElement){

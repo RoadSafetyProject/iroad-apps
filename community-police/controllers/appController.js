@@ -208,6 +208,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
     		
     		
     	}
+
+		//function to close adding facility dialogue
+		$scope.cancelMenu = function(){
+
+			$scope.isAddingFacility = false;
+		}
+
     	var baseOptions = {
                 'maxZoom': 15,
                 'minZoom': 4,

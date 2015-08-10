@@ -10,15 +10,18 @@
 <div ng-class="normalClass" ng-style="normalStyle" style="margin-top: 50px !important;">
 
     <div class="panel-heading">
-        <h3>Insurance Capture <button ng-click="addNewCompany()" class="pull-right" style="font-size: 11px;height: 30px;border-bottom-width: 4px;"> Add New Company </button></h3>
+       <h2></h2>
     </div>
 
     <div class="mws-panel-header"  style="height: 48px !important;">
-        <span style="color: #fff0ff !important;"><i class="icon-table"></i> Insurance Companies Registered </span>
+        <span>Insurance Registered<button ng-click="addNewCompany()" class="btn btn-primary btn-xs pull-right" style="color:#fff0ff;font-size: 11px"> Add New </button></span>
     </div>
 
     <div class="mws-panel-body no-padding">
-        <table datatable="ng" class="mws-datatable-fn mws-table">
+        <span class = "pull-right" style="margin:1%;">
+           Search: <input type = "text" class="btn-sm" ng-model = "search">
+        </span>
+        <table class="mws-datatable-fn mws-table">
             <thead>
             <tr>
                 <th>#</th>
@@ -31,14 +34,14 @@
             </thead>
 
             <tbody>
-            <tr ng-repeat="insurance in data.insurance track by $index">
-                <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
+            <tr ng-repeat="insurance in data.insurance |filter:search">
+                <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize) }}</td>
                 <td>{{ insurance['Company Name'] }}</td>
                 <td>{{ insurance['Company Type'] }}</td>
                 <td>{{ insurance['Phone Number']}}</td>
                 <td>{{insurance['Policy Period']}}</td>
                 <td>
-                    <div class="btn-group dropdown">
+                  <div class="btn-group dropdown">
                         <button type="button" class="btn btn-default">Action</button>
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <span class="caret"></span>
@@ -47,9 +50,8 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a ng-click="ViewInsurance(insurance)">Info</a></li>
                             <li><a  ng-click="enableEdit(insurance)">Edit</a> </li>
-                            <li><a  ng-click="InsureNewVehicle()">Insure Vehicle</a> </li>
                         </ul>
-                    </div>
+                  </div>
                 </td>
             </tr>
             </tbody>
@@ -62,10 +64,10 @@
 
 </div>
 
-<div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="editing" >
+<div class="mws-panel grid_2" style="margin-top: 50px;background-color: white;position: absolute;right:0" ng-if="editing" >
 
     <div class="mws-panel-header"  style="height: 48px !important;">
-        <span  style="color: #fff0ff !important;"><i class="icon-table"></i>
+        <span  style="color: #000 !important;">{{ header }}
            <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
         </span>
     </div>
@@ -99,36 +101,29 @@
  </div>
 </div>
 
-<div class="mws-panel grid_2" style="margin-top: 120px;background-color: white;position: absolute;right:0" ng-if="register" >
+<!-- viewing insurance info -->
+<div class="mws-panel grid_2" style="margin-top: 50px;background-color: white;position: absolute;right:0" ng-if="viewinsuranceComp" >
 
     <div class="mws-panel-header"  style="height: 48px !important;">
-        <span  style="color: #fff0ff !important;"><i class="icon-table"></i>
+        <span  style="color: #000 !important;">View Insurance Company
            <a title="Cancel" ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a>
         </span>
     </div>
     <div class="mws-panel-body no-padding">
 
         <table class="mws-datatable-fn mws-table">
-            <tr  class="todelete"  ng-repeat="(key, value) in editingEventInsured">
-                <td >
+            <tr  class="todelete"  ng-repeat="(key, value) in event">
+                <td  ng-if = "key !='id' ">
                     <label>{{key}}</label><br>
-                    <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm"/>
+                    <span ng-if = "event[key]">{{event[key]}}</span>
+                    <!--<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm"/>
                     <input ng-if="isInteger(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm" />
                     <select  ng-if="isBoolean(key)"  ng-model="editingEventInsured[key]" class="form-control input-sm">
                         <option value="true">Yes</option><option value="false">No</option>
                     </select>
                     <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
                     <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEventInsured[key]"/>
-
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="pull-left" ng-if="CurrentSaving"><i class='fa fa-cog fa-2x fa-spin '></i> Saving... </span>
-                    <span class="pull-left text-success" ng-if="UpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saving Successful </span>
-                    <span class="pull-left text-danger" ng-if="UpdateFailure"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                    <button class="btn btn-sm btn-primary pull-right" ng-click="saveInsuredVehicle(editingEventInsured)">Save </button>
-                </td>
+-->                </td>
             </tr>
         </table>
 
