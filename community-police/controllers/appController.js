@@ -33,14 +33,24 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 		};
 		$scope.isAddingFacility = false;
 		$scope.communityProgram = {};
+		$scope.reportMarker = {};
 		$scope.addMarker = function(event){
-			$scope.markers.push({
-				id:event.event,
-				coords:event.coordinate
-			});
+			//event.coordinate = {latitude: -6.771430, longitude: 39.239946};
+			//console.log(JSON.stringify(event));
+			//$scope.reportMarker = event;
+			console.log(event);
+			
+			event.coordinate = {latitude: -6.771430, longitude: 39.239946};
+			$scope.reportMarker = event;
+			/*$scope.reportMarker = {
+				id:"reportMarker",
+				coordinate:event.coordinate,
+				event:event,
+				options:{draggable:true}
+			};*/
 		}
 		$scope.getDataValue = function(event,dataElementName){
-			var dataElementId = "ZrbvmFDOuYl";
+			var dataElementId = "";
 			angular.forEach($scope.communityProgram.programStages[0].programStageDataElements,
 					function(programStageDataElement){
 				if(programStageDataElement.dataElement.name == dataElementName){
