@@ -156,7 +156,10 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.numberOfVehicles = 2;
 	$scope.numberOfWitness = 2;
 
+	//prepare forms
 	$scope.emptyFormAccidentBasicInfo = angular.element("#offenceScope").scope().formAccident;
+	$scope.emptyFormAccidentWitness = angular.element("#offenceScope").scope().formAccidentWitness;
+	$scope.emptyFormAccidentVehicle = angular.element("#offenceScope").scope().formAccidentVehicle;
 
 	//functions for adding flexibility in form inputs
 	$scope.isInteger = function(key){
@@ -219,10 +222,6 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		$scope.accidentVehicle = true;
 		$scope.accidentWitness = false;
 
-		//taking form
-		$scope.emptyFormAccidentVehicle = angular.element("#offenceScope").scope().formAccidentVehicle;
-
-
 
 	}
 
@@ -232,7 +231,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.witnesses = [];
 	$scope.addAccidentWitness = function(){
 
-		$scope.numberOfWitness = 3;
+		$scope.numberOfWitness = 2;
 		for (var i=0; i < $scope.numberOfWitness; i++ ){
 
 			numberOfWitnesses.push(i);
@@ -246,8 +245,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		$scope.accidentVehicle = false;
 		$scope.accidentWitness = true;
 
-		//taking form
-		$scope.emptyFormAccidentWitness = angular.element("#offenceScope").scope().formAccidentWitness;
+
 	}
 
 

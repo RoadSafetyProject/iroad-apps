@@ -28,7 +28,7 @@
 
 		<h3 align = "center">Accident Registering</h3>
 
-		<div style="padding:50px;padding-top:0">
+		<!--<div style="padding:50px;padding-top:0">-->
 
 			<!-- basic info for adding accident-->
 			<div class = "panel panel-default" ng-if = "accidentBasicInfo">
@@ -143,23 +143,47 @@
 				<div class = "panel-body">
 
 					{{ witnesses }}
-					<div class = "row">
-						<div  ng-repeat="(key,value) in emptyFormAccidentWitness ">
+					<div class="panel-group" id="accordionwitness" role="tablist" aria-multiselectable="true">
 
-							<div class = "col-sm-4">
+						<div ng-repeat="witness in witnesses ">
 
-								<label style="font-size: 0.8em">{{ key}}</label><br />
-								<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentWitness['{{ key }}']" class="form-control input-sm"/>
-								<input ng-if="isInteger(key)"  ng-model="newAccidentWitness['{{ key }}']" class="form-control input-sm" />
-								<select  ng-if="isBoolean(key)"  ng-model="newAccidentWitness['{{ key }}']" class="form-control input-sm">
-									<option value="true">Yes</option><option value="false">No</option>
-								</select>
-								<select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentWitness['{{ key }}']" />
-								<input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentWitness['{{ key }}']"/>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="heading{{ witness }}">
+									<h4 class="panel-title" align = "center">
+										<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ witness }}" aria-expanded="true" aria-controls="collapse{{ witness }}">
+											Accident Witness {{ witness + 1 }}
+										</a>
+									</h4>
+								</div>
+								<div id="collapse{{ witness }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ witness }}">
+									<div class="panel-body">
+										<!-- form fr adding each accident witness -->
 
+										<div  ng-repeat="(key,value) in emptyFormAccidentWitness ">
+
+											<div class = "col-sm-4">
+
+												<label style="font-size: 0.8em">{{ key}}</label><br />
+												<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentWitness['{{ witness }}']['{{ key }}']" class="form-control input-sm"/>
+												<input ng-if="isInteger(key)"  ng-model="newAccidentWitness['{{ witness }}']['{{ key }}']" class="form-control input-sm" />
+												<select  ng-if="isBoolean(key)"  ng-model="newAccidentWitness['{{ witness }}']['{{ key }}']" class="form-control input-sm">
+													<option value="true">Yes</option><option value="false">No</option>
+												</select>
+												<select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentWitness['{{ witness }}']['{{ key }}']" />
+												<input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentWitness['{{ witness }}']['{{ key }}']"/>
+
+											</div>
+										</div>
+
+
+									</div>
+								</div>
 							</div>
+
 						</div>
+
 					</div>
+
 
 				</div>
 			</div>
@@ -168,5 +192,5 @@
 					<button ng-click = "saveAccident() " class="btn btn-primary " style="color:#fff0ff;margin-bottom:2%;">Add new Accident</button>
 				</div>
 
-		</div>
+		<!--</div>-->
 	</div>
