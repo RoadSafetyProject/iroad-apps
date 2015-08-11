@@ -153,6 +153,9 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.accidentVehicle = false;
 	$scope.accidentWitness = false;
 
+	$scope.numberOfVehicles = 2;
+	$scope.numberOfWitness = 2;
+
 	$scope.emptyFormAccidentBasicInfo = angular.element("#offenceScope").scope().formAccident;
 
 	//functions for adding flexibility in form inputs
@@ -199,7 +202,18 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 
 	//function to provide form for adding accident vehicle info
+	var numberOfVehicle = [];
+	$scope.vehicles = [];
 	$scope.addAccidentVehicle = function(){
+		$scope.numberOfVehicles = 2;
+
+		for (var i=0; i < $scope.numberOfVehicles; i++ ){
+
+			numberOfVehicle.push(i);
+		}
+		$scope.vehicles = numberOfVehicle;
+		numberOfVehicle = [];
+		console.log($scope.vehicles);
 
 		$scope.accidentBasicInfo = true;
 		$scope.accidentVehicle = true;
@@ -212,11 +226,24 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 	}
 
+
 	//function to provide form for adding accident witness
+	var numberOfWitnesses = []
+	$scope.witnesses = [];
 	$scope.addAccidentWitness = function(){
 
+		$scope.numberOfWitness = 3;
+		for (var i=0; i < $scope.numberOfWitness; i++ ){
+
+			numberOfWitnesses.push(i);
+		}
+		$scope.witnesses = numberOfWitnesses;
+		numberOfWitnesses = []
+		console.log($scope.witnesses);
+
+
 		$scope.accidentBasicInfo = true;
-		$scope.accidentVehicle = true;
+		$scope.accidentVehicle = false;
 		$scope.accidentWitness = true;
 
 		//taking form
@@ -231,7 +258,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	});
 
 
-	$scope.saveAccident = function(){
+	/*$scope.saveAccident = function(){
 
 		//start saving accident
 		angular.forEach($scope.savableEventData, function (savableData) {
@@ -317,7 +344,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 		},$scope.accidentEventModal.getModalName());
 
-	}
+	}*/
 
 }) ;
 eventCaptureControllers.controller('offenceFormController',
