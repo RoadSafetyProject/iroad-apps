@@ -76,8 +76,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 		$scope.addFacility = function(){
 			if($scope.isAddingFacility){
 				if($scope.tree.context.selectedNodes.length > 0){
-					console.log($scope.tree.context.selectedNodes[0]);
-					$http.post('../../api/organisationUnits.json', {
+					console.log(JSON.stringify($scope.tree.context.selectedNodes[0]));
+					$http.post('../../organisationUnits.json', {
 						"name":$scope.newFacility.name,
 						"latitude":$scope.newFacility.coordinates.latitude,
 						"longitude":$scope.newFacility.coordinates.longitude,

@@ -103,6 +103,7 @@ eventCaptureControllers.controller('MainController',
                     event[relationship.pivot] = [];
                 }
             });
+           // console.log(JSON.stringify(event));
             $scope.registerInsurance(event);
         }
 
