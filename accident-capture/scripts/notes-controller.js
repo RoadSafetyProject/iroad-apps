@@ -153,13 +153,19 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.accidentVehicle = false;
 	$scope.accidentWitness = false;
 
+	$scope.accidentBasicInfoVisibility = false;
+	$scope.accidentBasicInfoVisibilityButton = true;
+
 	$scope.numberOfVehicles = 2;
 	$scope.numberOfWitness = 2;
 
 	//prepare forms
-	$scope.emptyFormAccidentBasicInfo = angular.element("#offenceScope").scope().formAccident;
-	$scope.emptyFormAccidentWitness = angular.element("#offenceScope").scope().formAccidentWitness;
-	$scope.emptyFormAccidentVehicle = angular.element("#offenceScope").scope().formAccidentVehicle;
+	$scope.newAccidentForm = angular.element("#offenceScope").scope().formAccident;
+	$scope.newAccidentWitnessForm  = angular.element("#offenceScope").scope().formAccidentWitness;
+	$scope.newAccidentVehicleForm = angular.element("#offenceScope").scope().formAccidentVehicle;
+	$scope.accidentAttendant = "R222";
+
+
 
 	//functions for adding flexibility in form inputs
 	$scope.isInteger = function(key){
@@ -203,45 +209,51 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		return false;
 	}
 
+	$scope.changeAccidentBasicInfoVisibility = function () {
+
+		$scope.accidentBasicInfoVisibilityButton = !$scope.accidentBasicInfoVisibilityButton;
+		$scope.accidentBasicInfo = !$scope.accidentBasicInfo;
+		$scope.accidentBasicInfoVisibility = !$scope.accidentBasicInfoVisibility;
+
+	}
 
 	//function to provide form for adding accident vehicle info
 	var numberOfVehicle = [];
 	$scope.vehicles = [];
 	$scope.addAccidentVehicle = function(){
-		$scope.numberOfVehicles = 2;
+
+		//$scope.accidentBasicInfoVisibility = !$scope.accidentBasicInfoVisibility;
 
 		for (var i=0; i < $scope.numberOfVehicles; i++ ){
-
 			numberOfVehicle.push(i);
 		}
 		$scope.vehicles = numberOfVehicle;
+		//empty variable number of vehicles
 		numberOfVehicle = [];
 		console.log($scope.vehicles);
 
-		$scope.accidentBasicInfo = true;
+		$scope.accidentBasicInfo = false;
 		$scope.accidentVehicle = true;
 		$scope.accidentWitness = false;
 
-
 	}
-
 
 	//function to provide form for adding accident witness
 	var numberOfWitnesses = []
 	$scope.witnesses = [];
 	$scope.addAccidentWitness = function(){
 
-		$scope.numberOfWitness = 2;
 		for (var i=0; i < $scope.numberOfWitness; i++ ){
 
 			numberOfWitnesses.push(i);
 		}
 		$scope.witnesses = numberOfWitnesses;
+
+		//empty varibale for number of witness
 		numberOfWitnesses = []
 		console.log($scope.witnesses);
 
-
-		$scope.accidentBasicInfo = true;
+		$scope.accidentBasicInfo = false;
 		$scope.accidentVehicle = false;
 		$scope.accidentWitness = true;
 
@@ -254,6 +266,63 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
 		$scope.logedInUser = data;
 	});
+
+
+	//function to save accident into the system
+	$scope.saveAccident = function(){
+		/*
+		console.log('====================================================\n');
+		console.log('accident data' + JSON.stringify($scope.newAccidentForm));
+
+		console.log('accident Vehicle data' + JSON.stringify($scope.newAccidentVehicleForm));
+		console.log('Witness data' + JSON.stringify($scope.newAccidentWitnessForm));*/
+
+		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
+		var saveEvent = $scope.newAccidentForm;
+
+		//saving basic information for an accident
+		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);
+		$scope.accident_id = null;
+		$scope.accidentEventModal.save(saveEvent,otherData,function(result){
+			console.log("success add accident basic info");
+			$scope.accident_id = result.importSummaries[0].reference;
+			$scope.newAccidentForm['id'] = $scope.accident_id;
+
+			//making loops to save accident vehicles
+			for (var i=0; i < $scope.numberOfVehicles; i++ ){
+
+				console.log('accident vehicle ' + i);
+			}
+
+			//loop through witnesses
+			for (var i=0; i < $scope.numberOfWitness; i++ ){
+				console.log('Witness : ' + JSON.stringify($scope.newAccidentWitnessForm[i]));
+				///prepare data for saving accident witness
+
+				$scope.accidentWitnessModel = new iroad2.data.Modal('Accident Witness',[]);
+				$scope.newAccidentWitnessForm[i].Accident = $scope.newAccidentForm;
+				var saveAccidentWitnesEvent = $scope.newAccidentWitnessForm[i];
+
+				//saving a given witness
+				$scope.accidentWitnessModel.save(saveAccidentWitnesEvent,otherData,function(result){
+					console.log('Success to add the witness to the accident');
+					console.log("\nWitness id : " + JSON.stringify(result.importSummaries[0].reference));
+
+				},function(error){
+					console.log('Fail to add the witness to the accident');
+
+				},$scope.accidentWitnessModel.getModalName());
+
+			}
+
+
+
+		},function(error){
+			console.log('Fail to add accident basic info');
+
+		},$scope.accidentEventModal.getModalName());
+
+	}
 
 
 	/*$scope.saveAccident = function(){

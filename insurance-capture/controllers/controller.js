@@ -132,6 +132,9 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.save = function(){
+
+            console.log('data form the form : ' + JSON.stringify($scope.editingEvent));
+
             $scope.UpdatedSuccess = true;
             angular.forEach($scope.savableEventData, function (savableData) {
                 delete $scope.editingEvent[savableData.name];
@@ -154,7 +157,7 @@ eventCaptureControllers.controller('MainController',
                     $scope.$apply();
                     alert("Insurance information saved successfully.");
             	}
-                
+
 
             },function(error){
                 $scope.CurrentSaving = false;

@@ -98,7 +98,7 @@ eventCaptureControllers.controller('MainController',
         //function to add new accident
         $scope.addAccident = function(){
 
-			//load basic inf form
+			//load accident basic information form
         	$scope.accident = new iroad2.data.Modal('Accident',[]);
         	var modalName = $scope.accident.getModalName();
 			var eventAccident = {};
@@ -106,7 +106,6 @@ eventCaptureControllers.controller('MainController',
 			angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == modalName) {
                 	//console.log('Program ' + JSON.stringify(program));
-
                 	angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                 		if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
 							//eventAccident[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
@@ -114,7 +113,6 @@ eventCaptureControllers.controller('MainController',
                 		}else{
 							eventAccident[dataElement.dataElement.name] = "";
                 		}
-                       
                     });
                 }
             });
@@ -135,7 +133,6 @@ eventCaptureControllers.controller('MainController',
 						}else{
 							eventAccidentVehicle[dataElement.dataElement.name] = "";
 						}
-
 					});
 				}
 			});
@@ -156,13 +153,10 @@ eventCaptureControllers.controller('MainController',
 						}else{
 							eventAccidentWitness[dataElement.dataElement.name] = "";
 						}
-
 					});
 				}
 			});
 			$scope.formAccidentWitness = eventAccidentWitness;
-
-			console.log('witness : '+JSON.stringify(eventAccidentWitness));
 
         	var modalInstance = $modal.open({
         		templateUrl: 'views/addAccidentForm.html',
