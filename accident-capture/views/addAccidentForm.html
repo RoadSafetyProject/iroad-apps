@@ -31,9 +31,9 @@
 	<!--<div style="padding:50px;padding-top:0">-->
 
 	<!-- basic info for adding accident-->
-	<div class = "panel panel-default" >
+	<div class = "panel panel-default" ng-if = "accidentBasicInfo" >
 		<div class = "panel-heading">Basic Information Accident</div>
-		<div class = "panel-body" ng-if = "accidentBasicInfo">
+		<div class = "panel-body" >
 			<div class="row">
 				<div  ng-repeat="(key,value) in newAccidentForm ">
 
@@ -54,15 +54,15 @@
 				<!-- attendant of accident and number of witness & vehicle -->
 				<div class = "col-sm-4">
 					<label style="font-size: 0.8em">Accident Attendant</label><br />
-					<input class="form-control input-sm" ng-model="accidentAttendant" >
+					<input class="form-control input-sm" ng-model="otherDataForm['accidentAttendant']" >
 				</div>
 				<div class = "col-sm-4">
 					<label style="font-size: 0.8em">Number Of Accident Vehicles</label><br />
-					<input class="form-control input-sm" ng-model="numberOfAccidentVehicles" >
+					<input class="form-control input-sm" ng-model="otherDataForm['numberOfAccidentVehicles']" >
 				</div>
 				<div class = "col-sm-4">
 					<label style="font-size: 0.8em">Number of Witness</label><br />
-					<input class="form-control input-sm" ng-model="numberOfAccidentWitness" >
+					<input class="form-control input-sm" ng-model="otherDataForm['numberOfAccidentWitness']" >
 				</div>
 
 			</div>
@@ -109,7 +109,7 @@
 
 								<div  ng-repeat="(key,value) in newAccidentVehicleForm ">
 
-									<div class = "col-sm-4" ng-hide = "key >= 0" ng-if="key != 'Full Name' && key != 'Gender' && key != 'Vehicle Ownership Category' && key != 'Vehicle Owner Name' && key != 'Vehicle Class' && key != 'Make' && key != 'Model' ">
+									<div class = "col-sm-4" ng-hide = "key >= 0" ng-if="key != 'Date of Birth' && key != 'Full Name' && key != 'Gender' && key != 'Vehicle Ownership Category' && key != 'Vehicle Owner Name' && key != 'Vehicle Class' && key != 'Make' && key != 'Model' ">
 
 										<label style="font-size: 0.8em" >{{ key}}</label><br />
 										<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentVehicleForm[vehicle][key]" class="form-control input-sm"/>
