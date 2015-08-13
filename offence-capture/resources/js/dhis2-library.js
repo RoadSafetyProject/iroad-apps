@@ -438,6 +438,9 @@ iroad2.data.Modal = function (modalName,relations) {
 			}
 		}
 		this.object["id"] = event.event;
+		if(event.coordinate){
+			this.object["coordinate"] = event.coordinate;
+		}
 		for(var k = 0; k < event.dataValues.length; k++) {
 			
 			var dataValue = event.dataValues[k];
