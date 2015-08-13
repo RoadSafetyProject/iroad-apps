@@ -27,7 +27,7 @@
 }
 	.org-unit-control {
 	  display: block;
-	  width: 300px;
+	  /*width: 300px;*/
 	  height: 240px !important;
 	  padding: 6px 12px;
 	  font-size: 14px;
@@ -63,15 +63,19 @@
   </style>
 <div class="angular-google-map-container">
 
-	<div class="form">
-		<div class="panel panel-default">
-	  <div class="panel-heading">Vehicle Tracking Filter</div>
-
-	  <div class="panel-body">
-			<div class="row">
-			<div class="col-sm-6" style="">
+<button type="button" class="form btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Facilities</button>
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Facilities</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+			<div class="col-sm-12" style="">
 				Organisation Unit:
-				  <div class="org-unit-control" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
+				  <div class="org-unit-control col-sm-12" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
 					  <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
 				  </div>
 			</div>
@@ -79,9 +83,13 @@
 			<div class="row">
 			<button ng-if="!isAddingFacility" ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
 			</div>
-		</div>
-	</div>
-	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div ng-if="isAddingFacility" class="form2">
 <div class="panel panel-default">
