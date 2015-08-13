@@ -381,7 +381,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			
 			*/
 			if(!$scope.editingEvent.id){
-				alert("new offence");
 				$scope.editingEvent["Full Name"] = $scope.editingEvent.Driver["Full Name"];
 				$scope.editingEvent["Driver License Number"] = $scope.editingEvent.Driver["Driver License Number"];
 				$scope.editingEvent["Gender"] = $scope.editingEvent.Driver["Gender"];
@@ -396,37 +395,47 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			}
 			console.log("JSON After:" + JSON.stringify($scope.editingEvent));
 			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
+			if($scope.editingEvent.coordinate){
+				otherData.coordinate =$scope.editingEvent.coordinate; 
+			}else{
+				otherData.coordinate = {"latitude": "","longitude": ""};
+			}
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
 			console.log($scope.editingEvent);
-			alert("here1");
 			$scope.offenceEventModal.save($scope.editingEvent,otherData,function(result){
-				$scope.data.offences.push($scope.editingEvent);
-				$scope.$apply();
-				console.log("Save Made Result:" + JSON.stringify(result));
 				if(!result.updatedEvent){
 					$scope.editingEvent.id = result.importSummaries[0].reference;
-				}
-				var saveDataArray = [];
-				console.log("$scope.editingOutputModal:"+JSON.stringify($scope.data.editingOutputModal));
-				angular.forEach($scope.data.editingOutputModal,function(registry){
-					var off = {
-							"Offence_Event":{"id": $scope.editingEvent.id},
-							"Offence_Registry":{"id":registry.id}
-						};
-					console.log("Saving Offence Off:"+JSON.stringify(off));
-					saveDataArray.push(off);
-					console.log("Saving Offence:"+JSON.stringify(saveDataArray));
-				});
-				//console.log("Saving Offence:"+JSON.stringify(saveDataArray));
-				var offence = new iroad2.data.Modal("Offence",[]);
-				offence.save(saveDataArray,otherData,function(result){
-					$scope.offences.push($scope.editingEvent);
+					$scope.data.offences.push($scope.editingEvent);
 					$scope.$apply();
-					console.log("Relation Save Made Result:" + JSON.stringify(result));
-				},function(error){
-					console.log("Error Saving Relation:" + JSON.stringify(error));
-				},offence.getModalName());
+					console.log("Save Made Result:" + JSON.stringify(result));
+					if(!result.updatedEvent){
+						$scope.editingEvent.id = result.importSummaries[0].reference;
+					}
+					var saveDataArray = [];
+					console.log("$scope.editingOutputModal:"+JSON.stringify($scope.data.editingOutputModal));
+					angular.forEach($scope.data.editingOutputModal,function(registry){
+						var off = {
+								"Offence_Event":{"id": $scope.editingEvent.id},
+								"Offence_Registry":{"id":registry.id}
+							};
+						console.log("Saving Offence Off:"+JSON.stringify(off));
+						saveDataArray.push(off);
+						console.log("Saving Offence:"+JSON.stringify(saveDataArray));
+					});
+					//console.log("Saving Offence:"+JSON.stringify(saveDataArray));
+					var offence = new iroad2.data.Modal("Offence",[]);
+					offence.save(saveDataArray,otherData,function(result){
+						$scope.offences.push($scope.editingEvent);
+						$scope.$apply();
+						console.log("Relation Save Made Result:" + JSON.stringify(result));
+					},function(error){
+						console.log("Error Saving Relation:" + JSON.stringify(error));
+					},offence.getModalName());
+				}else{
+					
+				}
+				
 			},function(error){
 				console.log("Error Saving:" + JSON.stringify(error));
 			},$scope.offenceEventModal.getModalName());
