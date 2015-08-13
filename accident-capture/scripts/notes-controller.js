@@ -4,12 +4,22 @@ eventCaptureControllers.controller('AccidentController',
 
 		//taking data to the pop up view for viewing info for a given accident
 		$scope.AccidentData = angular.element("#offenceScope").scope().AccidentData;
-
 		$scope.accident_id = $scope.AccidentData['id'];
-
 
 		$scope.accidentWitnessEventModel = new iroad2.data.Modal('Accident Witness',[]);
 		$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
+
+
+
+		//fetching accident vehicle based on accident id
+		$scope.accidentVehicleEventModal.get({value:$scope.accident_id},function(result){
+
+			console.log('accident vehicles data : ' + JSON.stringify(result));
+			$scope.accidentVehicles = result;
+			$scope.$apply();
+		});
+
+		/*console.log('witness model : ' + JSON.stringify($scope.accidentWitnessEventModel));
 
 		$scope.accidentVehicle = [];
 		$scope.VehicleData = [];
@@ -25,28 +35,7 @@ eventCaptureControllers.controller('AccidentController',
 			//witness.push(result[0]);
 
 			console.log('Witness on accident : ' + JSON.stringify(results));
-		});
-
-		//fetching accident vehicle based on accident id
-		$scope.accidentVehicleEventModal.get({value:$scope.accident_id},function(result){
-
-			accidentvehicle.push(result[0]);
-			$scope.data = result[0];
-
-			console.log('data : '+$scope.data);
-			vehicledata.push($scope.data.Vehicle);
-			driverdata.push($scope.data.Driver);
-
-			$scope.accidentVehicle = result[0];
-			$scope.VehicleData = vehicledata;
-			$scope.DriverData = driverdata;
-			$scope.$apply();
-		});
-
-
-
-
-		//console.log('AccidentVehicleData '+JSON.stringify($scope.AccidentVehicleData)+'\n');
+		});*/
 
 
 	});

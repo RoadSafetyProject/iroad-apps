@@ -9,7 +9,7 @@ eventCaptureControllers.controller('MainController',
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
-    	$scope.pageSize = 10;
+    	$scope.pageSize = 100;
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchAccidents($scope.pageSize,page);
     	                };
