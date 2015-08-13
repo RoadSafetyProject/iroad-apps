@@ -17,11 +17,13 @@ eventCaptureControllers.controller('MainController',
         $scope.loadAccidents = function(){
         	$scope.accidentEventModal.getAll(function(result){
         		$scope.recentAccidents = [];
-        		angular.forEach(result, function (recent_accident) {
-                    console.log('recent_accident:' + JSON.stringify(recent_accident));
+        		console.log('recent_accident Number:' + JSON.stringify(result.data));
+        		angular.forEach(result.data, function (recent_accident) {
+                    //console.log('recent_accident:' + JSON.stringify(recent_accident));
+                    
                     var otherDate = new Date(recent_accident.Accident["Time of Accident"]);
                     var d = new Date();
-                    if(d.toDateString() == otherDate.toDateString() && !$scope.isAccidentIdLoaded(recent_accident.Accident.id))
+                    //if(d.toDateString() == otherDate.toDateString() && !$scope.isAccidentIdLoaded(recent_accident.Accident.id))
                     {
                     	//recent_accident.Accident.Longitude = 39.240643;
                     	//recent_accident.Accident.Latitude = -6.771275;
@@ -51,7 +53,7 @@ eventCaptureControllers.controller('MainController',
 
                             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                                 return function() {
-
+                                	//alert("Clicked");
                                     $scope.ViewAccident(recent_accident);
                                     marker.stopBlinking();
                                 }
@@ -66,7 +68,7 @@ eventCaptureControllers.controller('MainController',
                     
                 });
 
-            },"Accident Vehicle");
+            },500,1,"&startDate=2012-08-02&endDate=2012-08-02");
         }
         $scope.autoCenter = function(){
         //  Create a new viewpoint bound
@@ -112,7 +114,7 @@ eventCaptureControllers.controller('MainController',
             
             $scope.loadedAccidentIds = [];
             $scope.loadAccidents();
-            $interval($scope.loadAccidents,5000);
+            //$interval($scope.loadAccidents,5000);
         }
         $scope.isAccidentIdLoaded = function(id){
         	for(var i = 0;i < $scope.loadedAccidentIds.length;i++){

@@ -235,8 +235,11 @@ iroad2.data.Modal = function (modalName,relations) {
 		// Stores the rows of an entity
 		this.events = [];
 		var selfGetAll = this;
-		if(arguments.length == 4){
+		if(arguments.length >= 3){
 			selfGetAll.dataResults = new iroad2.data.DataResult();
+		}
+		if(arguments.length == 4){
+			url += arguments[3];
 		}
 		//Checks that all requests are made
 		this.resCount = [];
@@ -438,6 +441,9 @@ iroad2.data.Modal = function (modalName,relations) {
 			}
 		}
 		this.object["id"] = event.event;
+		if(event.coordinate){
+			this.object["coordinate"] = event.coordinate;
+		}
 		for(var k = 0; k < event.dataValues.length; k++) {
 			
 			var dataValue = event.dataValues[k];
