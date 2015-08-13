@@ -14,7 +14,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 			          //$scope.makeRequest(node.$model.name);
 			      }
 			  };
-    	$("#myModal").draggable({
+    	$("#facilityModal").draggable({
     	    handle: ".modal-header"
     	});
     	$scope.tree = {};

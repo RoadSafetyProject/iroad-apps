@@ -1,10 +1,13 @@
 <style>
   .angular-google-map-container { margin-top:45px;height: 100%; min-height:1000px;}
-  .form{
+  .button, .button2{
   	position:fixed;
   	top: 65px;
   	left:100px;
   	z-index:100;
+  }
+  .button2{
+  	left:250px;
   }
   .form2{
   	position:fixed;
@@ -63,8 +66,9 @@
   </style>
 <div class="angular-google-map-container">
 
-<button type="button" class="form btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">View Facilities</button>
-<div class="modal fade" id="myModal" role="dialog">
+<button type="button" class="button btn btn-primary btn-md" data-toggle="modal" data-target="#facilityModal">View Facilities</button>
+<button type="button" class="button button2 btn btn-primary btn-md" data-toggle="modal" data-target="#reportModal">View Community Reports</button>
+<div class="modal fade" id="facilityModal" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
@@ -90,7 +94,41 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Community Policing Reports</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+		<table datatable="ng" class="mws-datatable-fn mws-table col-sm-12">
+                <thead>
+                <tr>
+                    <th># </th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="event in events" ng-click="addMarker(event)">
+                	<td>{{$index + 1}}</td>
+                	<td>{{getDataValue(event,"Community Report Title")}}</td>
+                	<td>{{getDataValue(event,"Community Report Type")}}</td>
+                	<td>{{getDataValue(event,"Community Report Description")}}</td>
+                </tr>
+                </tbody>
+        </table>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <div ng-if="isAddingFacility" class="form2">
 <div class="panel panel-default">
   <div class="panel-heading">Create New Facility
@@ -116,34 +154,6 @@
 		</div>
 		<div class="row">
 		<button ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Save Facility</button>
-		</div>
-	</div>
-</div>
-</div>
-<div class="policingPanel">
-	<div class="panel panel-default">
-  <div class="panel-heading">Community Policing Reports</div>
-  
-  <div class="panel-body">
-		<div class="row">
-		<table datatable="ng" class="mws-datatable-fn mws-table">
-                <thead>
-                <tr>
-                    <th># </th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="event in events" ng-click="addMarker(event)">
-                	<td>{{$index + 1}}</td>
-                	<td>{{getDataValue(event,"Community Report Title")}}</td>
-                	<td>{{getDataValue(event,"Community Report Type")}}</td>
-                	<td>{{getDataValue(event,"Community Report Description")}}</td>
-                </tr>
-                </tbody>
-        </table>
 		</div>
 	</div>
 </div>
