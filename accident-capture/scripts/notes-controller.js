@@ -225,8 +225,8 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.vehicles = [];
 	$scope.addAccidentVehicle = function(){
 
-		console.log('Other data : ' + JSON.stringify($scope.otherData));
-		console.log('Other data -> numberOfAccidentVehicles : ' + $scope.otherData['numberOfAccidentVehicles']);
+		console.log('Other data : ' + JSON.stringify($scope.otherDataForm));
+		console.log('Other data -> numberOfAccidentVehicles : ' + $scope.otherDataForm['numberOfAccidentVehicles']);
 
 		//fill other data onto variables
 		$scope.numberOfVehicles = $scope.otherDataForm['numberOfAccidentVehicles'];
@@ -361,9 +361,6 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 												$scope.accidentVehicle.Vehicle = vehicles[i];
 												$scope.accidentVehicle.Driver = drivers[i];
 
-												console.log('Driver ' + i + ' : ' +JSON.stringify(drivers[i]));
-												console.log('Vehicle ' + i + ' : ' +JSON.stringify(vehicles[i]));
-
 												//add other data for driver
 												$scope.accidentVehicle['Full Name'] = $scope.accidentVehicle.Driver['Full Name'];
 												$scope.accidentVehicle['Gender'] = $scope.accidentVehicle.Driver['Gender'];
@@ -381,11 +378,10 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 												//savinng accident
 												$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
 												var savedAccidentVehicle = $scope.accidentVehicle;
-												console.lgo('saved data : ' + savedAccidentVehicle);
 
 												$scope.accidentVehicleEventModal.save(savedAccidentVehicle,otherData,function(result){
 													console.log('Success full add accident Vehicle');
-													console.lgo('saved data : ' + savedAccidentVehicle);
+													console.log('saved data : ' + JSON.stringify(savedAccidentVehicle));
 													console.log('accident vehicle id : ' + JSON.stringify(result.importSummaries[0].reference));
 
 												},function(error){
