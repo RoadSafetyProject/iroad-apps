@@ -15,16 +15,11 @@ eventCaptureControllers.controller('MainController',
         $scope.data = {};
 
         $scope.loadAccidents = function(){
+        	var d = new Date();
         	$scope.accidentEventModal.getAll(function(result){
         		$scope.recentAccidents = [];
-        		angular.forEach(result, function (recent_accident) {
-                    console.log('recent_accident:' + JSON.stringify(recent_accident));
-                    var otherDate = new Date(recent_accident.Accident["Time of Accident"]);
-                    var d = new Date();
-                    if(d.toDateString() == otherDate.toDateString() && !$scope.isAccidentIdLoaded(recent_accident.Accident.id))
+        		angular.forEach(result.data, function (recent_accident) {
                     {
-                    	//recent_accident.Accident.Longitude = 39.240643;
-                    	//recent_accident.Accident.Latitude = -6.771275;
                     	$scope.recentAccidents.push(recent_accident);
                     	$scope.loadedAccidentIds.push(recent_accident.Accident.id);
                     	var image = new google.maps.MarkerImage(
@@ -49,13 +44,12 @@ eventCaptureControllers.controller('MainController',
                             marker.startBlinking();
                             $scope.markers.push(marker);
 
-                            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                            google.maps.event.addListener(marker, 'click', (function(marker) {
                                 return function() {
-
                                     $scope.ViewAccident(recent_accident);
                                     marker.stopBlinking();
                                 }
-                            })(marker, i));
+                            })(marker));
 
                             iconCounter++;
                             // We only have a limited number of possible icon colors, so we may have to restart the counter
@@ -66,7 +60,19 @@ eventCaptureControllers.controller('MainController',
                     
                 });
 
-            },"Accident Vehicle");
+            },500,1,"&startDate="+$scope.getTodaysDate()+"&endDate="+$scope.getTodaysDate());
+        }
+        $scope.getTodaysDate = function(){
+        	var date = new Date();
+        	var day = date.getDate();
+        	if(day < 10){
+        		day = "0" + day;
+        	}
+        	var month = date.getMonth() + 1;
+        	if(month < 10){
+        		month = "0" + month;
+        	}
+        	return date.getFullYear() +"-"+month+"-"+day;
         }
         $scope.autoCenter = function(){
         //  Create a new viewpoint bound
@@ -99,7 +105,7 @@ eventCaptureControllers.controller('MainController',
             google.maps.Marker.prototype.accidentId = null;
             google.maps.Marker.prototype.startBlinking=function(){
                 var mar = this;
-                this.interval = setInterval(function(){mar.setVisible(!mar.visible)}, 500);
+                this.interval = setInterval(function(){mar.setVisible(!mar.visible)}, 1000);
             };
             google.maps.Marker.prototype.stopBlinking=function(){
 
@@ -112,7 +118,7 @@ eventCaptureControllers.controller('MainController',
             
             $scope.loadedAccidentIds = [];
             $scope.loadAccidents();
-            $interval($scope.loadAccidents,5000);
+            //$interval($scope.loadAccidents,5000);
         }
         $scope.isAccidentIdLoaded = function(id){
         	for(var i = 0;i < $scope.loadedAccidentIds.length;i++){

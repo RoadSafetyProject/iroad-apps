@@ -107,7 +107,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 					event[relationship.pivot] = [];
 				}
 			});
+			
 			$scope.enableEdit(event);
+			$scope.editOffenceTitle = "Add New Offence";
 		}
 		$scope.makePayment = false;
 		$scope.startPayment = function(){
@@ -262,7 +264,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			$scope.show("vehicle");
 			$scope.data.vehicle = vehicle;
 		}
+		$scope.editOffenceTitle = "";
 		$scope.enableEdit  = function(e){
+			$scope.editOffenceTitle = "Edit Offence";
 			if(iroad2.data.user.organisationUnits.length == 0){
 				alert("You cannot perform this action. You are not assigned an organisation unit.");
 				return;
@@ -362,6 +366,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 				}
 				
             });
+			
 			if(canSave){
 				angular.forEach($scope.savableEventData, function (savableData) {
 					delete $scope.editingEvent[savableData.name];
@@ -370,51 +375,67 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			}else{
 				return;
 			}
-			$scope.editingEvent["Full Name"] = $scope.editingEvent.Driver["Full Name"];
-			$scope.editingEvent["Driver License Number"] = $scope.editingEvent.Driver["Driver License Number"];
-			$scope.editingEvent["Gender"] = $scope.editingEvent.Driver["Gender"];
-			$scope.editingEvent["Date of Birth"] = $scope.editingEvent.Driver["Date of Birth"];
-			
-			$scope.editingEvent["Vehicle Plate Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number"];
-			$scope.editingEvent["Vehicle Owner Name"] = $scope.editingEvent.Vehicle["Vehicle Owner Name"];
-			$scope.editingEvent["Model"] = $scope.editingEvent.Vehicle["Model"];
-			$scope.editingEvent["Make"] = $scope.editingEvent.Vehicle["Make"];
-			$scope.editingEvent["Vehicle Class"] = $scope.editingEvent.Vehicle["Vehicle Class"];
-			$scope.editingEvent["Vehicle Ownership Category"] = $scope.editingEvent.Vehicle["Vehicle Ownership Category"];
+			/*console.log("JSON After:" + JSON.stringify($scope.editingEvent));
 			
 			
+			
+			*/
+			if(!$scope.editingEvent.id){
+				$scope.editingEvent["Full Name"] = $scope.editingEvent.Driver["Full Name"];
+				$scope.editingEvent["Driver License Number"] = $scope.editingEvent.Driver["Driver License Number"];
+				$scope.editingEvent["Gender"] = $scope.editingEvent.Driver["Gender"];
+				$scope.editingEvent["Date of Birth"] = $scope.editingEvent.Driver["Date of Birth"];
+				
+				$scope.editingEvent["Vehicle Plate Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number"];
+				$scope.editingEvent["Vehicle Owner Name"] = $scope.editingEvent.Vehicle["Vehicle Owner Name"];
+				$scope.editingEvent["Model"] = $scope.editingEvent.Vehicle["Model"];
+				$scope.editingEvent["Make"] = $scope.editingEvent.Vehicle["Make"];
+				$scope.editingEvent["Vehicle Class"] = $scope.editingEvent.Vehicle["Vehicle Class"];
+				$scope.editingEvent["Vehicle Ownership Category"] = $scope.editingEvent.Vehicle["Vehicle Ownership Category"];
+			}
 			console.log("JSON After:" + JSON.stringify($scope.editingEvent));
 			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
+			if($scope.editingEvent.coordinate){
+				otherData.coordinate =$scope.editingEvent.coordinate; 
+			}else{
+				otherData.coordinate = {"latitude": "","longitude": ""};
+			}
 			//var saveEvent = $scope.editingEvent;
 			var relationSaveData = [];
 			console.log($scope.editingEvent);
 			$scope.offenceEventModal.save($scope.editingEvent,otherData,function(result){
-				$scope.data.offences.push($scope.editingEvent);
-				$scope.$apply();
-				console.log("Save Made Result:" + JSON.stringify(result));
 				if(!result.updatedEvent){
 					$scope.editingEvent.id = result.importSummaries[0].reference;
-				}
-				var saveDataArray = [];
-				console.log("$scope.editingOutputModal:"+JSON.stringify($scope.data.editingOutputModal));
-				angular.forEach($scope.data.editingOutputModal,function(registry){
-					var off = {
-							"Offence_Event":{"id": $scope.editingEvent.id},
-							"Offence_Registry":{"id":registry.id}
-						};
-					console.log("Saving Offence Off:"+JSON.stringify(off));
-					saveDataArray.push(off);
-					console.log("Saving Offence:"+JSON.stringify(saveDataArray));
-				});
-				//console.log("Saving Offence:"+JSON.stringify(saveDataArray));
-				var offence = new iroad2.data.Modal("Offence",[]);
-				offence.save(saveDataArray,otherData,function(result){
-					$scope.offences.push($scope.editingEvent);
+					$scope.data.offences.push($scope.editingEvent);
 					$scope.$apply();
-					console.log("Relation Save Made Result:" + JSON.stringify(result));
-				},function(error){
-					console.log("Error Saving Relation:" + JSON.stringify(error));
-				},offence.getModalName());
+					console.log("Save Made Result:" + JSON.stringify(result));
+					if(!result.updatedEvent){
+						$scope.editingEvent.id = result.importSummaries[0].reference;
+					}
+					var saveDataArray = [];
+					console.log("$scope.editingOutputModal:"+JSON.stringify($scope.data.editingOutputModal));
+					angular.forEach($scope.data.editingOutputModal,function(registry){
+						var off = {
+								"Offence_Event":{"id": $scope.editingEvent.id},
+								"Offence_Registry":{"id":registry.id}
+							};
+						console.log("Saving Offence Off:"+JSON.stringify(off));
+						saveDataArray.push(off);
+						console.log("Saving Offence:"+JSON.stringify(saveDataArray));
+					});
+					//console.log("Saving Offence:"+JSON.stringify(saveDataArray));
+					var offence = new iroad2.data.Modal("Offence",[]);
+					offence.save(saveDataArray,otherData,function(result){
+						$scope.offences.push($scope.editingEvent);
+						$scope.$apply();
+						console.log("Relation Save Made Result:" + JSON.stringify(result));
+					},function(error){
+						console.log("Error Saving Relation:" + JSON.stringify(error));
+					},offence.getModalName());
+				}else{
+					
+				}
+				
 			},function(error){
 				console.log("Error Saving:" + JSON.stringify(error));
 			},$scope.offenceEventModal.getModalName());
