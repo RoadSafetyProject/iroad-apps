@@ -110,7 +110,7 @@
 								<div class="panel-heading" role="tab" id="heading{{ $index }}">
 									<h4 class="panel-title" align = "center">
 										<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $index }}" aria-expanded="false" aria-controls="collapse{{ $index }}">
-											Accident Vehicle {{ $index + 1 }}
+											Vehicle {{ $index + 1 }}
 										</a>
 									</h4>
 								</div>
@@ -156,7 +156,7 @@
 											<span ng-if="!accidentVehicle ['Phone Use'] ">No</span>
 										</div>
 										<div class = "col-sm-4" >
-											<label>Driver without driving lisence</label><br>
+											<label>Driver without driving licence</label><br>
 											<span ng-if="accidentVehicle ['Driver without driving lisence'] ">Yes</span>
 											<span ng-if="!accidentVehicle ['Driver without driving lisence'] ">No</span>
 										</div>
@@ -250,7 +250,46 @@
 
 				</div>
 			</div>
-			<!-- panel for  -->
+
+
+			<!-- panel for all witnesses for a given accident -->
+			<div class="panel panel-default" ng-if = "accidentWitnesses">
+				<div class="panel-heading">Accident Witnesses Information </div>
+				<div class = "panel-body">
+					<div class="panel-group" id="accordionWitness" role="tablist" aria-multiselectable="true">
+						<!-- loop through accident witnesses -->
+						<div ng-repeat="witness in accidentWitnesses">
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingWitnes{{ $index }}">
+									<h4 class="panel-title" align = "center">
+										<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseWitness{{ $index }}" aria-expanded="false" aria-controls="collapseWitness{{ $index }}">
+											Witness {{ $index + 1 }}
+										</a>
+									</h4>
+								</div>
+								<div id="collapseWitness{{ $index }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingWitnes{{ $index }}" style = "padding-right:1%;padding-left: 1%;padding-bottom: 2%; ">
+									<div class = "panel-body">
+										<div class = "row">
+											<div ng-repeat="(key, value) in witness">
+												<div class="col-sm-4" ng-if="key != 'Accident' && key != 'id' && value">
+
+													<div ng-hide = "key == 'Signature'">
+														<label>{{ key }}</label><br>
+														{{ witness[key] }}
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!-- end looping witnesses for agiven accident -->
+					</div><!-- end for accordion -->
+				</div>
+			</div>
+
+			<!-- panel for Police register the accident -->
 			<div class="panel panel-default" ng-if = "AccidentData.Police">
 				<div class="panel-heading">Police register</div>
 				<div class = "panel-body">
