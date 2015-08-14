@@ -10,7 +10,7 @@ eventCaptureControllers.controller('MainController',
              DHIS2EventFactory,DHIS2EventService,ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService,$interval)
     {
-        $scope.accidentEventModal = new iroad2.data.Modal("Accident Vehicle",[]);
+        $scope.accidentEventModal = new iroad2.data.Modal("Accident",[]);
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
@@ -21,7 +21,7 @@ eventCaptureControllers.controller('MainController',
         		angular.forEach(result.data, function (recent_accident) {
                     {
                     	$scope.recentAccidents.push(recent_accident);
-                    	$scope.loadedAccidentIds.push(recent_accident.Accident.id);
+                    	$scope.loadedAccidentIds.push(recent_accident.id);
                     	var image = new google.maps.MarkerImage(
                                 '../resources/images/marker.png',
                                 null, // size
@@ -33,7 +33,8 @@ eventCaptureControllers.controller('MainController',
 
                             var marker = new google.maps.Marker({
                                 //position: new google.maps.LatLng(coords[i][0], coords[i][1]),
-                            	position: new google.maps.LatLng(recent_accident.Accident.coordinate.latitude, recent_accident.Accident.coordinate.longitude),//(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
+                            	position: new google.maps.LatLng(recent_accident.coordinate.latitude, recent_accident.coordinate.longitude),//(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
+                            	//position: new google.maps.LatLng(-6.776751, 39.256210),
                                 map: $scope.map,
                                 optimized: false,
                                 icon: $scope.iconURLPrefix + 'green-dot.png',
@@ -46,7 +47,8 @@ eventCaptureControllers.controller('MainController',
 
                             google.maps.event.addListener(marker, 'click', (function(marker) {
                                 return function() {
-                                    $scope.ViewAccident(recent_accident);
+                                    //$scope.ViewAccident(recent_accident);
+                                    $scope.viewAccidentInfo(recent_accident);
                                     marker.stopBlinking();
                                 }
                             })(marker));
@@ -61,6 +63,20 @@ eventCaptureControllers.controller('MainController',
                 });
 
             },500,1,"&startDate="+$scope.getTodaysDate()+"&endDate="+$scope.getTodaysDate());
+        }
+        $scope.viewAccidentInfo = function(dhis2Event){
+            
+            $scope.AccidentData = dhis2Event;
+             var modalInstance = $modal.open({
+                    templateUrl: '../accident-capture/views/viewAccidentInfo.html',
+                    controller: 'AccidentController'
+
+                });
+
+                modalInstance.result.then(function (){
+                });
+            
+            
         }
         $scope.getTodaysDate = function(){
         	var date = new Date();

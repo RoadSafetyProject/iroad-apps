@@ -24,9 +24,8 @@
 	}
 </style>
 	<div ng-controller="AccidentController">
-	<center>
-		<h2>Accident Report</h2>
-	</center>
+
+		<h2 align = "center">Accident Report</h2>
 		<div style="padding:50px;padding-top:0">
 
 			<!-- panel for  basic info for an accident -->
@@ -95,132 +94,164 @@
 						{{ AccidentData['Weather'] }}										
 						</div>
 					</div>
-				</div>		
-
-			<!-- panel for  vehicles invloved-->
-			<div class="panel panel-default">
-				<div class="panel-heading">Accident Vehicle Details </div>
-				<div class = "panel-body">
-					<div ng-repeat="vehicle in VehicleData">
-						<div class = "row">
-							<div class="col-sm-4">
-								<label>Make</label><br />
-								{{ vehicle['Make'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Model</label><br />
-								{{ vehicle['Model'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Model number</label><br />
-								{{ vehicle['Model number'] }}
-							</div>
-						</div>
-
-						<div class = "row">
-							<div class="col-sm-4">
-								<label>Color</label><br />
-								{{ vehicle['Color'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Body Type</label><br />
-								{{ vehicle['Body Type'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Engine Number</label><br />
-								{{ vehicle['Engine Number'] }}
-							</div>
-						</div>
-
-						<div class = "row">
-							<div class="col-sm-4">
-								<label>Vehicle Owner Name</label><br />
-								{{ vehicle['Vehicle Owner Name'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Vehicle Owner Address</label><br />
-								{{ vehicle['Vehicle Owner Address'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Vehicle Ownership Category</label><br />
-								{{ vehicle['Vehicle Ownership Category'] }}
-							</div>
-						</div>
-
-						<div class = "row">
-							<div class="col-sm-4">
-								<label>Current Insurance Expiry Date</label><br />
-								{{ vehicle['Current Insurance Expiry Date'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Last Inspection Date</label><br />
-								{{ vehicle['Last Inspection Date'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Vehicle Ownership Category</label><br />
-								{{ vehicle['Last Inspecton Result'] }}
-							</div>
-						</div>
-
-					</div>
 				</div>
-			</div>	
+			</div>
 
-			<!-- panel for  Drivers invloved-->
-			<div class="panel panel-default">
-				<div class="panel-heading">Accident Vehicle's Drivers details </div>
+			<!-- panel for view of all accidents vehicles involved in accident-->
+			<div class = "panel panel-default" ng-if = "accidentVehicles">
+				<div class="panel-heading">Accident Vehicle(s) information </div>
 				<div class = "panel-body">
-					<div ng-repeat="driver in DriverData">
-						<div class = "row">
-							<div class="col-sm-4">
-								<label>Full Name</label><br />
-								{{ driver['Full Name'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Gender</label><br />
-								{{ driver['Gender'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>TIN Number</label><br />
-								{{ driver['TIN Number'] }}
-							</div>
-						</div>
 
-						<div class = "row">
-							<div class="col-sm-4">
-								<label>Driver License Number</label><br />
-								{{ driver['Driver License Number'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Current License Expiry Date</label><br />
-								{{ driver['Current License Expiry Date'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Driving Class Name</label><br />
-								{{ driver['Driving Class Name'] }}
-							</div>
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+						<!-- loop through all accident vehicles -->
+						<div ng-repeat = "accidentVehicle in accidentVehicles">
 
-						</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="heading{{ $index }}">
+									<h4 class="panel-title" align = "center">
+										<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $index }}" aria-expanded="false" aria-controls="collapse{{ $index }}">
+											Accident Vehicle {{ $index + 1 }}
+										</a>
+									</h4>
+								</div>
+								<div id="collapse{{ $index }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ $index }}" style = "padding-right:1%;padding-left: 1%;padding-bottom: 2%; ">
 
-						<div class = "row">
-							<div class="col-sm-4">
-								<label>Postal Address</label><br />
-								{{ driver['Postal Address'] }}
-							</div>
-							<div class="col-sm-4">
-								<label>Phone Number</label><br />
-								{{ driver['Phone Number'] }}
+									<!-- info about people in the accident vehicle-->
+									<div class = "row">
+										<h5 align = "center"><b>Information</b></h5>
+
+										<div class = "col-sm-4" ng-if="accidentVehicle ['Number of Simple Injuries']">
+											<label> Number of Simple Injuries </label><br>
+											{{ accidentVehicle ['Number of Simple Injuries'] }}
+										</div>
+										<div class = "col-sm-4" ng-if="accidentVehicle ['Number of Fatal Injuries']">
+											<label>Number of Fatal Injuries</label><br>
+											{{ accidentVehicle ['Number of Fatal Injuries'] }}
+										</div>
+										<div class = "col-sm-4" ng-if="accidentVehicle ['Number of Severe Injuries']">
+											<label>Number of Severe Injuries</label><br>
+											{{ accidentVehicle ['Number of Severe Injuries'] }}
+										</div>
+										<div class = "col-sm-4" ng-if="accidentVehicle ['Number of Not Damaged']">
+											<label></label>Number of Not Damaged <br>
+											{{ accidentVehicle ['Number of Not Damaged'] }}
+										</div>
+										<div class = "col-sm-4" ng-if="accidentVehicle ['Damage']">
+											<label>Damage</label><br>
+											{{ accidentVehicle ['Damage'] }}
+										</div>
+
+										<div class = "col-sm-4" ng-if="accidentVehicle ['Alcohol Level']">
+											<label>Alcohol Level</label><br>
+											{{ accidentVehicle ['Alcohol Level'] }}
+										</div>
+										<div class = "col-sm-4">
+											<label>Seat Belt</label><br>
+											<span ng-if="accidentVehicle ['Seat Belt'] ">Yes</span>
+											<span ng-if="!accidentVehicle ['Seat Belt'] ">No</span>
+										</div>
+										<div class = "col-sm-4">
+											<label>Phone Use</label><br>
+											<span ng-if="accidentVehicle ['Phone Use'] ">Yes</span>
+											<span ng-if="!accidentVehicle ['Phone Use'] ">No</span>
+										</div>
+										<div class = "col-sm-4" >
+											<label>Driver without driving lisence</label><br>
+											<span ng-if="accidentVehicle ['Driver without driving lisence'] ">Yes</span>
+											<span ng-if="!accidentVehicle ['Driver without driving lisence'] ">No</span>
+										</div>
+									</div>
+									<hr>
+									<!-- info about drive and vehicle-->
+									<div class = "row">
+										<div class = "col-sm-6">
+											<div class="panel panel-default">
+												<div class = "panel-heading">Driver</div>
+												<div class = "panel-body">
+													<div class = "col-sm-6">
+														<label>Full Name</label><br>
+														{{ accidentVehicle.Driver['Full Name'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Driver License Number</label><br>
+														{{ accidentVehicle.Driver['Driver License Number'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>TIN Number</label><br>
+														{{ accidentVehicle.Driver['TIN Number'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Current License Expiry Date</label><br>
+														{{ accidentVehicle.Driver['Current License Expiry Date'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Driving Class</label><br>
+														{{ accidentVehicle.Driver['Driving Class Name'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Genderr</label><br>
+														{{ accidentVehicle.Driver['Gender'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Phone Number</label><br>
+														{{ accidentVehicle.Driver['Phone Number'] }}
+													</div>
+												</div>
+											</div>
+
+										</div>
+
+										<div class = "col-sm-6">
+											<div class="panel panel-default">
+												<div class = "panel-heading">Vehicle</div>
+												<div class = "panel-body">
+													<div class = "col-sm-6">
+														<label>Make</label><br>
+														{{ accidentVehicle.Vehicle['Make'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Model</label><br>
+														{{ accidentVehicle.Vehicle['Model'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Color</label><br>
+														{{ accidentVehicle.Vehicle['Color'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Vehicle Plate Number</label><br>
+														{{ accidentVehicle.Vehicle['Vehicle Plate Number'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Vehicle Owner Name</label><br>
+														{{ accidentVehicle.Vehicle['Vehicle Owner Name'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Vehicle Owner Address</label><br>
+														{{ accidentVehicle.Vehicle['Vehicle Owner Address'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Current License Expiry Date</label><br>
+														{{ accidentVehicle.Vehicle['Current License Expiry Date'] }}
+													</div>
+													<div class = "col-sm-6">
+														<label>Current Insurance Expiry Date</label><br>
+														{{ accidentVehicle.Vehicle['Current Insurance Expiry Date'] }}
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
 							</div>
 
 						</div>
 					</div>
 
-
 				</div>
-			</div>		
-
+			</div>
 			<!-- panel for  -->
-			<div class="panel panel-default">
+			<div class="panel panel-default" ng-if = "AccidentData.Police">
 				<div class="panel-heading">Police register</div>
 				<div class = "panel-body">
 					<div class = "row">

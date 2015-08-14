@@ -14,7 +14,7 @@
 	}
 	.expiry{
 		border: 2px solid #F44336;
-		background: #E57373;
+		background-color: #E57373;
 		height: 40px;
 		display: inline-block;
 		width: 100%;
@@ -24,264 +24,180 @@
 	}
 </style>
 
-<div ng-controller="AddAccidentController">
-	<center>
-		<h3>Accident Registering</h3>
-	</center>
-	<div style="padding:50px;padding-top:0">
-		<div class = "panel panel-default">
-			<div class = "panel-heading">Basic Information Accident</div>
-			<div class = "panel-body">
+<div ng-controller="AddAccidentController" style="padding:50px;padding-top:0">
 
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Accident Registration Number</label><br />
-					<input  ng-model="newAccident['Accident Registration Number']" class="form-control input-sm" />
+	<h3 align = "center">Accident Registering</h3>
+
+	<!--<div style="padding:50px;padding-top:0">-->
+
+	<!-- basic info for adding accident-->
+	<div class = "panel panel-default" ng-if = "accidentBasicInfo" >
+		<div class = "panel-heading">Basic Information Accident</div>
+		<div class = "panel-body" >
+			<div class="row">
+				<div  ng-repeat="(key,value) in newAccidentForm ">
+
+					<div class = "col-sm-4">
+						<label style="font-size: 0.8em">{{ key}}</label><br />
+
+						<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm"/>
+						<input ng-if="isInteger(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
+						<select  ng-if="isBoolean(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm">
+							<option value="true">Yes</option><option value="false">No</option>
+						</select>
+						<select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentForm[key]" />
+						<input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
+
+					</div>
 				</div>
 
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Accident Class</label><br />
-					<select class="form-control input-sm" ng-if="hasDataSets('Accident Class')"  ng-options="item.name as item.name for item in getOptionSets('Accident Class')" ng-model="newAccident['Accident Class']" />
-				</div>			
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Accident Type</label><br />
-					<select class="form-control input-sm" ng-if="hasDataSets('Accident Type')"  ng-options="item.name as item.name for item in getOptionSets('Accident Type')" ng-model="newAccident['Accident Type']" />
+				<!-- attendant of accident and number of witness & vehicle -->
+				<div class = "col-sm-4">
+					<label style="font-size: 0.8em">Accident Attendant</label><br />
+					<input class="form-control input-sm" ng-model="otherDataForm['accidentAttendant']" >
+				</div>
+				<div class = "col-sm-4">
+					<label style="font-size: 0.8em">Number Of Accident Vehicles</label><br />
+					<input class="form-control input-sm" ng-model="otherDataForm['numberOfAccidentVehicles']" >
+				</div>
+				<div class = "col-sm-4">
+					<label style="font-size: 0.8em">Number of Witness</label><br />
+					<input class="form-control input-sm" ng-model="otherDataForm['numberOfAccidentWitness']" >
 				</div>
 
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Accident Type Detail</label><br />
-					<select class="form-control input-sm" ng-if="hasDataSets('Accident Type Detail')"  ng-options="item.name as item.name for item in getOptionSets('Accident Type Detail')" ng-model="newAccident['Accident Type Detail']" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Area of Accident</label><br />
-					<input  ng-model="newAccident['Area of Accident']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Cause of Accident</label><br />
-					<select class="form-control input-sm" ng-if="hasDataSets('Cause of Accident')"  ng-options="item.name as item.name for item in getOptionSets('Cause of Accident')" ng-model="newAccident['Cause of Accident']" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Intersection Mark</label><br />
-					<input  ng-model="newAccident['Intersection Mark']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Intersection Name</label><br />
-					<input  ng-model="newAccident['Intersection Name']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Intersection Number</label><br />
-					<input  ng-model="newAccident['Intersection Number']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Road Mark</label><br />
-					<input  ng-model="newAccident['Road Mark']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Road Name</label><br />
-					<input  ng-model="newAccident['Road Name']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Road Number</label><br />
-					<input  ng-model="newAccident['Road Number']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">'Number of Fatal Injuries</label><br />
-					<input  ng-model="newAccident['Number of Fatal Injuries']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Number of Severe Injuries</label><br />
-					<input  ng-model="newAccident['Number of Severe Injuries']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Number of Simple Injuries</label><br />
-					<input  ng-model="newAccident['Number of Simple Injuries']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">OCS Check</label><br />
-					<select   ng-model="newAccident['OCS Check']" class="form-control input-sm">
-	                    <option value="true">Yes</option><option value="false">No</option>
-	                </select>
-				</div>		
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Supervisor Check</label><br />
-					<select   ng-model="newAccident['Supervisor Check']" class="form-control input-sm">
-	                    <option value="true">Yes</option><option value="false">No</option>
-	                </select>
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Time of Accident</label><br />
-					<input ui-date="dateOptions" class="form-control input-sm" ng-model="newAccident['Time of Accident']"/>
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Weather</label><br />
-					<input  ng-model="newAccident['Weather']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Accident Image</label><br />
-					<input  ng-model="newAccident['Accident Image']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Accident Description Image</label><br />
-					<input  ng-model="newAccident['Accident Description Image']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Accident Video</label><br />
-					<input  ng-model="newAccident['Accident Video']" class="form-control input-sm" />
-				</div>
-
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Signature</label><br />
-					<input  ng-model="newAccident['Signature']" class="form-control input-sm" />
-				</div>
-				
 			</div>
+			<!-- button for providing info about accident vehicle -->
+			<div  class = "row" style="margin:4%;">
+				<div class = "pull-right">
+					<button ng-click="addAccidentVehicle()" ng-if = "!accidentBasicInfoVisibility && accidentBasicInfoVisibilityButton"  class="btn btn-primary " style="color:#fff0ff;">Next</button>
+				</div>
+			</div>
+
 		</div>
 
-		
-
-		<div class = "panel panel-default">
-			<div class = "panel-heading">Accident Vehicle(s) Information</div>
-			<div class = "panel-body">
-				<div class = "row">
-					<h5 style = "padding-left:2%;"> Injured People</h5>
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Number of Fatal Injuries</label><br />
-						<input  ng-model="newAccidentVehicle['Number of Fatal Injuries']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Number of Not Injuried</label><br />
-						<input  ng-model="newAccidentVehicle['Number of Not Damaged']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Number of Severe Injuries</label><br />
-						<input  ng-model="newAccidentVehicle['Number of Severe Injuries']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Number of Simple Injuries</label><br />
-						<input  ng-model="newAccidentVehicle['Number of Simple Injuries']" class="form-control input-sm" />
-					</div>
-
-				</div>
-
-				<div class = "row">
-					<h5 style = "padding-left:2%;">Accident Vehicle's Driver details</h5>				
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Licence Number</label><br />
-						<input  ng-model="newAccidentVehicle['Licence Number']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Phone Use</label><br />
-						<select   ng-model="newAccidentVehicle['Phone Use']" class="form-control input-sm">
-		                    <option value="true">Yes</option><option value="false">No</option>
-		                </select>
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Seat Belt</label><br />
-						<select   ng-model="newAccidentVehicle['Seat Belt']" class="form-control input-sm">
-		                    <option value="true">Yes</option><option value="false">No</option>
-		                </select>
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Alcohol Level</label><br />
-						<select class="form-control input-sm" ng-options="item.name as item.name for item in getOptionSets('Alcohol Level')" ng-model="newAccidentVehicle['Alcohol Level']" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Expiered driving licence</label><br />
-						<select   ng-model="newAccidentVehicle['Expiered driving licence']" class="form-control input-sm">
-		                    <option value="true">Yes</option><option value="false">No</option>
-		                </select>
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Driver without driving lisence</label><br />
-						<select   ng-model="newAccidentVehicle['Driver without driving lisence']" class="form-control input-sm">
-		                    <option value="true">Yes</option><option value="false">No</option>
-		                </select>
-					</div>
-				</div>
-
-				<div class = "row"> 
-				<h5 style = "padding-left:2%;">Accident Vehicle Details</h5>
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Vehicle Plate Number</label><br />
-					<input  ng-model="newAccidentVehicle['Vehicle Plate Number']" class="form-control input-sm" />
-				</div>
-				<div class="col-sm-4">
-					<label style="font-size: 0.8em">Damage</label><br />
-					<input  ng-model="newAccidentVehicle['Damage']" class="form-control input-sm" />
-				</div>
-			</div>
-		</div>
-	</div>	
-
-		<div class = "panel panel-default">
-			<div class = "panel-heading">Accident Vehicle's Witness Information</div>
-			<div class = "panel-body">
-				<div class="row">
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">First Name</label><br />
-						<input  ng-model="newAccidentWitness['First Name']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Middle Name</label><br />
-						<input  ng-model="newAccidentWitness['Middle Name']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Last Name</label><br />
-						<input  ng-model="newAccidentWitness['Last Name']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Gender</label><br />
-						<select class="form-control input-sm" ng-if="hasDataSets('Gender')"  ng-options="item.name as item.name for item in getOptionSets('Gender')" ng-model="newAccidentWitness['Gender']" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Physical Address</label><br />
-						<input  ng-model="newAccidentWitness['Physical Address']" class="form-control input-sm" />
-					</div>
-
-					<div class="col-sm-4">
-						<label style="font-size: 0.8em">Postal Address</label><br />
-						<input  ng-model="newAccidentWitness['Postal Address']" class="form-control input-sm" />
-					</div>				
-
-				</div>
-
-			</div>
-		</div>	
-		<center>
-			<button ng-click = "saveAccident() " class="btn btn-primary btn-xs" style="color:#fff0ff;margin-bottom:2%;">Add new Accident</button>	
-		</center>
-
-			
-			
+		<!--<div style = "width:50%;margin:auto;margin-bottom: 1%;margin-top: 1%">
+			<button ng-click="changeAccidentBasicInfoVisibility()"  class = "btn btn-default form-control">
+				<span ng-if = "accidentBasicInfoVisibility" >Show</span> <span ng-if = "!accidentBasicInfoVisibility">Hide</span> Accident Basic Information
+			</button>
+		</div>-->
 	</div>
+
+
+
+
+	<!-- for for accident vehicle details -->
+	<div class = "panel panel-default" ng-if = "accidentVehicle">
+		<div class = "panel-heading">Accident Vehicle(s) Information</div>
+
+		<div class = "panel-body">
+
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+				<div ng-repeat="vehicle in vehicles ">
+
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="heading{{ vehicle }}">
+							<h4 class="panel-title" align = "center">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ vehicle }}" aria-expanded="true" aria-controls="collapse{{ vehicle }}">
+									Accident Vehicle {{ vehicle + 1 }}
+								</a>
+							</h4>
+						</div>
+						<div id="collapse{{ vehicle }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ vehicle }}">
+							<div class="panel-body">
+								<!-- form fr adding each accident vehicle -->
+
+								<div  ng-repeat="(key,value) in newAccidentVehicleForm ">
+
+									<div class = "col-sm-4" ng-hide = "key >= 0" ng-if="key != 'Date of Birth' && key != 'Full Name' && key != 'Gender' && key != 'Vehicle Ownership Category' && key != 'Vehicle Owner Name' && key != 'Vehicle Class' && key != 'Make' && key != 'Model' ">
+
+										<label style="font-size: 0.8em" >{{ key}}</label><br />
+										<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentVehicleForm[vehicle][key]" class="form-control input-sm"/>
+										<input ng-if="isInteger(key)"  ng-model="newAccidentVehicleForm[vehicle][key]" class="form-control input-sm" />
+										<select  ng-if="isBoolean(key)"  ng-model="newAccidentVehicleForm[vehicle][key]" class="form-control input-sm">
+											<option value="true">Yes</option><option value="false">No</option>
+										</select>
+										<select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentVehicleForm[vehicle][key]" />
+										<input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehicleForm[vehicle][key]"/>
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+
+
+			<div  class = "row" style="margin:4%;">
+				<div class = "pull-right">
+					<button ng-click="addAccidentWitness()" class="btn btn-primary " style="color:#fff0ff;">Next</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- form for adding accident witness -->
+	<div class = "panel panel-default" ng-if = "accidentWitness">
+		<div class = "panel-heading">Accident Vehicle's Witness Information</div>
+		<div class = "panel-body">
+
+			<div class="panel-group" id="accordionwitness" role="tablist" aria-multiselectable="true">
+
+				<div ng-repeat="witness in witnesses ">
+
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="heading{{ witness }}">
+							<h4 class="panel-title" align = "center">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ witness }}" aria-expanded="true" aria-controls="collapse{{ witness }}">
+									Accident Witness {{ witness + 1 }}
+								</a>
+							</h4>
+						</div>
+						<div id="collapse{{ witness }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ witness }}">
+							<div class="panel-body">
+								<!-- form fr adding each accident witness -->
+
+								<div  ng-repeat="(key,value) in newAccidentWitnessForm ">
+
+									<div class = "col-sm-4" ng-hide = "key >= 0" >
+
+										<label style="font-size: 0.8em">{{ key}}</label><br />
+										<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentWitnessForm[witness][key]" class="form-control input-sm"/>
+										<input ng-if="isInteger(key)"  ng-model="newAccidentWitnessForm[witness][key]" class="form-control input-sm" />
+										<select  ng-if="isBoolean(key)"  ng-model="newAccidentWitnessForm[witness][key]" class="form-control input-sm">
+											<option value="true">Yes</option><option value="false">No</option>
+										</select>
+										<select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentWitnessForm[witness][key]" />
+										<input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentWitnessForm[witness][key]"/>
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+		</div>
+	</div>
+
+	<div style = "text-align: center" ng-if = "accidentWitness">
+		<button ng-click = "saveAccident() " class="btn btn-primary " style="color:#fff0ff;margin-bottom:2%;">Add new Accident</button>
+	</div>
+
+	<!--</div>-->
 </div>
