@@ -6,6 +6,10 @@ eventCaptureControllers.controller('AccidentController',
 		$scope.AccidentData = angular.element("#offenceScope").scope().AccidentData;
 		$scope.accident_id = $scope.AccidentData['id'];
 
+		//message during loading data
+		$scope.loadAccidentVihecles = true;
+		$scope.loadAccidentWitnesses = true;
+
 		$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
 
 		//fetching accident vehicle based on accident id
@@ -13,6 +17,7 @@ eventCaptureControllers.controller('AccidentController',
 			//console.log('accident vehicles data : ' + JSON.stringify(result));
 			console.log('Loading vehicles');
 			$scope.accidentVehicles = result;
+			$scope.loadAccidentVihecles = false;
 			$scope.$apply();
 		});
 
@@ -23,6 +28,7 @@ eventCaptureControllers.controller('AccidentController',
 			//console.log('Witness on accident : ' + JSON.stringify(results));
 			console.log('Loading witness');
 			$scope.accidentWitnesses = results;
+			$scope.loadAccidentWitnesses = false;
 			$scope.$apply();
 
 		});

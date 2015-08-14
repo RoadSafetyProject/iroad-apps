@@ -102,6 +102,15 @@
 				<div class="panel-heading">Accident Vehicle(s) information </div>
 				<div class = "panel-body">
 
+					<!-- loadig message -->
+					<div ng-if = "loadAccidentVihecles"style = "width: 50%;margin:auto;">
+						<div class="thumbnail" style="font-size:19px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" >
+							<p align="center">
+								Loading Accident Vehicles
+							</p>
+						</div>
+					</div>
+
 					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 						<!-- loop through all accident vehicles -->
 						<div ng-repeat = "accidentVehicle in accidentVehicles">
@@ -256,6 +265,14 @@
 			<div class="panel panel-default" ng-if = "accidentWitnesses">
 				<div class="panel-heading">Accident Witnesses Information </div>
 				<div class = "panel-body">
+					<div ng-if = "loadAccidentWitnesses" style = "width: 50%;margin:auto;">
+						<div class="thumbnail" style="font-size:19px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white;" >
+							<p align="center">
+								Loading Accident Witness
+							</p>
+						</div>
+					</div>
+
 					<div class="panel-group" id="accordionWitness" role="tablist" aria-multiselectable="true">
 						<!-- loop through accident witnesses -->
 						<div ng-repeat="witness in accidentWitnesses">
