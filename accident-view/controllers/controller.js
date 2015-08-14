@@ -33,8 +33,8 @@ eventCaptureControllers.controller('MainController',
 
                             var marker = new google.maps.Marker({
                                 //position: new google.maps.LatLng(coords[i][0], coords[i][1]),
-                            	//position: new google.maps.LatLng(recent_accident.coordinate.latitude, recent_accident.coordinate.longitude),//(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
-                            	position: new google.maps.LatLng(-6.776751, 39.256210),
+                            	position: new google.maps.LatLng(recent_accident.coordinate.latitude, recent_accident.coordinate.longitude),//(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
+                            	//position: new google.maps.LatLng(-6.776751, 39.256210),
                                 map: $scope.map,
                                 optimized: false,
                                 icon: $scope.iconURLPrefix + 'green-dot.png',
