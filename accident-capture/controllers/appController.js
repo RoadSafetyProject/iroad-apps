@@ -118,6 +118,7 @@ eventCaptureControllers.controller('MainController',
             });
 			$scope.formAccident = eventAccident;
 
+
 			//load accident vehicle data form
 			$scope.accidentVehilce = new iroad2.data.Modal('Accident Vehicle',[]);
 			var modalName = $scope.accidentVehilce.getModalName();
@@ -170,7 +171,65 @@ eventCaptureControllers.controller('MainController',
 		$scope.editAccidentInfo = function(accident){
 			$scope.accident = accident;
 
-			console.log(JSON.stringify($scope.accident));
+			//load accident basic information form
+			$scope.accidentModal = new iroad2.data.Modal('Accident',[]);
+			var modalName = $scope.accidentModal.getModalName();
+			var eventAccident = {};
+
+			angular.forEach(iroad2.data.programs, function (program) {
+				if (program.name == modalName) {
+					//console.log('Program ' + JSON.stringify(program));
+					angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+						if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+							//eventAccident[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+							var data = null;
+						}else{
+							eventAccident[dataElement.dataElement.name] = "";
+						}
+					});
+				}
+			});
+			$scope.formAccident = eventAccident;
+
+			//load accident vehicle data form
+			$scope.accidentVehilce = new iroad2.data.Modal('Accident Vehicle',[]);
+			var modalName = $scope.accidentVehilce.getModalName();
+			var eventAccidentVehicle = {};
+
+			angular.forEach(iroad2.data.programs, function (program) {
+				if (program.name == modalName) {
+					//console.log('Program ' + JSON.stringify(program));
+					angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+						if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+							//eventAccidentVehicle[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+							var data = null;
+						}else{
+							eventAccidentVehicle[dataElement.dataElement.name] = "";
+						}
+					});
+				}
+			});
+			$scope.formAccidentVehicle = eventAccidentVehicle;
+
+			//load accident witness form
+			$scope.accidentWitness = new iroad2.data.Modal('Accident Witness',[]);
+			var modalName = $scope.accidentWitness.getModalName();
+			var eventAccidentWitness = {};
+
+			angular.forEach(iroad2.data.programs, function (program) {
+				if (program.name == modalName) {
+					//console.log('Program ' + JSON.stringify(program));
+					angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+						if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+							//eventAccidentWitness[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+							var data = null;
+						}else{
+							eventAccidentWitness[dataElement.dataElement.name] = "";
+						}
+					});
+				}
+			});
+			$scope.formAccidentWitness = eventAccidentWitness;
 
 			var modalInstance = $modal.open({
 				templateUrl: 'views/editAccidentInfo.html',
@@ -187,36 +246,6 @@ eventCaptureControllers.controller('MainController',
 
 		}
 
-
-
-		$scope.addNew = function(){
-
-
-			var modalName = $scope.AccidentModal.getModalName();
-			var event = {};
-			angular.forEach(iroad2.data.programs, function (program) {
-                if (program.name == modalName) {
-                	angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
-                		if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
-                			event[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
-                		}else{
-                			event[dataElement.dataElement.name] = "";
-                		}
-                       
-                    });
-                }
-            });
-            /*
-			angular.forEach($scope.AccidentModal.getRelationships(), function (relationship) {
-				if(relationship.pivot){
-					event[relationship.pivot] = [];
-				}
-			});*/
-
-			console.log(JSON.stringify(event));
-			
-			//$scope.enableEdit(event);
-		}
 		
 		
 		$scope.isInteger = function(key){
@@ -370,51 +399,7 @@ eventCaptureControllers.controller('MainController',
             	$scope.editInputModal.push(registry);
             	console.log(key + " Registries:" + JSON.stringify($scope.editInputModal));
             });
-            /*var out = {};
-            var program = $scope.offenceEventModal.getProgramByName($scope.offenceEventModal.getModalName());
-            console.log("Event:" + JSON.stringify(event));
-    		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
-    			
-    			if(event[dataElement.dataElement.name]){
-    				
-    				if(Array.isArray(event[dataElement.dataElement.name])){
-                		$scope.multiselectBools[key] = $scope.isManyRelation(key);
-                		out[dataElement.dataElement.name] = event[dataElement.dataElement.name]
-                	}else if(typeof event[dataElement.dataElement.name] == "object") {
-                		alert("here1");
-                		var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name);
-                		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
-                            if (dataElement2.dataElement.code) {
-                            	if(dataElement2.dataElement.code.startsWith("id_")){
-                            		alert("here");
-                    				out[dataElement2.dataElement.name] = event[dataElement.dataElement.name][dataElement2.dataElement.name];
-                    				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
-                    				$scope.watchEditing(program2,dataElement2.dataElement);
-                    				//delete $scope.editingEvent[key];
-                    			}
-                            }
-                        });
-                	}else{
-                		out[dataElement.dataElement.name] = event[dataElement.dataElement.name];
-                	}
-    			}else{
-    				if(dataElement.dataElement.name.startsWith("Program_")){
-    					var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name.replace("Program_",""));
-                		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
-                            if (dataElement2.dataElement.code) {
-                            	if(dataElement2.dataElement.code.startsWith("id_")){
-                    				out[dataElement2.dataElement.name] = "";
-                    				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
-                    				$scope.watchEditing(program2,dataElement2.dataElement);
-                    				//delete $scope.editingEvent[key];
-                    			}
-                            }
-                        });
-    				}
-    			}
-            });*/
-    		
-    		//$scope.editingEvent = out;
+
     		
         }
 		$scope.data.editingOutputModal = [];
