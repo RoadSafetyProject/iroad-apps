@@ -399,51 +399,7 @@ eventCaptureControllers.controller('MainController',
             	$scope.editInputModal.push(registry);
             	console.log(key + " Registries:" + JSON.stringify($scope.editInputModal));
             });
-            /*var out = {};
-            var program = $scope.offenceEventModal.getProgramByName($scope.offenceEventModal.getModalName());
-            console.log("Event:" + JSON.stringify(event));
-    		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
-    			
-    			if(event[dataElement.dataElement.name]){
-    				
-    				if(Array.isArray(event[dataElement.dataElement.name])){
-                		$scope.multiselectBools[key] = $scope.isManyRelation(key);
-                		out[dataElement.dataElement.name] = event[dataElement.dataElement.name]
-                	}else if(typeof event[dataElement.dataElement.name] == "object") {
-                		alert("here1");
-                		var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name);
-                		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
-                            if (dataElement2.dataElement.code) {
-                            	if(dataElement2.dataElement.code.startsWith("id_")){
-                            		alert("here");
-                    				out[dataElement2.dataElement.name] = event[dataElement.dataElement.name][dataElement2.dataElement.name];
-                    				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
-                    				$scope.watchEditing(program2,dataElement2.dataElement);
-                    				//delete $scope.editingEvent[key];
-                    			}
-                            }
-                        });
-                	}else{
-                		out[dataElement.dataElement.name] = event[dataElement.dataElement.name];
-                	}
-    			}else{
-    				if(dataElement.dataElement.name.startsWith("Program_")){
-    					var program2 = $scope.offenceEventModal.getProgramByName(dataElement.dataElement.name.replace("Program_",""));
-                		angular.forEach(program2.programStages[0].programStageDataElements, function (dataElement2) {
-                            if (dataElement2.dataElement.code) {
-                            	if(dataElement2.dataElement.code.startsWith("id_")){
-                    				out[dataElement2.dataElement.name] = "";
-                    				$scope.savableEventData.push({"name":dataElement2.dataElement.name,"key":key,"value":event[dataElement.dataElement.name]});
-                    				$scope.watchEditing(program2,dataElement2.dataElement);
-                    				//delete $scope.editingEvent[key];
-                    			}
-                            }
-                        });
-    				}
-    			}
-            });*/
-    		
-    		//$scope.editingEvent = out;
+
     		
         }
 		$scope.data.editingOutputModal = [];
