@@ -345,7 +345,6 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 				$scope.driver = null;
 				$scope.accidentVehicle = $scope.newAccidentVehicleForm[i];
 				var licenceNumber = $scope.accidentVehicle['Licence Number'];
-				var plateNumber = $scope.accidentVehicle['Vehicle Plate Number'];
 
 				$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
 				console.log('licence No :'+ (i + 1)+ ' ' + licenceNumber);
@@ -393,7 +392,10 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 												$scope.accidentVehicle['Full Name'] = $scope.accidentVehicle.Driver['Full Name'];
 												$scope.accidentVehicle['Gender'] = $scope.accidentVehicle.Driver['Gender'];
 												$scope.accidentVehicle['Date of Birth'] = $scope.accidentVehicle.Driver['Date of Birth'];
+												$scope.accidentVehicle['Licence Number'] = $scope.accidentVehicle.Driver['Licence Number'];
+
 												//add other data for vehicle
+												$scope.accidentVehicle['Vehicle Plate Number'] = $scope.accidentVehicle.Vehicle['Vehicle Plate Number'];
 												$scope.accidentVehicle['Vehicle Ownership Category'] = $scope.accidentVehicle.Vehicle['Vehicle Ownership Category'];
 												$scope.accidentVehicle['Vehicle Owner Name'] = $scope.accidentVehicle.Vehicle['Vehicle Owner Name'];
 												$scope.accidentVehicle['Vehicle Class'] = $scope.accidentVehicle.Vehicle['Vehicle Class'];
