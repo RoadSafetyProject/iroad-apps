@@ -43,6 +43,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	$scope.editAccidentForm = angular.element("#offenceScope").scope().formAccident;
 	$scope.editAccidentWitness  = angular.element("#offenceScope").scope().formAccidentWitness;
 	$scope.editAccidentVehicleForm = angular.element("#offenceScope").scope().formAccidentVehicle;
+	$scope.updateAccident = false;
 
 	//taking accident
 	$scope.editedAccident = angular.element("#offenceScope").scope().accident;
@@ -99,9 +100,13 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 	//function to save changes on accident information
 	$scope.saveEditing = function(){
+		//enable updates messages
+		$scope.updateAccident = true;
+		$scope.updateAccidentProgress = [];
 
 		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
 		var saveEvent = $scope.editedAccident;
+		$scope.updateAccidentProgress.push('Saving changes on basic information of Accident');
 		console.log('Starting saving accident');
 
 		if(saveEvent.coordinate){
@@ -120,7 +125,12 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 		},$scope.accidentEventModal.getModalName());
 
-		//saving updates on accident witness informations
+		//saving updates on accident witness information
+		if($scope.editedaccidentWitnesses.length > 0){
+			$scope.updateAccidentProgress.push('Saving accident witness information');
+
+		}
+
 		$scope.accidentWitnessEventModel = new iroad2.data.Modal('Accident Witness',[]);
 		for(var i = 0; i < $scope.editedaccidentWitnesses.length; i++){
 			//prepare accident witness for saving changes
@@ -137,6 +147,12 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 		//saving updates on accident vehicles
 		var drivers = [];
 		var vehicles = [];
+
+		if($scope.editedAcciedentVehicles.length > 0){
+			$scope.updateAccidentProgress.push('Saving Accident Vehicles');
+
+		}
+
 		for (var i=0; i < $scope.editedAcciedentVehicles.length; i++ ) {
 			var licenceNumber = $scope.editedAcciedentVehicles[i]['Licence Number'];
 
@@ -145,7 +161,6 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 			$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
 
-			console.log('fetching drivers');
 			$scope.driverModel.get({value:licenceNumber},function(result){
 
 				if($scope.driver == result[0]){
@@ -158,6 +173,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 					if(drivers.length == $scope.editedAcciedentVehicles.length){
 						//fetching all vehicles
 						console.log('fetching vehicles');
+						$scope.updateAccidentProgress.push();
 						for (var i=0; i < $scope.editedAcciedentVehicles.length; i++ ) {
 							$scope.vehicle = null;
 							var plateNumber = $scope.editedAcciedentVehicles[i]['Vehicle Plate Number'];
@@ -174,7 +190,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 									//checking if number vehicle met
 									if(vehicles.length == $scope.editedAcciedentVehicles.length){
-										console.log('Start saving accident vehicles data');
+										console.log('Complete fetching Vehicles');
 
 										//loop through to save each accident vehicles
 										for(var i = 0; i < $scope.editedAcciedentVehicles.length ; i++){
@@ -203,10 +219,10 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 											var savedAccidentVehicle = $scope.accidentVehicle;
 
 											$scope.accidentVehicleEventModal.save(savedAccidentVehicle,otherData,function(result){
-												console.log('Successful add accident Vehicle');
+												console.log('Successful update accident Vehicle');
 
 											},function(error){
-												console.log('Fail to add accident Vehicle');
+												console.log('Fail to update accident Vehicle');
 
 											},$scope.accidentVehicleEventModal.getModalName());
 										}
@@ -220,7 +236,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 		}
 
-
+		$scope.updateAccidentProgress.push('Complete Updates');
 
 	}
 
