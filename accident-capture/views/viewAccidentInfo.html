@@ -57,7 +57,7 @@
 						</div>
 						<div class="col-sm-4"> 
 						<label>Time of Accident</label><br /> 
-						{{ AccidentData['Time of Accident'] }}										
+						{{ AccidentData['Time of Accident'] | date:'dd MMM yyyy' }}
 						</div>
 					</div>
 					<div class = "row">	
@@ -292,7 +292,7 @@
 
 													<div ng-hide = "key == 'Signature'">
 														<label>{{ key }}</label><br>
-														{{ witness[key] }}
+														{{ witness[key] | date:'dd MMM yyyy'}}
 													</div>
 												</div>
 											</div>

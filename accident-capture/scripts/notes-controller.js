@@ -112,17 +112,31 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 			otherData.coordinate = {"latitude": "","longitude": ""};
 		}
 
-
+		//saving basic informations for accidents
 		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);
 		$scope.accidentEventModal.save(saveEvent,otherData,function(result){
 			console.log(" accident info updated successfull ");
 
 		},function(error){
-			//alert('fail to add');
+			console.log('fail to update basic info for agiven accidents');
 
 		},$scope.accidentEventModal.getModalName());
 
-		console.log('otherData : ' + JSON.stringify(otherData));
+		//saving accident witness informations
+		$scope.accidentWitnessEventModel = new iroad2.data.Modal('Accident Witness',[]);
+		for(var i = 0; i < $scope.editedaccidentWitnesses.length; i++){
+			//prepare accident witness for saving changes
+			var saveWitnessEvent = $scope.editedaccidentWitnesses[i];
+			$scope.accidentWitnessEventModel.save(saveWitnessEvent,otherData,function(result){
+				console.log(" accident witness updated successfull ");
+
+			},function(error){
+				console.log('fail to update basic info for agiven accidents');
+
+			},$scope.accidentWitnessEventModel.getModalName());
+		}
+
+
 	}
 
 
