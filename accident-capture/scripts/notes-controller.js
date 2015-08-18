@@ -291,6 +291,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 eventCaptureControllers.controller('AddAccidentController',function($scope,$http){
 
 	//form visibility controllers
+	$scope.savingNewAccident = false;
 	$scope.accidentBasicInfo = true;
 	$scope.accidentVehicle = false;
 	$scope.accidentWitness = false;
@@ -532,6 +533,8 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 		},$scope.accidentEventModal.getModalName());
 	}
+
+
 
 
 
