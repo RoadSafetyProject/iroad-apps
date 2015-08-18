@@ -303,8 +303,10 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.newAccidentForm = angular.element("#offenceScope").scope().formAccident;
 	$scope.newAccidentWitnessForm  = angular.element("#offenceScope").scope().formAccidentWitness;
 	$scope.newAccidentVehicleForm = angular.element("#offenceScope").scope().formAccidentVehicle;
+	$scope.newAccidentPassengerForm = angular.element("#offenceScope").scope().formAccidentVehiclePassenger;
 
 	$scope.otherDataForm = {};
+	$scope.newAccidentVehiclePassengers = {};
 
 	$scope.numberOfVehicles = 0;
 	$scope.numberOfWitness = 0;
@@ -360,11 +362,13 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 	}
 
+
+
 	//function to provide form for adding accident vehicle info
 	var numberOfVehicle = [];
+	var numberOfPassengers = []
 	$scope.vehicles = [];
 	$scope.addAccidentVehicle = function(){
-
 		//fill other data onto variables
 		$scope.numberOfVehicles = $scope.otherDataForm['numberOfAccidentVehicles'];
 		$scope.numberOfWitness = $scope.otherDataForm['numberOfAccidentWitness'];
@@ -372,9 +376,18 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 		//$scope.accidentBasicInfoVisibility = !$scope.accidentBasicInfoVisibility;
 
+
 		for (var i=0; i < $scope.numberOfVehicles; i++ ){
 			numberOfVehicle.push(i);
+			var passengerInfo = {
+				'vehicle': i,
+				'counter' : [],
+				'Data' : {}
+			}
+			numberOfPassengers.push(passengerInfo);
+
 		}
+		$scope.newAccidentVehiclePassengers = numberOfPassengers;
 		$scope.vehicles = numberOfVehicle;
 		//empty variable number of vehicles
 		numberOfVehicle = [];
@@ -403,6 +416,24 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 	}
 
+	//function to add new passenger
+	$scope.addPasseger = function(vehicle){
+		console.log('add passenger on vehicle ' + JSON.stringify(vehicle + 1));
+		console.log('counter ' + $scope.newAccidentVehiclePassengers[vehicle].counter);
+
+		$scope.newAccidentVehiclePassengers[vehicle].counter.push('passenger');
+		console.log('Passengers : ' + JSON.stringify($scope.newAccidentVehiclePassengers))
+
+		/*if($scope.newAccidentVehiclePassenger[vehicle] == vehicle){
+		 console.log('vehicle added' + $scope.newAccidentVehiclePassenger[vehicle]);
+
+		 }
+		 else{
+		 $scope.newAccidentVehiclePassenger.push(vehicle);
+		 }
+
+		 console.log('after adding passenger : ' + JSON.stringify($scope.newAccidentVehiclePassenger));*/
+	}
 
 
 	//getting user Information
