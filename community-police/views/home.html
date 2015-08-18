@@ -1,6 +1,6 @@
 <style>
   .angular-google-map-container { margin-top:45px;height: 100%; min-height:1000px;}
-  .button, .button2{
+  .button, .button2, .button3{
   	position:fixed;
   	top: 65px;
   	left:100px;
@@ -8,6 +8,9 @@
   }
   .button2{
   	left:250px;
+  }
+  .button3{
+  	left:350px;
   }
   .form2{
   	position:fixed;
@@ -67,7 +70,9 @@
 <div class="angular-google-map-container">
 
 <button type="button" class="button btn btn-primary btn-md" data-toggle="modal" data-target="#facilityModal">View Facilities</button>
+<!-- <button type="button" class="button button2 btn btn-primary btn-md" data-toggle="modal" data-target="#reportModal">Add Facility</button> -->
 <button type="button" class="button button2 btn btn-primary btn-md" data-toggle="modal" data-target="#reportModal">View Community Reports</button>
+
 <div class="modal fade" id="facilityModal" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -83,9 +88,12 @@
 					  <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
 				  </div>
 			</div>
+			<!--<div class="col-sm-12">
+				<select ng-options="item.name as item.name for item in facilityType" ng-model="editingEvent['Offence Admission Status']" />
+			</div> -->
 			</div>
 			<div class="row">
-			<button ng-if="!isAddingFacility" ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
+			<button ng-if="!isAddingFacility && tree.context.selectedNodes.length > 0 && tree.context.selectedNodes[0].$model.level == 3" ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
 			</div>
       </div>
       <div class="modal-footer">
@@ -129,7 +137,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div ng-if="isAddingFacility" class="form2">
+<div ng-if="isAddingFacility" class="form2 col-sm-4">
 <div class="panel panel-default">
   <div class="panel-heading">Create New Facility
 	  <a ng-click="cancelMenu()" class="pull-right"> <i class="fa fa-times"></i>  </a>
@@ -139,8 +147,16 @@
 		<div class="row">
 		<div class="col-sm-12" style="">
 			<div class="form-group">
+				<label>Facility Type</label><br />
+				<select class="form-control col-sm-12" ng-options="item.name as item.name for item in facilityType" ng-model="newFacility.shortName" ></select>
+			</div>
+			<div class="form-group">
 				<label>Facility Name</label><br />
             	<input ng-model="newFacility.name" class="form-control col-sm-12" />
+            </div>
+            <div class="form-group">
+				<label>Opening Date</label><br />
+            	<input ui-date ng-model="newFacility.openingDate" class="form-control col-sm-12" />
             </div>
             <div class="form-group">
 				<label>Latitude</label><br />
