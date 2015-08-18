@@ -171,8 +171,8 @@ eventCaptureControllers.controller('MainController',
 					//console.log('Program ' + JSON.stringify(program));
 					angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
 						if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
-							eventAccidentVehiclePassenger[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
-							//var data = null;
+							//eventAccidentVehiclePassenger[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+							var data = null;
 						}else{
 							eventAccidentVehiclePassenger[dataElement.dataElement.name] = "";
 						}

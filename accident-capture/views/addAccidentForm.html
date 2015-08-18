@@ -63,6 +63,10 @@
 						<input class="form-control input-sm" ng-model="otherDataForm['numberOfAccidentWitness']" >
 					</div>
 
+					<div class = "col-sm-7" style = "padding-left: 1%;padding-top:1%;color:#ff0000;text-align: center">
+						{{ otherDataMessage }}
+					</div>
+
 				</div>
 				<!-- button for providing info about accident vehicle -->
 				<div  class = "row" style="margin:4%;">
@@ -79,9 +83,6 @@
                 </button>
             </div>-->
 		</div>
-
-
-
 
 		<!-- for for accident vehicle details -->
 		<div class = "panel panel-default" ng-if = "accidentVehicle">
@@ -121,30 +122,53 @@
 										</div>
 									</div>
 
-
 								</div>
 							</div>
 
 							<!-- form for adding new accident vehicle passengers -->
-							<div >
-								form for new accident vehicle's passengers
+							<div  ng-if = "newAccidentVehiclePassengers[vehicle].counter.length > 0" style = "padding:1%;">
+								<!-- button for show or hide passenger forms -->
+								<div style = "padding-bottom: 2%;padding-top: 2%;">
+									<button class = "btn btn-default" ng-click="showHidePassengerForms(vehicle)">show/hide passenger(s) for vehicle {{ vehicle + 1}}</button>
+								</div>
+
+								<div class = "panel panel-default">
+									<div class = "panel-heading">Accident Vehicle's Passenger(s) information for vehicle {{ vehicle + 1}}</div>
+									<div class = "panel-body" ng-if="passengerFormsVisibility[vehicle].visibility">
+										<!-- loop through all passenger list-->
+										<div class = "col-sm-12" ng-repeat="passenger in newAccidentVehiclePassengers[vehicle].counter" style = "padding-top:1%;">
+
+											<div class = "panel panel-default">
+												<div class = "panel-heading">
+													Passenger {{ passenger.passengerCounter + 1}}
+												</div>
+												<div class = "panel-body">
+													<!-- form for each passenger -->
+													<div class = "col-sm-4" ng-repeat = "(key,value) in newAccidentPassengerForm">
+														<label style="font-size: 0.8em" >{{ key}}</label><br />
+														<input ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" class="form-control input-sm"/>
+														<input ng-if="isInteger(key)"  ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" class="form-control input-sm" />
+														<select  ng-if="isBoolean(key)"  ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" class="form-control input-sm">
+															<option value="true">Yes</option><option value="false">No</option>
+														</select>
+														<select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" />
+														<input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]"/>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<!-- button for adding accident passengers -->
-							<div style = "padding: 2%;">
-								<button class = "btn btn-primary" ng-click="addPasseger(vehicle)">Add Passenger</button>
+							<div style = "padding: 2%;" ng-if="passengerFormsVisibility[vehicle].visibility">
+								<button class = "btn btn-default" ng-click="addPasseger(vehicle)">Add Passenger</button>
 							</div>
-
-
-
 						</div>
-
 					</div>
-
 				</div>
-
-
-
 
 
 				<div  class = "row" style="margin:4%;">

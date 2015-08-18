@@ -307,6 +307,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 	$scope.otherDataForm = {};
 	$scope.newAccidentVehiclePassengers = {};
+	$scope.passengerFormsVisibility = {};
 
 	$scope.numberOfVehicles = 0;
 	$scope.numberOfWitness = 0;
@@ -367,6 +368,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	//function to provide form for adding accident vehicle info
 	var numberOfVehicle = [];
 	var numberOfPassengers = []
+	var formsVisibility = [];
 	$scope.vehicles = [];
 	$scope.addAccidentVehicle = function(){
 		//fill other data onto variables
@@ -384,18 +386,30 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 				'counter' : [],
 				'Data' : {}
 			}
+			formsVisibility.push(
+				{
+					'vehicle' : i,
+					'visibility' : true
+				}
+			);
 			numberOfPassengers.push(passengerInfo);
 
 		}
+		$scope.passengerFormsVisibility = formsVisibility;
 		$scope.newAccidentVehiclePassengers = numberOfPassengers;
 		$scope.vehicles = numberOfVehicle;
 		//empty variable number of vehicles
 		numberOfVehicle = [];
 
-		$scope.accidentBasicInfo = false;
-		$scope.accidentVehicle = true;
-		$scope.accidentWitness = false;
-
+		//checking if number of vehicles as witness has been filled
+		if($scope.otherDataForm['numberOfAccidentVehicles'] && $scope.otherDataForm['numberOfAccidentWitness']){
+			$scope.accidentBasicInfo = false;
+			$scope.accidentVehicle = true;
+			$scope.accidentWitness = false;
+		}
+		else{
+			$scope.otherDataMessage = "Please fill number of witnesses and vehicles";
+		}
 	}
 
 	//function to provide form for adding accident witness
@@ -418,22 +432,24 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 	//function to add new passenger
 	$scope.addPasseger = function(vehicle){
-		console.log('add passenger on vehicle ' + JSON.stringify(vehicle + 1));
-		console.log('counter ' + $scope.newAccidentVehiclePassengers[vehicle].counter);
 
-		$scope.newAccidentVehiclePassengers[vehicle].counter.push('passenger');
-		console.log('Passengers : ' + JSON.stringify($scope.newAccidentVehiclePassengers))
-
-		/*if($scope.newAccidentVehiclePassenger[vehicle] == vehicle){
-		 console.log('vehicle added' + $scope.newAccidentVehiclePassenger[vehicle]);
-
-		 }
-		 else{
-		 $scope.newAccidentVehiclePassenger.push(vehicle);
-		 }
-
-		 console.log('after adding passenger : ' + JSON.stringify($scope.newAccidentVehiclePassenger));*/
+		if($scope.newAccidentVehiclePassengers[vehicle].counter.length > 0){
+			var numberOfPassenger = $scope.newAccidentVehiclePassengers[vehicle].counter.length;
+			$scope.newAccidentVehiclePassengers[vehicle].counter.push({'passengerCounter':(numberOfPassenger)});
+		}
+		else{
+			$scope.newAccidentVehiclePassengers[vehicle].counter.push({'passengerCounter': 0});
+		}
 	}
+
+	//function to show or hide forms for passengers on a given accident vehicle
+	$scope.showHidePassengerForms = function(vehicle){
+
+		console.log('Before : ' + $scope.passengerFormsVisibility[vehicle].visibility);
+		$scope.passengerFormsVisibility[vehicle].visibility = !$scope.passengerFormsVisibility[vehicle].visibility;
+		console.log('After : ' + $scope.passengerFormsVisibility[vehicle].visibility);
+	}
+
 
 
 	//getting user Information
