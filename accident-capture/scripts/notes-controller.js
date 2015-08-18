@@ -414,6 +414,11 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	//function to save accident into the system
 	$scope.saveAccident = function(){
 
+		$scope.savingNewAccident = true;
+		$scope.addingAccidentProgress = [];
+
+		$scope.addingAccidentProgress.push('Saving accident information');
+
 		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
 		otherData.coordinate = {"latitude": "","longitude": ""}
 		var saveEvent = $scope.newAccidentForm;
@@ -425,6 +430,12 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 			console.log("success add accident basic info");
 			$scope.accident_id = result.importSummaries[0].reference;
 			$scope.newAccidentForm['id'] = $scope.accident_id;
+
+
+			if($scope.numberOfWitness > 0){
+				$scope.addingAccidentProgress.push('Saving accident witnesses');
+
+			}
 
 			//loop through witnesses
 			for (var i=0; i < $scope.numberOfWitness; i++ ){
@@ -443,6 +454,11 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 				},$scope.accidentWitnessModel.getModalName());
 			}
 
+
+			if($scope.numberOfVehicles > 0){
+				$scope.addingAccidentProgress.push('Saving accident Vehicles');
+
+			}
 			//process for saving accident vehicles
 			var drivers = [];
 			var vehicles = [];
