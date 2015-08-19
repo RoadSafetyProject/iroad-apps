@@ -168,6 +168,8 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 		$scope.updateAccident = true;
 		$scope.updateAccidentProgress = [];
 
+		console.log('updated passengers : ' + JSON.stringify($scope.editiedAccidentPassengers));
+
 		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
 		var saveEvent = $scope.editedAccident;
 		$scope.updateAccidentProgress.push('Saving changes on basic information of Accident');

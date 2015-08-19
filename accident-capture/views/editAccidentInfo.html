@@ -102,13 +102,12 @@
                                 </div>
 
                                 <!-- forms for editing accident passengers -->
-                                <div ng-if = "editiedAccidentPassengers">
+                                <div ng-if = "editiedAccidentPassengers" style = "margin:1%;">
                                     <div class = "panel panel-default">
                                         <div class = "panel-heading">Accident Passengers Information</div>
                                         <div class = "panel-body">
                                             <div ng-repeat=" passengerCounter in editedPassengersList " >
-                                                {{ editiedAccidentPassengers[passengerCounter] }}
-                                                <div ng-if = "editiedAccidentPassengers[passengerCounter].Vehicle['Vehicle Plate Number'] == editedAcciedentVehicles[vehicle]['Vehicle Plate Number']" >
+                                                <div ng-if = "editiedAccidentPassengers[passengerCounter].Vehicle['Vehicle Plate Number'] == editedAcciedentVehicles[vehicle]['Vehicle Plate Number']" style = "margin-bottom:0.5%;">
                                                     <div class = "panel panel-default">
                                                         <div class = "panel-heading">Passenger</div>
                                                         <div class = "panel-body">
