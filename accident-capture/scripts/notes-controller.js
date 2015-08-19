@@ -9,6 +9,11 @@ eventCaptureControllers.controller('AccidentController',
 		//message during loading data
 		$scope.loadAccidentVihecles = true;
 		$scope.loadAccidentWitnesses = true;
+		$scope.loadAccidentPasssenger = true;
+
+		//control for visibility on passengers
+		//$scope.accidentPasengerVisibility = [];
+
 
 		$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
 
@@ -17,6 +22,21 @@ eventCaptureControllers.controller('AccidentController',
 			//console.log('accident vehicles data : ' + JSON.stringify(result));
 			console.log('Loading vehicles');
 			$scope.accidentVehicles = result;
+
+			var passangerVisibity = [];
+			//loop through all vehicles to have passenger visibility
+			for(var i = 0; i < result.length; i ++){
+				passangerVisibity.push(
+					{
+						'vehicle': i,
+						'visibility' : false
+					}
+				);
+
+			}
+			$scope.accidentPasengerVisibility = passangerVisibity;
+			console.log(JSON.stringify($scope.accidentPasengerVisibility));
+			passangerVisibity = [];
 			$scope.loadAccidentVihecles = false;
 			$scope.$apply();
 		});
@@ -32,6 +52,31 @@ eventCaptureControllers.controller('AccidentController',
 			$scope.$apply();
 
 		});
+
+		//fetching accident passengers
+		$scope.accidentPassengersEvent = new iroad2.data.Modal('Accident Passenger',[]);
+
+		$scope.accidentPassengersEvent.get(new iroad2.data.SearchCriteria('Program_Accident',"=",$scope.accident_id),function(results){
+			console.log('Passengers : ' + JSON.stringify(results));
+			console.log('Loading accidentPassengers');
+			$scope.accidentPassengers = results;
+			$scope.loadAccidentPasssenger = false;
+			$scope.$apply();
+
+		});
+
+		//function to hide or show passengers
+		$scope.showHideAccidentPassengers = function(vehicle){
+
+			console.log('hide/show vehicle : ' + vehicle);
+			for(var i = 0; i < $scope.accidentPasengerVisibility.length;i++ ){
+				if( $scope.accidentPasengerVisibility[i].vehicle == vehicle){
+					$scope.accidentPasengerVisibility[i].visibility = !$scope.accidentPasengerVisibility[i].visibility;
+				}
+			}
+
+			console.log('after : ' + JSON.stringify())
+		}
 
 	});
 
@@ -501,7 +546,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 
 			if($scope.numberOfVehicles > 0){
-				$scope.addingAccidentProgress.push('Saving accident Vehicles');
+				$scope.addingAccidentProgress.push('Saving accident Vehicles and Passengers');
 
 			}
 			//process for saving accident vehicles
