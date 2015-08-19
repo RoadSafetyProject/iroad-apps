@@ -9,7 +9,7 @@ eventCaptureControllers.controller('MainController',
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
-    	$scope.pageSize = 100;
+    	$scope.pageSize = 20;
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchAccidents($scope.pageSize,page);
     	                };
@@ -117,7 +117,7 @@ eventCaptureControllers.controller('MainController',
                 }
             });
 			$scope.formAccident = eventAccident;
-			console.log('accident model ' + JSON.stringify(eventAccident));
+			//console.log('accident model ' + JSON.stringify(eventAccident));
 
 
 			//load accident vehicle data form
@@ -180,7 +180,7 @@ eventCaptureControllers.controller('MainController',
 				}
 			});
 			$scope.formAccidentVehiclePassenger = eventAccidentVehiclePassenger;
-			console.log('Passenger model : ' + JSON.stringify(eventAccidentVehiclePassenger));
+			//console.log('Passenger model : ' + JSON.stringify(eventAccidentVehiclePassenger));
 
         	var modalInstance = $modal.open({
         		templateUrl: 'views/addAccidentForm.html',

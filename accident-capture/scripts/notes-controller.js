@@ -416,6 +416,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	var numberOfWitnesses = []
 	$scope.witnesses = [];
 	$scope.addAccidentWitness = function(){
+
 		for (var i=0; i < $scope.numberOfWitness; i++ ){
 
 			numberOfWitnesses.push(i);
@@ -444,12 +445,9 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 	//function to show or hide forms for passengers on a given accident vehicle
 	$scope.showHidePassengerForms = function(vehicle){
-
-		console.log('Before : ' + $scope.passengerFormsVisibility[vehicle].visibility);
 		$scope.passengerFormsVisibility[vehicle].visibility = !$scope.passengerFormsVisibility[vehicle].visibility;
-		console.log('After : ' + $scope.passengerFormsVisibility[vehicle].visibility);
-	}
 
+	}
 
 
 	//getting user Information
@@ -535,22 +533,53 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 								var plateNumber = $scope.accidentVehicle['Vehicle Plate Number'];
 
 								$scope.vehicleDriver = new iroad2.data.Modal('Vehicle',[]);
-								$scope.vehicleDriver.get({value:plateNumber},function(result) {
-									if ($scope.vehicle == result[0]) {
+								$scope.vehicleDriver.get({value:plateNumber},function(resultVehilce) {
+									if ($scope.vehicle == resultVehilce[0]) {
 										console.log('Vehicle found');
 									}
 									else {
-										$scope.vehicle = result[0];
-										vehicles.push(result[0]);
+										$scope.vehicle = resultVehilce[0];
+										vehicles.push(resultVehilce[0]);
 										//checking if number vehicle met
 										if(vehicles.length == $scope.numberOfVehicles){
-											console.log('Start saving accident vehicles data');
 
+											console.log('Start saving accident passengers data');
+											//loop through all vehicle to save passengers
+											for(var i = 0; i < $scope.numberOfVehicles ; i++){
+												//$scope.newAccidentVehiclePassengers[i].accident =  $scope.newAccidentForm;
+												var accidentPassengers = $scope.newAccidentVehiclePassengers[i].Data;
+												var vehicle = vehicles[i];
+
+												//loop passengers data
+												for(var passengerCounter = 0; passengerCounter < $scope.newAccidentVehiclePassengers[i].counter.length; passengerCounter ++){
+
+													//prepare data for saving
+													var passenger = accidentPassengers[passengerCounter];
+													passenger.Vehicle = vehicle;
+													passenger.Accident = $scope.newAccidentForm;
+
+													$scope.accidentPassengerEvent = new iroad2.data.Modal('Accident Passenger',[]);
+													//saving passenger
+													$scope.accidentPassengerEvent.save(passenger,otherData,function(resultSavingPassenger){
+
+														console.log('Successful accident passenger ' + resultSavingPassenger.importSummaries[0].reference );
+
+													},function(error){
+														console.log('Fail to add accident passenger');
+
+													},$scope.accidentPassengerEvent.getModalName());
+
+												}
+
+											}
+
+											console.log('Start saving accident vehicles data');
 											//loop through to save each accident vehicles
 											for(var i = 0; i < $scope.numberOfVehicles ; i++){
 												//add vehicle and driver objects ready for saving
 												$scope.accidentVehicle.Vehicle = vehicles[i];
 												$scope.accidentVehicle.Driver = drivers[i];
+
 
 												//add other data for driver
 												$scope.accidentVehicle['Full Name'] = $scope.accidentVehicle.Driver['Full Name'];
@@ -569,17 +598,21 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 												//add accident object
 												$scope.accidentVehicle.Accident = $scope.newAccidentForm;
 
+
 												//saving accident
 												$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
+
 												var savedAccidentVehicle = $scope.accidentVehicle;
-												$scope.accidentVehicleEventModal.save(savedAccidentVehicle,otherData,function(result){
-													console.log('Successful add accident Vehicle');
+												$scope.accidentVehicleEventModal.save(savedAccidentVehicle,otherData,function(resultSavingAccidentVehicle){
+
+													console.log('Successful add accident Vehicle ' + resultSavingAccidentVehicle.importSummaries[0].reference );
 
 												},function(error){
 													console.log('Fail to add accident Vehicle');
 
 												},$scope.accidentVehicleEventModal.getModalName());
 											}
+
 										}
 									}
 								});
