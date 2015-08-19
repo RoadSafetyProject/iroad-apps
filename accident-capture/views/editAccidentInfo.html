@@ -100,6 +100,38 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- forms for editing accident passengers -->
+                                <div ng-if = "editiedAccidentPassengers">
+                                    <div class = "panel panel-default">
+                                        <div class = "panel-heading">Accident Passengers Information</div>
+                                        <div class = "panel-body">
+                                            <div ng-repeat=" passengerCounter in editedPassengersList " >
+                                                {{ editiedAccidentPassengers[passengerCounter] }}
+                                                <div ng-if = "editiedAccidentPassengers[passengerCounter].Vehicle['Vehicle Plate Number'] == editedAcciedentVehicles[vehicle]['Vehicle Plate Number']" >
+                                                    <div class = "panel panel-default">
+                                                        <div class = "panel-heading">Passenger</div>
+                                                        <div class = "panel-body">
+                                                            <div class = "col-sm-4" ng-repeat="(key,value) in editAccidentVehiclePassengerForm">
+
+                                                                <label style="font-size: 0.8em" >{{ key}}</label><br />
+                                                                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editiedAccidentPassengers[passengerCounter][key]" class="form-control input-sm"/>
+                                                                <input ng-if="isInteger(key)"  ng-model="editiedAccidentPassengers[passengerCounter][key]" class="form-control input-sm" />
+                                                                <select  ng-if="isBoolean(key)"  ng-model="editiedAccidentPassengers[passengerCounter][key]" class="form-control input-sm">
+                                                                    <option value="true">Yes</option><option value="false">No</option>
+                                                                </select>
+                                                                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editiedAccidentPassengers[passengerCounter][key]" />
+                                                                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editiedAccidentPassengers[passengerCounter][key]"/>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>

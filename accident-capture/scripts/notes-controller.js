@@ -75,9 +75,7 @@ eventCaptureControllers.controller('AccidentController',
 				}
 			}
 
-			console.log('after : ' + JSON.stringify())
 		}
-
 	});
 
 
@@ -88,7 +86,11 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	$scope.editAccidentForm = angular.element("#offenceScope").scope().formAccident;
 	$scope.editAccidentWitness  = angular.element("#offenceScope").scope().formAccidentWitness;
 	$scope.editAccidentVehicleForm = angular.element("#offenceScope").scope().formAccidentVehicle;
+	$scope.editAccidentVehiclePassengerForm = angular.element("#offenceScope").scope().formAccidentVehiclePassenger;
+
+	//controller for messages during update process
 	$scope.updateAccident = false;
+
 
 	//taking accident
 	$scope.editedAccident = angular.element("#offenceScope").scope().accident;
@@ -111,9 +113,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 			accidentVehicles.push(i);
 		}
 		$scope.vehicles = accidentVehicles;
-		accidentVehicles = []
-
-		//console.log('accident Vehicle : ' + JSON.stringify($scope.editedAcciedentVehicles));
+		accidentVehicles = [];
 		$scope.$apply();
 
 
@@ -130,8 +130,27 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 			accidentWitness.push(i);
 		}
 		$scope.witnesses = accidentWitness;
-		accidentWitness = []
-		//console.log('Accident witness : ' + JSON.stringify($scope.editedaccidentWitnesses));
+		accidentWitness = [];
+		$scope.$apply();
+
+	});
+
+	//fetching accident passengers
+	$scope.accidentPassengersEvent = new iroad2.data.Modal('Accident Passenger',[]);
+
+	$scope.accidentPassengersEvent.get(new iroad2.data.SearchCriteria('Program_Accident',"=",$scope.accident_id),function(results){
+		console.log('Passengers : ' + JSON.stringify(results));
+		console.log('Loading accidentPassengers');
+		var list = [];
+		$scope.editiedAccidentPassengers = results;
+
+		//update the list
+		for(var i = 0;i < results.length; i++){
+			list.push(i);
+		}
+		$scope.editedPassengersList = list;
+		list = [];
+		$scope.loadAccidentPasssenger = false;
 		$scope.$apply();
 
 	});
@@ -160,7 +179,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 			otherData.coordinate = {"latitude": "","longitude": ""};
 		}
 
-		//saving basic informations for accidents
+		//saving basic information for accidents
 		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);
 		$scope.accidentEventModal.save(saveEvent,otherData,function(result){
 			console.log(" accident info updated successful ");

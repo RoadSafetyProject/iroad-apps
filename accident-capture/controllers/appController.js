@@ -180,7 +180,6 @@ eventCaptureControllers.controller('MainController',
 				}
 			});
 			$scope.formAccidentVehiclePassenger = eventAccidentVehiclePassenger;
-			//console.log('Passenger model : ' + JSON.stringify(eventAccidentVehiclePassenger));
 
         	var modalInstance = $modal.open({
         		templateUrl: 'views/addAccidentForm.html',
@@ -253,6 +252,26 @@ eventCaptureControllers.controller('MainController',
 				}
 			});
 			$scope.formAccidentWitness = eventAccidentWitness;
+
+			//load accident vehicle passengers form
+			$scope.accidentVehiclePassenger = new iroad2.data.Modal('Accident Passenger',[]);
+			var modalName = $scope.accidentVehiclePassenger.getModalName();
+			var eventAccidentVehiclePassenger = {};
+
+			angular.forEach(iroad2.data.programs, function (program) {
+				if (program.name == modalName) {
+					//console.log('Program ' + JSON.stringify(program));
+					angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+						if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+							//eventAccidentVehiclePassenger[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+							var data = null;
+						}else{
+							eventAccidentVehiclePassenger[dataElement.dataElement.name] = "";
+						}
+					});
+				}
+			});
+			$scope.formAccidentVehiclePassenger = eventAccidentVehiclePassenger;
 
 			var modalInstance = $modal.open({
 				templateUrl: 'views/editAccidentInfo.html',
