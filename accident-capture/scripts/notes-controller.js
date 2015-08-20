@@ -107,10 +107,11 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	//fetching accident vehicle
 	$scope.accidentVehicleEventModal.get(new iroad2.data.SearchCriteria('Program_Accident',"=",$scope.accident_id),function(result){
 		console.log('Loading accidents')
-		$scope.editedAcciedentVehicles = result;
+		$scope.editedAccidentVehicles = result;
 		$scope.loadAccidentVihecles = false;
-		for(var i = 0; i < $scope.editedAcciedentVehicles.length; i++){
+		for(var i = 0; i < $scope.editedAccidentVehicles.length; i++){
 			accidentVehicles.push(i);
+
 		}
 		$scope.vehicles = accidentVehicles;
 		accidentVehicles = [];
@@ -142,13 +143,15 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 		console.log('Passengers : ' + JSON.stringify(results));
 		console.log('Loading accidentPassengers');
 		var list = [];
-		$scope.editiedAccidentPassengers = results;
+		$scope.editedAccidentPassengers = results;
 
 		//update the list
 		for(var i = 0;i < results.length; i++){
 			list.push(i);
+
 		}
 		$scope.editedPassengersList = list;
+		$scope.editedPassengerVehicleList = {};
 		list = [];
 		$scope.loadAccidentPasssenger = false;
 		$scope.$apply();
@@ -167,8 +170,6 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 		//enable updates messages
 		$scope.updateAccident = true;
 		$scope.updateAccidentProgress = [];
-
-		console.log('updated passengers : ' + JSON.stringify($scope.editiedAccidentPassengers));
 
 		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
 		var saveEvent = $scope.editedAccident;
@@ -214,16 +215,16 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 		var drivers = [];
 		var vehicles = [];
 
-		if($scope.editedAcciedentVehicles.length > 0){
+		if($scope.editedAccidentVehicles.length > 0){
 			$scope.updateAccidentProgress.push('Saving Accident Vehicles');
 
 		}
 
-		for (var i=0; i < $scope.editedAcciedentVehicles.length; i++ ) {
-			var licenceNumber = $scope.editedAcciedentVehicles[i]['Licence Number'];
+		for (var i=0; i < $scope.editedAccidentVehicles.length; i++ ) {
+			var licenceNumber = $scope.editedAccidentVehicles[i]['Licence Number'];
 
 			$scope.driver = null;
-			$scope.accidentVehicle = $scope.editedAcciedentVehicles[i];
+			$scope.accidentVehicle = $scope.editedAccidentVehicles[i];
 
 			$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
 
@@ -236,13 +237,13 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 					$scope.driver = result[0];
 					drivers.push(result[0]);
 
-					if(drivers.length == $scope.editedAcciedentVehicles.length){
+					if(drivers.length == $scope.editedAccidentVehicles.length){
 						//fetching all vehicles
 						console.log('fetching vehicles');
 						$scope.updateAccidentProgress.push();
-						for (var i=0; i < $scope.editedAcciedentVehicles.length; i++ ) {
+						for (var i=0; i < $scope.editedAccidentVehicles.length; i++ ) {
 							$scope.vehicle = null;
-							var plateNumber = $scope.editedAcciedentVehicles[i]['Vehicle Plate Number'];
+							var plateNumber = $scope.editedAccidentVehicles[i]['Vehicle Plate Number'];
 
 							$scope.vehicleDriver = new iroad2.data.Modal('Vehicle',[]);
 
@@ -255,11 +256,35 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 									vehicles.push(result[0]);
 
 									//checking if number vehicle met
-									if(vehicles.length == $scope.editedAcciedentVehicles.length){
+									if(vehicles.length == $scope.editedAccidentVehicles.length){
 										console.log('Complete fetching Vehicles');
 
+										////saving edited passenger informations
+										//console.log('passenger upadates on vehicle ' + JSON.stringify($scope.editedPassengerVehicleList));
+										//console.log('updated passengers : ' + JSON.stringify($scope.editedAccidentPassengers));
+										for(var passengerCounter = 0; passengerCounter < $scope.editedAccidentPassengers.length; passengerCounter ++){
+
+											var passenger = $scope.editedAccidentPassengers[passengerCounter];
+											var vehicleNumber = $scope.editedPassengerVehicleList[passengerCounter]['vehicle'];
+											passenger.Vehicle = vehicles[vehicleNumber];
+
+											$scope.accidentPassengerEvent = new iroad2.data.Modal('Accident Passenger',[]);
+											//saving passenger
+											$scope.accidentPassengerEvent.save(passenger,otherData,function(resultSavingPassenger){
+
+												console.log('Successful update accident passenger ');
+
+											},function(error){
+												console.log('Fail to update accident passenger');
+
+											},$scope.accidentPassengerEvent.getModalName());
+
+										}
+
+
+
 										//loop through to save each accident vehicles
-										for(var i = 0; i < $scope.editedAcciedentVehicles.length ; i++){
+										for(var i = 0; i < $scope.editedAccidentVehicles.length ; i++){
 											$scope.accidentVehicle.Vehicle = vehicles[i];
 											$scope.accidentVehicle.Driver = drivers[i];
 
@@ -301,7 +326,6 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 			});
 
 		}
-
 		$scope.updateAccidentProgress.push('Complete Updates');
 
 	}
