@@ -74,7 +74,7 @@
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div ng-repeat="vehicle in vehicles ">
 
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" style="margin-bottom: 0.5%;">
                                 <div class="panel-heading" role="tab" id="heading{{ vehicle }}">
                                     <h4 class="panel-title" align = "center">
                                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ vehicle }}" aria-expanded="true" aria-controls="collapse{{ vehicle }}">
@@ -105,11 +105,18 @@
                                 <div ng-if = "editedAccidentPassengers" style = "margin:1%;">
                                     <div class = "panel panel-default">
                                         <div class = "panel-heading">Accident Passengers Information</div>
-                                        <div class = "panel-body">
-                                            <div ng-repeat=" passengerCounter in editedPassengersList " >
-                                                <div ng-if = "editedAccidentPassengers[passengerCounter].Vehicle['id'] == editedAccidentVehicles[vehicle].Vehicle['id']" style = "margin-bottom:0.5%;" ng-init = "editedPassengerVehicleList[$index]['vehicle'] = vehicle ">
+                                        <div class = "panel-body"  >
+                                            <!-- button for adding or show passenger information -->
+                                            <div style = "margin:1%;">
+                                                <button class = "btn btn-default" ng-click="showHideAccidentPassengers($index)">
+                                                    <span ng-if = 'accidentPasengerVisibility[vehicle].visibility' >Hide passengers information</span>
+                                                    <span ng-if = '!accidentPasengerVisibility[vehicle].visibility'>Show passengers information</span>
+                                                </button>
+                                            </div>
 
-                                                    <div class = "panel panel-default">
+                                            <div ng-repeat=" passengerCounter in editedPassengersList " ng-if = "accidentPasengerVisibility[vehicle].visibility">
+                                                <div ng-if = "editedAccidentPassengers[passengerCounter].Vehicle['id'] == editedAccidentVehicles[vehicle].Vehicle['id']" style = "margin-bottom:0.5%;" ng-init = "editedPassengerVehicleList[$index]['vehicle'] = vehicle ">
+                                                    <div class = "panel panel-default" >
                                                         <div class = "panel-heading">Passenger</div>
                                                         <div class = "panel-body">
                                                             <div class = "col-sm-4" ng-repeat="(key,value) in editAccidentVehiclePassengerForm">
