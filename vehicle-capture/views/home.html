@@ -136,7 +136,7 @@
             <div class="panel panel-default" >
                 <div class="panel-heading"><b>Update Vehicle Insurance</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
-                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle Insurance History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
@@ -165,7 +165,7 @@
             <div class="panel panel-default" >
                 <div class="panel-heading"><b>Update Vehicle Business Licence</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
-                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
                         <tr ng-repeat="list in  data.programs['Bussiness License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
@@ -195,7 +195,7 @@
                     <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
                     <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
-                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
@@ -223,7 +223,7 @@
             <div class="panel panel-default" >
                 <div class="panel-heading"><b>Update Vehicle Licence</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
-                    <p>Plate Number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
+                    <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number'].value }} </p>
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle Inspection'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
