@@ -338,6 +338,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }
 
             })
+            value = [];
             var dhis2Event = {
                 program: program,
                 programStage: programStage,
@@ -364,6 +365,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             };
             $.postJSON('../../../api/events',dhis2Event,function(response){
                 alert("success");
+                console.log('respornse : ' + JSON.stringify(response));
             },function(response){
                 alert("failed");
             });
