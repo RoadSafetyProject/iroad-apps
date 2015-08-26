@@ -9,7 +9,7 @@ eventCaptureControllers.controller('MainController',
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
-    	$scope.pageSize = 100;
+    	$scope.pageSize = 20;
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchAccidents($scope.pageSize,page);
     	                };
@@ -117,6 +117,7 @@ eventCaptureControllers.controller('MainController',
                 }
             });
 			$scope.formAccident = eventAccident;
+			//console.log('accident model ' + JSON.stringify(eventAccident));
 
 
 			//load accident vehicle data form
@@ -139,6 +140,7 @@ eventCaptureControllers.controller('MainController',
 			});
 			$scope.formAccidentVehicle = eventAccidentVehicle;
 
+
 			//load accident witness form
 			$scope.accidentWitness = new iroad2.data.Modal('Accident Witness',[]);
 			var modalName = $scope.accidentWitness.getModalName();
@@ -159,6 +161,26 @@ eventCaptureControllers.controller('MainController',
 			});
 			$scope.formAccidentWitness = eventAccidentWitness;
 
+			//load accident vehicle passengers form
+			$scope.accidentVehiclePassenger = new iroad2.data.Modal('Accident Passenger',[]);
+			var modalName = $scope.accidentVehiclePassenger.getModalName();
+			var eventAccidentVehiclePassenger = {};
+
+			angular.forEach(iroad2.data.programs, function (program) {
+				if (program.name == modalName) {
+					//console.log('Program ' + JSON.stringify(program));
+					angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+						if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+							//eventAccidentVehiclePassenger[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+							var data = null;
+						}else{
+							eventAccidentVehiclePassenger[dataElement.dataElement.name] = "";
+						}
+					});
+				}
+			});
+			$scope.formAccidentVehiclePassenger = eventAccidentVehiclePassenger;
+
         	var modalInstance = $modal.open({
         		templateUrl: 'views/addAccidentForm.html',
         		controller:'AddAccidentController'
@@ -167,7 +189,7 @@ eventCaptureControllers.controller('MainController',
         }
 
 
-		//function to edit acciednt information
+		//function to edit accidnt information
 		$scope.editAccidentInfo = function(accident){
 			$scope.accident = accident;
 
@@ -231,6 +253,26 @@ eventCaptureControllers.controller('MainController',
 			});
 			$scope.formAccidentWitness = eventAccidentWitness;
 
+			//load accident vehicle passengers form
+			$scope.accidentVehiclePassenger = new iroad2.data.Modal('Accident Passenger',[]);
+			var modalName = $scope.accidentVehiclePassenger.getModalName();
+			var eventAccidentVehiclePassenger = {};
+
+			angular.forEach(iroad2.data.programs, function (program) {
+				if (program.name == modalName) {
+					//console.log('Program ' + JSON.stringify(program));
+					angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+						if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+							//eventAccidentVehiclePassenger[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+							var data = null;
+						}else{
+							eventAccidentVehiclePassenger[dataElement.dataElement.name] = "";
+						}
+					});
+				}
+			});
+			$scope.formAccidentVehiclePassenger = eventAccidentVehiclePassenger;
+
 			var modalInstance = $modal.open({
 				templateUrl: 'views/editAccidentInfo.html',
 				controller: 'EditAccidentController',
@@ -246,8 +288,8 @@ eventCaptureControllers.controller('MainController',
 
 		}
 
-		
-		
+
+
 		$scope.isInteger = function(key){
 			return $scope.is(key,"int");
 		}
@@ -272,7 +314,7 @@ eventCaptureControllers.controller('MainController',
 			        		angular.forEach(results, function(result) {
 			        			var input = result;
 			        			for(var column in $scope.converts[key]){
-			        				input[column] = result[$scope.converts[key][column]]; 
+			        				input[column] = result[$scope.converts[key][column]];
 			        			}
 			        			input.selected = false;
 			        			angular.forEach($scope.editingEvent[key],function(element){
@@ -282,15 +324,15 @@ eventCaptureControllers.controller('MainController',
 			        			});
 			        			inputModal.push(input);
 			        		});
-			        		
+
 			        		$scope.inputModal[key] = inputModal;
-			        		
+
 			        		console.log("Input Modals:" + JSON.stringify($scope.inputModal[key]));
 							$scope.$apply();
 						});
 						return true;
 					}
-				}    
+				}
 			}
 			return false;
 		}
@@ -336,16 +378,16 @@ eventCaptureControllers.controller('MainController',
 			};
 			return object;
 		}
-		
+
 
 		$scope.showDriver = function(driver){
 			$scope.show("driver");
 			$scope.data.driver = driver;
 
 			console.log(JSON.stringify($scope.data.driver));
-			
+
 			for(var key in driver.Person){
-				$scope.data.driver[key] = driver.Person[key]; 
+				$scope.data.driver[key] = driver.Person[key];
 			}
 			delete driver.Person;
 		}
@@ -400,7 +442,7 @@ eventCaptureControllers.controller('MainController',
             	console.log(key + " Registries:" + JSON.stringify($scope.editInputModal));
             });
 
-    		
+
         }
 		$scope.data.editingOutputModal = [];
 		$scope.save = function(){
@@ -411,7 +453,7 @@ eventCaptureControllers.controller('MainController',
 					alert("The "+savableData.name+" does not exist.");
 					canSave = false;
 				}
-				
+
             });
 			if(canSave){
 				angular.forEach($scope.savableEventData, function (savableData) {
@@ -425,15 +467,15 @@ eventCaptureControllers.controller('MainController',
 			$scope.editingEvent["Driver License Number"] = $scope.editingEvent.Driver["Driver License Number"];
 			$scope.editingEvent["Gender"] = $scope.editingEvent.Driver["Gender"];
 			$scope.editingEvent["Date of Birth"] = $scope.editingEvent.Driver["Date of Birth"];
-			
+
 			$scope.editingEvent["Vehicle Plate Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number"];
 			$scope.editingEvent["Vehicle Owner Name"] = $scope.editingEvent.Vehicle["Vehicle Owner Name"];
 			$scope.editingEvent["Model"] = $scope.editingEvent.Vehicle["Model"];
 			$scope.editingEvent["Make"] = $scope.editingEvent.Vehicle["Make"];
 			$scope.editingEvent["Vehicle Class"] = $scope.editingEvent.Vehicle["Vehicle Class"];
 			$scope.editingEvent["Vehicle Ownership Category"] = $scope.editingEvent.Vehicle["Vehicle Ownership Category"];
-			
-			
+
+
 			console.log("JSON After:" + JSON.stringify($scope.editingEvent));
 			var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEvent['Offence Date']};
 			//var saveEvent = $scope.editingEvent;
@@ -472,7 +514,7 @@ eventCaptureControllers.controller('MainController',
 			$scope.cancelEdit();
         }
 		$scope.cancelEdit = function(){
-			
+
             $scope.show("");
             $scope.normalClass= "mws-panel grid_8";
         }
@@ -483,13 +525,13 @@ eventCaptureControllers.controller('MainController',
 				{
 					var relationModal = new  iroad2.data.Modal(program.name,[]);
 					relationModal.get(new iroad2.data.SearchCriteria(dataElement.name,"=",newValue),function(result){
-		        		
+
 		        		if(result.length > 0)
 		        		{
 		        			angular.forEach($scope.savableEventData, function (savableData) {
 		        				if(savableData.name == dataElement.name){
 		        					savableData.value = result[0];
-		        					
+
 		        				}
 		                    });
 		        		}else{

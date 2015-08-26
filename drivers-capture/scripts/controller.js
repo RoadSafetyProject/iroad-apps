@@ -481,6 +481,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                 }
 
             })
+            value = [];
             var dhis2Event = {
                 program: program,
                 programStage: programStage,
@@ -507,6 +508,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             };
             $.postJSON('../../../api/events',dhis2Event,function(response){
                 alert("success");
+                console.log('respornse : ' + JSON.stringify(response));
             },function(response){
                 alert("failed");
             });
