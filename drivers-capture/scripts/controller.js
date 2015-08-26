@@ -3,8 +3,37 @@
  */
 'use strict';
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', [])
-
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFileUpload"])
+.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+        	
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){            	
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]).service('fileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function(uploadObject){
+        var fd = new FormData();
+        angular.forEach(uploadObject.parameters,function(parameter){
+        	fd.append(parameter.name, parameter.value);
+        });
+        
+        $http.post(uploadObject.url, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(uploadObject.success)
+        .error(uploadObject.error);
+    }
+}])
 //Controller for settings page
     .controller('MainController',
     function($scope,
@@ -28,7 +57,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
              CustomFormService,
              ErrorMessageService,
              ModalService,
-             DialogService) {
+             DialogService,fileUpload,Upload) {
         //selected org unit
         $scope.dateOptions1 = {
             changeYear: true,
@@ -72,6 +101,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 $scope.data.programs[program1.name].id= program1.id;
                 $scope.data.programs[program1.name].version= 1;
                 $scope.data.programs[program1.name].programStages= program1.programStages;
+                angular.forEach(program1.programStages[0].programStageDataElements,function(programStageDataElement){
+                	if(programStageDataElement.dataElement.name == "Driver Photo"){
+                		//alert("Got Driver Photo");
+                		$scope.driverPhotoID = programStageDataElement.dataElement.id;
+                	}
+                })
             });
 //            $scope.data.programs = data.programs;
             $scope.fetchDrivers(1);
@@ -213,14 +248,82 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.adding = "false";
             $scope.editing = "false";
         }
-
-        $scope.AddDriver =function(value){
+        $scope.uploadFile = function(onSuccess,onError){
+        	if(!$scope.data.driverPhoto.type.startsWith("image")){
+        		onError("Not Valid Image.");
+        		return;
+        	}
+        	var ext = "." + $scope.data.driverPhoto.type.replace("image/","");
+        	console.log('file is ' );
+            console.dir($scope.data.driverPhoto);
+            var now = new Date();
+            var month = now.getMonth() + 1;
+            if(month < 10){
+            	month = "0" + month;
+            }
+            var date = now.getDate();
+            if(date < 10){
+            	date = "0" + date;
+            }
+            var fileName = ""+now.getFullYear()+""+month+""+date+"_"+now.getHours()+""+now.getMinutes()+""+now.getSeconds()+"_"+Math.random()+ext;
+            console.log("File Name:" + fileName);
+        	var uploadObject = {
+        			url:"../../../dhis-web-reporting/saveDocument.action",
+        			parameters:[
+        			            {name:"name",value:fileName},
+        			            {name:"external",value:"false"},
+        			            {name:"upload",value:$scope.data.driverPhoto}
+        			           ],
+        			success:function(data, status, headers, config){
+        				if(data.indexOf(fileName) != -1){
+        					
+        					$http.get('../../../api/documents.json?filter=name:eq:'+fileName).
+        					success(function(data) {
+        						onSuccess(data.documents[0].id);
+        					}).
+        					error(function(data) {
+        						onError("Error uploading file.");
+        					});
+        				}else{
+        					onError("Error uploading file.");
+        				}
+        			},
+        			error:function(data, status, headers, config){
+        				onError("Error uploading file.");
+        			}
+        		}
+            
+        	fileUpload.uploadFileToUrl(uploadObject);
+        }
+        $scope.AddDriver = function(value){
+        	console.log("First:" + JSON.stringify(value));
+        	$scope.uploadFile(function(data){
+        		//alert(data);
+        		console.log("Last:" + JSON.stringify(value));
+        		$scope.saveDriver(value,data);
+        	},function(error){
+        		alert(error);
+        	});
+        }
+        $scope.getImage = function(value){
+        	return "../../../api/documents/"+value+"/data";
+        }
+        $scope.saveDriver =function(value,driverPhotoID){
+        	
             var program = $scope.data.programs['Driver'].id;
             var programStage = $scope.data.programs['Driver'].programStages[0].id;
             var date1 = new Date();
             $scope.savingDate = date1.toISOString();
             var datavaluess = [];
             angular.forEach(value,function(data,key){
+            	if(key == $scope.driverPhotoID){
+            		alert("Field exist");
+            		datavaluess.push({
+                        dataElement: key,
+                        value: driverPhotoID
+                    });
+                    return;
+            	}
                 if(data instanceof Date){
                     var curr_date	= data.getDate();
                     var curr_month	= data.getMonth()+1;
@@ -232,6 +335,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         curr_date="0"+curr_date;
                     }
                     var data1 = curr_year+"-"+curr_month+"-"+curr_date;
+                   
                     datavaluess.push({
                         dataElement: key,
                         value: data1
@@ -241,6 +345,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     dataElement: key,
                     value: data
                 })
+            });
+            datavaluess.push({
+                dataElement: $scope.driverPhotoID,
+                value: driverPhotoID
             });
             var dhis2Event = {
                 program: program,
@@ -289,7 +397,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             
 
         }
-
         $http.get('/demo/api/me.json').
         success(function(data) {
         	$scope.orgUnit = data.organisationUnits[0];
