@@ -413,8 +413,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                 program: program,
                 programStage: programStage,
                 status: "ACTIVE",
-                orgUnit: $scope.logedInUser.organisationUnits[0].id,
-                eventDate: $scope.savingDate,
+                orgUnit: value.orgUnit,
+                eventDate: value.eventDate,
                 dataValues: datavaluess
             };
             $scope.currentSaving = true;
@@ -431,6 +431,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             error(function(data) {
             	
             });
+        	
         }
         $http.get('/demo/api/me.json').
         success(function(data) {
@@ -485,7 +486,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                 programStage: programStage,
                 status: "ACTIVE",
                 orgUnit: $scope.orgUnit.id,
-                eventDate: value.eventDate,
+                eventDate: $scope.savingDate,
                 dataValues: datavaluess
             };
             $scope.currentSaving = true;
