@@ -317,7 +317,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             var datavaluess = [];
             angular.forEach(value,function(data,key){
             	if(key == $scope.driverPhotoID){
-            		alert("Field exist");
             		datavaluess.push({
                         dataElement: key,
                         value: driverPhotoID
@@ -396,6 +395,84 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
 
             
 
+        }
+        $scope.updateDriver = function(value){
+        	var program = $scope.data.programs['Driver'].id;
+            var programStage = $scope.data.programs['Driver'].programStages[0].id;
+            var date1 = new Date();
+            $scope.savingDate = date1.toISOString();
+            var datavaluess = [];
+            //console.log(JSON.stringify(value)); 
+            angular.forEach(value.dataValues,function(data,key){
+            	
+                /*if(data instanceof Date){
+                    var curr_date	= data.getDate();
+                    var curr_month	= data.getMonth()+1;
+                    var curr_year 	= data.getFullYear();
+                    if(curr_month<10){
+                        curr_month="0"+curr_month;
+                    }
+                    if(curr_date<10){
+                        curr_date="0"+curr_date;
+                    }
+                    var data1 = curr_year+"-"+curr_month+"-"+curr_date;
+                   
+                    datavaluess.push({
+                        dataElement: key,
+                        value: data1
+                    })
+                }*/
+            	//console.log(key +" = "+JSON.stringify(data));
+                datavaluess.push({
+                    dataElement: data.id,
+                    value: data.value
+                })
+            });
+            /*datavaluess.push({
+                dataElement: $scope.driverPhotoID,
+                value: driverPhotoID
+            });*/
+            var dhis2Event = {
+                program: program,
+                programStage: programStage,
+                status: "ACTIVE",
+                orgUnit: $scope.logedInUser.organisationUnits[0].id,
+                eventDate: $scope.savingDate,
+                dataValues: datavaluess
+            };
+            $scope.currentSaving = true;
+            $scope.showProgresMessage('Adding Driver.....');
+            $http.put('../../../api/events/' + value.event,dhis2Event).
+            success(function(data) {
+            	console.log(JSON.stringify(data));
+            	$scope.hideProgresMessage();
+
+                $scope.cancelAdd();
+                $scope.hideProgresMessage();
+                $scope.showSuccessfullAddingMessage('You have successful updated the driver.');
+            }).
+            error(function(data) {
+            	
+            });
+            /*$.postJSON('../../../api/events/' + value.event,dhis2Event,function(response){
+
+                for(var key in $scope.data.newDriverValue){
+                    $scope.data.newDriverValue[key] = "";
+                }
+                $scope.hideProgresMessage();
+
+                $scope.data.programs['Driver'].dataValues.events.push($scope.prepareOneEvent($scope.data.programs['Driver'].programStages[0].programStageDataElements,dhis2Event));
+                  
+                $scope.cancelAdd();
+                $scope.hideProgresMessage();
+                $scope.showSuccessfullAddingMessage('You have successful adding a new driver');
+
+
+
+            },function(response){
+                $scope.hideProgresMessage();
+            });*/
+        	
         }
         $http.get('/demo/api/me.json').
         success(function(data) {
