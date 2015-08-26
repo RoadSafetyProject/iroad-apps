@@ -357,7 +357,43 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                  alert("failed");
             });
         }
-
+        $scope.updateVehicle = function(value){
+        	var program = $scope.data.programs['Vehicle'].id;
+            var programStage = $scope.data.programs['Vehicle'].programStages[0].id;
+            var date1 = new Date();
+            $scope.savingDate = date1.toISOString();
+            var datavaluess = [];
+            //console.log(JSON.stringify(value)); 
+            angular.forEach(value.dataValues,function(data,key){
+                datavaluess.push({
+                    dataElement: data.id,
+                    value: data.value
+                })
+            });
+            var dhis2Event = {
+                program: program,
+                programStage: programStage,
+                status: "ACTIVE",
+                orgUnit: value.orgUnit,
+                eventDate: value.eventDate,
+                dataValues: datavaluess
+            };
+            $scope.currentSaving = true;
+            $scope.showProgresMessage('Updating Vehicle.....');
+            $http.put('../../../api/events/' + value.event,dhis2Event).
+            success(function(data) {
+            	console.log(JSON.stringify(data));
+            	$scope.hideProgresMessage();
+            	alert("Vehicle updated successfully.")
+                //$scope.cancelAdd();
+                //$scope.hideProgresMessage();
+                //$scope.showSuccessfullAddingMessage('You have successful updated the driver.');
+            }).
+            error(function(data) {
+            	
+            });
+        	
+        }
         //adding a new Vehicle Insurance Information
         $scope.AddInsurance =function(value,vehicle_id){
             var program = $scope.data.programs['Vehicle Insurance History'].id;
