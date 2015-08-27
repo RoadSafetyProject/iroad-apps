@@ -69,8 +69,8 @@ eventCaptureControllers.controller('MainController',
             $scope.AccidentData = dhis2Event;
              var modalInstance = $modal.open({
                     templateUrl: '../accident-capture/views/viewAccidentInfo.html',
-                    controller: 'AccidentController',
-                    size:"lg"
+                    controller: 'AccidentController'
+                    //size:"lg"
 
                 });
 

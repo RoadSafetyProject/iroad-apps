@@ -18,6 +18,7 @@ eventCaptureControllers.controller('AccidentController',
 		$scope.accidentVehicleEventModal.get({value:$scope.accident_id},function(result){
 			console.log('Loading vehicles');
 			$scope.accidentVehicles = result;
+			console.log('data vehicle '  +JSON.stringify(result));
 
 			var passangerVisibity = [];
 			//loop through all vehicles to have passenger visibility
@@ -42,6 +43,7 @@ eventCaptureControllers.controller('AccidentController',
 			console.log('Loading witness');
 			$scope.accidentWitnesses = results;
 			$scope.loadAccidentWitnesses = false;
+			console.log('data witness '  +JSON.stringify(results));
 			$scope.$apply();
 
 		});
@@ -53,6 +55,7 @@ eventCaptureControllers.controller('AccidentController',
 			console.log('Loading accidentPassengers');
 			$scope.accidentPassengers = results;
 			$scope.loadAccidentPasssenger = false;
+			console.log('data passenger '  +JSON.stringify(results));
 			$scope.$apply();
 
 		});
@@ -563,11 +566,14 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		//saving basic information for an accident
 		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);
 		$scope.accident_id = null;
+
+		console.log("success add accident basic info" + JSON.stringify($scope.newAccidentForm));
 		$scope.accidentEventModal.save(saveEvent,otherData,function(result){
-			console.log("success add accident basic info");
+
 			$scope.accident_id = result.importSummaries[0].reference;
 			$scope.newAccidentForm['id'] = $scope.accident_id;
 
+			console.log("success add accident basic info" + JSON.stringify($scope.newAccidentForm));
 
 			if($scope.numberOfWitness > 0){
 				$scope.addingAccidentProgress.push('Saving accident witnesses');
@@ -575,6 +581,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 			}
 
 			//loop through witnesses
+
 			for (var i=0; i < $scope.numberOfWitness; i++ ){
 				///prepare data for saving accident witness
 				$scope.accidentWitnessModel = new iroad2.data.Modal('Accident Witness',[]);
@@ -597,6 +604,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 			}
 			//process for saving accident vehicles
+			console.log('starting saving vehicle');
 			var drivers = [];
 			var vehicles = [];
 			for (var i=0; i < $scope.numberOfVehicles; i++ ) {

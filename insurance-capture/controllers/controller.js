@@ -356,15 +356,15 @@ eventCaptureControllers.controller('MainController',
         //function to cancel sidebar nav
         $scope.cancelEdit = function(){
             $scope.normalClass= "mws-panel grid_8";
-            $scope.editing = "false";
-            $scope.viewinsuranceComp = "false";
+            $scope.editing = false;
+            $scope.viewinsuranceComp = false;
         }
 
 
         //function to view insurance comapany profile
         $scope.ViewInsurance = function(dhis2Event){
             //console.log(JSON.stringify(dhis2Event));
-            $scope.editing = "false";
+            $scope.editing = false;
             $scope.viewinsuranceComp = "true";
             $scope.normalClass= "mws-panel grid_6";
             $scope.event = dhis2Event;
