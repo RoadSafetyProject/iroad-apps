@@ -36,7 +36,7 @@
 						<div  ng-repeat="(key,value) in AccidentData">
 							<div class = "col-sm-4" ng-if="key == 'Accident Type' || key == 'Weather' || key == 'Intersection Name' || key == 'Road Name' || key == 'Cause of Accident' || key == 'Number of Severe Injuries' || key == 'Number of Simple Injuries' || key == 'Number of Fatal Injuries' || key == 'Time of Accident' || key == 'Area of Accident' || key == 'Accident Type Detail' || key == 'Accident Registration Number' || key == 'Accident Class'  ">
 								<label>{{ key }}</label><br>
-								{{ AccidentData[key] | date:'dd MMM yyyy' }}
+								{{ AccidentData[key]}}
 							</div>
 						</div>
 
@@ -78,7 +78,7 @@
 										<div ng-repeat="(key,value) in accidentVehicle ">
 											<div class = "col-sm-4" ng-if="key == 'Alcohol Level' || key == 'Damage' || key == 'Number of Severe Injuries' || key == 'Number of Simple Injuries' || key == 'Number of Fatal Injuries' ">
 												<label> {{ key }}</label><br>
-												{{ accidentVehicle[key] | date:'dd MMM yyyy'}}
+												{{ accidentVehicle[key] }}
 											</div>
 										</div>
 
@@ -150,7 +150,14 @@
 													<div ng-repeat="(key,value) in accidentVehicle.Driver">
 														<div class = "col-sm-6" ng-if = "key == 'Phone Number' || key == 'Gender' || key == 'Driving Class Name' || key == 'Current License Expiry Date' || key == 'TIN Number' || key == 'Driver License Number' || key == 'Full Name' ">
 															<label> {{ key }} </label><br>
-															{{ accidentVehicle.Driver[key] | date:'dd MMM yyyy' }}
+															{{ accidentVehicle.Driver[key]  }}
+															<!--<span ng-if="key == 'Driver License Number'">
+																{{ accidentVehicle.Driver[key]  }}
+															</span>
+															<span ng-if="key != 'Driver License Number'">
+																{{ accidentVehicle.Driver[key] | date:'dd MMM yyyy' }}
+															</span>-->
+
 														</div>
 													</div>
 
