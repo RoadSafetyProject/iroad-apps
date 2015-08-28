@@ -22,9 +22,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 		$scope.tree.context = {
 				selectedNodes: []
 			  };
-		$http.get("/demo/api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,level,children[id,name,level,children[id,name,level,children[id,name,level]]]")
+		$http.get("../../../api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,level,children[id,name,level,children[id,name,level,children[id,name,level]]]")
 			.success(function(result) {
 				$scope.tree.modal = result.organisationUnits;
+		}).error(function(error) {
+			console.log(error);
+		});
+		$http.get("../../../api/organisationUnitGroupSets.json?fields=:all")
+		.success(function(result) {
+			$scope.organisationUnitGroupSets = result.organisationUnitGroupSets;
 		}).error(function(error) {
 			console.log(error);
 		});
@@ -86,6 +92,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 		  error(function(data, status, headers, config) {
 			  console.log("Error Saving Org:" + JSON.stringify(data));
 		  });
+		$scope.organisationUnitGroups = [];
 		$scope.addFacility = function(){
 			if($scope.isAddingFacility){
 				if($scope.tree.context.selectedNodes.length > 0){
@@ -94,27 +101,42 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 							"openingDate": $scope.newFacility.openingDate,
 							"featureType": "Point",
 							"coordinates":"[" +$scope.newFacility.coordinates.latitude+","+$scope.newFacility.coordinates.longitude+"]",
-							"shortName":$scope.newFacility.shortName,
+							"shortName":$scope.newFacility.name,
 							"level":$scope.tree.context.selectedNodes[0].$model.level + 1,
 							"parent":{"id":$scope.tree.context.selectedNodes[0].$model.id}
 						};
 					console.log("Save Data:" + JSON.stringify(saveData));
-					$http.post('../../organisationUnits.json',saveData ).
-				  success(function(data, status, headers, config) {
-				    //console.log("Saving Org:" + JSON.stringify(data));
-					  if(data.status == "SUCCESS" && data.importCount.imported == 1){
-						  alert("Facility saved successfully.");
-						  $scope.isAddingFacility = false;
-					  }
-				  }).
-				  error(function(data, status, headers, config) {
-					  console.log("Error Saving Org:" + JSON.stringify(data));
-					  if(data.status == "SUCCESS"){
-						  
-					  }else{
-						  
-					  }
-				  });
+					
+					$http.post('../../../api/organisationUnits.json',saveData ).
+					  success(function(data, status, headers, config) {
+					    //console.log("Saving Org:" + JSON.stringify(data));
+						  if(data.status == "SUCCESS" && data.importCount.imported == 1){
+							  alert("Facility saved successfully.");
+							  $scope.isAddingFacility = false;
+							  angular.forEach($scope.organisationUnitGroups,function(organisationUnitGroup){
+								  $http.post('../../../api/organisationUnitGroups/'+organisationUnitGroup+'/organisationUnits/'+data.lastImported+'.json',saveData ).
+								  	success(function(data, status, headers, config) {
+									    
+									  }).
+									  error(function(data, status, headers, config) {
+										  console.log("Error Saving Org:" + JSON.stringify(data));
+										  if(data.status == "SUCCESS"){
+											  
+										  }else{
+											  
+										  }
+									  });
+							  });
+						  }
+					  }).
+					  error(function(data, status, headers, config) {
+						  console.log("Error Saving Org:" + JSON.stringify(data));
+						  if(data.status == "SUCCESS"){
+							  
+						  }else{
+							  
+						  }
+					  });
 				}else{
 					alert("Please select organisation unit.")
 				}
@@ -199,30 +221,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
                 }
                 //map.fitBounds(bounds);
         }
-    	$scope.getPathList = function(){
-    		$http.get('getpath.php?plate_number=' + $scope.plate_number).
-    		  success(function(result){
-    				angular.forEach(result,function(smarker){
-    					if(!$scope.markerExists(smarker)){
-    						smarker.coords = {latitude:smarker.latitude,longitude:smarker.longitude};
-    						if(!smarker.overspeeding){
-    							smarker.options ={
-    							    icon:'//maps.google.com/mapfiles/ms/icons/green-dot.png'
-    							};
-    						}
-    						console.log("Marker:" + JSON.stringify(smarker));
-    						$scope.markers.push(smarker);
-    						$scope.autoCenter();
-    					}
-    				});
-    				
-    		  }).
-    		  error(function(err){
-    				console.log("Error:" + err);
-    		  });
-    		
-    		
-    	}
 
 		//function to close adding facility dialogue
 		$scope.cancelMenu = function(){

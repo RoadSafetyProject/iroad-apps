@@ -146,10 +146,7 @@
   <div class="panel-body">
 		<div class="row">
 		<div class="col-sm-12" style="">
-			<div class="form-group">
-				<label>Facility Type</label><br />
-				<select class="form-control col-sm-12" ng-options="item.name as item.name for item in facilityType" ng-model="newFacility.shortName" ></select>
-			</div>
+			
 			<div class="form-group">
 				<label>Facility Name</label><br />
             	<input ng-model="newFacility.name" class="form-control col-sm-12" />
@@ -166,6 +163,10 @@
 				<label>Longitude</label><br />
             	<input ng-model="newFacility.coordinates.longitude" class="form-control col-sm-12" />
             </div>
+            <div class="form-group" ng-repeat="organisationUnitGroupSet in organisationUnitGroupSets">
+				<label>{{organisationUnitGroupSet.name}}</label><br />
+				<select class="form-control col-sm-12" ng-options="item.id as item.name for item in organisationUnitGroupSet.organisationUnitGroups" ng-model="organisationUnitGroups[$index]" ></select>
+			</div>
 		</div>
 		</div>
 		<div class="row">
