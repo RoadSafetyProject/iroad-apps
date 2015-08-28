@@ -354,7 +354,6 @@ iroad2.data.Modal = function (modalName,relations) {
 				if(event.dataValues != undefined)
 				for(var k = 0; k < event.dataValues.length; k++) {
 					if(event.dataValues[k].value == criteria.value){//Checks the conditions provided
-						console.log(program.name +" event:" + JSON.stringify(result2.events[j]));
 						selfGet.getCount.push(1);
 						//Render events to appropriate Modal
 						self.renderToJSON(event, function(object) {
