@@ -609,6 +609,135 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 
 		},accidentEventModal.getModalName());
 
+
+
+		var drivers = [];
+		var vehicles = [];
+		for (var i=0; i < $scope.numberOfVehicles; i++ ) {
+
+			$scope.vehicle = null;
+			$scope.accidentVehicle = $scope.newAccidentVehicleForm[i];
+			var plateNumber = $scope.accidentVehicle['Vehicle Plate Number'];
+			console.log('fetching vehicles : ' + plateNumber);
+			var vehicleModel = new iroad2.data.Modal('Vehicle', []);
+
+			vehicleModel.get({value: plateNumber}, function (result) {
+				console.log('vehicle' + JSON.stringify(result));
+				if ($scope.vehicle == result[0]) {
+					console.log('Vehicle found');
+				}
+				else {
+					$scope.vehicle = result[0];
+					vehicles.push(result[0]);
+					console.log('vehicles : ' +JSON.stringify(vehicles));
+				}
+			});
+		}
+		for (var i=0; i < $scope.numberOfVehicles; i++ ) {
+
+			//prepare data for saving
+			$scope.driver = null;
+			$scope.accidentVehicle = $scope.newAccidentVehicleForm[i];
+			var licenceNumber = $scope.accidentVehicle['Licence Number'];
+
+			$scope.driverModel =  new iroad2.data.Modal('Driver',[]);
+			$scope.driverModel.get({value:licenceNumber},function(result){
+				if($scope.driver == result[0]){
+					console.log('Driver found');
+				}
+				else{
+					$scope.driver = result[0];
+					drivers.push(result[0]);
+					console.log('driver' + JSON.stringify(drivers));
+
+					if(drivers.length == $scope.numberOfVehicles){
+						//fetching all vehicles
+
+						for (var i=0; i < drivers.length; i++ ) {
+							console.log('fetching vehicles');
+							$scope.vehicle = null;
+							$scope.accidentVehicle = $scope.newAccidentVehicleForm[i];;
+							var plateNumber = $scope.accidentVehicle['Vehicle Plate Number'];
+
+							var vehicleModel = new iroad2.data.Modal('Vehicle',[]);
+							vehicleModel.get({value:plateNumber},function(result) {
+								alert('vehile found');
+							});
+
+							/*$scope.vehicleDriver.get({value:plateNumber},function(result) {
+
+								console.log('vehicle' + JSON.stringify(result));
+								if ($scope.vehicle == result[0]) {
+									console.log('Vehicle found');
+								}
+								else {
+									$scope.vehicle = result[0];
+									vehicles.push(result[0]);
+									//checking if number vehicle met
+									if(vehicles.length == $scope.numberOfVehicles){
+
+										console.log('Start saving accident passengers data');
+										//loop through all vehicle to save passengers
+										for(var i = 0; i < $scope.numberOfVehicles ; i++){
+											//$scope.newAccidentVehiclePassengers[i].accident =  $scope.newAccidentForm;
+											var accidentPassengers = $scope.newAccidentVehiclePassengers[i].Data;
+											var vehicle = vehicles[i];
+
+											//loop passengers data
+											for(var passengerCounter = 0; passengerCounter < $scope.newAccidentVehiclePassengers[i].counter.length; passengerCounter ++){
+												//prepare data for saving
+												var passenger = accidentPassengers[passengerCounter];
+												passenger.Vehicle = vehicle;
+												passenger.Accident = $scope.newAccidentForm;
+
+
+											}
+
+										}
+
+										console.log('Start saving accident vehicles data');
+										//loop through to save each accident vehicles
+										for(var i = 0; i < $scope.numberOfVehicles ; i++){
+											//add vehicle and driver objects ready for saving
+											$scope.accidentVehicle.Vehicle = vehicles[i];
+											$scope.accidentVehicle.Driver = drivers[i];
+
+											//add other data for driver
+											$scope.accidentVehicle['Full Name'] = $scope.accidentVehicle.Driver['Full Name'];
+											$scope.accidentVehicle['Gender'] = $scope.accidentVehicle.Driver['Gender'];
+											$scope.accidentVehicle['Date of Birth'] = $scope.accidentVehicle.Driver['Date of Birth'];
+											$scope.accidentVehicle['Licence Number'] = $scope.accidentVehicle.Driver['Driver License Number'];
+
+											//add other data for vehicle
+											$scope.accidentVehicle['Vehicle Plate Number'] = $scope.accidentVehicle.Vehicle['Vehicle Plate Number'];
+											$scope.accidentVehicle['Vehicle Ownership Category'] = $scope.accidentVehicle.Vehicle['Vehicle Ownership Category'];
+											$scope.accidentVehicle['Vehicle Owner Name'] = $scope.accidentVehicle.Vehicle['Vehicle Owner Name'];
+											$scope.accidentVehicle['Vehicle Class'] = $scope.accidentVehicle.Vehicle['Vehicle Class'];
+											$scope.accidentVehicle['Make'] = $scope.accidentVehicle.Vehicle['Make'];
+											$scope.accidentVehicle['Model'] = $scope.accidentVehicle.Vehicle['Model'];
+
+											//add accident object
+											$scope.accidentVehicle.Accident = $scope.newAccidentForm;
+
+											//saving accident
+											$scope.accidentVehicleEventModal = new iroad2.data.Modal('Accident Vehicle',[]);
+											var savedAccidentVehicle = $scope.accidentVehicle;
+
+										}
+
+									}
+								}
+							});*/
+						}//end of loop for fetching vehicles
+					}//end of checking condition for number of driver meet
+				}//end for fetching drivers
+			});
+
+		}
+
+
+
+
 		/*$scope.accidentEventModal.save(saveEvent,otherData,function(result){
 
 			$scope.accident_id = result.importSummaries[0].reference;
