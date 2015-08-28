@@ -45,7 +45,7 @@
 			</div>
 
 			<!-- panel for view of all accidents vehicles involved in accident-->
-			<div class = "panel panel-default" ng-if = "accidentVehicles != []">
+			<div class = "panel panel-default" ng-if = "accidentVehicles[0]">
 				<div class="panel-heading">Accident Vehicle(s) information </div>
 				<div class = "panel-body">
 
@@ -194,7 +194,7 @@
 
 
 			<!-- panel for all witnesses for a given accident -->
-			<div class="panel panel-default" ng-if = "accidentWitnesses">
+			<div class="panel panel-default" ng-if = "accidentWitnesses[0]">
 				<div class="panel-heading">Accident Witnesses Information </div>
 				<div class = "panel-body">
 					<div ng-if = "loadAccidentWitnesses" style = "width: 50%;margin:auto;">

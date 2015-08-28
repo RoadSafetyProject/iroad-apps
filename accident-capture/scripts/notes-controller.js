@@ -560,17 +560,59 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		$scope.addingAccidentProgress.push('Saving accident information');
 
 		var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
-		otherData.coordinate = {"latitude": "","longitude": ""}
+		//otherData.coordinate = {"latitude": "","longitude": ""}
 		var saveEvent = $scope.newAccidentForm;
 
 		//saving basic information for an accident
-		$scope.accidentEventModal = new iroad2.data.Modal('Accident',[]);
+		var accidentEventModal = new iroad2.data.Modal('Accident',[]);
 		$scope.accident_id = null;
 
-		console.log("success add accident basic info" + JSON.stringify($scope.newAccidentForm));
-		$scope.accidentEventModal.save(saveEvent,otherData,function(result){
+		accidentEventModal.save(saveEvent,otherData,function(result){
+
+			console.log(JSON.stringify(result));
+			if(result.httpStatus){
+				result = result.response;
+				$scope.accident_id = result.importSummaries[0].reference
+				$scope.newAccidentForm['id'] = $scope.accident_id;
+				console.log('accident data : ' + JSON.stringify($scope.newAccidentForm));
+
+				//saving witness
+				if($scope.numberOfWitness > 0){
+					$scope.addingAccidentProgress.push('Saving accident witnesses');
+
+				}
+				//loop through all witness
+				for (var i=0; i < $scope.numberOfWitness; i++ ){
+					///prepare data for saving accident witness
+					$scope.accidentWitnessModel = new iroad2.data.Modal('Accident Witness',[]);
+					$scope.newAccidentWitnessForm[i].Accident = $scope.newAccidentForm;
+					var saveAccidentWitnesEvent = $scope.newAccidentWitnessForm[i];
+
+					//saving a given witness
+					$scope.accidentWitnessModel.save(saveAccidentWitnesEvent,otherData,function(result){
+						console.log(JSON.stringify(result));
+						console.log('Success to add the witness to the accident');
+
+					},function(error){
+						console.log('Fail to add the witness to the accident');
+
+					},$scope.accidentWitnessModel.getModalName());
+				}
+
+				//saving accident vehicles
+
+			}
+
+
+		},function(error){
+			alert('fails');
+
+		},accidentEventModal.getModalName());
+
+		/*$scope.accidentEventModal.save(saveEvent,otherData,function(result){
 
 			$scope.accident_id = result.importSummaries[0].reference;
+			alert($scope.accident_id);
 			$scope.newAccidentForm['id'] = $scope.accident_id;
 
 			console.log("success add accident basic info" + JSON.stringify($scope.newAccidentForm));
@@ -721,7 +763,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		},function(error){
 			console.log('Fail to add accident basic info');
 
-		},$scope.accidentEventModal.getModalName());
+		},$scope.accidentEventModal.getModalName());*/
 	}
 
 }) ;
