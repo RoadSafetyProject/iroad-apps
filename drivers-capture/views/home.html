@@ -78,7 +78,7 @@
                                 <div ng-if="datas.name == 'Driver Photo'">
                                 	<!-- <img class="img-thumbnail" ng-src="getImage(datas.value)" alt="Driver Photo"/> -->
                                 	<img class="img-thumbnail" ng-src="../../../api/documents/{{datas.value}}/data" alt="Driver Photo"/>
-                                	<input type="file" file-model="data.driverPhoto"/>
+                                	<input type="file" file-model="data.editDriverPhoto"/>
                                 </div>
                                 <input  class="form-control" ng-if="!datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
                                 <input  class="form-control" ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">

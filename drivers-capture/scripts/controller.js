@@ -248,14 +248,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             $scope.adding = "false";
             $scope.editing = "false";
         }
-        $scope.uploadFile = function(onSuccess,onError){
-        	if(!$scope.data.driverPhoto.type.startsWith("image")){
+        $scope.uploadFile = function(file,onSuccess,onError){
+        	if(!file.type.startsWith("image")){
         		onError("Not Valid Image.");
         		return;
         	}
-        	var ext = "." + $scope.data.driverPhoto.type.replace("image/","");
+        	var ext = "." + file.type.replace("image/","");
         	console.log('file is ' );
-            console.dir($scope.data.driverPhoto);
+            console.dir(file);
             var now = new Date();
             var month = now.getMonth() + 1;
             if(month < 10){
@@ -272,7 +272,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         			parameters:[
         			            {name:"name",value:fileName},
         			            {name:"external",value:"false"},
-        			            {name:"upload",value:$scope.data.driverPhoto}
+        			            {name:"upload",value:file}
         			           ],
         			success:function(data, status, headers, config){
         				if(data.indexOf(fileName) != -1){
@@ -297,7 +297,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         }
         $scope.AddDriver = function(value){
         	console.log("First:" + JSON.stringify(value));
-        	$scope.uploadFile(function(data){
+        	$scope.uploadFile($scope.data.driverPhoto,function(data){
         		//alert(data);
         		console.log("Last:" + JSON.stringify(value));
         		$scope.saveDriver(value,data);
@@ -396,7 +396,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             
 
         }
-        $scope.updateDriver = function(value){
+        $scope.updateDriverToServer = function(value,driverPhotoID){
         	var program = $scope.data.programs['Driver'].id;
             var programStage = $scope.data.programs['Driver'].programStages[0].id;
             var date1 = new Date();
@@ -408,6 +408,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                     dataElement: data.id,
                     value: data.value
                 })
+            });
+            datavaluess.push({
+                dataElement: $scope.driverPhotoID,
+                value: driverPhotoID
             });
             var dhis2Event = {
                 program: program,
@@ -431,6 +435,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             error(function(data) {
             	
             });
+        }
+        $scope.updateDriver = function(value){
+        	$scope.uploadFile($scope.data.editDriverPhoto,function(data){
+        		//alert(data);
+        		console.log("Last:" + JSON.stringify(value));
+        		$scope.updateDriverToServer(value,data);
+        	},function(error){
+        		alert(error);
+        	});
         	
         }
         $http.get('/demo/api/me.json').
