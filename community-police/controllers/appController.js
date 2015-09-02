@@ -7,12 +7,27 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
     .controller('MainController',
     function($scope,$http,$interval) {
     	$scope.facilityType = [{"name" :"Police"},{"name" :"Hospital"},{"name" :"Fire"}];
+    	$scope.selectedFacility = {};
+    	$scope.isSelectedFacility = false;
     	$scope.options = {
 			      onSelect: function($event, node, context) {
 			          context.selectedNodes = [node];
 			          //alert(node);
-			          console.log(JSON.stringify(node.$model));
+			          
 			          //$scope.makeRequest(node.$model.name);
+			          if(node.$model.coordinates){
+			        	  console.log(JSON.stringify(node.$model.coordinates));
+			        	  var coords = JSON.parse(node.$model.coordinates);
+			        	  $scope.selectedFacility = {
+			        			id:"newFacility",
+			        			coordinates:{latitude:coords[0],longitude:coords[1]},
+			        			name:"",
+			        	  };
+			        	  $scope.isSelectedFacility = true;
+			        	  console.log(JSON.stringify($scope.selectedFacility));
+			          }else{
+			        	  $scope.isSelectedFacility = false;
+			          }
 			      }
 			  };
     	$("#facilityModal").draggable();
@@ -22,7 +37,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 		$scope.tree.context = {
 				selectedNodes: []
 			  };
-		$http.get("../../../api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,level,children[id,name,level,children[id,name,level,children[id,name,level]]]")
+		$http.get("../../../api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,level,children[id,name,level,children[id,name,level,children[:all]]]")
 			.success(function(result) {
 				$scope.tree.modal = result.organisationUnits;
 		}).error(function(error) {
@@ -41,17 +56,20 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 				options:{draggable:true}
 		};
 		$scope.isAddingFacility = false;
+		console.log(JSON.stringify($scope.newFacility));
 		$scope.communityProgram = {};
 		$scope.reportMarker = {};
+		$scope.isReportMarker = false;
 		$scope.addMarker = function(event){
 			
 			//event.coordinate = {latitude: -6.771430, longitude: 39.239946};
 			//console.log(JSON.stringify(event));
 			//$scope.reportMarker = event;
-			console.log(event);
+			console.log(JSON.stringify(event));
 			
 			event.coordinate = {latitude: -6.771430, longitude: 39.239946};
 			$scope.reportMarker = event;
+			$scope.isReportMarker = true;
 			/*$scope.reportMarker = {
 				id:"reportMarker",
 				coordinate:event.coordinate,

@@ -180,7 +180,9 @@
 	
     <ui-gmap-marker ng-if="isAddingFacility" options="newFacility.options" draggable="true" coords="newFacility.coordinates" idkey="newFacility.id">
     </ui-gmap-marker>
-    <ui-gmap-marker options="reportMarker.options" coords="reportMarker.coordinate" idkey="reportMarker.event">
+    <ui-gmap-marker ng-if="isSelectedFacility" coords="selectedFacility.coordinates" idkey="selectedFacility.id">
+    </ui-gmap-marker>
+    <ui-gmap-marker ng-if="isReportMarker" options="reportMarker.options" coords="reportMarker.coordinate" idkey="reportMarker.event">
     <ui-gmap-window options="windowOptions" closeClick="closeClick()">
 			<div>
 			Community Report Details
