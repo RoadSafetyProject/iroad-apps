@@ -1,45 +1,80 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
-    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
-    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/angular/angular.js"></script>
-    <script type="text/javascript" src="/demo/dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+    <head>
+        <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+        <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
+        <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/angular/angular.js"></script>
+        <script type="text/javascript" src="/demo/dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
 
-    <link href="/demo/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css" type="text/css" rel="stylesheet" >
-    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" /><!--
-        <link rel="stylesheet" href="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview.css" />
-        <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-tpls.js"></script>
-        <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>-->
-    <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
-    <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
+        <link href="/demo/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css" type="text/css" rel="stylesheet" >
+        <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" /><!--
+            <link rel="stylesheet" href="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview.css" />
+            <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-tpls.js"></script>
+            <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>-->
+        <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
+        <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
 
-</head>
-<body ng-app="aggregateAccidentForm">
-<div ng-controller = "aggregateAccidentFormController">
+    </head>
+    <body ng-app="aggregateAccidentForm">
+        <div ng-controller = "aggregateAccidentFormController">
 
-    <div class = "container" style="font-weight: bold">
-        <div class="row">
-            <h3 align = "center"><b>TANZANIA POLICE FORCE</b></h3>
-            <h3 align = "center"><b>PARTICULARS OF A ROAD ACCIDENT</b></h3>
-        </div>
-    </div>
-    <div class = "container">
-        <div class = "row">
-            <div style="text-align:justify;padding:2%;padding-top:4%;font-size:14px;">
-                Accident Register No. .....{{reg}}............................. Police Station : .........................<br>
-                Date of accident................ time........ <b>O.B No.</b>.....................................<br>
-                Place : ..............................................................<br>
-                <b>Name and address of Person who reported the occurrence<br>
-                    .................................................................
-                    <br><br>
-                    Name and address of witnesses :-
-                </b>
+            <div class = "container" style="margin-bottom: 2%;">
+                <div class = "row">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;padding-top: 1%;" >Accident Registration Number</label> :
+                    </div>
+                    <div class = "col-sm-4 col-md-4 col-lg-4">
+                        <input type = "text" ng-model = "data.accidentRegistrationNumber" class = "form-control"/>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <button class = "btn btn-default" ng-click="searchAccident()">Get Report</button>
+                    </div>
+                </div>
             </div>
+            <div ng-if="accidentStatus">
+
+                <div class = "container" style="font-weight: bold">
+                    <div class="row">
+                        <h3 align = "center"><b>TANZANIA POLICE FORCE</b></h3>
+                        <h3 align = "center"><b>PARTICULARS OF A ROAD ACCIDENT</b></h3>
+                    </div>
+                </div>
+                <div class = "container" ng-if = "acccident">
+                    <div class = "row">
+                        <div style="text-align:justify;padding:2%;padding-top:4%;font-size:14px;">
+                            Accident Register No. .................................. Police Station : .........................<br>
+                            Date of accident................ time........ <b>O.B No.</b>.....................................<br>
+                            Place : ..............................................................<br>
+                            <b>Name and address of Person who reported the occurrence<br>
+                                .................................................................
+                                <br><br>
+                                Name and address of witnesses :-
+                                {{ acccident }}
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <div class = "container" ng-if = "!acccident" >
+                    <div class = "row">
+                        Accident with registration number {{ data['accidentRegistrationNumber'] }} has not been registered
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-    </div>
-</div>
-</body>
+        <script>
+            window.dhis2 = window.dhis2 || {};
+            dhis2.settings = dhis2.settings || {};
+            dhis2.settings.baseUrl = 'demo';
+        </script>
+        <script>
+            var dhisConfigs = {
+                baseUrl:"../",
+                refferencePrefix:"Program_"
+            };
+        </script>
+    </body>
 </html>
