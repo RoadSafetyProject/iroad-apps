@@ -45,18 +45,19 @@
                     <h3 align = "center">TANZANIA POLICE FORCE</h3>
                     <h3 align = "center">PARTICULARS OF A ROAD ACCIDENT</h3>
                 </div>
+                <div class = "col-sm-12"></div>
             </div>
         </div>
         <div class = "container" ng-if = "acccident">
             <div class = "row" style="text-align:justify;padding:2%;padding-top:4%;font-size:14px;">
-                <div class = "col-sm-12" >
+                <div class = "col-sm-12" style = "line-height:25px;margin-top: 2%;">
                     Accident Register No: <b>{{ acccident['Accident Registration Number'] }}</b>    Police Station : .........................<br>
                     Date of accident <b>{{ acccident['Time of Accident'] | date:'dd MMMM yyyy' }}    </b> Time <b>{{ acccident['Time of Accident'] | date:'HH mm ss'  }}</b>     <b>O.B No.</b>.....................................<br>
                     Place : <b>{{ acccident['Area of Accident'] }}, {{ acccident['Road Name'] }}</b> <br>
                     <b>Name and address of Person who reported the occurrence</b> :<br>
                     {{acccident.Police['Rank Number']}} {{ acccident.Police.Person['First Name'] }}  {{ acccident.Police.Person['Middle Name'] }}  {{ acccident.Police.Person['Last Name'] }}  </br>
                 </div>
-                <div class = "col-sm-12" ng-if="accidentWitnesses[0]">
+                <div class = "col-sm-12" ng-if="accidentWitnesses[0]" style = "line-height:25px;margin-top: 2%;">
                     <b> Name and address of witnesses :- </b>
                     <ol>
                         <li ng-repeat = "witness in accidentWitnesses">
@@ -66,11 +67,11 @@
                         </li>
                     </ol>
                 </div>
-                <div class = "col-sm-12">
+                <div class = "col-sm-12" style = "line-height:25px;margin-top: 2%;">
                     <b>Abstract of particulars as reported to Police(NB- This is nit a police but merely an Abstract of such particulars as may be useful to persons interested):</b><br>
                     Accident Type : <b>{{ acccident['Accident Type'] }}</b>, Weather : <b>{{ acccident['Weather'] }}</b>, Cause of Accident : <b>{{ acccident['Cause of Accident'] }}</b>, Number of Severe Injuries : <b>{{ acccident['Number of Severe Injuries'] }}</b>, Number of Simple Injuries : <b>{{ acccident['Number of Simple Injuries'] }}</b>, Number of Fatal Injuries : <b>{{ acccident['Number of Fatal Injuries'] }}</b>
 
-                    <div ng-if = "accidentVehicles[0]">
+                    <div ng-if = "accidentVehicles[0]" style = "line-height:25px;margin-top: 2%;">
                         Vehicle(s) involved :<br>
                         <span ng-repeat="accidentVehicle in accidentVehicles">
                             Vehicle {{ accidentVehicle['Vehicle Plate Number']|uppercase }} {{ accidentVehicle['Make']|uppercase }} {{ accidentVehicle['Model']|uppercase }} drived by {{ accidentVehicle['Full Name']|uppercase }}<br>
