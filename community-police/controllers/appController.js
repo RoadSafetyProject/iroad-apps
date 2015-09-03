@@ -77,6 +77,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 				options:{draggable:true}
 			};*/
 		}
+		$scope.hasCoordinate = function(event){
+			if(event.coordinate.latitude != 0 && event.coordinate.longitude != 0){
+				return true;
+			}
+			return false;
+		}
 		$scope.getDataValue = function(event,dataElementName){
 			var dataElementId = "";
 			angular.forEach($scope.communityProgram.programStages[0].programStageDataElements,

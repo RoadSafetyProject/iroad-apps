@@ -84,6 +84,12 @@
         <div class="row">
 			<div class="col-sm-12" style="">
 				Organisation Unit:
+				<div class="form-group">
+					<br />
+	            	<input ng-model="orgUnitSearch" class="form-control col-sm-12" placeholder="Search Organisation Unit"/>
+	            	
+	            </div>
+	            <br />
 				  <div class="org-unit-control col-sm-12" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
 					  <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
 				  </div>
@@ -103,7 +109,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportLabel">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -118,14 +124,32 @@
                     <th>Title</th>
                     <th>Type</th>
                     <th>Description</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="event in events" ng-click="addMarker(event)">
+                <tr ng-repeat="event in events">
                 	<td>{{$index + 1}}</td>
                 	<td>{{getDataValue(event,"Community Report Title")}}</td>
                 	<td>{{getDataValue(event,"Community Report Type")}}</td>
                 	<td>{{getDataValue(event,"Community Report Description")}}</td>
+                	<td>
+                		<div class="btn-group dropdown">
+                            <button type="button" class="btn btn-default">Action</button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            	
+                            	<li><a ng-click="showOffence(event)">View Image</a> </li>
+                                <li><a  ng-click="enableEdit(event)">View Video</a> </li>
+                         
+                                <li ng-if="hasCoordinate(event)"><a ng-click="addMarker(event)">View Coordinate </a> </li>
+                                
+                            </ul>
+                        </div>
+                	</td>
                 </tr>
                 </tbody>
         </table>
