@@ -43,6 +43,15 @@ aggregateAccidentFormApp.controller('aggregateAccidentFormController',function($
                             $scope.accidentWitnesses = results;
                             $scope.$apply();
                         });
+                        //fetching accident vehicles
+                        var accidentVehiclesModal = new iroad2.data.Modal('Accident Vehicle',[]);
+                        $scope.accidentVehicles = null;
+                        accidentVehiclesModal.get(new iroad2.data.SearchCriteria('Program_Accident',"=",accidentId),function(result){
+                            console.log('loading accident vehicles');
+                            $scope.accidentVehicles = result;
+                            $scope.$apply();
+
+                        });
                     }
                 }
             });
