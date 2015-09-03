@@ -347,12 +347,13 @@ iroad2.data.Modal = function (modalName,relations) {
 		
 		//Get events of the program from the server
 		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result2){
+
 			if(result2.events != undefined)
 			for(var j = 0; j < result2.events.length; j++) {//For each event render to entity column json
 				var event = result2.events[j];
+				if(event.dataValues != undefined)
 				for(var k = 0; k < event.dataValues.length; k++) {
 					if(event.dataValues[k].value == criteria.value){//Checks the conditions provided
-						
 						selfGet.getCount.push(1);
 						//Render events to appropriate Modal
 						self.renderToJSON(event, function(object) {

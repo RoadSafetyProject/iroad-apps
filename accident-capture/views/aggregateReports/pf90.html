@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/angular/angular.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/demo/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css" type="text/css" rel="stylesheet" >
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" /><!--
+            <link rel="stylesheet" href="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview.css" />
+            <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-tpls.js"></script>
+            <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>-->
+    <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
+    <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
+
+</head>
+<body ng-app="aggregateAccidentForm" >
+<div ng-controller = "aggregateAccidentFormController" align="center">
+
+    <div class = "container hideInPrint" style="margin-bottom: 2%;">
+        <div class = "row">
+            <div class = "col-sm-3 col-md-3 col-lg-3">
+                <label style="font-size: 14px;padding-top: 1%;" >Accident Registration Number</label> :
+            </div>
+            <div class = "col-sm-4 col-md-4 col-lg-4">
+                <input type = "text" ng-model = "data.accidentRegistrationNumber" class = "form-control"/>
+            </div>
+            <div class = "col-sm-3 col-md-3 col-lg-3">
+                <button class = "btn btn-default" ng-click="searchAccident()">Get Report</button>
+            </div>
+        </div>
+    </div>
+    <div ng-if="accidentStatus">
+
+        <div class = "container" >
+            <div class="row">
+                <div class="col-sm-12" style="margin-bottom: 2%;">
+                    <span class = "pull-right">p.f 90</span>
+                </div>
+                <br>
+                <div class = "col-sm-12" style="font-weight: bold">
+                    <h3 align = "center">TANZANIA POLICE FORCE</h3>
+                    <h3 align = "center">PARTICULARS OF A ROAD ACCIDENT</h3>
+                </div>
+                <div class = "col-sm-12"></div>
+            </div>
+        </div>
+        <div class = "container" ng-if = "acccident">
+            <div class = "row" style="text-align:justify;padding:2%;padding-top:4%;font-size:14px;">
+                <div class = "col-sm-12" style = "line-height:25px;margin-top: 2%;">
+                    Accident Register No: <b>{{ acccident['Accident Registration Number'] }}</b>    Police Station : .........................<br>
+                    Date of accident <b>{{ acccident['Time of Accident'] | date:'dd MMMM yyyy' }}    </b> Time <b>{{ acccident['Time of Accident'] | date:'HH mm ss'  }}</b>     <b>O.B No.</b>.....................................<br>
+                    Place : <b>{{ acccident['Area of Accident'] }}, {{ acccident['Road Name'] }}</b> <br>
+                    <b>Name and address of Person who reported the occurrence</b> :<br>
+                    {{acccident.Police['Rank Number']}} {{ acccident.Police.Person['First Name'] }}  {{ acccident.Police.Person['Middle Name'] }}  {{ acccident.Police.Person['Last Name'] }}  </br>
+                </div>
+                <div class = "col-sm-12" ng-if="accidentWitnesses[0]" style = "line-height:25px;margin-top: 2%;">
+                    <b> Name and address of witnesses :- </b>
+                    <ol>
+                        <li ng-repeat = "witness in accidentWitnesses">
+                            Name : <b>{{ witness ['First Name'] | uppercase}} {{ witness ['Middle Name'] | uppercase }} {{ witness ['Last Name'] | uppercase }}</b>&nbsp;&nbsp;
+                            Phone Number : <b>{{ witness['Phone Number'] }}</b>&nbsp;&nbsp;
+                            Postal Address : <b>{{ witness['Postal Address'] }}</b>&nbsp;&nbsp;
+                        </li>
+                    </ol>
+                </div>
+                <div class = "col-sm-12" style = "line-height:25px;margin-top: 2%;">
+                    <b>Abstract of particulars as reported to Police(NB- This is nit a police but merely an Abstract of such particulars as may be useful to persons interested):</b><br>
+                    Accident Type : <b>{{ acccident['Accident Type'] }}</b>, Weather : <b>{{ acccident['Weather'] }}</b>, Cause of Accident : <b>{{ acccident['Cause of Accident'] }}</b>, Number of Severe Injuries : <b>{{ acccident['Number of Severe Injuries'] }}</b>, Number of Simple Injuries : <b>{{ acccident['Number of Simple Injuries'] }}</b>, Number of Fatal Injuries : <b>{{ acccident['Number of Fatal Injuries'] }}</b>
+
+                    <div ng-if = "accidentVehicles[0]" style = "line-height:25px;margin-top: 2%;">
+                        Vehicle(s) involved :<br>
+                        <span ng-repeat="accidentVehicle in accidentVehicles">
+                            Vehicle {{ accidentVehicle['Vehicle Plate Number']|uppercase }} {{ accidentVehicle['Make']|uppercase }} {{ accidentVehicle['Model']|uppercase }} drived by {{ accidentVehicle['Full Name']|uppercase }}<br>
+                        </span>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class = "row" style="margin-top: 5%;">
+                <div class = "col-sm-12">
+                    <div class = "pull-right">
+                    <span >
+                          ......................................................<br>
+                          Signature of Officer i/c Police Station
+                     </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class = "container" ng-if = "!acccident" >
+            <div class = "row">
+                Accident with registration number {{ accidentRegNumber }} has not been registered
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+<script>
+    window.dhis2 = window.dhis2 || {};
+    dhis2.settings = dhis2.settings || {};
+    dhis2.settings.baseUrl = 'demo';
+</script>
+<script>
+    var dhisConfigs = {
+        baseUrl:"../",
+        refferencePrefix:"Program_"
+    };
+</script>
+</body>
+</html>
