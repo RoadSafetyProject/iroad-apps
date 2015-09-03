@@ -567,7 +567,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		$scope.accident_id = null;
 
 		accidentEventModal.save(saveEvent,otherData,function(result){
-
+			console.log(JSON.stringify(result));
 			if(result.httpStatus){
 				result = result.response;
 				$scope.accident_id = result.importSummaries[0].reference
