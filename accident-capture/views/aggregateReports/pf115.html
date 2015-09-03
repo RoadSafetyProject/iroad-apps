@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/angular/angular.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/demo/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css" type="text/css" rel="stylesheet" >
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" /><!--
+            <link rel="stylesheet" href="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview.css" />
+            <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-tpls.js"></script>
+            <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>-->
+    <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
+    <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
+
+</head>
+<body ng-app="aggregateAccidentForm" >
+<div ng-controller = "aggregateAccidentFormController" align="center">
+
+    <div class = "container hideInPrint" style="margin-bottom: 2%;">
+        <div class = "row">
+            <div class = "col-sm-3 col-md-3 col-lg-3">
+                <label style="font-size: 14px;padding-top: 1%;" >Accident Registration Number</label> :
+            </div>
+            <div class = "col-sm-4 col-md-4 col-lg-4">
+                <input type = "text" ng-model = "data.accidentRegistrationNumber" class = "form-control"/>
+            </div>
+            <div class = "col-sm-3 col-md-3 col-lg-3">
+                <button class = "btn btn-default" ng-click="searchAccident()">Get Report</button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if = "accidentStatus">
+        <div class = "container" >
+            <div class="row">
+                <div class="col-sm-12" style="margin-bottom: ;">
+                    <span class = "pull-left">
+                        <b>ACCIDENT REGISTER No. .....................</b>
+                    </span>
+                    <span class = "pull-right">p.f 115</span>
+                </div>
+                <br>
+                <div class = "col-sm-12" style="font-weight: bold">
+                    <h3 align = "center">TANZANIA POLICE FORCE</h3>
+                    <h3 align = "center">PARTICULARS OF A ROAD ACCIDENT</h3>
+                    <h3 align="center">FINAL REPORT</h3>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script>
+    window.dhis2 = window.dhis2 || {};
+    dhis2.settings = dhis2.settings || {};
+    dhis2.settings.baseUrl = 'demo';
+</script>
+<script>
+    var dhisConfigs = {
+        baseUrl:"../",
+        refferencePrefix:"Program_"
+    };
+</script>
+</body>
+</html>
