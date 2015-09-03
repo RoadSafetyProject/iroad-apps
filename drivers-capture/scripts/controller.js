@@ -89,7 +89,21 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         $http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
             $scope.logedInUser = data;
         })
-
+        $scope.defaultPhotoID = "";
+        $http.get('../../../api/documents.json?filter=name:eq:Default Driver Photo').
+		success(function(data) {
+			$scope.defaultPhotoID = data.documents[0].id;
+		}).
+		error(function(data) {
+			onError("Error uploading file.");
+		});
+        $scope.getImage = function(id){
+        	if(id != ""){
+        		return "../../../api/documents/"+id+"/data";
+        	}else{
+        		return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+        	}
+        }
         $scope.programUrl = "../../../api/programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
         $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
