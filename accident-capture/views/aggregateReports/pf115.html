@@ -15,6 +15,7 @@
             <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>-->
     <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
     <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
+    <script src="../api/apps/offence-capture/libraries/angular/ui-date/date.js"></script>
 
 </head>
 <body ng-app="aggregateAccidentForm" >
@@ -22,15 +23,61 @@
 
     <div class = "container hideInPrint" style="margin-bottom: 2%;">
         <div class = "row">
-            <div class = "col-sm-3 col-md-3 col-lg-3">
-                <label style="font-size: 14px;padding-top: 1%;" >Accident Registration Number</label> :
+            <div style="padding-bottom: 2%;">
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <label style="font-size: 14px;">Accident Registration Number</label>
+                </div>
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <input type="text" ng-model = "data.accidentRegistrationNumber" class = "form-control">
+                </div>
             </div>
-            <div class = "col-sm-4 col-md-4 col-lg-4">
-                <input type = "text" ng-model = "data.accidentRegistrationNumber" class = "form-control"/>
+            <div style="padding-bottom: 2%;">
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <label style="font-size: 14px;">Letter reference Number : </label>
+                </div>
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <input type="text" ng-model = "data.letterRefNumber" class = "form-control">
+                </div>
             </div>
-            <div class = "col-sm-3 col-md-3 col-lg-3">
-                <button class = "btn btn-default" ng-click="searchAccident()">Get Report</button>
+            <div style="padding-bottom: 2%;">
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <label style="font-size: 14px;">Letter application Date : </label>
+                </div>
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <input type="text"   ui-date ng-model = "data.letterAppplicationDate" class = "form-control">
+                </div>
             </div>
+            <div style="padding-bottom: 2%;">
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <label style="font-size: 14px;">Resident Magistrate's Court Name </label>
+                </div>
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <input type="text" ng-model = "data.residentMagistrateCourt" class = "form-control">
+                </div>
+            </div>
+            <div style="padding-bottom: 2%;">
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <label style="font-size: 14px;">Court Date</label>
+                </div>
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <input type="text" ui-date ng-model = "data.courtDate" class = "form-control">
+                </div>
+            </div>
+            <div style="padding-bottom: 2%;">
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <label style="font-size: 14px;">Court Decision</label>
+                </div>
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <textarea type="text" ng-model = "data.courtDecision" class = "form-control"></textarea>
+                </div>
+            </div>
+
+            <div style="padding-bottom: 2%;">
+                <div class = "col-sm-3 col-md-3 col-lg-3">
+                    <button class = "btn btn-default form-control" ng-click="searchAccident()">Get Report</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -50,14 +97,12 @@
                     <h3 align="center">FINAL REPORT</h3>
                 </div>
                 <div class = "col-sm-12" style = "line-height:25px;margin-top: 2%;">
-                    I have to refer to your letter reference ....................................... dated ................................
-                    and to Police Report on Accident dated <b>{{ acccident['Time of Accident'] | date:'dd MMMM yyyy' }}</b>.<br>
+                    I have to refer to your letter reference <b>{{ data.letterRefNumber }}</b> dated <b>{{ data.letterAppplicationDate| date:'d MMMM yyyy'}}</b>
+                    and to Police Report on Accident dated <b>{{ acccident['Time of Accident'] | date:'d MMMM yyyy' }}</b>.<br>
                     The result of this case is as follows :<br>
                     (a) No further Police action<br>
-                    (b) The driver <b>{{ accidentVehicles[0]['Full Name']|uppercase }}</b> of Motor vehilcle <b>{{ accidentVehicles[0]['Vehicle Plate Number']|uppercase }}  {{ accidentVehicles[0]['Make']|uppercase }} {{ accidentVehicles[0]['Model']|uppercase }}</b>
-                    was acquitted discharged/ convicted by the Residebt Magistrate's Court of................................................ on..................... and sentenced to
-                    ..................................................................................................................................................................
-                    ..................................................................................................................................................................
+                    (b) The driver <b>{{ accidentVehicles[0]['Full Name']|uppercase }}</b> of Motor vehicle <b>{{ accidentVehicles[0]['Vehicle Plate Number']|uppercase }}  {{ accidentVehicles[0]['Make']|uppercase }} {{ accidentVehicles[0]['Model']|uppercase }}</b>
+                    was acquitted discharged/ convicted by the Resident Magistrate's Court of <b>{{ data.residentMagistrateCourt }}</b> on <b>{{ data.courtDate | date : 'd MMMM yyyy'}}</b> and sentenced to <b>{{data.courtDecision }}</b>
 
                 </div>
 
