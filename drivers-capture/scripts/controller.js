@@ -685,6 +685,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                     
                     events: function () {
                         return events;
+                    },
+                    defaultPhotoID: function () {
+                        return $scope.defaultPhotoID;
                     }
                 }
                                 

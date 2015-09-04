@@ -13,8 +13,22 @@ eventCaptureControllers.controller('NotesController',
 
 //controller for provide viewing informatation of a given
 eventCaptureControllers.controller('ShowDriverInfoController',
-    function($scope,$modalInstance,events){       
-
+    function($scope,$modalInstance,events,defaultPhotoID){ 
+	//alert(defaultPhotoID);
+	$scope.defaultPhotoID = defaultPhotoID;
+	$scope.getImage = function(data){
+		//console.log(JSON.stringify(data));
+		//.dataValues['Driver Photo'].value
+    	if(data.value){
+    		if(data.value != ""){
+    			return "../../../api/documents/"+data.value+"/data";
+    		}else{
+    			return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+    		}
+    	}else{
+    		return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+    	}
+    }
         $scope.events = events;
         
         $scope.close = function(){
