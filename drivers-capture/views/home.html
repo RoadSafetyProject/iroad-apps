@@ -81,7 +81,7 @@
                                 <label>{{ datas.name }}</label><br>
                                 <div ng-if="datas.name == 'Driver Photo'">
                                 	<!-- <img class="img-thumbnail" ng-src="getImage(datas.value)" alt="Driver Photo"/> -->
-                                	<img class="img-thumbnail passport-size" ng-src="{{getImage(datas.value)}}" alt="Driver Photo"/>
+                                    <img class="img-thumbnail passport-size" ng-src="{{getImage(datas.value)}}" alt="Driver Photo"/>
                                 	<input type="file" file-model="data.editDriverPhoto"/>
                                 </div>
                                 <input  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
