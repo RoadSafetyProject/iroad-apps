@@ -98,13 +98,13 @@ angular.module('aggregate', ['ui.date','ya.treeview', 'ya.treeview.tpls', 'ya.tr
 			});
 			return returnStr;
 		}
-		$http.get("/demo/api/organisationUnits/"+$location.search().ou+".json")
+		/*$http.get("/demo/api/organisationUnits/"+$location.search().ou+".json")
 			.success(function(result) {
 				$scope.orgUnit = result;
 				console.log(JSON.stringify($location.search()));
 		}).error(function(error) {
 			console.log(error);
-		});
+		});*/
 		
 		$http.get("/demo/api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]")
 			.success(function(result) {
