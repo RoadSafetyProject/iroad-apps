@@ -18,7 +18,7 @@ eventCaptureControllers.controller('ShowDriverInfoController',
 	$scope.defaultPhotoID = defaultPhotoID;
 	$scope.getImage = function(data){
 		var photo = data.dataValues["Driver Photo"];
-		/console.log(JSON.stringify(data));
+		//console.log(JSON.stringify(data));
     	if(photo.value){
     		if(photo.value != ""){
     			return "../../../api/documents/"+photo.value+"/data";

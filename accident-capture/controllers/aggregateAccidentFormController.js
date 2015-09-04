@@ -1,7 +1,7 @@
 /**
  * Created by joseph on 9/2/15.
  */
-var aggregateAccidentFormApp = angular.module('aggregateAccidentForm',[]);
+var aggregateAccidentFormApp = angular.module('aggregateAccidentForm',["ui.date"]);
 aggregateAccidentFormApp.controller('aggregateAccidentFormController',function($scope,$http){
 
     //taking registration number of a given accident :
