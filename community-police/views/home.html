@@ -142,8 +142,8 @@
                             </button>
                             <ul class="dropdown-menu" role="menu">
                             	
-                            	<li><a ng-click="showOffence(event)">View Image</a> </li>
-                                <li><a  ng-click="enableEdit(event)">View Video</a> </li>
+                            	<li><a  data-toggle="modal" data-target="#imageModal">View Image</a> </li>
+                                <li><a  data-toggle="modal" data-target="#videoModal">View Video</a> </li>
                          
                                 <li ng-if="hasCoordinate(event)"><a ng-click="addMarker(event)">View Coordinate </a> </li>
                                 
@@ -199,6 +199,42 @@
 	</div>
 </div>
 </div>
+<div class="modal fade" id="imageModal" role="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Community Police Report Image</h4>
+      </div>
+      <div class="modal-body">
+        <img class="img-thumbnail col-sm-12" ng-src="http://41.86.177.33/demo/api/documents/AQbHezHV5Oi/data" alt="Community Police Image"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="videoModal" role="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Community Police Report Video</h4>
+      </div>
+      <div class="modal-body">
+        <div class="col-sm-12" style="text-align:center">
+		    <video autoplay loop style="max-height:400px">
+		        <source src="http://41.86.177.33/demo/api/documents/SumH1cmkWVo/data" type="video/mp4">
+		    </video>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <ui-gmap-google-map control='mapObject' center='map.center' zoom='map.zoom'>
 	
 	
