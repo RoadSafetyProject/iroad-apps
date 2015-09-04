@@ -1,7 +1,5 @@
-angular.module('aggregate', ['ui.date','ya.treeview', 'ya.treeview.tpls', 'ya.treeview.breadcrumbs', 'ya.treeview.breadcrumbs.tpls'],function($locationProvider) {
-    $locationProvider.html5Mode(true);
-	})
-	.controller('AccidentReportController',function($scope,$http,$location){
+angular.module('aggregate', ['ui.date','ya.treeview', 'ya.treeview.tpls', 'ya.treeview.breadcrumbs', 'ya.treeview.breadcrumbs.tpls'])
+	.controller('AccidentReportController',function($scope,$http){
 		
 
 			  $scope.options = {
