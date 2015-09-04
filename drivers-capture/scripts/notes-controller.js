@@ -17,11 +17,11 @@ eventCaptureControllers.controller('ShowDriverInfoController',
 	//alert(defaultPhotoID);
 	$scope.defaultPhotoID = defaultPhotoID;
 	$scope.getImage = function(data){
-		//console.log(JSON.stringify(data));
-		//.dataValues['Driver Photo'].value
-    	if(data.value){
-    		if(data.value != ""){
-    			return "../../../api/documents/"+data.value+"/data";
+		var photo = data.dataValues["Driver Photo"];
+		/console.log(JSON.stringify(data));
+    	if(photo.value){
+    		if(photo.value != ""){
+    			return "../../../api/documents/"+photo.value+"/data";
     		}else{
     			return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
     		}
