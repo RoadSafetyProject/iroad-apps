@@ -19,6 +19,7 @@ aggregateAccidentFormApp.controller('aggregateAccidentFormController',function($
     $scope.searchAccident = function(){
         if($scope.data['accidentRegistrationNumber']){
             var regNumber = $scope.data['accidentRegistrationNumber'];
+
             $scope.accidentRegNumber = regNumber;
             $scope.accidentStatus = true;
             //fetching accident
