@@ -97,9 +97,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
 		error(function(data) {
 			onError("Error uploading file.");
 		});
-        $scope.getImage = function(id){
-        	if(id != ""){
-        		return "../../../api/documents/"+id+"/data";
+        $scope.getImage = function(data){
+        	if(data.value){
+        		if(data.value != ""){
+        			return "../../../api/documents/"+data.value+"/data";
+        		}else{
+        			return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+        		}
         	}else{
         		return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
         	}
@@ -318,9 +322,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         	},function(error){
         		alert(error);
         	});
-        }
-        $scope.getImage = function(value){
-        	return "../../../api/documents/"+value+"/data";
         }
         $scope.saveDriver =function(value,driverPhotoID){
         	
@@ -684,6 +685,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                     
                     events: function () {
                         return events;
+                    },
+                    defaultPhotoID: function () {
+                        return $scope.defaultPhotoID;
                     }
                 }
                                 
