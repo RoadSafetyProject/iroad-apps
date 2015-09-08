@@ -6,7 +6,7 @@
     }
 </style>
 <div class="modal-header page">
-    <h3>Licence History For {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['First Name'].value }} {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['Middle Name'].value }} {{ dhis2Event.dataValues['Program_Person'].Person.dataValues['Last Name'].value }}</h3>
+    <h3>Licence History For {{ dhis2Event.dataValues['Full Name'].value }}</h3>
 </div>
 
 <div class="modal-body page">
@@ -23,7 +23,7 @@
         <tbody>
         <tr data-ng-repeat="event in events">
             <td>{{ dhis2Event.dataValues['Driver License Number'].value }}</td>
-            <td>{{ dhis2Event.dataValues['ID Number/TIN Number'].value }}</td>
+            <td>{{ dhis2Event.dataValues['TIN Number'].value }}</td>
             <td>{{ event.dataValues['Start Date'].value }}</td>
             <td>{{ event.dataValues['End Date'].value }}</td>
             <td>{{ event.dataValues['Driving Class Name'].value }}</td>
