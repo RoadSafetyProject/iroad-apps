@@ -56,7 +56,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.progresMessagess = "";
             $scope.progresMessage = false;
         }
-        $scope.pageSize = 10;
+        $scope.pageSize = 100;
         $scope.pager = {};
         $scope.pageChanged = function(page) {
         	$scope.fetchVehicles(page);
