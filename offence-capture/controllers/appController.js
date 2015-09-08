@@ -285,6 +285,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             		$scope.multiselectBools[key] = $scope.isManyRelation(key);
             	}else if(typeof event[key] == "object") {
             		var program = $scope.offenceEventModal.getProgramByName(key);
+            		console.log(program);
+            		if(program != undefined)
             		angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
                         if (dataElement.dataElement.code) {
                         	if(dataElement.dataElement.code.startsWith("id_")){
@@ -386,7 +388,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 				$scope.editingEvent["Gender"] = $scope.editingEvent.Driver["Gender"];
 				$scope.editingEvent["Date of Birth"] = $scope.editingEvent.Driver["Date of Birth"];
 				
-				$scope.editingEvent["Vehicle Plate Number/Registration Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number/Registration Number"];
+				$scope.editingEvent["Vehicle Plate Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number"];
 				$scope.editingEvent["Vehicle Owner Name"] = $scope.editingEvent.Vehicle["Vehicle Owner Name"];
 				$scope.editingEvent["Model"] = $scope.editingEvent.Vehicle["Model"];
 				$scope.editingEvent["Make"] = $scope.editingEvent.Vehicle["Make"];
@@ -404,7 +406,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 			var relationSaveData = [];
 			console.log($scope.editingEvent);
 			$scope.offenceEventModal.save($scope.editingEvent,otherData,function(result){
-				if(!result.updatedEvent){
+				//alert("here");
+				//console.log(JSON.stringify(result));
+				if(!result.httpStatus){
 					$scope.editingEvent.id = result.importSummaries[0].reference;
 					$scope.data.offences.push($scope.editingEvent);
 					$scope.$apply();

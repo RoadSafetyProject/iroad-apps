@@ -350,6 +350,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			if(result2.events != undefined)
 			for(var j = 0; j < result2.events.length; j++) {//For each event render to entity column json
 				var event = result2.events[j];
+				if(event.dataValues)
 				for(var k = 0; k < event.dataValues.length; k++) {
 					if(event.dataValues[k].value == criteria.value){//Checks the conditions provided
 						
@@ -441,6 +442,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		if(event.coordinate){
 			this.object["coordinate"] = event.coordinate;
 		}
+		if(event.dataValues)
 		for(var k = 0; k < event.dataValues.length; k++) {
 			
 			var dataValue = event.dataValues[k];
