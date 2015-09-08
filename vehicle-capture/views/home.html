@@ -35,7 +35,7 @@
                     <tbody>
                     <tr ng-repeat="events in data.programs['Vehicle'].dataValues.events" style="background-color: {{ data.color[events.event] }}">
                         <td>{{ ($index+ 1) + ((pager.page - 1) * pager.pageSize)}}</td>
-                        <td>{{ events.dataValues['Vehicle Plate Number'].value }}</td>
+                        <td>{{ events.dataValues['Vehicle Plate Number/Registration Number'].value }}</td>
                         <td>{{ events.dataValues['Make'].value }}</td>
                         <td>{{ events.dataValues['Model'].value }}</td>
                         <td>{{ events.dataValues['Body Type'].value }}</td>

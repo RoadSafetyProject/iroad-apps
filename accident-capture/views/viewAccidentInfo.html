@@ -172,7 +172,7 @@
 												<div class = "panel-body">
 
 													<div ng-repeat="(key,value) in accidentVehicle.Vehicle ">
-														<div class = "col-sm-6" ng-if = "key == 'Current Insurance Expiry Date' || key == 'Current License Expiry Date' || key == 'Vehicle Owner Address' || key == 'Vehicle Owner Name' || key == 'Vehicle Plate Number' || key == 'Model' || key == 'Color' || key == 'Make'">
+														<div class = "col-sm-6" ng-if = "key == 'Current Insurance Expiry Date' || key == 'Current License Expiry Date' || key == 'Vehicle Owner Address' || key == 'Vehicle Owner Name' || key == 'Vehicle Plate Number/Registration Number' || key == 'Model' || key == 'Color' || key == 'Make'">
 															<label> {{ key }} </label><br>
 															{{ accidentVehicle.Vehicle[key] | date:'dd MMM yyyy' }}
 														</div>

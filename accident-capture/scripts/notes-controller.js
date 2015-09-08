@@ -257,7 +257,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 						$scope.updateAccidentProgress.push();
 						for (var i=0; i < $scope.editedAccidentVehicles.length; i++ ) {
 							$scope.vehicle = null;
-							var plateNumber = $scope.editedAccidentVehicles[i]['Vehicle Plate Number'];
+							var plateNumber = $scope.editedAccidentVehicles[i]['Vehicle Plate Number/Registration Number'];
 
 							$scope.vehicleDriver = new iroad2.data.Modal('Vehicle',[]);
 
@@ -304,7 +304,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 											$scope.accidentVehicle['Licence Number'] = $scope.accidentVehicle.Driver['Driver License Number'];
 
 											//add other data for vehicle
-											$scope.accidentVehicle['Vehicle Plate Number'] = $scope.accidentVehicle.Vehicle['Vehicle Plate Number'];
+											$scope.accidentVehicle['Vehicle Plate Number/Registration Number'] = $scope.accidentVehicle.Vehicle['Vehicle Plate Number/Registration Number'];
 											$scope.accidentVehicle['Vehicle Ownership Category'] = $scope.accidentVehicle.Vehicle['Vehicle Ownership Category'];
 											$scope.accidentVehicle['Vehicle Owner Name'] = $scope.accidentVehicle.Vehicle['Vehicle Owner Name'];
 											$scope.accidentVehicle['Vehicle Class'] = $scope.accidentVehicle.Vehicle['Vehicle Class'];
@@ -619,7 +619,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 								for (var i=0; i < drivers.length; i++ ) {
 									$scope.vehicle = null;
 									$scope.accidentVehicle = $scope.newAccidentVehicleForm[i];;
-									var plateNumber = $scope.accidentVehicle['Vehicle Plate Number'];
+									var plateNumber = $scope.accidentVehicle['Vehicle Plate Number/Registration Number'];
 									var vehicleModel = new iroad2.data.Modal('Vehicle',[]);
 									vehicleModel.get({value:plateNumber},function(result) {
 										if($scope.vehicle == result[0]){
@@ -674,7 +674,7 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 													$scope.accidentVehicle['Licence Number'] = $scope.accidentVehicle.Driver['Driver License Number'];
 
 													//add other data for vehicle
-													$scope.accidentVehicle['Vehicle Plate Number'] = $scope.accidentVehicle.Vehicle['Vehicle Plate Number'];
+													$scope.accidentVehicle['Vehicle Plate Number/Registration Number'] = $scope.accidentVehicle.Vehicle['Vehicle Plate Number/Registration Number'];
 													$scope.accidentVehicle['Vehicle Ownership Category'] = $scope.accidentVehicle.Vehicle['Vehicle Ownership Category'];
 													$scope.accidentVehicle['Vehicle Owner Name'] = $scope.accidentVehicle.Vehicle['Vehicle Owner Name'];
 													$scope.accidentVehicle['Vehicle Class'] = $scope.accidentVehicle.Vehicle['Vehicle Class'];

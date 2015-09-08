@@ -386,7 +386,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 				$scope.editingEvent["Gender"] = $scope.editingEvent.Driver["Gender"];
 				$scope.editingEvent["Date of Birth"] = $scope.editingEvent.Driver["Date of Birth"];
 				
-				$scope.editingEvent["Vehicle Plate Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number"];
+				$scope.editingEvent["Vehicle Plate Number/Registration Number"] = $scope.editingEvent.Vehicle["Vehicle Plate Number/Registration Number"];
 				$scope.editingEvent["Vehicle Owner Name"] = $scope.editingEvent.Vehicle["Vehicle Owner Name"];
 				$scope.editingEvent["Model"] = $scope.editingEvent.Vehicle["Model"];
 				$scope.editingEvent["Make"] = $scope.editingEvent.Vehicle["Make"];
