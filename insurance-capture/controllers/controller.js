@@ -242,8 +242,8 @@ eventCaptureControllers.controller('MainController',
         //function to enable adding new insurance company
         $scope.registerInsurance = function(event){
             $scope.header = "Add New Insurance Company";
-            $scope.editing = "true";
-            $scope.viewinsuranceComp = "false";
+            $scope.editing = true;
+            $scope.viewinsuranceComp = false;
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "mws-panel grid_6";
             $scope.normalClassDriver= "mws-panel grid_6";
@@ -280,8 +280,8 @@ eventCaptureControllers.controller('MainController',
 
         //function for editng insurance company
         $scope.enableEdit  = function(event){
-            $scope.editing = "true";
-            $scope.viewinsuranceComp = "false";
+            $scope.editing = true;
+            $scope.viewinsuranceComp = false;
             $scope.header = "Edit Insurance Company";
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "mws-panel grid_6";
@@ -318,7 +318,7 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.InsureEdit = function(event){
-            $scope.editing = "true";
+            $scope.editing = true;
             $scope.normalStyle= { "z-index": '10'};
             $scope.normalClass= "mws-panel grid_6";
             $scope.normalClassDriver= "mws-panel grid_6";
@@ -365,7 +365,7 @@ eventCaptureControllers.controller('MainController',
         $scope.ViewInsurance = function(dhis2Event){
             //console.log(JSON.stringify(dhis2Event));
             $scope.editing = false;
-            $scope.viewinsuranceComp = "true";
+            $scope.viewinsuranceComp = true;
             $scope.normalClass= "mws-panel grid_6";
             $scope.event = dhis2Event;
 
