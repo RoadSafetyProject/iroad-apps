@@ -131,7 +131,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
 
 
         });
-        $scope.pageSize = 10;
+        $scope.pageSize = 50;
         $scope.pager = {};
         $scope.pageChanged = function(page) {
         	$scope.fetchDrivers(page);
