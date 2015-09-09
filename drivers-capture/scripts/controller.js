@@ -295,8 +295,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         			            {name:"upload",value:file}
         			           ],
         			success:function(data, status, headers, config){
-        				if(data.indexOf(fileName) != -1){
-        					
         					$http.get('../../../api/documents.json?filter=name:eq:'+fileName).
         					success(function(data) {
         						onSuccess(data.documents[0].id);
@@ -304,10 +302,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         					error(function(data) {
         						onError("Error uploading file.");
         					});
-        				}else{
-        					console.log("Returned with no index:" + JSON.stringify(data));
-        					onError("Error uploading file.");
-        				}
         			},
         			error:function(data, status, headers, config){
         				console.log("Error Uploading")
