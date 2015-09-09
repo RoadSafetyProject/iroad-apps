@@ -92,7 +92,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         $scope.defaultPhotoID = "";
         $http.get('../../../api/documents.json?filter=name:eq:Default Driver Photo').
 		success(function(data) {
-			$scope.defaultPhotoID = data.documents[0].id;
+			if(data.documents.length != 0){
+				$scope.defaultPhotoID = data.documents[0].id;
+			}
 		}).
 		error(function(data) {
 			onError("Error uploading file.");
