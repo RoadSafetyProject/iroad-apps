@@ -1,0 +1,291 @@
+<style>
+	.md-dialog-container{
+		position: fixed;
+		height: 100%;
+	}
+	.show-details{
+		/* float: right; */
+		cursor: pointer;
+		padding: 20px;
+		color: blue;
+	}
+	.show-details:hover{
+		text-decoration: underline;
+	}
+	.expiry{
+		border: 2px solid #F44336;
+		background: #e57373;
+		height: 40px;
+		display: inline-block;
+		width: 100%;
+		text-align: center;
+		/* vertical-align: middle; */
+		font-size: 24px;
+	}
+</style>
+	<div ng-controller="AccidentController">
+
+		<h2 align = "center">Accident Report</h2>
+		<div style="padding:50px;padding-top:0">
+
+			<!-- panel for  basic info for an accident -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Basic Information Accident</div>
+				<div class = "panel-body">
+					<div class = "row">
+						<div  ng-repeat="(key,value) in AccidentData">
+							<div class = "col-sm-4" ng-if="key == 'Accident Type' || key == 'Weather' || key == 'Intersection Name' || key == 'Road Name' || key == 'Cause of Accident' || key == 'Number of Severe Injuries' || key == 'Number of Simple Injuries' || key == 'Number of Fatal Injuries' || key == 'Time of Accident' || key == 'Area of Accident' || key == 'Accident Type Detail' || key == 'Accident Registration Number' || key == 'Accident Class'  ">
+								<label>{{ key }}</label><br>
+								{{ AccidentData[key]}}
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- panel for view of all accidents vehicles involved in accident-->
+			<div class = "panel panel-default" ng-if = "accidentVehicles[0]">
+				<div class="panel-heading">Accident Vehicle(s) information </div>
+				<div class = "panel-body">
+
+					<!-- loading message -->
+					<div ng-if = "loadAccidentVihecles"style = "width: 50%;margin:auto;">
+						<div class="thumbnail" style="font-size:19px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" >
+							<p align="center">
+								Loading Accident Vehicles
+							</p>
+						</div>
+					</div>
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+						<!-- loop through all accident vehicles -->
+						<div ng-repeat = "accidentVehicle in accidentVehicles">
+
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="heading{{ $index }}">
+									<h4 class="panel-title" align = "center">
+										<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $index }}" aria-expanded="false" aria-controls="collapse{{ $index }}">
+											Vehicle {{ $index + 1 }}
+										</a>
+									</h4>
+								</div>
+								<div id="collapse{{ $index }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ $index }}" style = "padding-right:1%;padding-left: 1%;padding-bottom: 2%; ">
+
+									<!-- info about people in the accident vehicle-->
+									<div class = "row">
+										<h5 align = "center"><b>Information</b></h5>
+
+										<div ng-repeat="(key,value) in accidentVehicle ">
+											<div class = "col-sm-4" ng-if="key == 'Alcohol Level' || key == 'Damage' || key == 'Number of Severe Injuries' || key == 'Number of Simple Injuries' || key == 'Number of Fatal Injuries' ">
+												<label> {{ key }}</label><br>
+												{{ accidentVehicle[key] }}
+											</div>
+										</div>
+
+										<div class = "col-sm-4">
+											<label>Seat Belt</label><br>
+											<span ng-if="accidentVehicle ['Seat Belt'] ">Yes</span>
+											<span ng-if="!accidentVehicle ['Seat Belt'] ">No</span>
+										</div>
+										<div class = "col-sm-4">
+											<label>Phone Use</label><br>
+											<span ng-if="accidentVehicle ['Phone Use'] ">Yes</span>
+											<span ng-if="!accidentVehicle ['Phone Use'] ">No</span>
+										</div>
+										<div class = "col-sm-4" >
+											<label>Driver without driving licence</label><br>
+											<span ng-if="accidentVehicle ['Driver without driving lisence'] ">Yes</span>
+											<span ng-if="!accidentVehicle ['Driver without driving lisence'] ">No</span>
+										</div>
+									</div>
+
+									<div ng-if="accidentPassengers" style = "margin-bottom: 1%;">
+										<!-- button for hide show accident vehicle passengers -->
+										<div style = "margin:1%;">
+											<button class = "btn btn-default" ng-click="showHideAccidentPassengers($index)">
+												<span ng-if = 'accidentPasengerVisibility[$index].visibility' >Hide passengers information</span>
+												<span ng-if = '!accidentPasengerVisibility[$index].visibility'>Show passengers information</span>
+											</button>
+										</div>
+
+										<!-- panel for view for all passengers on a given accident vehicle-->
+										<div class = "panel panel-default" ng-if="accidentPasengerVisibility[$index].visibility ">
+											<div class = "panel-heading">Accident Passengers information</div>
+											<div class = "panel-body">
+												<div ng-if = "loadAccidentPasssenger">
+													Loading accident Passengers
+												</div>
+
+												<div class = "row">
+												<div ng-repeat="passenger in accidentPassengers">
+
+													<div ng-if = " passenger.Vehicle['Vehicle Plate Number'] == accidentVehicle.Vehicle['Vehicle Plate Number'] ">
+
+															<div class = "col-sm-6" style="margin-bottom: 0.5%;">
+																<div class="panel panel-default">
+																	<div class = "panel-heading">Passenger</div>
+																	<div class = "panel-body">
+																		<div class = "col-sm-6" ng-repeat="(key,value) in passenger" ng-if="key != 'Accident' && key != 'Vehicle' && key != 'id' ">
+																			<label> {{ key }}</label><br>
+																			{{ passenger[key] }}
+																		</div>
+																	</div>
+																</div>
+															</div>
+													</div>
+												</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- info about drive and vehicle-->
+									<div class = "row">
+										<div class = "col-sm-6">
+											<div class="panel panel-default">
+												<div class = "panel-heading">Driver</div>
+												<div class = "panel-body">
+
+													<div ng-repeat="(key,value) in accidentVehicle.Driver">
+														<div class = "col-sm-6" ng-if = "key == 'Phone Number' || key == 'Gender' || key == 'Driving Class Name' || key == 'Current License Expiry Date' || key == 'TIN Number' || key == 'Driver License Number' || key == 'Full Name' ">
+															<label> {{ key }} </label><br>
+															{{ accidentVehicle.Driver[key]  }}
+															<!--<span ng-if="key == 'Driver License Number'">
+																{{ accidentVehicle.Driver[key]  }}
+															</span>
+															<span ng-if="key != 'Driver License Number'">
+																{{ accidentVehicle.Driver[key] | date:'dd MMM yyyy' }}
+															</span>-->
+
+														</div>
+													</div>
+
+												</div>
+											</div>
+
+										</div>
+
+										<div class = "col-sm-6">
+											<div class="panel panel-default">
+												<div class = "panel-heading">Vehicle</div>
+												<div class = "panel-body">
+
+													<div ng-repeat="(key,value) in accidentVehicle.Vehicle ">
+														<div class = "col-sm-6" ng-if = "key == 'Current Insurance Expiry Date' || key == 'Current License Expiry Date' || key == 'Vehicle Owner Address' || key == 'Vehicle Owner Name' || key == 'Vehicle Plate Number/Registration Number' || key == 'Model' || key == 'Color' || key == 'Make'">
+															<label> {{ key }} </label><br>
+															{{ accidentVehicle.Vehicle[key] | date:'dd MMM yyyy' }}
+														</div>
+													</div>
+
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+			<!-- panel for all witnesses for a given accident -->
+			<div class="panel panel-default" ng-if = "accidentWitnesses[0]">
+				<div class="panel-heading">Accident Witnesses Information </div>
+				<div class = "panel-body">
+					<div ng-if = "loadAccidentWitnesses" style = "width: 50%;margin:auto;">
+						<div class="thumbnail" style="font-size:19px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white;" >
+							<p align="center">
+								Loading Accident Witness
+							</p>
+						</div>
+					</div>
+
+					<div class="panel-group" id="accordionWitness" role="tablist" aria-multiselectable="true">
+						<!-- loop through accident witnesses -->
+						<div ng-repeat="witness in accidentWitnesses">
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingWitnes{{ $index }}">
+									<h4 class="panel-title" align = "center">
+										<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseWitness{{ $index }}" aria-expanded="false" aria-controls="collapseWitness{{ $index }}">
+											Witness {{ $index + 1 }}
+										</a>
+									</h4>
+								</div>
+								<div id="collapseWitness{{ $index }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingWitnes{{ $index }}" style = "padding-right:1%;padding-left: 1%;padding-bottom: 2%; ">
+									<div class = "panel-body">
+										<div class = "row">
+											<div ng-repeat="(key, value) in witness">
+												<div class="col-sm-4" ng-if="key != 'Accident' && key != 'id' && value">
+
+													<div ng-hide = "key == 'Signature'">
+														<label>{{ key }}</label><br>
+														{{ witness[key] | date:'dd MMM yyyy'}}
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!-- end looping witnesses for a given accident -->
+					</div><!-- end for accordion -->
+				</div>
+			</div>
+
+			<!-- panel for Police register the accident -->
+			<div class="panel panel-default" ng-if = "AccidentData.Police">
+				<div class="panel-heading">Police register</div>
+				<div class = "panel-body">
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Full Name</label><br />
+						{{ AccidentData.Police.Person['First Name'] }}  {{ AccidentData.Police.Person['Middle Name'] }}  {{ AccidentData.Police.Person['Last Name'] }}				
+						</div>
+						<div class="col-sm-4"> 
+						<label>Rank Number</label><br />
+						{{AccidentData.Police['Rank Number']}}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>Gender</label><br />
+						{{ AccidentData.Police.Person['Gender'] }}										
+						</div>						
+					</div>
+					<div class = "row">
+						<div class="col-sm-4"> 
+						<label>Phone Number</label><br />
+						{{ AccidentData.Police.Person['Phone Number'] }}										
+						</div>
+						<div class="col-sm-4"> 
+						<label>National Id</label><br />
+						{{ AccidentData.Police.Person['National Id'] }}										
+						</div>
+												
+					</div>
+				</div>
+			</div>
+
+
+
+			<!-- panel for  Po
+			<div class="panel panel-default">
+				<div class="panel-heading"> </div>
+				<div class = "panel-body"></div>
+			</div>		
+
+			<!-- panel for  
+			<div class="panel panel-default">
+				<div class="panel-heading"> </div>
+				<div class = "panel-body"></div>
+			</div>	
+			-->
+
+		</div>
+	</div>
+</div>
+

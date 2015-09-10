@@ -13,14 +13,28 @@ eventCaptureControllers.controller('MainController',
         $scope.accidentEventModal = new iroad2.data.Modal("Accident",[]);
         $scope.today = DateUtils.getToday();
         $scope.data = {};
-
+        $scope.isValidAccident = function(recent_accident){
+   
+        	var returnValue = true; 
+        	angular.forEach($scope.recentAccidents,function(accident){
+        		if(accident.id == recent_accident.id){
+        			returnValue = false;
+        		}
+        	});
+        	return returnValue;// && !(recent_accident.coordinate.latitude == 0 && recent_accident.coordinate.longitude == 0);
+        }
+        $scope.recentAccidents = [];
         $scope.loadAccidents = function(){
         	var d = new Date();
         	$scope.accidentEventModal.getAll(function(result){
-        		$scope.recentAccidents = [];
+        		console.log(JSON.stringify(result));
         		angular.forEach(result.data, function (recent_accident) {
-                    {
+        			//alert(recent_accident.id + ":" + $scope.recentAccidents.length);
+                    if($scope.isValidAccident(recent_accident)){
+                    	//alert("here");
+                    	console.log(JSON.stringify(recent_accident));
                     	$scope.recentAccidents.push(recent_accident);
+                    	
                     	$scope.loadedAccidentIds.push(recent_accident.id);
                     	var image = new google.maps.MarkerImage(
                                 '../resources/images/marker.png',
@@ -30,11 +44,12 @@ eventCaptureControllers.controller('MainController',
                                 new google.maps.Size( 17, 17 ) // scaled size (required for Retina display icon)
                             );
 
-
+                    	
+                    	
                             var marker = new google.maps.Marker({
                                 //position: new google.maps.LatLng(coords[i][0], coords[i][1]),
-                            	//position: new google.maps.LatLng(recent_accident.coordinate.latitude, recent_accident.coordinate.longitude),//(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
-                            	position: new google.maps.LatLng(-6.776751, 39.256210),
+                            	position: new google.maps.LatLng(recent_accident.coordinate.latitude, recent_accident.coordinate.longitude),//(recent_accident.Accident.Latitude, recent_accident.Accident.Longitude),
+                            	//position: new google.maps.LatLng(-6.776751, 39.256210),
                                 map: $scope.map,
                                 optimized: false,
                                 icon: $scope.iconURLPrefix + 'green-dot.png',
@@ -52,16 +67,10 @@ eventCaptureControllers.controller('MainController',
                                     marker.stopBlinking();
                                 }
                             })(marker));
-
-                            /*iconCounter++;
-                            // We only have a limited number of possible icon colors, so we may have to restart the counter
-                            if(iconCounter >=  $scope.iconsLength) {
-                                iconCounter = 0;
-                            }*/
                     }
                     
                 });
-
+        		console.log("Number of Markers:" + $scope.markers.length);
             },500,1,"&startDate="+$scope.getTodaysDate()+"&endDate="+$scope.getTodaysDate());
         }
         $scope.viewAccidentInfo = function(dhis2Event){
