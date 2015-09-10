@@ -151,7 +151,7 @@ iroad2.data.DataResult = function (pager,data) {
 iroad2.data.Modal = function (modalName,relations) {
 	
 	//Set self to get refference of this object
-	var self = this;
+	self = this;
 	//Set the modal name
 	this.modalName = modalName;
 	//Set relations
@@ -230,16 +230,13 @@ iroad2.data.Modal = function (modalName,relations) {
 		
 		if(arguments.length > 1){
 			
-			url = "api/events?programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
+			url = "api/events?programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2] + arguments[3];
 		}
 		// Stores the rows of an entity
 		this.events = [];
 		var selfGetAll = this;
-		if(arguments.length >= 3){
-			selfGetAll.dataResults = new iroad2.data.DataResult();
-		}
 		if(arguments.length == 4){
-			url += arguments[3];
+			selfGetAll.dataResults = new iroad2.data.DataResult();
 		}
 		//Checks that all requests are made
 		this.resCount = [];
@@ -350,12 +347,13 @@ iroad2.data.Modal = function (modalName,relations) {
 		
 		//Get events of the program from the server
 		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result2){
+
 			if(result2.events != undefined)
 			for(var j = 0; j < result2.events.length; j++) {//For each event render to entity column json
 				var event = result2.events[j];
+				if(event.dataValues != undefined)
 				for(var k = 0; k < event.dataValues.length; k++) {
 					if(event.dataValues[k].value == criteria.value){//Checks the conditions provided
-						
 						selfGet.getCount.push(1);
 						//Render events to appropriate Modal
 						self.renderToJSON(event, function(object) {
@@ -441,9 +439,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			}
 		}
 		this.object["id"] = event.event;
-		if(event.coordinate){
-			this.object["coordinate"] = event.coordinate;
-		}
+		this.object["coordinate"] = event.coordinate;
 		for(var k = 0; k < event.dataValues.length; k++) {
 			
 			var dataValue = event.dataValues[k];
@@ -577,7 +573,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		//var event = self.convertToEvent(data);
 		if(sendData.event){
-			//console.log("Updating Data "+savingModal+":" + JSON.stringify(sendData));
+			console.log("Updating Data "+savingModal+":" + JSON.stringify(sendData));
 			saveUrl += "/" +sendData.event;
 			http.put(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
@@ -586,7 +582,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			});
 			//delete sendData.event;
 		}else{
-			//console.log("Saving Data "+savingModal+":" + JSON.stringify(sendData));
+			console.log("Saving Data "+savingModal+":" + JSON.stringify(sendData));
 			http.post(saveUrl,JSON.stringify(sendData),function(results){
 				onSuccess(results);
 			},function(results){
@@ -632,9 +628,9 @@ http = {
 										"Event updated: ", "").replace("\r\n", "")
 							})
 						} else {
-							//console.error("Returned:" + xmlhttp.responseText);
+							console.error("Returned:" + xmlhttp.responseText);
 							if (onError == undefined) {
-								//console.error(e);
+								console.error(e);
 							} else {
 								onError(e);
 							}
