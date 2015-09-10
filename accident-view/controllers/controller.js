@@ -53,11 +53,11 @@ eventCaptureControllers.controller('MainController',
                                 }
                             })(marker));
 
-                            iconCounter++;
+                            /*iconCounter++;
                             // We only have a limited number of possible icon colors, so we may have to restart the counter
                             if(iconCounter >=  $scope.iconsLength) {
                                 iconCounter = 0;
-                            }
+                            }*/
                     }
                     
                 });
@@ -135,7 +135,7 @@ eventCaptureControllers.controller('MainController',
             
             $scope.loadedAccidentIds = [];
             $scope.loadAccidents();
-            //$interval($scope.loadAccidents,5000);
+            $interval($scope.loadAccidents,5000);
         }
         $scope.isAccidentIdLoaded = function(id){
         	for(var i = 0;i < $scope.loadedAccidentIds.length;i++){
