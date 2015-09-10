@@ -101,7 +101,7 @@
                     and to Police Report on Accident dated <b>{{ acccident['Time of Accident'] | date:'d MMMM yyyy' }}</b>.<br>
                     The result of this case is as follows :<br>
                     (a) No further Police action<br>
-                    (b) The driver <b>{{ accidentVehicles[0]['Full Name']|uppercase }}</b> of Motor vehicle <b>{{ accidentVehicles[0]['Vehicle Plate Number']|uppercase }}  {{ accidentVehicles[0]['Make']|uppercase }} {{ accidentVehicles[0]['Model']|uppercase }}</b>
+                    (b) The driver <b>{{ accidentVehicles[0]['Full Name']|uppercase }}</b> of Motor vehicle <b>{{ accidentVehicles[0]['Vehicle Plate Number/Registration Number']|uppercase }}  {{ accidentVehicles[0]['Make']|uppercase }} {{ accidentVehicles[0]['Model']|uppercase }}</b>
                     was acquitted discharged/ convicted by the Resident Magistrate's Court of <b>{{ data.residentMagistrateCourt }}</b> on <b>{{ data.courtDate | date : 'd MMMM yyyy'}}</b> and sentenced to <b>{{data.courtDecision }}</b>
 
                 </div>

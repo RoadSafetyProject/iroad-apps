@@ -15,6 +15,7 @@
             <script src="https://rawgit.com/ca77y/angular-ya-treeview/master/dist/ya-treeview-breadcrumbs-tpls.js"></script>-->
     <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
     <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
+    <script src="../api/apps/offence-capture/libraries/angular/ui-date/date.js"></script>
 
 </head>
 <body ng-app="aggregateAccidentForm" >
@@ -94,7 +95,7 @@
                     <div ng-if = "accidentVehicles[0]" style = "line-height:25px;margin-top: 2%;">
                         Vehicle(s) involved :<br>
                         <span ng-repeat="accidentVehicle in accidentVehicles">
-                            Vehicle {{ accidentVehicle['Vehicle Plate Number']|uppercase }} {{ accidentVehicle['Make']|uppercase }} {{ accidentVehicle['Model']|uppercase }} driven by {{ accidentVehicle['Full Name']|uppercase }}<br>
+                            Vehicle <b>{{ accidentVehicle['Vehicle Plate Number/Registration Number']|uppercase }} {{ accidentVehicle['Make']|uppercase }} {{ accidentVehicle['Model']|uppercase }}</b> driven by <b>{{ accidentVehicle['Full Name']|uppercase }}</b><br>
                         </span>
                     </div>
                 </div>
