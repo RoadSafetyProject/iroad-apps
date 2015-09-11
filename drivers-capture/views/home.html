@@ -118,9 +118,10 @@
                             <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'" file-model="data.driverPhoto"/>
                             <!-- <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'"  ngf-select ng-model="driverPhoto" name="upload"    
              accept="image/*" ngf-max-size="2MB" required/> -->
-                            <input  ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <input  ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet && list.dataElement.type != 'bool'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
                             <input  ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
                             <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <select class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                           </td>
                         </tr>
                         <!--<tr ng-repeat="list in  data.programs['Person'].programStages[0].programStageDataElements | orderBy:'sortOrder'">-->
