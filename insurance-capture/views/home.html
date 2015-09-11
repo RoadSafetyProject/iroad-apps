@@ -78,13 +78,13 @@
             <td >
                 <label>{{key}}</label><br>
 
-                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control input-sm"/>
-                <input ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control input-sm" />
-                <select  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control input-sm">
+                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control input-sm"/>
+                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control input-sm" />
+                <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control input-sm">
                     <option value="true">Yes</option><option value="false">No</option>
                 </select>
-                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
-                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEvent[key]"/>
+                <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editingEvent[key]"/>
 
             </td>
         </tr>

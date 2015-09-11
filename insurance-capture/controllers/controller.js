@@ -31,6 +31,17 @@ eventCaptureControllers.controller('MainController',
                 $scope.$apply();
             },pageSize,page,true);
     	}
+
+        $scope.setDescription = function(key){
+
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+                if(iroad2.data.dataElements[j].name == key){
+                    if(iroad2.data.dataElements[j].description){
+                        return iroad2.data.dataElements[j].description;
+                    }
+                }
+            }
+        }
         $scope.isInteger = function(key){
             return $scope.is(key,"int");
         }
