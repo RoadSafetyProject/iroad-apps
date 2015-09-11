@@ -110,7 +110,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         		return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
         	}
         }
-        $scope.programUrl = "../../../api/programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.programUrl = "../../../api/programs.json?filters=type:eq:3&paging=false&fields=id,name,description,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,description,code,optionSet[id,name,options[id,name],version]]]]";
         $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
@@ -881,6 +881,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                 dataelement.id = dataVal.dataElement.id;
                 dataelement.name = dataVal.dataElement.name;
                 dataelement.type = dataVal.dataElement.type;
+                dataelement.description = dataVal.dataElement.description;
                 dataelement.sortOrder = dataVal.sortOrder;
                 if(dataVal.dataElement.optionSet){
                     dataelement.optionSet = dataVal.dataElement.optionSet;

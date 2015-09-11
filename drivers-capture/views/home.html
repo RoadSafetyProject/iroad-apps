@@ -78,7 +78,7 @@
                     <table >
                         <tr ng-if="datas.name != 'Program_Person'"  class="todelete"  ng-repeat="datas in editingEvent.dataValues | orderBy:'sortOrder'">
                             <td style="margin-right: 20px">
-                                <label>{{ datas.name }}</label><br>
+                                <label>{{ datas.name }} : </label>{{datas}}<br>
                                 <div ng-if="datas.name == 'Driver Photo'">
                                 	<!-- <img class="img-thumbnail" ng-src="getImage(datas.value)" alt="Driver Photo"/> -->
                                 	<img class="img-thumbnail passport-size" ng-src="{{getImage(datas)}}" alt="Driver Photo"/>
