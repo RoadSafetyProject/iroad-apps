@@ -9,6 +9,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
     	$scope.facilityType = [{"name" :"Police"},{"name" :"Hospital"},{"name" :"Fire"}];
     	$scope.selectedFacility = {};
     	$scope.isSelectedFacility = false;
+    	$scope.filterFacilityFn = function(organisationUnit)
+    	{
+    	    return (organisationUnit.organisationUnitGroups.length > 0);
+    	};
     	$scope.options = {
 			      onSelect: function($event, node, context) {
 			          context.selectedNodes = [node];
@@ -37,9 +41,20 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 		$scope.tree.context = {
 				selectedNodes: []
 			  };
-		$http.get("../../../api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,level,children[id,name,level,children[id,name,level,children[:all]]]")
+		$scope.getOrganisationUnitGroup = function(name,organizationUnit){
+			for(var i = 0; i < organizationUnit.organisationUnitGroups.length;i++){
+				var organisationUnitGroup = organizationUnit.organisationUnitGroups[i];
+				if(organisationUnitGroup.organisationUnitGroupSet.name == name){
+					return organisationUnitGroup.name;
+				}
+			}
+			console.log(JSON.stringify(organizationUnit.organisationUnitGroups))
+		}
+		$scope.organisationUnitsLoading = true;
+		$http.get("../../../api/organisationUnits.json?filter=level:eq:1&paging=false&fields=id,name,level,children[id,name,level,children[id,name,level,organisationUnitGroups,children[:all,organisationUnitGroups[:all]]]]")
 			.success(function(result) {
 				$scope.tree.modal = result.organisationUnits;
+				$scope.organisationUnitsLoading = false;
 		}).error(function(error) {
 			console.log(error);
 		});
@@ -133,7 +148,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 					
 					$http.post('../../../api/organisationUnits.json',saveData ).
 					  success(function(data, status, headers, config) {
-					    //console.log("Saving Org:" + JSON.stringify(data));
+					    console.log("Saving Org:" + JSON.stringify(data));
 						  if(data.status == "SUCCESS" && data.importCount.imported == 1){
 							  alert("Facility saved successfully.");
 							  $scope.isAddingFacility = false;
