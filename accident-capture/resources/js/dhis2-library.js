@@ -44,7 +44,7 @@ iroad2 = {
 		//Holds specific dhis data and objects related to data
 		data : {
 			
-		},
+		}
 		
 }
 /**

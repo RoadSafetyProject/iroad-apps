@@ -15,7 +15,6 @@
         <div ng-class="normalClass">
             <div class="panel panel-default">
                 <div class="panel-heading"><b>Drivers</b><button class="btn btn-primary btn-xs pull-right" data-ng-click="enableAdding()">Add Driver</button> </div>
-
                 <table  datatable="ng" class="table table-condensed table-striped table-responsive">
                     <thead>
                     <tr>
@@ -78,15 +77,15 @@
                     <table >
                         <tr ng-if="datas.name != 'Program_Person'"  class="todelete"  ng-repeat="datas in editingEvent.dataValues | orderBy:'sortOrder'">
                             <td style="margin-right: 20px">
-                                <label>{{ datas.name }} : </label>{{datas}}<br>
+                                <label>{{ datas.name }} :</label><br>
                                 <div ng-if="datas.name == 'Driver Photo'">
                                 	<!-- <img class="img-thumbnail" ng-src="getImage(datas.value)" alt="Driver Photo"/> -->
                                 	<img class="img-thumbnail passport-size" ng-src="{{getImage(datas)}}" alt="Driver Photo"/>
-                                	<input type="file" file-model="data.editDriverPhoto"/>
+                                	<input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  type="file" file-model="data.editDriverPhoto"/>
                                 </div>
-                                <input  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                                <input  class="form-control" ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                                <select  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color" ></select>
+                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color" ></select>
                             </td>
                         </tr>
                         <!--<tr  ng-repeat="datas in editingPerson.dataValues">-->
@@ -115,12 +114,12 @@
                         <tr ng-if="list.dataElement.name != 'Program_Person'" ng-repeat="list in  data.programs['Driver'].programStages[0].programStageDataElements">
                         <td >
                             <label>{{ list.dataElement.name }}</label>
-                            <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'" file-model="data.driverPhoto"/>
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file"  ng-if="list.dataElement.name == 'Driver Photo'" file-model="data.driverPhoto"/>
                             <!-- <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'"  ngf-select ng-model="driverPhoto" name="upload"    
              accept="image/*" ngf-max-size="2MB" required/> -->
-                            <input  ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
-                            <input  ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
-                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                           </td>
                         </tr>
                         <!--<tr ng-repeat="list in  data.programs['Person'].programStages[0].programStageDataElements | orderBy:'sortOrder'">-->
@@ -158,9 +157,9 @@
                         <tr ng-repeat="list in  data.programs['Driver License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                         <td ng-if="list.dataElement.name != 'Program_Driver'">
                             <label>{{ list.dataElement.name }}</label>
-                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
-                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
-                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
+                            <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                           </td>
                         </tr>
                         <tr style="margin-top: 10px">

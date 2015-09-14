@@ -124,7 +124,16 @@
 
 <div ng-view></div>
 
-
+    <script>
+        $(document).ready(function(){
+            $('input').tooltip({
+                placement: "bottom"
+            });
+            $('select').tooltip({
+                placement: "bottom"
+            });
+        });
+    </script>
 </body>
 </html>
 
