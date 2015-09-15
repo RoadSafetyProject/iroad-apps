@@ -38,6 +38,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
+        //consfigure dhis library
+        dhisConfigs.onLoad = function(){
+            console.log('success loading library');
+        }
+        iroad2.Init(dhisConfigs);
+
         $scope.feedBack = false;
         $scope.progresMessage = false;
         $scope.showFeedback = function(data){
@@ -268,6 +274,29 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.vehicle = events;
         }
 
+        //adding vehicle owner history
+        $scope.enableAddingVehicleOwnerHistory = function(events){
+
+            console.log('add vehicle owner history : ' + JSON.stringify(events));
+        }
+
+
+        //adding vehicle owner history
+        $scope.viewAddingVehicleOwnerHistory = function(events){
+            var modalInstance = $modal.open({
+                templateUrl:'views/vehicleOwnerHistoryController.html',
+                controller: 'VehicleOwnerHistoryController',
+                resolve: {
+                    dhis2Event: function () {
+                        return events;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        }
+
         //viewing Insurance History
         $scope.enableViewInsurance = function(events){
             var modalInstance = $modal.open({
@@ -279,7 +308,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     },events: function () {
                         return  $scope.getRelatedObjects(events.event,'Vehicle Insurance History');
                     }
-
                 }
             });
 

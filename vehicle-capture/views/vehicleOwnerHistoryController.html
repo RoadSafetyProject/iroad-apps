@@ -1,0 +1,32 @@
+<style>
+    .modal-dialog{
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%
+    }
+</style>
+<div class="modal-header page">
+    <h3>ehicle Ownership story for  {{ dhis2Event.dataValues['Vehicle Plate Number/Registration Number'].value }}</h3>
+</div>
+
+<div class="modal-body page">
+    <table datatable="ng" class="table table-border table-striped">
+        <thead>
+        <tr>
+            <th>Vehicle Owner Name</th>
+            <th>Phone Number</th>
+            <th>Physical Address</th>
+            <th>Owner ID Number</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+
+<div class="modal-footer page">
+    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
+</div>
