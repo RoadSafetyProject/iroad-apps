@@ -112,6 +112,7 @@ eventCaptureControllers.controller('MainController',
 							var data = null;
                 		}else{
 							eventAccident[dataElement.dataElement.name] = "";
+							$scope.setDescription(dataElement.dataElement.name);
                 		}
                     });
                 }
@@ -134,6 +135,7 @@ eventCaptureControllers.controller('MainController',
 							var data = null;
 						}else{
 							eventAccidentVehicle[dataElement.dataElement.name] = "";
+
 						}
 					});
 				}
@@ -227,6 +229,7 @@ eventCaptureControllers.controller('MainController',
 							var data = null;
 						}else{
 							eventAccidentVehicle[dataElement.dataElement.name] = "";
+
 						}
 					});
 				}
@@ -288,7 +291,16 @@ eventCaptureControllers.controller('MainController',
 
 		}
 
+		$scope.setDescription = function(key){
 
+			for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+				if(iroad2.data.dataElements[j].name == key){
+					if(iroad2.data.dataElements[j].description){
+						return iroad2.data.dataElements[j].description;
+					}
+				}
+			}
+		}
 
 		$scope.isInteger = function(key){
 			return $scope.is(key,"int");

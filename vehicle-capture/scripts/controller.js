@@ -74,6 +74,27 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 	console.log(JSON.stringify(program.name));
                 	return;
                 }
+                //loading all data elements
+                $scope.allDataElements = [];
+                $http.get('../../../api/dataElements?paging=false&fields=id,name,description,type,code,optionSet[id,name,code,options[id,name]]').
+                    success(function(data) {
+                        $scope.allDataElements = data.dataElements;
+                    }).
+                    error(function(data) {
+                        onError("Error loading data elemets.");
+                    });
+
+                //function to handle tooltips
+                $scope.setDescription = function(key){
+
+                    for(var j = 0 ;j < $scope.allDataElements.length;j++){
+                        if($scope.allDataElements[j].name == key){
+                            if($scope.allDataElements[j].description){
+                                return $scope.allDataElements[j].description;
+                            }
+                        }
+                    }
+                }
                 program.dataValues = {};
                 program.dataValues.events = [];
                 $http.get('../../../api/events.json?program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){

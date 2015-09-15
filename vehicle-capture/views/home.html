@@ -87,8 +87,8 @@
                         <tr  class="todelete"  ng-repeat="datas in editingEvent.dataValues  | orderBy:'sortOrder'">
                             <td style="margin-right: 20px">
                                 <label>{{ datas.name }}</label><br>
-                                <input class="form-control" ng-if="!datas.optionSet"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                                <select  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
+                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}" class="form-control" ng-if="!datas.optionSet"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -111,10 +111,10 @@
                         <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements  | orderBy:'sortOrder'">
                         <td >
                             <label>{{ list.dataElement.name }}</label>
-                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='string'" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
-                            <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='int'" ng-blur="validateNewCarInt(list.dataElement)" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
-                            <input  class="form-control" ng-focus="focusMe(list.dataElement.name)"  ng-if="list.dataElement.type=='date'" ui-date="dateOptions1"  ng-model="data.newCarValue[list.dataElement.id]" >
-                            <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='string'" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='int'" ng-blur="validateNewCarInt(list.dataElement)" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control" ng-focus="focusMe(list.dataElement.name)"  ng-if="list.dataElement.type=='date'" ui-date="dateOptions1"  ng-model="data.newCarValue[list.dataElement.id]" >
+                            <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                           </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -141,9 +141,9 @@
                         <tr ng-repeat="list in  data.programs['Vehicle Insurance History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
-                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInsurance[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
+                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInsurance[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -170,9 +170,9 @@
                         <tr ng-repeat="list in  data.programs['Bussiness License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -200,9 +200,9 @@
                         <tr ng-repeat="list in  data.programs['Vehicle License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -228,9 +228,9 @@
                         <tr ng-repeat="list in  data.programs['Vehicle Inspection'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
-                                <input class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
-                                <select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInspection[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
+                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
+                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInspection[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">

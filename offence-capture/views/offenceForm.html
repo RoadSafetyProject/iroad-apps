@@ -38,11 +38,11 @@
 				</div>
 				<div  class="col-sm-4"> 
 					<label>Full Name</label><br /> <br />
-					{{offence.Driver.Person['First Name']}} 
+					{{offence.Driver['Full Name']}}
 				</div> 
 				<div  class="col-sm-4">
 					<label>Postal Address</label><br />
-					{{offence.Driver.Person['Postal Address']}} 
+					{{offence.Driver['Postal Address']}}
 				</div>
 				</div>
 				            <div class="panel-group" id="accordion">
@@ -55,36 +55,36 @@
 						            <div id="collapseOne" class="panel-collapse collapse in">
 						                <div class="panel-body">
 						                    <div  class="col-sm-4">
-						<label>Physical Address</label><br /> <br />
-						{{offence.Driver.Person['Physical Address']}} 
+						<label>TIN Number</label><br />
+						{{offence.Driver['TIN Number']}}
 					</div>
 					<div  class="col-sm-4">
 						<label>Gender</label><br />
-						{{offence.Driver.Person.gender}} 
+						{{offence.Driver['Gender']}}
 					</div>
 					<div  class="col-sm-4">
-						<label>Birth Date</label><br /> <br />
-						{{offence.Driver.Person['Date of Birth']}} 
+						<label>Birth Date</label><br />
+						{{offence.Driver['Date of Birth']}}
 					</div>
-					<div  class="col-sm-4">
+					<!--<div  class="col-sm-4">
 						<label>Nationality</label><br /> 
-						{{offence.Driver.Person.Nationality}} 
-					</div>
+						{{offence.Driver['Nationality']}}
+					</div>-->
 					<div  class="col-sm-4">
-						<label>Phone Number</label><br /> <br />
-						{{offence.Driver.Person['Phone Number']}} 
+						<label>Phone Number</label><br />
+						{{offence.Driver['Phone Number']}}
 					</div>
-					<div  class="col-sm-4">
+					<!--<div  class="col-sm-4">
 						<label>Occupation</label><br /> <br />
-						{{offence.Driver.Person.Occupation}} 
-					</div>
+						{{offence.Driver.Person.Occupation}}
+					</div>-->
 					<div class="col-sm-4">
-						<label>Driving Class</label><br /> <br />
-						{{offence.driving_class}}
+						<label>Driving Class</label><br />
+						{{offence.Driver['Driving Class Name']}}
 					</div>
 					<div  class="col-sm-4">
-						<label>License Expiry Date</label><br /> <br />
-						{{offence.expiry_date}} 
+						<label>License Expiry Date</label><br />
+						{{offence.Driver['Current License Expiry Date']}}
 					</div>
 						                </div>
 						            </div>
@@ -98,7 +98,7 @@
 			  	<div class="row">
 					<div class="col-sm-4" ng-keyup="getVehicle()"> 
 						<label>Vehicle Registration/Plate Number</label><br />
-						{{offence.Vehicle['Vehicle Plate Number']}}
+						{{offence.Vehicle['Vehicle Plate Number/Registration Number']}}
 					</div>
 				</div>
 					<div class="panel-group" id="accordion">
@@ -180,12 +180,12 @@
 					</div>
 					<div  class="col-sm-4"> 
 						<label>Imported From</label><br />
-						{{offence.Vehicle['Imported From']}} 
+						{{offence.Vehicle['Imported From']}}
 					</div>
 						                    </div>
 						                </div>
 						            </div>
-						        </div>
+				</div>
 					
 					
 			<div class="panel-group" id="accordion">
@@ -196,35 +196,33 @@
 						</h4>
 					</div>
 				<div id="collapseThree" class="panel-collapse collapse in">
-					<div class="panel-body">
-						<div  class="col-sm-4"> 
-					<label>Owner Id</label><br />
-					{{vehicle.owner_id}} 
-				</div>
-				<div  class="col-sm-4"> 
-					<label>Name</label><br />
-					{{vehicle.owner_name}} 
-				</div>
-				<div  class="col-sm-4"> 
-					<label>Nationality</label><br />
-					{{vehicle.owner_nationality}}
-				</div>
-				<div  class="col-sm-4"> 
-					<label>Ownership Category</label><br />
-					{{vehicle.ownership_category}}
-				</div>
-				<div  class="col-sm-4"> 
-					<label>Physical Address</label><br />
-					{{vehicle.owner_physical_address}}
-				</div>
-				<div  class="col-sm-4"> 
-					<label>Postal Address</label><br />
-					{{vehicle.owner_address}}
-				</div>
-				<div  class="col-sm-4"> 
-					<label>Phone Number</label><br />
-					{{vehicle.owner_phone_number}}
-				</div>
+					<div class = "panel-body">
+						<div  class="col-sm-4">
+							<label>Name</label><br />
+							{{offence.Vehicle['Full Name']}}
+						</div>
+						<!--<div  class="col-sm-4">
+                            <label>Nationality</label><br />
+                            {{offence.Vehicle}}
+                        </div>-->
+						<div  class="col-sm-4">
+							<label>Ownership Category</label><br />
+							{{offence.Vehicle['Vehicle Ownership Category']}}
+						</div>
+						<!--<div  class="col-sm-4">
+                            <label>Physical Address</label><br />
+                            {{offence.Vehicle[]}}
+                        </div>-->
+						<!--div  class="col-sm-4">
+                            <label>Postal Address</label><br />
+                            {{offence.Vehicle['Vehicle Owner Address']}}
+                        </div>-->
+						<div  class="col-sm-4">
+							<label>ID Number/TIN Number</label><br />
+							{{offence.Vehicle['ID Number/TIN Number']}}
+						</div>
+					</div>
+
 						                </div>
 						            </div>
 						        </div>

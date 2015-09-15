@@ -40,17 +40,17 @@
                         <div class = "col-sm-4">
                             <label style="font-size: 0.8em">{{ key}}</label><br />
 
-                            <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedAccident[key]" class="form-control input-sm"  value = "editedAccident[key]"/>
-                            <input ng-if="isInteger(key)"  ng-model="editedAccident[key]" class="form-control input-sm" value = "editedAccident[key]" />
-                            <select  ng-if="isBoolean(key)"  ng-model="editedAccident[key]" class="form-control input-sm">
+                            <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedAccident[key]" class="form-control input-sm"  value = "editedAccident[key]"/>
+                            <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isInteger(key)"  ng-model="editedAccident[key]" class="form-control input-sm" value = "editedAccident[key]" />
+                            <select data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isBoolean(key)"  ng-model="editedAccident[key]" class="form-control input-sm">
                                 <option value = "{{ editedAccident[key] }}">{{ editedAccident[key] == true? 'Yes':'No' }}</option>
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                             </select>
-                            <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccident[key]">
+                            <select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccident[key]">
                                 <option value = "{{ editedAccident[key] }}">{{ editedAccident[key] }}</option>
                             </select>
-                            <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccident[key]" value = "editedAccident[key]"/>
+                            <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccident[key]" value = "editedAccident[key]"/>
 
                         </div>
                     </div>
@@ -88,14 +88,14 @@
                                         <div  ng-repeat="(key,value) in editAccidentVehicleForm ">
                                             <div class = "col-sm-4" ng-hide = "key >= 0" ng-if="key != 'Date of Birth' && key != 'Full Name' && key != 'Gender' && key != 'Vehicle Ownership Category' && key != 'Vehicle Owner Name' && key != 'Vehicle Class' && key != 'Make' && key != 'Model' " >
                                                 <label style="font-size: 0.8em">{{ key}}</label><br />
-                                                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedAccidentVehicles[vehicle][key]" class="form-control input-sm"/>
-                                                <input ng-if="isInteger(key)"  ng-model="editedAccidentVehicles[vehicle][key]" class="form-control input-sm" />
-                                                <select  ng-if="isBoolean(key)"  ng-model="editedAccidentVehicles[vehicle][key]" class="form-control input-sm">
+                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedAccidentVehicles[vehicle][key]" class="form-control input-sm"/>
+                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isInteger(key)"  ng-model="editedAccidentVehicles[vehicle][key]" class="form-control input-sm" />
+                                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isBoolean(key)"  ng-model="editedAccidentVehicles[vehicle][key]" class="form-control input-sm">
                                                     <option value="true">Yes</option>
                                                     <option value="false">No</option>
                                                 </select>
-                                                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccidentVehicles[vehicle][key]" />
-                                                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccidentVehicles[vehicle][key]"/>
+                                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccidentVehicles[vehicle][key]" />
+                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccidentVehicles[vehicle][key]"/>
                                             </div>
                                         </div>
                                     </div>
@@ -122,13 +122,13 @@
                                                             <div class = "col-sm-4" ng-repeat="(key,value) in editAccidentVehiclePassengerForm">
 
                                                                 <label style="font-size: 0.8em" >{{ key}}</label><br />
-                                                                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedAccidentPassengers[passengerCounter][key]" class="form-control input-sm"/>
-                                                                <input ng-if="isInteger(key)"  ng-model="editedAccidentPassengers[passengerCounter][key]" class="form-control input-sm" />
-                                                                <select  ng-if="isBoolean(key)"  ng-model="editedAccidentPassengers[passengerCounter][key]" class="form-control input-sm">
+                                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedAccidentPassengers[passengerCounter][key]" class="form-control input-sm"/>
+                                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isInteger(key)"  ng-model="editedAccidentPassengers[passengerCounter][key]" class="form-control input-sm" />
+                                                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="editedAccidentPassengers[passengerCounter][key]" class="form-control input-sm">
                                                                     <option value="true">Yes</option><option value="false">No</option>
                                                                 </select>
-                                                                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccidentPassengers[passengerCounter][key]" />
-                                                                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccidentPassengers[passengerCounter][key]"/>
+                                                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccidentPassengers[passengerCounter][key]" />
+                                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccidentPassengers[passengerCounter][key]"/>
 
                                                             </div>
                                                         </div>
@@ -170,13 +170,13 @@
                                         <div  ng-repeat="(key,value) in editAccidentWitness ">
                                             <div class = "col-sm-4" ng-hide = "key >= 0" >
                                                 <label style="font-size: 0.8em">{{ key}}</label><br />
-                                                <input ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedaccidentWitnesses[witness][key]" class="form-control input-sm"/>
-                                                <input ng-if="isInteger(key)"  ng-model="editedaccidentWitnesses[witness][key]" class="form-control input-sm" />
-                                                <select  ng-if="isBoolean(key)"  ng-model="editedaccidentWitnesses[witness][key]" class="form-control input-sm">
+                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedaccidentWitnesses[witness][key]" class="form-control input-sm"/>
+                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isInteger(key)"  ng-model="editedaccidentWitnesses[witness][key]" class="form-control input-sm" />
+                                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isBoolean(key)"  ng-model="editedaccidentWitnesses[witness][key]" class="form-control input-sm">
                                                     <option value="true">Yes</option><option value="false">No</option>
                                                 </select>
-                                                <select class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedaccidentWitnesses[witness][key]" />
-                                                <input  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedaccidentWitnesses[witness][key]"/>
+                                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedaccidentWitnesses[witness][key]" />
+                                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedaccidentWitnesses[witness][key]"/>
                                             </div>
                                         </div>
 
@@ -217,3 +217,4 @@
 
 
 </div>
+
