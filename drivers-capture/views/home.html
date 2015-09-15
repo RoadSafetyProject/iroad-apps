@@ -114,7 +114,7 @@
                         <tr ng-if="list.dataElement.name != 'Program_Person'" ng-repeat="list in  data.programs['Driver'].programStages[0].programStageDataElements">
                         <td >
                             <label>{{ list.dataElement.name }}</label>
-                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file"  ng-if="list.dataElement.name == 'Driver Photo'" file-model="data.driverPhoto"/>
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file"  ng-if="list.dataElement.name == 'Driver Photo'" file-model="data.driverPhoto" accept="image/*" capture="camera"/>
                             <!-- <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'"  ngf-select ng-model="driverPhoto" name="upload"    
              accept="image/*" ngf-max-size="2MB" required/> -->
 					<input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
