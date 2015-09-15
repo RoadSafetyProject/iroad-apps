@@ -87,8 +87,9 @@
                         <tr  class="todelete"  ng-repeat="datas in editingEvent.dataValues  | orderBy:'sortOrder'">
                             <td style="margin-right: 20px">
                                 <label>{{ datas.name }}</label><br>
-                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}" class="form-control" ng-if="!datas.optionSet"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}" class="form-control" ng-if="!datas.optionSet && datas.type != 'bool'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
                                 <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
+                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.name as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -115,6 +116,7 @@
                             <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='int'" ng-blur="validateNewCarInt(list.dataElement)" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
                             <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control" ng-focus="focusMe(list.dataElement.name)"  ng-if="list.dataElement.type=='date'" ui-date="dateOptions1"  ng-model="data.newCarValue[list.dataElement.id]" >
                             <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="datas.value" ng-options="item.name as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                           </td>
                         </tr>
                         <tr style="margin-top: 10px">
