@@ -82,6 +82,7 @@
                                 	<!-- <img class="img-thumbnail" ng-src="getImage(datas.value)" alt="Driver Photo"/> -->
                                 	<img class="img-thumbnail passport-size" ng-src="{{getImage(datas)}}" alt="Driver Photo"/>
                                 	<input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  type="file" file-model="data.editDriverPhoto"/>
+                                	Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot(data.editDriverPhoto)">Take A Snapshot</button>
                                 </div>
                                 <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
                                 <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
@@ -117,7 +118,7 @@
                             <div ng-if="list.dataElement.name == 'Driver Photo'">
                             <img class="img-thumbnail passport-size" ng-src="{{photoData}}" alt="Driver Photo"/>
                             <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file" file-model="data.driverPhoto" accept="image/*" capture="camera"/>
-                            Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot()">Take A Snapshot</button>
+                            Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot(data.driverPhoto)">Take A Snapshot</button>
                             </div>
                             <!-- <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'"  ngf-select ng-model="driverPhoto" name="upload"    
              accept="image/*" ngf-max-size="2MB" required/> -->

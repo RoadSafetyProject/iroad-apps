@@ -293,11 +293,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             $scope.adding = "false";
             $scope.editing = "false";
         }
-        $scope.$watch("data.driverPhoto",function(oldValue,newValue){
-        	console.log(JSON.stringify($scope.data.driverPhoto));
-        });
         $scope.photoData = "";
-        $scope.takeSnapShot = function(){
+        $scope.takeSnapShot = function(photo){
         	var photoEvent = {
         			setPhotoData:function(data_uri){
         				$scope.photoData = data_uri;
@@ -307,7 +304,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         				    array.push(blobBin.charCodeAt(i));
         				}
         				
-        				$scope.data.driverPhoto = new File(new Uint8Array(array), $scope.generateUniqueFileName("jpeg"), {type: 'image/jpeg' });
+        				photo = new File(new Uint8Array(array), $scope.generateUniqueFileName("jpeg"), {type: 'image/jpeg' });
         				
         			}
         	}
@@ -522,6 +519,33 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                 $scope.cancelAdd();
                 $scope.hideProgresMessage();
                 $scope.showSuccessfullAddingMessage('You have successful updated the driver.');
+        		if(!$scope.vehicleRevoked && value.dataValues["Driver License Status"].value == "Revoked"){
+        			$http.get('../../../api/organisationUnits/' + $scope.orgUnit.id + '.json?fields=id,users,parent[id,users,parent[id,users,parent[id,users]]]').
+                    success(function(data) {
+                    	var orgUnit = data;
+                    	var orgUnits = [];
+                    	do{
+                    		orgUnits.push({"id":orgUnit.id});
+                    		orgUnit = orgUnit.parent;
+                    	}while(orgUnit);
+                    	var message = {
+                    			"subject" : "Driver License("+value.dataValues["Driver License Number"].value+") has been revoked",
+                    			"text" : "Driver License "+value.dataValues["Driver License Number"].value+" owned by "+value.dataValues["Full Name"].value+" has been revoked.",
+                    			"organisationUnits":orgUnits
+                    	};
+                    	$http.post('../../../api/messageConversations.json',message).
+                        success(function(data) {
+                        	
+                        }).
+                        error(function(data) {
+                            alert("Error getting organisation units.")
+                        });
+                    }).
+                    error(function(data) {
+                        alert("Error getting organisation units.")
+                    });
+        			alert("here");
+        		}
             }).
             error(function(data) {
             	
@@ -629,8 +653,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         }
         $scope.normalClass= "col-sm-12";
         $scope.normalStyle= { "z-index": '1000'};
-        $scope.data.color = []
+        $scope.data.color = [];
+        $scope.vehicleRevoked = false;
         $scope.enableEdit  = function(events){
+        	console.log(JSON.stringify(events));
+        	if(events.dataValues["Driver License Status"].value != undefined){
+        		$scope.vehicleRevoked = events.dataValues["Driver License Status"].value == "Revoked";
+        	}else{
+        		$scope.vehicleRevoked = false;
+        	}
             $scope.data.color = []
             $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
