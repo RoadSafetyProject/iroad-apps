@@ -249,6 +249,38 @@
             </div>
         </div>
 
+        <!-- adding vehicle owner history for a given vehicle--->
+        <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="addVehicleOwnerHistory" >
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b>Add Vehicle Owner to {{ vehicle.dataValues['Vehicle Plate Number/Registration Number'].value }}</b>
+                    <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
+                </div>
+                <div class = "panel-body">
+                    <table class="table ">
+                        <tr    ng-repeat="(key, value) in formVehicleOwnerHistroy | orderBy:'sortOrder'">
+                            <td >
+                                <label>{{key}}</label><br>
+                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control"/>
+                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
+                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control">
+                                    <option value="true">Yes</option><option value="false">No</option>
+                                </select>
+                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control" ng-model="editingEvent[key]"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <buttton class = "btn btn-primary pull-right" ng-click = "saveVehicleOwnerHistory(vehicle,editingEvent)">save</buttton>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
 <!--VIewing Car Information-->
         <div class="col-sm-3" style="z-index: 30;background-color: white;" ng-if="vieInformation" >
             <div class="panel panel-default" >

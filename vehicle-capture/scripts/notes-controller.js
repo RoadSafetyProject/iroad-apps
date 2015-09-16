@@ -11,6 +11,19 @@ eventCaptureControllers.controller('NotesController',
         };
     });
 
+eventCaptureControllers.controller('VehicleOwnerHistoryController',
+    function($scope,
+             $modalInstance,
+             dhis2Event){
+
+        $scope.dhis2Event = dhis2Event;
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
+
+
 eventCaptureControllers.controller('DeleteController',
     function($scope,
              $modalInstance,
@@ -77,17 +90,6 @@ eventCaptureControllers.controller('VehicleInsuranceController',
         };
     });
 
-eventCaptureControllers.controller('VehicleOwnerHistoryController',
-    function($scope,
-             $modalInstance,
-             dhis2Event){
-
-        $scope.dhis2Event = dhis2Event;
-
-        $scope.close = function () {
-            $modalInstance.close();
-        };
-    });
 
 eventCaptureControllers.controller('VehicleBussinessController',
     function($scope,
