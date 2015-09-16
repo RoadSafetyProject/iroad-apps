@@ -366,6 +366,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     //saving new vehicle owner history
                     eventModal.save(savedData,otherData,function(result){
                         console.log('saved vehcile owner history : ' + JSON.stringify(result));
+                        if(result.httpStatusCode == '200'){
+                            alert("saccess");
+                            $scope.cancelEdit();
+                        }
 
                     },function(error){
                         console.log('fail to save vehicle owner history ');
