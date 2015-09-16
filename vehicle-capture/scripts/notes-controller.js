@@ -11,6 +11,34 @@ eventCaptureControllers.controller('NotesController',
         };
     });
 
+eventCaptureControllers.controller('VehicleOwnerHistoryController',
+    function($scope,
+             $modalInstance,
+             dhis2Event){
+
+        $scope.VehicleEvent = dhis2Event;
+        var vehicleId = dhis2Event.event;
+
+        $scope.vehicleOwners = [];
+        //fetching vehicle owner history
+        var vehicleOwnerHistoryModel = new iroad2.data.Modal('Vehicle Owner History',[]);
+        vehicleOwnerHistoryModel.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result) {
+            if($scope.vehicleOwners == result){
+                console.log('Data found');
+            }
+            else{
+                $scope.vehicleOwners = result;
+                $scope.$apply();
+            }
+
+        });
+
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    });
+
+
 eventCaptureControllers.controller('DeleteController',
     function($scope,
              $modalInstance,
@@ -76,6 +104,7 @@ eventCaptureControllers.controller('VehicleInsuranceController',
             $modalInstance.close();
         };
     });
+
 
 eventCaptureControllers.controller('VehicleBussinessController',
     function($scope,

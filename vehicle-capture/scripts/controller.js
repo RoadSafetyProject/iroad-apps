@@ -38,6 +38,36 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.today = DateUtils.getToday();
         $scope.data = {};
 
+        //configure dhis library
+        dhisConfigs.onLoad = function(){
+            $scope.setVehicleOwnerHistoryForm();
+            $scope.editingEvent = {};
+        }
+        iroad2.Init(dhisConfigs);
+
+        //function to set vehicle owner history
+        $scope.setVehicleOwnerHistoryForm = function(){
+
+            $scope.vehicleOwnerHistroyModal = new iroad2.data.Modal('Vehicle Owner History',[]);
+            var modalName = $scope.vehicleOwnerHistroyModal.getModalName();
+            var eventVehicleOwnerHistrory = {};
+
+            angular.forEach(iroad2.data.programs, function (program) {
+                if (program.name == modalName) {
+                    //console.log('Program ' + JSON.stringify(program));
+                    angular.forEach(program.programStages[0].programStageDataElements, function (dataElement) {
+                        if(dataElement.dataElement.name.startsWith(iroad2.config.refferencePrefix)){
+                            //eventAccidentWitness[dataElement.dataElement.name.replace(iroad2.config.refferencePrefix,"")] = {};
+                            var data = null;
+                        }else{
+                            eventVehicleOwnerHistrory[dataElement.dataElement.name] = "";
+                        }
+                    });
+                }
+            });
+            $scope.formVehicleOwnerHistroy = eventVehicleOwnerHistrory;
+        }
+
         $scope.feedBack = false;
         $scope.progresMessage = false;
         $scope.showFeedback = function(data){
@@ -61,6 +91,62 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.pageChanged = function(page) {
         	$scope.fetchVehicles(page);
         };
+
+        //functions for flexibility in forms
+        $scope.setDescription = function(key){
+
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+                if(iroad2.data.dataElements[j].name == key){
+                    if(iroad2.data.dataElements[j].description){
+                        return iroad2.data.dataElements[j].description;
+                    }
+                }
+            }
+        }
+
+        $scope.isInteger = function(key){
+            return $scope.is(key,"int");
+        }
+        $scope.isDate = function(key){
+            return $scope.is(key,"date");
+        }
+        $scope.isString = function(key){
+            return $scope.is(key,"string");
+        }
+
+        $scope.is = function(key,dataType){
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+                if(iroad2.data.dataElements[j].name == key){
+                    if(iroad2.data.dataElements[j].type == dataType){
+                        return true;
+                    }
+                    break;
+                }
+            };
+            return false;
+        }
+        $scope.isBoolean = function(key){
+            return $scope.is(key,"bool");
+        }
+        $scope.hasDataSets = function(key){
+            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+                if(iroad2.data.dataElements[j].name == key){
+                    return (iroad2.data.dataElements[j].optionSet != undefined);
+                }
+            };
+            return false;
+        }
+        $scope.getOptionSets = function(key){
+            for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+                if(iroad2.data.dataElements[j].name == key){
+                    return iroad2.data.dataElements[j].optionSet.options;
+                }
+            };
+            return false;
+        }
+
+
+        //function to fetch accidents
         $scope.fetchVehicles = function(page){
         	angular.forEach($scope.data.programs,function(program){
                 if($scope.data.programs['Vehicle'].id == program.id){
@@ -73,27 +159,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }else{
                 	return;
                 }
-                //loading all data elements
-                $scope.allDataElements = [];
-                $http.get('../../../api/dataElements?paging=false&fields=id,name,description,type,code,optionSet[id,name,code,options[id,name]]').
-                    success(function(data) {
-                        $scope.allDataElements = data.dataElements;
-                    }).
-                    error(function(data) {
-                        onError("Error loading data elemets.");
-                    });
 
-                //function to handle tooltips
-                $scope.setDescription = function(key){
-
-                    for(var j = 0 ;j < $scope.allDataElements.length;j++){
-                        if($scope.allDataElements[j].name == key){
-                            if($scope.allDataElements[j].description){
-                                return $scope.allDataElements[j].description;
-                            }
-                        }
-                    }
-                }
                 program.dataValues = {};
                 program.dataValues.events = [];
                 $http.get('../../../api/events.json?program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
@@ -274,6 +340,70 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.vehicle = events;
         }
 
+        //adding vehicle owner history
+        $scope.enableAddingVehicleOwnerHistory = function(events){
+            $scope.cancelEdit();
+            $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
+            $scope.normalStyle= { "z-index": '10'};
+            $scope.normalClass= "col-sm-9";
+            $scope.addVehicleOwnerHistory = true;
+            $scope.vehicle = events;
+        }
+
+        $http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
+            $scope.logedInUser = data;
+        });
+
+        //function to save new owner to vehicle history
+        $scope.saveVehicleOwnerHistory = function(vehicle,ownerHistory){
+            var plateNumber =  vehicle.dataValues['Vehicle Plate Number/Registration Number'].value;
+            var vehicleModel = new iroad2.data.Modal('Vehicle',[]);
+            var vehicle = {};
+            vehicleModel.get({value:plateNumber},function(result) {
+                if(vehicle == result[0]){
+                    console.log('vehicle found');
+                }
+                else{
+                    vehicle = result[0];
+                    var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
+                    var eventModal = new iroad2.data.Modal('Vehicle Owner History',[]);
+                    var savedData = ownerHistory;
+                    savedData.Vehicle = vehicle;
+                    //saving new vehicle owner history
+                    eventModal.save(savedData,otherData,function(result){
+                        console.log('saved vehcile owner history : ' + JSON.stringify(result));
+                        if(result.httpStatusCode == '200'){
+                            alert("saccess");
+                            $scope.cancelEdit();
+                        }
+
+                    },function(error){
+                        console.log('fail to save vehicle owner history ');
+
+                    },eventModal.getModalName());
+                }
+
+            });
+        }
+
+
+        //adding vehicle owner history
+        $scope.viewAddingVehicleOwnerHistory = function(events){
+            var modalInstance = $modal.open({
+                templateUrl:'views/vehicleOwnerHistoryController.html',
+                controller: 'VehicleOwnerHistoryController',
+                resolve: {
+                    dhis2Event: function () {
+                        return events;
+                    }
+                }
+            });
+
+
+            modalInstance.result.then(function (){
+            });
+        }
+
         //viewing Insurance History
         $scope.enableViewInsurance = function(events){
             var modalInstance = $modal.open({
@@ -285,7 +415,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     },events: function () {
                         return  $scope.getRelatedObjects(events.event,'Vehicle Insurance History');
                     }
-
                 }
             });
 
@@ -317,6 +446,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.normalClass= "col-sm-12";
             $scope.editing = false;
             $scope.adding = false;
+            $scope.addVehicleOwnerHistory = false;
             $scope.addingInsurance = false;
             $scope.addingBusLicence = false;
             $scope.addingLicence = false;

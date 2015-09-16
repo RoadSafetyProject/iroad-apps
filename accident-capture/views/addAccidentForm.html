@@ -43,7 +43,7 @@
 								<option value="true">Yes</option><option value="false">No</option>
 							</select>
 							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentForm[key]" />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}"   ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
+							<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"   ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
 
 						</div>
 					</div>
@@ -116,7 +116,7 @@
 												<option value="true">Yes</option><option value="false">No</option>
 											</select>
 											<select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentVehicleForm[vehicle][key]" />
-											<input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehicleForm[vehicle][key]"/>
+											<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehicleForm[vehicle][key]"/>
 
 										</div>
 									</div>
@@ -151,7 +151,7 @@
 															<option value="true">Yes</option><option value="false">No</option>
 														</select>
 														<select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" />
-														<input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]"/>
+														<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]"/>
 													</div>
 
 												</div>
@@ -211,7 +211,7 @@
 												<option value="true">Yes</option><option value="false">No</option>
 											</select>
 											<select data-toggle="tooltip"  title="{{ setDescription(key) }}"data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentWitnessForm[witness][key]" />
-											<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentWitnessForm[witness][key]"/>
+											<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentWitnessForm[witness][key]"/>
 
 										</div>
 									</div>
