@@ -66,7 +66,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 }
             });
             $scope.formVehicleOwnerHistroy = eventVehicleOwnerHistrory;
-            console.log("data : " + JSON.stringify(eventVehicleOwnerHistrory));
         }
 
         $scope.feedBack = false;
@@ -353,13 +352,29 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $scope.saveVehicleOwnerHistory = function(vehicle,ownerHistory){
             var plateNumber =  vehicle.dataValues['Vehicle Plate Number/Registration Number'].value;
             var vehicleModel = new iroad2.data.Modal('Vehicle',[]);
+            var vehicle = {};
             vehicleModel.get({value:plateNumber},function(result) {
+                if(vehicle == result[0]){
+                    console.log('vehicle found');
+                }
+                else{
+                    vehicle = result[0];
+                    var otherData = {orgUnit:$scope.logedInUser.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
+                    var eventModal = new iroad2.data.Modal('Vehicle Owner History',[]);
+                    var savedData = ownerHistory;
+                    savedData.Vehicle = vehicle;
 
-                console.log('dat' + JSON.stringify(result));
-            });/*
-            var EventModal = new iroad2.data.Modal('Vehicle Owner History',[]);
+                    //saving new vehicle owner history
+                    eventModal.save(savedData,otherData,function(result){
+                        console.log('saved vehcile owner history : ' + JSON.stringify(result));
 
-            console.log('new owner : ' + JSON.stringify(ownerHistory));*/
+                    },function(error){
+                        console.log('fail to save vehicle owner history ');
+
+                    },eventModal.getModalName());
+                }
+
+            });
         }
 
 
