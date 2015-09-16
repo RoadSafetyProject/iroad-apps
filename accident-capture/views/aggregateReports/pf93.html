@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/angular/angular.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/demo/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css" type="text/css" rel="stylesheet" >
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
+    <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
+    <script src="../api/apps/offence-capture/libraries/angular/ui-date/date.js"></script>
+
+</head>
+<body ng-app="aggregateVehicleInspectionFormApp" >
+<h3>aggregateVehicleInspectionFormApp</h3>
+
+<script>
+    window.dhis2 = window.dhis2 || {};
+    dhis2.settings = dhis2.settings || {};
+    dhis2.settings.baseUrl = 'demo';
+</script>
+<script>
+    var dhisConfigs = {
+        baseUrl:"../",
+        refferencePrefix:"Program_"
+    };
+</script>
+</body>
+</html>
