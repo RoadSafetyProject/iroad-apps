@@ -89,7 +89,7 @@
                                 <label>{{ datas.name }}</label><br>
                                 <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}" class="form-control" ng-if="!datas.optionSet && datas.type != 'bool'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
                                 <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
-                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.name as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
+                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
