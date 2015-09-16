@@ -114,10 +114,14 @@
                         <tr ng-if="list.dataElement.name != 'Program_Person'" ng-repeat="list in  data.programs['Driver'].programStages[0].programStageDataElements">
                         <td >
                             <label>{{ list.dataElement.name }}</label>
-                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file"  ng-if="list.dataElement.name == 'Driver Photo'" file-model="data.driverPhoto" accept="image/*" capture="camera"/>
+                            <div ng-if="list.dataElement.name == 'Driver Photo'">
+                            <img class="img-thumbnail passport-size" ng-src="{{photoData}}" alt="Driver Photo"/>
+                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file" file-model="data.driverPhoto" accept="image/*" capture="camera"/>
+                            Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot()">Take A Snapshot</button>
+                            </div>
                             <!-- <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'"  ngf-select ng-model="driverPhoto" name="upload"    
              accept="image/*" ngf-max-size="2MB" required/> -->
-					<input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+					<input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet  && list.dataElement.type != 'bool'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
                             <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
                             <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>

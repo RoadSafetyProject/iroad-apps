@@ -293,6 +293,49 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             $scope.adding = "false";
             $scope.editing = "false";
         }
+        $scope.$watch("data.driverPhoto",function(oldValue,newValue){
+        	console.log(JSON.stringify($scope.data.driverPhoto));
+        });
+        $scope.photoData = "";
+        $scope.takeSnapShot = function(){
+        	var photoEvent = {
+        			setPhotoData:function(data_uri){
+        				$scope.photoData = data_uri;
+        				var blobBin = atob(data_uri.split(',')[1]);
+        				var array = [];
+        				for(var i = 0; i < blobBin.length; i++) {
+        				    array.push(blobBin.charCodeAt(i));
+        				}
+        				
+        				$scope.data.driverPhoto = new File(new Uint8Array(array), $scope.generateUniqueFileName("jpeg"), {type: 'image/jpeg' });
+        				
+        			}
+        	}
+        	$scope.generateUniqueFileName = function(ext){
+        		var now = new Date();
+	            var month = now.getMonth() + 1;
+	            if(month < 10){
+	            	month = "0" + month;
+	            }
+	            var date = now.getDate();
+	            if(date < 10){
+	            	date = "0" + date;
+	            }
+	            return now.getFullYear()+""+month+""+date+"_"+now.getHours()+""+now.getMinutes()+""+now.getSeconds()+"_"+Math.random()+"."+ext;
+        	}
+        	var modalInstance = $modal.open({
+                templateUrl: 'views/snapshot.html',
+                controller: 'SnapShotController',
+                resolve: {
+                	photoEvent: function () {
+                        return photoEvent;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (){
+            });
+        }
         $scope.uploadFile = function(file,onSuccess,onError){
         	if(file == undefined){
         		onSuccess("");
@@ -326,7 +369,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         			success:function(data, status, headers, config){
         					$http.get('../../../api/documents.json?filter=name:eq:'+fileName).
         					success(function(data) {
-        						onSuccess(data.documents[0].id);
+        						console.log("Document:" + JSON.stringify(data.documents))
+        						if(data.documents.length > 0){
+        							onSuccess(data.documents[0].id);
+        						}else{
+        							onError("File Not uploaded.");
+        						}
+        						
         					}).
         					error(function(data) {
         						onError("Error uploading file.");
@@ -341,10 +390,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         	fileUpload.uploadFileToUrl(uploadObject);
         }
         $scope.AddDriver = function(value){
-        	console.log("First:" + JSON.stringify(value));
+        	console.log("First:" + JSON.stringify($scope.data.driverPhoto));
         	$scope.uploadFile($scope.data.driverPhoto,function(data){
         		//alert(data);
-        		console.log("Last:" + JSON.stringify(value));
+        		console.log("Last:" + JSON.stringify(data));
         		$scope.saveDriver(value,data);
         	},function(error){
         		alert(error);
