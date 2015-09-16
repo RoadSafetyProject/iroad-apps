@@ -569,7 +569,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                         error(function(data) {
                             alert("Error getting organisation units.")
                         });
-            			alert("here");
             		}
             	}
            }).
