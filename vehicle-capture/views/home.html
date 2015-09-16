@@ -268,7 +268,7 @@
                                     <option value="true">Yes</option><option value="false">No</option>
                                 </select>
                                 <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
-                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control" ng-model="editingEvent[key]"/>
+                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" ui-date-format="yy-mm-dd" class="form-control" ng-model="editingEvent[key]"/>
                             </td>
                         </tr>
                         <tr>

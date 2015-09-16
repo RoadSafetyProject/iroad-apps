@@ -6,32 +6,32 @@
     }
 </style>
 <div class="modal-header page">
-    <h3>Vehicle Ownership story for {{ dhis2Event.dataValues['Make'].value }} {{ dhis2Event.dataValues['Model'].value }} {{ dhis2Event.dataValues['Vehicle Plate Number/Registration Number'].value }}</h3>
+    <h3>Vehicle Ownership story for {{ VehicleEvent.dataValues['Make'].value }} {{ VehicleEvent.dataValues['Model'].value }} {{ VehicleEvent.dataValues['Vehicle Plate Number/Registration Number'].value }}</h3>
 </div>
 
 <div class="modal-body page">
-    <!--<table datatable="ng" class="table table-border table-striped">
+    <table datatable="ng" class="table table-border table-striped">
         <thead>
         <tr>
             <th>Vehicle Owner Name</th>
             <th>Phone Number</th>
             <th>Physical Address</th>
-            <th>Owner ID Number</th>
+            <th>Postal Address</th>
             <th>Start Date</th>
             <th>End Date</th>
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Vehicle Owner Name</td>
-                <td>Phone Number</td>
-                <td>Physical Address</td>
-                <td>Owner ID Number</td>
-                <td>Start Date</td>
-                <td>End Date</td>
+            <tr ng-repeat=" vehicleOwner in vehicleOwners">
+                <td>{{ vehicleOwner['Vehicle Owner Name'] |uppercase }}</td>
+                <td>{{ vehicleOwner['Phone Number'] }}</td>
+                <td>{{ vehicleOwner['Physical Address'] }}</td>
+                <td>{{ vehicleOwner['Postal Address'] }}</td>
+                <td>{{ vehicleOwner['Ownership Start Date'] }}</td>
+                <td>{{ vehicleOwner['Ownership End Date'] }}</td>
             </tr>
         </tbody>
-    </table>-->
+    </table>
 </div>
 
 <div class="modal-footer page">

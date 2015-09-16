@@ -363,7 +363,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                     var eventModal = new iroad2.data.Modal('Vehicle Owner History',[]);
                     var savedData = ownerHistory;
                     savedData.Vehicle = vehicle;
-
                     //saving new vehicle owner history
                     eventModal.save(savedData,otherData,function(result){
                         console.log('saved vehcile owner history : ' + JSON.stringify(result));
