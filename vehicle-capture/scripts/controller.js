@@ -157,7 +157,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 		$scope.data.programs['Bussiness License History'].id == program.id){
                 	
                 }else{
-                	console.log(JSON.stringify(program.name));
                 	return;
                 }
 
@@ -270,7 +269,14 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         		$scope.data.newCarValue[value.id] = "";
         	}
         }
+        $scope.vehicleIsStolen = false;
         $scope.enableEdit  = function(events){
+        	console.log(JSON.stringify(events));
+        	if(events.dataValues["Is Vehicle Stolen"].value == undefined){
+        		$scope.vehicleIsStolen = false;
+        	}else{
+        		$scope.vehicleIsStolen = events.dataValues["Is Vehicle Stolen"].value;
+        	}
             $scope.cancelEdit();
             $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};
@@ -535,11 +541,38 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             success(function(data) {
             	console.log(JSON.stringify(data));
             	$scope.hideProgresMessage();
-            	alert("Vehicle updated successfully.")
-                //$scope.cancelAdd();
-                //$scope.hideProgresMessage();
-                //$scope.showSuccessfullAddingMessage('You have successful updated the driver.');
-            }).
+            	alert("Vehicle updated successfully.");
+            	console.log(JSON.stringify(value));
+            	if(value.dataValues["Is Vehicle Stolen"].value != undefined){
+            		if(value.dataValues["Is Vehicle Stolen"].value && !$scope.vehicleIsStolen){
+            			$http.get('../../../api/organisationUnits/' + $scope.orgUnit.id + '.json?fields=id,users,parent[id,users,parent[id,users,parent[id,users]]]').
+                        success(function(data) {
+                        	var orgUnit = data;
+                        	var orgUnits = [];
+                        	do{
+                        		orgUnits.push({"id":orgUnit.id});
+                        		orgUnit = orgUnit.parent;
+                        	}while(orgUnit);
+                        	var message = {
+                        			"subject" : "Vehicle("+value.dataValues["Vehicle Plate Number/Registration Number"].value+") has been stollen",
+                        			"text" : "Vehicle with plate number "+value.dataValues["Vehicle Plate Number/Registration Number"].value+" has been reported stolen.",
+                        			"organisationUnits":orgUnits
+                        	};
+                        	$http.post('../../../api/messageConversations.json',message).
+                            success(function(data) {
+                            	
+                            }).
+                            error(function(data) {
+                                alert("Error getting organisation units.")
+                            });
+                        }).
+                        error(function(data) {
+                            alert("Error getting organisation units.")
+                        });
+            			alert("here");
+            		}
+            	}
+           }).
             error(function(data) {
             	
             });

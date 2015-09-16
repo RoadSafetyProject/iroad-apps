@@ -45,7 +45,33 @@ eventCaptureControllers.controller('ShowSuccessInfoController', function($scope,
         $modalInstance.close();       
     }; 
 });
+eventCaptureControllers.controller('SnapShotController',
+	    function($scope,$modalInstance,photoEvent){
+	
+	$scope.init = function(){
 
+		Webcam.set({
+			width: 240,
+			height: 240,
+			dest_width: 220,
+	        dest_height: 220,
+			image_format: 'jpeg',
+			jpeg_quality: 90
+		});
+		Webcam.attach('#my_camera');
+	};
+	
+
+    $scope.take_snapshot = function() {
+        Webcam.snap( function(data_uri) {
+            document.getElementById('my_camera').innerHTML = '<img src="'+data_uri+'"/>';
+            photoEvent.setPhotoData(data_uri);
+        });
+    }
+    $scope.close = function () {
+        $modalInstance.close();
+    };
+});
 eventCaptureControllers.controller('DeleteController',
     function($scope,
             $modalInstance,
