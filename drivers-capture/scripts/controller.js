@@ -294,7 +294,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             $scope.editing = "false";
         }
         $scope.photoData = "";
-        $scope.takeSnapShot = function(){
+        $scope.takeSnapShot = function(photo){
         	var photoEvent = {
         			setPhotoData:function(data_uri){
         				$scope.photoData = data_uri;
@@ -304,7 +304,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         				    array.push(blobBin.charCodeAt(i));
         				}
         				
-        				$scope.data.driverPhoto = new File(new Uint8Array(array), $scope.generateUniqueFileName("jpeg"), {type: 'image/jpeg' });
+        				photo = new File(new Uint8Array(array), $scope.generateUniqueFileName("jpeg"), {type: 'image/jpeg' });
         				
         			}
         	}
