@@ -294,6 +294,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
             $scope.editing = "false";
         }
         $scope.uploadFile = function(file,onSuccess,onError){
+        	if(file == undefined){
+        		onSuccess("");
+        		return;
+        	}
         	if(!file.type.startsWith("image")){
         		onError("Not Valid Image.");
         		return;
