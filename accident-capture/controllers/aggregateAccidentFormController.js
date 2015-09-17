@@ -91,6 +91,7 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
                 else{
                    vehicle  = result[0];
                    $scope.ReportData.Vehicle = vehicle;
+                   $scope.$apply();
                    var vehicleId = vehicle.id;
                    var inspectionData = [];
                    var vehicleInspectionModal = new iroad2.data.Modal('Vehicle Inspection',[]);
@@ -99,13 +100,11 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
                             console.log('data found');
                         }
                        else{
-                            //$scope.ReportData.Vehicle
                             inspectionData = result;
                             var latestInspection = {};
                             var currentInspectionData = {}
                             for(var i =0; i < inspectionData.length; i++){
                                 currentInspectionData = inspectionData[i];
-                                console.log()
                                 if(! latestInspection['Inspection Date']){
                                     latestInspection = currentInspectionData;
                                 }
@@ -116,7 +115,39 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
                                 }
                             }
                             console.log('latest Inspection : ' + JSON.stringify(latestInspection));
+                            $scope.ReportData.InspectionData = latestInspection;
+                            $scope.$apply();
                         }
+                   });
+
+                   //latest owner of vehicle
+                   var vehicleOwners = [];
+                   var vehicleOwnerHistoryModel = new iroad2.data.Modal('Vehicle Owner History',[]);
+                   vehicleOwnerHistoryModel.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result) {
+                       if(vehicleOwners == result){
+                           console.log('Data found');
+                       }
+                       else{
+                           vehicleOwners = result;
+                           var latestOwner = {};
+                           var currentOwner = {};
+                           for(var i = 0; i < vehicleOwners.length; i ++){
+                               currentOwner = vehicleOwners[i];
+                               if(! latestOwner['Ownership End Date']){
+                                   latestOwner = currentOwner;
+                               }
+                               //checking for latest owner of the given
+                               if(currentOwner['Ownership End Date']){
+                                   if(latestOwner['Ownership End Date'] < currentOwner['Ownership End Date']){
+                                       latestOwner = currentOwner;
+                                   }
+                               }
+                           }
+                           console.log('Latest owner : ' + JSON.stringify(latestOwner));
+                           $scope.ReportData.Owner = latestOwner;
+                           $scope.$apply();
+                       }
+
                    });
                }
             });

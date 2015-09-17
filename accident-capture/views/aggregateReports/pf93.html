@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    <div class = "container" style="line-height:25px">
+    <div class = "container" style="line-height:25px;text-align:justify;padding-left:2%;padding-top:4%;font-size:14px;">
         <div class = "row">
             <span class = "pull-left">pf 93</span>
             <span class = "pull-right"></span>
@@ -76,24 +76,24 @@
         <div class = "row" style = "margin-top: 10px;">
             <table border = "0" width="100%">
                 <tr>
-                    <td>Date .......................................     </td>
-                    <td>Vehicle Registration number .......................................</td>
+                    <td>Date <b>{{ ReportData.InspectionData['Inspection Date'] }} </b> </td>
+                    <td>Vehicle Registration number  <b>{{ ReportData.Vehicle['Vehicle Plate Number/Registration Number'] }} </b></td>
                 </tr>
                 <tr>
-                    <td>Place of Inspection .......................................    </td>
-                    <td>Vehicle Make .......................................</td>
+                    <td>Place of Inspection  <b>{{ ReportData.InspectionData['Inspection Place'] }} </b></td>
+                    <td>Vehicle Make  <b>{{ ReportData.Vehicle['Make'] }} </b></td>
                 </tr>
                 <tr>
-                    <td>Vehicle Class .......................................     </td>
-                    <td>Vehicle Licence Number .......................................</td>
+                    <td>Vehicle Class <b>{{ ReportData.Vehicle['Vehicle Class'] }} </b> </td>
+                    <td>Vehicle Licence Number <b>{{ data.vehicleLicenceNumber }}</b></td>
                 </tr>
             </table>
             <br>
             <div>
                 If trailer attached .......................................<br>
-                Owner's Name and  Address .......................................<br>
+                Owner's Name and  Address <b>{{ ReportData.Owner['Vehicle Owner Name'] }} {{ ReportData.Owner['Postal Address'] }} {{ ReportData.Owner['Phone Number'] }}</b> <br>
                 Driver's Name and Address .......................................<br>
-                ER.V. Number(if applicable) .......................................<br>
+                ER.V. Number(if applicable) <b><span ng-if = "data.erVNumber" >{{ data.erVNumber }}</span> <span ng-if = "! data.erVNumber" >N/A</span></b><br>
             </div>
 
             <div style = "border-bottom: 2px solid;border-top:2px solid;">
@@ -101,20 +101,7 @@
                     <tr>
                         <td>DEFECTS:</td>
                         <td>
-                        <span style="padding: 2px">
-                            ..............................................................................
-                        ......................................................................................
-                        ......................................................................................
-                        ..............................................................................
-                        ......................................................................................
-                        ......................................................................................
-                        ..............................................................................
-                        ......................................................................................
-                        ......................................................................................
-                        ..............................................................................
-                        ......................................................................................
-                        ......................................................................................
-                        </span>
+                            <b>{{ ReportData.InspectionData['Inspection Defects'] }}</b>
                         </td>
                     </tr>
                 </table>
@@ -124,25 +111,33 @@
                     <tr>
                         <td >Vehicle passed for :- </td>
                         <td>
-                            Passenger ......................................................
+                            Passenger <b>{{ ReportData.InspectionData['Inspection Pass For passenger'] }}</b>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Goods ..........................................................</td>
+                        <td>
+                            Goods <b>{{ ReportData.InspectionData['Inspection Pass For Goods'] }}</b>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Passenger and Goods ................................................</td>
+                        <td>
+                            Passenger and Goods <b>{{ ReportData.InspectionData['Inspection Pass For Passenger and Goods'] }}</b>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Total Load .........................................................</td>
+                        <td>
+                            Total Load .........................................................
+                        </td>
                     </tr>
                 </table>
             </div>
         </div>
+
     </div>
 </div>
+
 
 <script>
     window.dhis2 = window.dhis2 || {};
