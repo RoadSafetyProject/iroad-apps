@@ -16,7 +16,133 @@
 
 </head>
 <body ng-app="aggregateVehicleInspectionFormApp" >
-<h3>aggregateVehicleInspectionFormApp</h3>
+<div ng-controller="aggregateVehicleInspectionFormController">
+    <div class = "container hideInPrint" style="margin-bottom: 2%;">
+        <div class = "row">
+            <div style="padding-bottom: 2%;">
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Vehicle Registration Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.plateNumber" class = "form-control">
+                    </div>
+                </div>
+
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Driver Licence Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.licenceNumber" class = "form-control">
+                    </div>
+                </div>
+
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Vehicle Licence Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.vehicleLicenceNumber" class = "form-control">
+                    </div>
+                </div>
+
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">ER.V Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.erVNumber" class = "form-control">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div style="padding-bottom: 2%;">
+            <div class = "col-sm-3 col-md-3 col-lg-3">
+                <button class = "btn btn-default form-control" ng-click="generateVehicleInspection()">Get Report</button>
+            </div>
+        </div>
+    </div>
+    <div class = "container" style="line-height:25px">
+        <div class = "row">
+            <span class = "pull-left">pf 93</span>
+            <span class = "pull-right"></span>
+        </div>
+        <div class = "row" style="font-weight: bold">
+            <h3 align="center">THE UNITED REPUBLIC OF TANZANIA </h3>
+            <h4 align="center">Vehicle Inspection Report D</h4>
+        </div>
+        <div class = "row" style = "margin-top: 10px;">
+            <table border = "0" width="100%">
+                <tr>
+                    <td>Date .......................................     </td>
+                    <td>Vehicle Registration number .......................................</td>
+                </tr>
+                <tr>
+                    <td>Place of Inspection .......................................    </td>
+                    <td>Vehicle Make .......................................</td>
+                </tr>
+                <tr>
+                    <td>Vehicle Class .......................................     </td>
+                    <td>Vehicle Licence Number .......................................</td>
+                </tr>
+            </table>
+            <br>
+            <div>
+                If trailer attached .......................................<br>
+                Owner's Name and  Address .......................................<br>
+                Driver's Name and Address .......................................<br>
+                ER.V. Number(if applicable) .......................................<br>
+            </div>
+
+            <div style = "border-bottom: 2px solid;border-top:2px solid;">
+                <table border="0" cellpadding="10">
+                    <tr>
+                        <td>DEFECTS:</td>
+                        <td>
+                        <span style="padding: 2px">
+                            ..............................................................................
+                        ......................................................................................
+                        ......................................................................................
+                        ..............................................................................
+                        ......................................................................................
+                        ......................................................................................
+                        ..............................................................................
+                        ......................................................................................
+                        ......................................................................................
+                        ..............................................................................
+                        ......................................................................................
+                        ......................................................................................
+                        </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table border="0">
+                    <tr>
+                        <td >Vehicle passed for :- </td>
+                        <td>
+                            Passenger ......................................................
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Goods ..........................................................</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Passenger and Goods ................................................</td>
+                    </tr>
+                    <tr>
+                        <td>Total Load .........................................................</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     window.dhis2 = window.dhis2 || {};

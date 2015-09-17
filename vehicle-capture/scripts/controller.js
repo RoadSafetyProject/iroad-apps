@@ -353,7 +353,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         $http.get("../../../api/me.json?fields=organisationUnits[id,name],name").success(function(data){
             $scope.logedInUser = data;
         });
-
         //function to save new owner to vehicle history
         $scope.saveVehicleOwnerHistory = function(vehicle,ownerHistory){
             var plateNumber =  vehicle.dataValues['Vehicle Plate Number/Registration Number'].value;
@@ -387,11 +386,28 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
 
 
-        //adding vehicle owner history
-        $scope.viewAddingVehicleOwnerHistory = function(events){
+        //view vehicle owner history
+        $scope.viewVehicleOwnerHistory = function(events){
             var modalInstance = $modal.open({
                 templateUrl:'views/vehicleOwnerHistoryController.html',
                 controller: 'VehicleOwnerHistoryController',
+                resolve: {
+                    dhis2Event: function () {
+                        return events;
+                    }
+                }
+            });
+
+
+            modalInstance.result.then(function (){
+            });
+        }
+
+        //view vehcile inspection
+        $scope.viewVehicleInspection = function(events){
+            var modalInstance = $modal.open({
+                templateUrl:'views/vehicleInspection.html',
+                controller: 'vehicleInspectionController',
                 resolve: {
                     dhis2Event: function () {
                         return events;

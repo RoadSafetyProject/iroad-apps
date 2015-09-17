@@ -69,5 +69,61 @@ aggregateAccidentFormApp.controller('aggregateAccidentFormController',function($
 //for vehicle inspection
 var aggregateVehicleInspectionApp = angular.module('aggregateVehicleInspectionFormApp',["ui.date"]);
 aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormController',function($scope,$http){
+    //loading necessary files for library
+    dhisConfigs.onLoad = function(){
+        console.log('success loading library');
+    }
+    iroad2.Init(dhisConfigs);
 
+    //data variable
+    $scope.data = {};
+    $scope.ReportData = {};
+
+    $scope.generateVehicleInspection = function(){
+        console.log('data ' + JSON.stringify($scope.data));
+        if(($scope.data.plateNumber)){
+            var vehicleModal = new iroad2.data.Modal('Vehicle',[]);
+            var vehicle = {};
+            vehicleModal.get({value:$scope.data.plateNumber},function(result){
+               if(vehicle  == result[0]){
+                   console.log('data found');
+               }
+                else{
+                   vehicle  = result[0];
+                   $scope.ReportData.Vehicle = vehicle;
+                   var vehicleId = vehicle.id;
+                   var inspectionData = [];
+                   var vehicleInspectionModal = new iroad2.data.Modal('Vehicle Inspection',[]);
+                   vehicleInspectionModal.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result){
+                        if(inspectionData == result){
+                            console.log('data found');
+                        }
+                       else{
+                            //$scope.ReportData.Vehicle
+                            inspectionData = result;
+                            var latestInspection = {};
+                            var currentInspectionData = {}
+                            for(var i =0; i < inspectionData.length; i++){
+                                currentInspectionData = inspectionData[i];
+                                console.log()
+                                if(! latestInspection['Inspection Date']){
+                                    latestInspection = currentInspectionData;
+                                }
+                                if(currentInspectionData['Inspection Date']){
+                                    if(latestInspection['Inspection Date'] < currentInspectionData['Inspection Date']){
+                                        latestInspection = currentInspectionData;
+                                    }
+                                }
+                            }
+                            console.log('latest Inspection : ' + JSON.stringify(latestInspection));
+                        }
+                   });
+               }
+            });
+        }
+        else{
+            alert('Please enter Vehicle Registration Number');
+        }
+
+    }
 });

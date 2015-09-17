@@ -10,6 +10,29 @@ eventCaptureControllers.controller('NotesController',
             $modalInstance.close();
         };
     });
+eventCaptureControllers.controller('', function($scope,$modalInstance,dhis2Event){
+
+    $scope.VehicleEvent = dhis2Event;
+    var vehicleId = dhis2Event.event;
+
+    $scope.vehicleInspections = [];
+    //fetching vehicle inspection history
+    var vehicleInspectionsModel = new iroad2.data.Modal('Vehicle Owner History',[]);
+    vehicleInspectionsModel.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result) {
+        if($scope.vehicleInspections == result){
+            console.log('Data found');
+        }
+        else{
+            $scope.vehicleInspections = result;
+            $scope.$apply();
+        }
+
+    });
+
+    $scope.close = function () {
+        $modalInstance.close();
+    };
+});
 
 eventCaptureControllers.controller('VehicleOwnerHistoryController',
     function($scope,
