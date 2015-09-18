@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/javascripts/angular/angular.js"></script>
+    <script type="text/javascript" src="/demo/dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+
+    <link href="/demo/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css" type="text/css" rel="stylesheet" >
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/demo/dhis-web-commons/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="../api/apps/accident-capture/resources/js/dhis2-library.js"></script>
+    <script src="../api/apps/accident-capture/controllers/aggregateAccidentFormController.js"></script>
+    <script src="../api/apps/offence-capture/libraries/angular/ui-date/date.js"></script>
+
+</head>
+<body ng-app="aggregateVehicleInspectionFormApp" >
+<div ng-controller="aggregateVehicleInspectionFormController">
+    <div class = "container hideInPrint" style="margin-bottom: 2%;">
+        <div class = "row">
+            <div style="padding-bottom: 2%;">
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Vehicle Registration Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.plateNumber" class = "form-control">
+                    </div>
+                </div>
+
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Driver Licence Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.licenceNumber" class = "form-control">
+                    </div>
+                </div>
+
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Vehicle Licence Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.vehicleLicenceNumber" class = "form-control">
+                    </div>
+                </div>
+
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">ER.V Number</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" ng-model = "data.erVNumber" class = "form-control">
+                    </div>
+                </div>
+
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Is trailer attached ?</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="radio" name = "trailer" ng-model = "data.trailer" ng-value="true">Yes&nbsp;&nbsp;
+                        <input type="radio" name = "trailer" ng-model = "data.trailer" ng-value = "false">No
+                    </div>
+                </div>
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Is vehicle prohibited from uses?</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="radio" name = "prohibition" ng-model = "data.prohibition" ng-value="true">Yes&nbsp;&nbsp;
+                        <input type="radio" name = "prohibition" ng-model = "data.prohibition" ng-value="false" checked>No
+                    </div>
+                </div>
+                <div ng-if="data.prohibition">
+                    <div style="padding: 1%;">
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <label style="font-size: 14px;">Prohibition End Date</label>
+                        </div>
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" ui-date ng-model = "data.prohibitionStart" class = "form-control">
+                        </div>
+                    </div>
+
+                    <div style="padding: 1%;">
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <label style="font-size: 14px;">Prohibition Start Date</label>
+                        </div>
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" ui-date ng-model = "data.prohibitionEnd" class = "form-control">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div style="padding-bottom: 2%;">
+            <div class = "col-sm-3 col-md-3 col-lg-3">
+                <button class = "btn btn-default form-control" ng-click="generateVehicleInspection()">Get Report</button>
+            </div>
+        </div>
+    </div>
+    <div class = "container" style="line-height:25px;text-align:justify;font-size:13px;" ng-if = "generatedForm">
+        <div class = "row">
+            <span class = "pull-left">pf 93</span>
+            <span class = "pull-right"></span>
+        </div>
+        <div class = "row" style="font-weight: bold">
+            <h3 align="center">THE UNITED REPUBLIC OF TANZANIA </h3>
+            <h4 align="center">Vehicle Inspection Report D</h4>
+        </div><br>
+        <div class = "row" style = "margin-top: 10px;">
+            <table border = "0" width="100%">
+                <tr>
+                    <td>Date <b>{{ ReportData.InspectionData['Inspection Date'] }} </b> </td>
+                    <td>Vehicle Registration number  <b>{{ ReportData.Vehicle['Vehicle Plate Number/Registration Number'] }} </b></td>
+                </tr>
+                <tr>
+                    <td>Place of Inspection  <b>{{ ReportData.InspectionData['Inspection Place'] }} </b></td>
+                    <td>Vehicle Make  <b>{{ ReportData.Vehicle['Make'] }} </b></td>
+                </tr>
+                <tr>
+                    <td>Vehicle Class <b>{{ ReportData.Vehicle['Vehicle Class'] }} </b> </td>
+                    <td>Vehicle Licence Number <b>{{ data.vehicleLicenceNumber }}</b></td>
+                </tr>
+            </table>
+            <br>
+            <div>
+                Is trailer attached <b><span ng-if="data.trailer">Yes</span> <span ng-if="!data.trailer">No</span></b><br>
+                Owner's Name and  Address <b>{{ ReportData.Owner['Vehicle Owner Name'] }} {{ ReportData.Owner['Postal Address'] }} {{ ReportData.Owner['Phone Number'] }}</b> <br>
+                Driver's Name and Address <b>{{ ReportData.Driver['Full Name'] }} {{ ReportData.Driver['Postal Address'] }} {{ ReportData.Driver['Phone Number'] }} </b><br>
+                ER.V. Number(if applicable) <b><span ng-if = "data.erVNumber" >{{ data.erVNumber }}</span> <span ng-if = "! data.erVNumber" >N/A</span></b><br>
+            </div><br>
+
+            <div style = "border-bottom: 2px solid;border-top:2px solid;min-height: 150px;margin-bottom: 5px;margin-top: 5px;">
+                <table border="0" cellpadding="10">
+                    <tr>
+                        <td>DEFECTS:</td>
+                        <td>
+                            <b>{{ ReportData.InspectionData['Inspection Defects'] }}</b>
+                        </td>
+                    </tr>
+                </table>
+            </div><br>
+            <div>
+                <table border="0" cellpadding="4">
+                    <tr>
+                        <td >Vehicle passed for :- </td>
+                        <td>
+                            Passenger <b>{{ ReportData.InspectionData['Inspection Pass For passenger'] }}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Goods <b>{{ ReportData.InspectionData['Inspection Pass For Goods'] }}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Passenger and Goods <b>{{ ReportData.InspectionData['Inspection Pass For Passenger and Goods'] }}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total Load .........................................................
+                        </td>
+                    </tr>
+                </table>
+            </div><br>
+
+            <div ng-if="data.prohibition">
+                <div style="text-align: center;font-weight: bold">PROHIBITION ON USE</div>
+                <div >
+                    <p>To the Reported Town of Vehicle number <b>{{ ReportData.Vehicle['Vehicle Plate Number/Registration Number'] }} </b>.
+                        To use the vehicle on road  is prohibited under section 83(2) of Road Traffic Act No. 30 of 1973 until above defects have
+                        been remedied on my satisfaction. This prohibition is effective from <b>{{ data.prohibitionStart | date:'d MMMM yyyy' }}</b> am /from to on mid-day of
+                        <b>{{ data.prohibitionEnd | date:'d MMMM yyyy' }}</b>
+                    </p>
+                </div>
+            </div>
+            <br>
+            <div class="pull-right">
+                <p align="center">
+
+                    ..............................................<br>
+                    <i><b >Full Name</b></i><br>
+                    ..............................................<br>
+                    <i><b >Inspector of Vehicles</b></i>
+
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    window.dhis2 = window.dhis2 || {};
+    dhis2.settings = dhis2.settings || {};
+    dhis2.settings.baseUrl = 'demo';
+</script>
+<script>
+    var dhisConfigs = {
+        baseUrl:"../",
+        refferencePrefix:"Program_"
+    };
+</script>
+</body>
+</html>

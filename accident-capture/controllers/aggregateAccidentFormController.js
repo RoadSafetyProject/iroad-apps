@@ -10,7 +10,7 @@ aggregateAccidentFormApp.controller('aggregateAccidentFormController',function($
     $scope.accidentRegNumber = "";
     //loading necessary files for library
     dhisConfigs.onLoad = function(){
-       console.log('success loading library');
+        console.log('success loading library');
     }
     iroad2.Init(dhisConfigs);
 
@@ -26,7 +26,7 @@ aggregateAccidentFormApp.controller('aggregateAccidentFormController',function($
             var accidentModal = new iroad2.data.Modal('Accident',[]);
             $scope.acccident = null;
             accidentModal.get(new iroad2.data.SearchCriteria('Accident Registration Number',"=",regNumber),function(result){
-               console.log('Loading accident');
+                console.log('Loading accident');
                 //checking if result have been found
                 if(result.length > 0){
                     if($scope.acccident == result[0]){
@@ -63,4 +63,120 @@ aggregateAccidentFormApp.controller('aggregateAccidentFormController',function($
 
     }
 
+});
+
+
+//for vehicle inspection
+var aggregateVehicleInspectionApp = angular.module('aggregateVehicleInspectionFormApp',["ui.date"]);
+aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormController',function($scope,$http){
+    //loading necessary files for library
+    dhisConfigs.onLoad = function(){
+        console.log('success loading library');
+    }
+    iroad2.Init(dhisConfigs);
+
+    //data variable
+    $scope.data = {};
+    $scope.ReportData = {};
+    $scope.generatedForm = false;
+
+    $scope.generateVehicleInspection = function(){
+        //turn visibility of form
+        $scope.generatedForm = true;
+        //console.log('data ' + JSON.stringify($scope.data));
+
+        //fetching driver data
+        if($scope.data.licenceNumber){
+            var driverModal =  new iroad2.data.Modal('Driver',[]);
+            var driver = {};
+            driverModal.get({value:$scope.data.licenceNumber},function(result){
+                if(driver == result[0]){
+                    console.log('Driver found');
+                }
+                else{
+                    driver = result[0];
+                    $scope.ReportData.Driver = driver;
+                    $scope.$apply();
+                    //console.log('Driver : ' + JSON.stringify(driver));
+                }
+            });
+        }
+
+        //fetch vehicle, owner and inspection data
+        if(($scope.data.plateNumber)){
+            var vehicleModal = new iroad2.data.Modal('Vehicle',[]);
+            var vehicle = {};
+            vehicleModal.get({value:$scope.data.plateNumber},function(result){
+               if(vehicle  == result[0]){
+                   console.log('Vehicle found');
+               }
+                else{
+                   vehicle  = result[0];
+                   $scope.ReportData.Vehicle = vehicle;
+                   $scope.$apply();
+                   var vehicleId = vehicle.id;
+                   var inspectionData = [];
+                   var vehicleInspectionModal = new iroad2.data.Modal('Vehicle Inspection',[]);
+                   vehicleInspectionModal.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result){
+                        if(inspectionData == result){
+                            console.log('Inspection data found');
+                        }
+                       else{
+                            inspectionData = result;
+                            var latestInspection = {};
+                            var currentInspectionData = {}
+                            for(var i =0; i < inspectionData.length; i++){
+                                currentInspectionData = inspectionData[i];
+                                if(! latestInspection['Inspection Date']){
+                                    latestInspection = currentInspectionData;
+                                }
+                                if(currentInspectionData['Inspection Date']){
+                                    if(latestInspection['Inspection Date'] < currentInspectionData['Inspection Date']){
+                                        latestInspection = currentInspectionData;
+                                    }
+                                }
+                            }
+                            //console.log('latest Inspection : ' + JSON.stringify(latestInspection));
+                            $scope.ReportData.InspectionData = latestInspection;
+                            $scope.$apply();
+                        }
+                   });
+
+                   //latest owner of vehicle
+                   var vehicleOwners = [];
+                   var vehicleOwnerHistoryModel = new iroad2.data.Modal('Vehicle Owner History',[]);
+                   vehicleOwnerHistoryModel.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result) {
+                       if(vehicleOwners == result){
+                           console.log('Owner list found');
+                       }
+                       else{
+                           vehicleOwners = result;
+                           var latestOwner = {};
+                           var currentOwner = {};
+                           for(var i = 0; i < vehicleOwners.length; i ++){
+                               currentOwner = vehicleOwners[i];
+                               if(! latestOwner['Ownership End Date']){
+                                   latestOwner = currentOwner;
+                               }
+                               //checking for latest owner of the given
+                               if(currentOwner['Ownership End Date']){
+                                   if(latestOwner['Ownership End Date'] < currentOwner['Ownership End Date']){
+                                       latestOwner = currentOwner;
+                                   }
+                               }
+                           }
+                           //console.log('Latest owner : ' + JSON.stringify(latestOwner));
+                           $scope.ReportData.Owner = latestOwner;
+                           $scope.$apply();
+                       }
+
+                   });
+               }
+            });
+        }
+        else{
+            alert('Please enter Vehicle Registration Number');
+        }
+
+    }
 });
