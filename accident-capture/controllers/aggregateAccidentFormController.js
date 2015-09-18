@@ -78,15 +78,37 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
     //data variable
     $scope.data = {};
     $scope.ReportData = {};
+    $scope.generatedForm = false;
 
     $scope.generateVehicleInspection = function(){
-        console.log('data ' + JSON.stringify($scope.data));
+        //turn visibility of form
+        $scope.generatedForm = true;
+        //console.log('data ' + JSON.stringify($scope.data));
+
+        //fetching driver data
+        if($scope.data.licenceNumber){
+            var driverModal =  new iroad2.data.Modal('Driver',[]);
+            var driver = {};
+            driverModal.get({value:$scope.data.licenceNumber},function(result){
+                if(driver == result[0]){
+                    console.log('Driver found');
+                }
+                else{
+                    driver = result[0];
+                    $scope.ReportData.Driver = driver;
+                    $scope.$apply();
+                    //console.log('Driver : ' + JSON.stringify(driver));
+                }
+            });
+        }
+
+        //fetch vehicle, owner and inspection data
         if(($scope.data.plateNumber)){
             var vehicleModal = new iroad2.data.Modal('Vehicle',[]);
             var vehicle = {};
             vehicleModal.get({value:$scope.data.plateNumber},function(result){
                if(vehicle  == result[0]){
-                   console.log('data found');
+                   console.log('Vehicle found');
                }
                 else{
                    vehicle  = result[0];
@@ -97,7 +119,7 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
                    var vehicleInspectionModal = new iroad2.data.Modal('Vehicle Inspection',[]);
                    vehicleInspectionModal.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result){
                         if(inspectionData == result){
-                            console.log('data found');
+                            console.log('Inspection data found');
                         }
                        else{
                             inspectionData = result;
@@ -114,7 +136,7 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
                                     }
                                 }
                             }
-                            console.log('latest Inspection : ' + JSON.stringify(latestInspection));
+                            //console.log('latest Inspection : ' + JSON.stringify(latestInspection));
                             $scope.ReportData.InspectionData = latestInspection;
                             $scope.$apply();
                         }
@@ -125,7 +147,7 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
                    var vehicleOwnerHistoryModel = new iroad2.data.Modal('Vehicle Owner History',[]);
                    vehicleOwnerHistoryModel.get(new iroad2.data.SearchCriteria('Program_Vehicle',"=",vehicleId),function(result) {
                        if(vehicleOwners == result){
-                           console.log('Data found');
+                           console.log('Owner list found');
                        }
                        else{
                            vehicleOwners = result;
@@ -143,7 +165,7 @@ aggregateVehicleInspectionApp.controller('aggregateVehicleInspectionFormControll
                                    }
                                }
                            }
-                           console.log('Latest owner : ' + JSON.stringify(latestOwner));
+                           //console.log('Latest owner : ' + JSON.stringify(latestOwner));
                            $scope.ReportData.Owner = latestOwner;
                            $scope.$apply();
                        }

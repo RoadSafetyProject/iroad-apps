@@ -56,6 +56,44 @@
                     </div>
                 </div>
 
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Is trailer attached ?</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="radio" name = "trailer" ng-model = "data.trailer" ng-value="true">Yes&nbsp;&nbsp;
+                        <input type="radio" name = "trailer" ng-model = "data.trailer" ng-value = "false">No
+                    </div>
+                </div>
+                <div style="padding: 1%;">
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <label style="font-size: 14px;">Is vehicle prohibited from uses?</label>
+                    </div>
+                    <div class = "col-sm-3 col-md-3 col-lg-3">
+                        <input type="radio" name = "prohibition" ng-model = "data.prohibition" ng-value="true">Yes&nbsp;&nbsp;
+                        <input type="radio" name = "prohibition" ng-model = "data.prohibition" ng-value="false" checked>No
+                    </div>
+                </div>
+                <div ng-if="data.prohibition">
+                    <div style="padding: 1%;">
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <label style="font-size: 14px;">Prohibition End Date</label>
+                        </div>
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" ui-date ng-model = "data.prohibitionStart" class = "form-control">
+                        </div>
+                    </div>
+
+                    <div style="padding: 1%;">
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <label style="font-size: 14px;">Prohibition Start Date</label>
+                        </div>
+                        <div class = "col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" ui-date ng-model = "data.prohibitionEnd" class = "form-control">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div style="padding-bottom: 2%;">
@@ -64,7 +102,7 @@
             </div>
         </div>
     </div>
-    <div class = "container" style="line-height:25px;text-align:justify;padding-left:2%;padding-top:4%;font-size:14px;">
+    <div class = "container" style="line-height:25px;text-align:justify;font-size:13px;" ng-if = "generatedForm">
         <div class = "row">
             <span class = "pull-left">pf 93</span>
             <span class = "pull-right"></span>
@@ -72,7 +110,7 @@
         <div class = "row" style="font-weight: bold">
             <h3 align="center">THE UNITED REPUBLIC OF TANZANIA </h3>
             <h4 align="center">Vehicle Inspection Report D</h4>
-        </div>
+        </div><br>
         <div class = "row" style = "margin-top: 10px;">
             <table border = "0" width="100%">
                 <tr>
@@ -90,13 +128,13 @@
             </table>
             <br>
             <div>
-                If trailer attached .......................................<br>
+                Is trailer attached <b><span ng-if="data.trailer">Yes</span> <span ng-if="!data.trailer">No</span></b><br>
                 Owner's Name and  Address <b>{{ ReportData.Owner['Vehicle Owner Name'] }} {{ ReportData.Owner['Postal Address'] }} {{ ReportData.Owner['Phone Number'] }}</b> <br>
-                Driver's Name and Address .......................................<br>
+                Driver's Name and Address <b>{{ ReportData.Driver['Full Name'] }} {{ ReportData.Driver['Postal Address'] }} {{ ReportData.Driver['Phone Number'] }} </b><br>
                 ER.V. Number(if applicable) <b><span ng-if = "data.erVNumber" >{{ data.erVNumber }}</span> <span ng-if = "! data.erVNumber" >N/A</span></b><br>
-            </div>
+            </div><br>
 
-            <div style = "border-bottom: 2px solid;border-top:2px solid;">
+            <div style = "border-bottom: 2px solid;border-top:2px solid;min-height: 150px;margin-bottom: 5px;margin-top: 5px;">
                 <table border="0" cellpadding="10">
                     <tr>
                         <td>DEFECTS:</td>
@@ -105,9 +143,9 @@
                         </td>
                     </tr>
                 </table>
-            </div>
+            </div><br>
             <div>
-                <table border="0">
+                <table border="0" cellpadding="4">
                     <tr>
                         <td >Vehicle passed for :- </td>
                         <td>
@@ -132,6 +170,28 @@
                         </td>
                     </tr>
                 </table>
+            </div><br>
+
+            <div ng-if="data.prohibition">
+                <div style="text-align: center;font-weight: bold">PROHIBITION ON USE</div>
+                <div >
+                    <p>To the Reported Town of Vehicle number <b>{{ ReportData.Vehicle['Vehicle Plate Number/Registration Number'] }} </b>.
+                        To use the vehicle on road  is prohibited under section 83(2) of Road Traffic Act No. 30 of 1973 until above defects have
+                        been remedied on my satisfaction. This prohibition is effective from <b>{{ data.prohibitionStart | date:'d MMMM yyyy' }}</b> am /from to on mid-day of
+                        <b>{{ data.prohibitionEnd | date:'d MMMM yyyy' }}</b>
+                    </p>
+                </div>
+            </div>
+            <br>
+            <div class="pull-right">
+                <p align="center">
+
+                    ..............................................<br>
+                    <i><b >Full Name</b></i><br>
+                    ..............................................<br>
+                    <i><b >Inspector of Vehicles</b></i>
+
+                </p>
             </div>
         </div>
 
