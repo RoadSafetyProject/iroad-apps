@@ -86,7 +86,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
             $scope.progresMessagess = "";
             $scope.progresMessage = false;
         }
-        $scope.pageSize = 50;
+        $scope.pageSize = 10;
         $scope.pager = {};
         $scope.pageChanged = function(page) {
         	$scope.fetchVehicles(page);
@@ -162,7 +162,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
 
                 program.dataValues = {};
                 program.dataValues.events = [];
-                $http.get('../../../api/events.json?program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
+                $http.get('../../../api/events.json?totalPages=true&program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
                 	$scope.pager = data.pager;
                     if($scope.data.programs['Vehicle'].id == program.id){
                         $scope.hideProgresMessage();

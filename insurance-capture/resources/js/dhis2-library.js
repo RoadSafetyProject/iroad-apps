@@ -226,11 +226,11 @@ iroad2.data.Modal = function (modalName,relations) {
 		//Get program by name
 		var program = self.getProgramByName(self.modalName);
 		
-		var url = "api/events?program="+program.id;
+		var url = "api/events?totalPages=true&program="+program.id;
 		
 		if(arguments.length > 1){
 			
-			url = "api/events?programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
+			url = "api/events?totalPages=true&programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
 		}
 		// Stores the rows of an entity
 		this.events = [];

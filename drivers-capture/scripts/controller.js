@@ -157,7 +157,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
 
 
         });
-        $scope.pageSize = 100;
+        $scope.pageSize = 10;
         $scope.pager = {};
         $scope.pageChanged = function(page) {
         	$scope.fetchDrivers(page);
@@ -175,7 +175,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                 }
                 program.dataValues = {};
                 program.dataValues.events = [];
-                $http.get('../../../api/events.json?program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
+                $http.get('../../../api/events.json?totalPages=true&program='+program.id+"&pageSize=" + $scope.pageSize +"&page=" + page).success(function(data){
                 	$scope.pager = data.pager;
                         $scope.hideProgresMessage();
                     if(data.events){
