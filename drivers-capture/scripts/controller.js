@@ -124,12 +124,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         $scope.getImage = function(data){
         	if(data.value){
         		if(data.value != ""){
-        			return "../../../api/documents/"+data.value+"/data";
+        			$scope.photoData = "../../../api/documents/"+data.value+"/data";
         		}else{
-        			return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+        			$scope.photoData = "../../../api/documents/"+$scope.defaultPhotoID+"/data";
         		}
         	}else{
-        		return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+        		$scope.photoData = "../../../api/documents/"+$scope.defaultPhotoID+"/data";
         	}
         }
 
@@ -676,7 +676,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
 //                if(prog.id == )
 
             });
+            
             $scope.editingEvent = events;
+            
+            $scope.getImage(events.dataValues["Driver Photo"]);
         }
 
         $scope.enableAdding  = function(){

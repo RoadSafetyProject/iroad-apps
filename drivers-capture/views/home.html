@@ -80,7 +80,8 @@
                                 <label>{{ datas.name }} :</label><br>
                                 <div ng-if="datas.name == 'Driver Photo'">
                                 	<!-- <img class="img-thumbnail" ng-src="getImage(datas.value)" alt="Driver Photo"/> -->
-                                	<img class="img-thumbnail passport-size" ng-src="{{getImage(datas)}}" alt="Driver Photo"/>
+                                	
+                                	<img class="img-thumbnail passport-size" ng-src="{{photoData}}" alt="Driver Photo"/>
                                 	<input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  type="file" file-model="data.editDriverPhoto"/>
                                 	Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot(data.editDriverPhoto)">Take A Snapshot</button>
                                 </div>
