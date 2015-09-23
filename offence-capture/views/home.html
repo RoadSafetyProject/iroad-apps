@@ -135,7 +135,7 @@
 </div>
 	<div ng-if="panel.driver" class="mws-panel grid_2 rightPanel">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Driver Involved in Offence</span>
+                <span>Driver Involved in Offence <a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
             </div>
 
             <div class="mws-panel-body no-padding">
@@ -158,7 +158,7 @@
         </div>
         <div ng-if="panel.vehicle" class="mws-panel grid_2 rightPanel">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Vehicle Involved in Offence </span>
+                <span>Vehicle Involved in Offence <a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
             </div>
 
             <div class="mws-panel-body no-padding">
@@ -181,7 +181,7 @@
         </div>
         <div class="mws-panel grid_2 rightPanel" ng-if="panel.payment">
             <div class="mws-panel-header"  style="height: 48px !important;">
-                <span>Offence Payment </span>
+                <span>Offence Payment <a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
             </div>
 
             <div class="mws-panel-body no-padding">
