@@ -32,6 +32,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 			          }else{
 			        	  $scope.isSelectedFacility = false;
 			          }
+			          console.log(node);
 			      }
 			  };
     	$("#facilityModal").draggable();
@@ -57,6 +58,15 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 				$scope.organisationUnitsLoading = false;
 		}).error(function(error) {
 			console.log(error);
+			
+		});
+		$scope.orgUnitSearch = "";
+		$scope.$watch("orgUnitSearch",function(oldValue,newValue){
+			alert(newValue);
+			console.log($scope.tree.modal);
+			angular.forEach($scope.tree.modal,function(modal){
+				console.log(modal);
+			});
 		});
 		$http.get("../../../api/organisationUnitGroupSets.json?fields=:all")
 		.success(function(result) {
