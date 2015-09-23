@@ -11,7 +11,7 @@ eventCaptureControllers.controller('MainController',
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
     	$scope.pageSize = 10;
     	$scope.pageChanged = function(page) {
-    	                	$scope.fetchAccidents($scope.pageSize,page);
+    	                	$scope.fetchAccidents(page);
     	                };
     	//$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
     	$scope.feedBack = false;

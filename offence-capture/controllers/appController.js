@@ -11,7 +11,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
     	$scope.pageSize = 10;
     	$scope.pageChanged = function(page) {
-    	                	$scope.fetchOffences($scope.pageSize,page);
+    	                	$scope.fetchOffences(page);
     	                };
     	$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
     	$scope.feedBack = false;
@@ -51,6 +51,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         $scope.data = {};
         
         $scope.fetchOffences = function(page){
+        	
         	$scope.showProgresMessage("Loading Offences...");
         	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         	$scope.offenceEventModal.getAll(function(result){

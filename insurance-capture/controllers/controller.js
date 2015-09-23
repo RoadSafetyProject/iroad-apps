@@ -21,7 +21,7 @@ eventCaptureControllers.controller('MainController',
         $scope.pager = {};
         $scope.pageSize = 10;
     	$scope.pageChanged = function(page) {
-    	                	$scope.fetchCompanies($scope.pageSize,page);
+    	                	$scope.fetchCompanies(page);
     	                };
     	$scope.fetchCompanies = function(pageSize,page){
     		insuranceCompanyModal.getAll(function(result){
