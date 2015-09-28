@@ -304,8 +304,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         				    array.push(blobBin.charCodeAt(i));
         				}
         				
-        				photo = new File(new Uint8Array(array), $scope.generateUniqueFileName("jpeg"), {type: 'image/jpeg' });
-        				
+        				$scope.data[photo] = new File(new Uint8Array(array), $scope.generateUniqueFileName("jpeg"), {type: 'image/jpeg' });
+        				console.log(JSON.stringify($scope.data[photo]));
         			}
         	}
         	$scope.generateUniqueFileName = function(ext){
