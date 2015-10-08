@@ -85,7 +85,7 @@
 <button type="button" class="button btn btn-primary btn-md" data-toggle="modal" data-target="#facilityModal">View Facilities</button>
 <button type="button" class="button button2 btn btn-primary btn-md" data-toggle="modal" data-target="#reportModal">View Community Reports</button>
 
-<div class="modal fade" id="facilityModal" role="dialog">
+<div ng-show="!isAddingFacility" class="modal fade" id="facilityModal" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -97,13 +97,13 @@
 	        
 			<div class="col-sm-12" style="" >
 				Organisation Unit:
-				<div ng-if="!organisationUnitsLoading" class="form-group">
+				<!-- <div ng-if="!organisationUnitsLoading" class="form-group" style="position: relative;">
 					<br />
-	            	<input ng-focus="" ng-model="orgUnitSearch" class="form-control col-sm-12" placeholder="Search Organisation Unit"/>
+	            	<input ng-focus="" ng-keypress="searchOrgUnits()" ng-model="orgUnitSearch" class="form-control col-sm-12" placeholder="Search Organisation Unit"/>
 	            	<div class="col-sm-12 searchSuggestions">
 	            		<div ng-repeat="orgUnit in searchedOrgUnits">{orgUnit.name}</div>
 	            	</div>
-	            </div>
+	            </div> -->
 	            <br />
 				  <div ng-if="!organisationUnitsLoading" class="org-unit-control col-sm-12" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
 					  <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
@@ -151,7 +151,7 @@
                 </tr>
                 </tbody>
         </table>
-			<button ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
+			<button ng-click="showAddFacilityMarker()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
 			</div>
       </div>
       <div class="modal-footer">
@@ -290,7 +290,7 @@
 <ui-gmap-google-map control='mapObject' center='map.center' zoom='map.zoom'>
 	
 	
-    <ui-gmap-marker ng-if="isAddingFacility" options="newFacility.options" coords="newFacility.coordinates" idkey="newFacility.id">
+    <ui-gmap-marker ng-show="isAddingFacility" options="newFacility.options" coords="newFacility.coordinates" idkey="newFacility.id">
     </ui-gmap-marker>
     <ui-gmap-marker ng-if="isSelectedFacility" coords="selectedFacility.coordinates" idkey="selectedFacility.id">
     </ui-gmap-marker>

@@ -13,6 +13,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
     	{
     	    return (organisationUnit.organisationUnitGroups.length > 0);
     	};
+    	String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
     	$scope.options = {
 			      onSelect: function($event, node, context) {
 			          context.selectedNodes = [node];
@@ -61,13 +62,24 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 			
 		});
 		$scope.orgUnitSearch = "";
-		$scope.$watch("orgUnitSearch",function(oldValue,newValue){
-			alert(newValue);
+		$scope.searchOrgUnits = function(){
 			console.log($scope.tree.modal);
 			angular.forEach($scope.tree.modal,function(modal){
 				console.log(modal);
 			});
-		});
+			$scope.searchedOrgUnits = $scope.getOrganisationContaining($scope.orgUnitSearch,$scope.tree.modal);
+		};
+		$scope.getOrganisationContaining = function(searchString,orgUnit){
+			console.log("Orgunit:" + JSON.stringify(orgUnit));
+			var names = []
+			if(orgUnit.name.indexOf(searchString) != -1){
+				names.push(orgUnit.name);
+			}
+			angular.forEach(orgUnit.children,function(child){
+				names.push($scope.getOrganisationContaining(searchString,child));
+			});
+			return names;
+		}
 		$http.get("../../../api/organisationUnitGroupSets.json?fields=:all")
 		.success(function(result) {
 			$scope.organisationUnitGroupSets = result.organisationUnitGroupSets;
@@ -142,6 +154,12 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 			  console.log("Error Saving Org:" + JSON.stringify(data));
 		  });
 		$scope.organisationUnitGroups = [];
+		$scope.showAddFacilityMarker = function(){
+			$scope.isAddingFacility = true;
+		}
+		$scope.hideAddFacilityMarker = function(){
+			$scope.isAddingFacility = false;
+		}
 		$scope.addFacility = function(){
 			if($scope.isAddingFacility){
 				if($scope.tree.context.selectedNodes.length > 0){
