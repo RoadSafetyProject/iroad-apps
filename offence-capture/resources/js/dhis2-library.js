@@ -55,7 +55,7 @@ iroad2 = {
 iroad2.Init = function(config){
 	iroad2.config = config;
 	//Fetch dataElements from the dhis server
-	http.get(iroad2.config.baseUrl + "api/dataElements?paging=false&fields=id,name,description,type,code,optionSet[id,name,code,options[id,name]]", function(results) {
+	http.get(iroad2.config.baseUrl + "api/dataElements?paging=false&fields=id,name,description,type,code,http://localhost:8080/demo/api/dataElements.json?paging=false&fields=id,name,description,type,code,attributeValues,optionSet[id,name,code,options[id,name]],optionSet[id,name,code,options[id,name]]", function(results) {
 		//Set the dhis data elements
 		iroad2.data.dataElements = results.dataElements;
 		//Fetch programs from the dhis server

@@ -1,0 +1,39 @@
+<style>
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+</style>
+<label>{{ngDataElementName}}</label>
+<div class="input-group">
+	<input type="text" class="form-control" ng-model="ngModel" aria-label="Heyloow">
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span ng-if='response.status == "LOADING"' class="glyphicon glyphicon-refresh spinning"></span> 
+			<span ng-if='response.status != "LOADING"'>Actions<span class="caret"></span></span>
+		</button>
+		<ul class="dropdown-menu dropdown-menu-right">
+			<li ng-repeat="func in functions.actions" ng-click="envoke(func.functionName)"><a>{{func.name}}</a></li>
+		</ul>
+	</div>
+	<!-- /btn-group -->
+</div>
+<div ng-if='response.status == "ERROR"' class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+ 	{{response.message}}
+</div>
+<div ng-if='response.status == "SUCCESS"' class="alert alert-success" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+ 	{{response.message}}
+</div>

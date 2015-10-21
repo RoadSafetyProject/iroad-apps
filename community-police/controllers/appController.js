@@ -177,8 +177,9 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ['uiGmap
 					$http.post('../../../api/organisationUnits.json',saveData ).
 					  success(function(data, status, headers, config) {
 					    console.log("Saving Org:" + JSON.stringify(data));
-						  if(data.status == "SUCCESS" && data.importCount.imported == 1){
+						  if(data.status == "OK" && data.response.importCount.imported == 1){
 							  alert("Facility saved successfully.");
+							  tree.context.selectedNodes[0].$model.children
 							  $scope.isAddingFacility = false;
 							  angular.forEach($scope.organisationUnitGroups,function(organisationUnitGroup){
 								  $http.post('../../../api/organisationUnitGroups/'+organisationUnitGroup+'/organisationUnits/'+data.lastImported+'.json',saveData ).
