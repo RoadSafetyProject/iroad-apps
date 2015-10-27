@@ -657,11 +657,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         $scope.vehicleRevoked = false;
         $scope.enableEdit  = function(events){
         	console.log(JSON.stringify(events));
-        	if(events.dataValues["Driver License Status"].value != undefined){
+
+        	/*if(events.dataValues["Driver License Status"].value != undefined){
         		$scope.vehicleRevoked = events.dataValues["Driver License Status"].value == "Revoked";
         	}else{
         		$scope.vehicleRevoked = false;
-        	}
+        	}*/
+
             $scope.data.color = []
             $scope.data.color[events.event] = "rgba(69, 249, 50, 0.26)";
             $scope.normalStyle= { "z-index": '10'};

@@ -118,7 +118,7 @@ eventCaptureControllers.controller('MainController',
                 }
             });
 			$scope.formAccident = eventAccident;
-			//console.log('accident model ' + JSON.stringify(eventAccident));
+			console.log('accident model ' + JSON.stringify(eventAccident));
 
 
 			//load accident vehicle data form

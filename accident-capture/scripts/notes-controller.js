@@ -496,6 +496,8 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		$scope.numberOfWitness = $scope.otherDataForm['numberOfAccidentWitness'];
 		$scope.accidentAttendant = $scope.otherDataForm['accidentAttendant'];
 
+		console.log('acccident form data : ' + JSON.stringify($scope.newAccidentForm));
+
 		//$scope.accidentBasicInfoVisibility = !$scope.accidentBasicInfoVisibility;
 
 		for (var i=0; i < $scope.numberOfVehicles; i++ ){
