@@ -1,4 +1,4 @@
-angular.module('eventCapture').directive('elementInput', function () {
+angular.module('eventCapture').directive('elementInput', function ($modal) {
 	
 	var controller = ['$scope',function ($scope) {
         function init() {
@@ -20,8 +20,8 @@ angular.module('eventCapture').directive('elementInput', function () {
         $scope.dataElement.attributeValues[0]
         $scope.functions = {
         	checkIfDriverExists:function(input,response){
-        		offenceEventModal = new iroad2.data.Modal("Driver",[]);
-        		offenceEventModal.get(new iroad2.data.SearchCriteria("Driver License Number","=",input),function(result){
+        		driverEventModal = new iroad2.data.Modal("Driver",[]);
+        		driverEventModal.get(new iroad2.data.SearchCriteria("Driver License Number","=",input),function(result){
         			if(result.length > 0){
         				response.status = "SUCCESS";
         				response.message = "The license number is valid";
@@ -35,7 +35,44 @@ angular.module('eventCapture').directive('elementInput', function () {
         			console.log(JSON.stringify(result));
         		})
         	},
-        	actions:[{name:"Driver Exists",functionName:"checkIfDriverExists"},{name:"View Driver Details",functionName:"showDriver"}],
+        	showDriverInfo:function(input){
+                // alert(events.dataValues['Gender'].value);
+        		driverEventModal = new iroad2.data.Modal("Driver",[]);
+        		driverEventModal.get(new iroad2.data.SearchCriteria("Driver License Number","=",input),function(result){
+        			if(result.length > 0){
+        				var driver = driverEventModal.convertToEvent("Driver",result[0],{});
+        				var modalInstance = $modal.open({
+                            templateUrl: '../drivers-capture/views/showDriverInfo.html',
+                            controller: 'ShowDriverInfoController',
+
+                            resolve: {
+                                
+                                events: function () {
+                                    return driver;
+                                },
+                                defaultPhotoID: function () {
+                                    return $scope.defaultPhotoID;
+                                }
+                            }
+                                            
+                        });
+
+                        modalInstance.result.then(function (){
+                        });
+        				response.status = "SUCCESS";
+        				response.message = "The license number is valid";
+        			}else{
+        				console.log($scope.response);
+        				response.status = "ERROR";
+        				response.message = "The license number does not exist";
+        				
+        			}
+        			$scope.$apply();
+        			console.log(JSON.stringify(result));
+        		})
+                 
+             },
+        	actions:[{name:"Driver Exists",functionName:"checkIfDriverExists"},{name:"View Driver Details",functionName:"showDriverInfo"}],
         	events:{}
         }
         $scope.envoke = function(functionName){

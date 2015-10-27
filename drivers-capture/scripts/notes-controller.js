@@ -19,13 +19,18 @@ eventCaptureControllers.controller('ShowDriverInfoController',
 	$scope.getImage = function(data){
 		var photo = data.dataValues["Driver Photo"];
 		//console.log(JSON.stringify(data));
-    	if(photo.value){
-    		if(photo.value != ""){
-    			return "../../../api/documents/"+photo.value+"/data";
-    		}else{
-    			return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
-    		}
-    	}else{
+		if(photo)
+		{
+			if(photo.value){
+	    		if(photo.value != ""){
+	    			return "../../../api/documents/"+photo.value+"/data";
+	    		}else{
+	    			return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+	    		}
+	    	}else{
+	    		return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
+	    	}
+		}else{
     		return "../../../api/documents/"+$scope.defaultPhotoID+"/data";
     	}
     }
