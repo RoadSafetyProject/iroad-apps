@@ -262,14 +262,17 @@
             </tr> -->
             <tr>
             	<td>
-            		<element-input ng-data-element-name="'Driver License Number'" ng-model="editingEvent['Driver License Number']"></element-input>
+            		<element-input ng-if="editOffenceTitle == 'Add New Offence'" crud-operation="'update'" ng-data-element-name="'Driver License Number'" ng-model="editingEvent['Driver License Number']"></element-input>
+            		<element-input ng-if="editOffenceTitle == 'Edit Offence'" crud-operation="'update'" ng-data-element-name="'Driver License Number'" ng-model="editingEvent['Driver License Number']"></element-input>
             		<!-- <label>Driver License Number</label><br />
                     <input data-toggle="tooltip"  title="{{ setDescription('Driver License Number') }}"  ng-model="editingEvent['Driver License Number']" class="form-control" /> -->
                 </td>
             </tr>
             <tr>
             	<td>
-            		<label>Vehicle Registration/Plate Number</label><br />
+            	<element-input ng-if="editOffenceTitle == 'Add New Offence'" crud-operation="'update'" ng-data-element-name="'Vehicle Plate Number/Registration Number'" ng-model="editingEvent['Vehicle Plate Number/Registration Number']"></element-input>
+            		<element-input ng-if="editOffenceTitle == 'Edit Offence'" crud-operation="'update'" ng-data-element-name="'Vehicle Plate Number/Registration Number'" ng-model="editingEvent['Vehicle Plate Number/Registration Number]"></element-input>
+            		<label>Vehicle Plate Number/Registration Number</label><br />
             		<input data-toggle="tooltip"  title="{{ setDescription('Vehicle Plate Number/Registration Number') }}" ng-model="editingEvent['Vehicle Plate Number/Registration Number']" class="form-control" />
             	</td>
             </tr>
