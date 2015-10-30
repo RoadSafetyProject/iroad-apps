@@ -52,7 +52,7 @@
 				<!-- road info -->
 				<div class = "row" style = "margin-bottom: 2%;">
 					<div  ng-repeat="(key,value) in newAccidentForm ">
-						<div  class = "col-sm-4" ng-if="key == 'Weather' ||key == 'Intersection Mark' || key == 'Area of Accident' || key == 'Time of Accident'|| key == 'Road Mark'|| key == 'Road Name'||key == 'Road Number'|| key == 'Intersection Name'||key == 'Intersection Number'">
+						<div  class = "col-sm-4" ng-if="key == 'Weather' ||key == 'Intersection Mark'  || key == 'Time of Accident'|| key == 'Road Mark'|| key == 'Road Name'||key == 'Road Number'|| key == 'Intersection Name'||key == 'Intersection Number'">
 							<label style="font-size: 0.8em">{{ key}} </label><br />
 							<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
 							<input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
@@ -62,6 +62,7 @@
 							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentForm[key]" />
 							<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"   ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
 						</div>
+						<location-element class = "col-sm-4"  ng-if="key == 'Area of Accident'" data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-model="newAccidentForm[key]" ng-coordinate="editingEvent['coordinate']"></location-element>
 					</div>
 				</div>
 

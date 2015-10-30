@@ -12,7 +12,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
         $scope.response = {status:"",message:"Does Not Exist"};
         angular.forEach($scope.dataElement.attributeValues,function(attributeValue){
         	if(attributeValue.attribute.name == "Function"){
-        		//$scope.functions = eval("(" + attributeValue.value+ ')');
+        		$scope.functions = eval("(" + attributeValue.value+ ')');
         	}
         })
         //Code for drivers license
@@ -174,7 +174,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
         	actions:[{name:"Driver Exists",functionName:"checkIfDriverExists"},{name:"View Driver Details",functionName:"showDriverInfo"},{name:"View Driver Accidents",functionName:"showDriverAccidents"},{name:"View Driver Accidents",functionName:"showDriverOffences"}],
         	events:{onBlur:"checkIfDriverExists"}
         }*/
-        if($scope.functions == null){
+        /*if($scope.functions == null){
         	//Code for Vehicle registration
         	$scope.functions = {
                 	init:function(){
@@ -322,6 +322,40 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
                 		})
                      },
                 	actions:[{name:"Vehicle Exists",functionName:"checkIfVehicleExists"},{name:"View Vehicle Details",functionName:"showVehicleInfo"},{name:"View Vehicle Accidents",functionName:"showVehicleAccidents"},{name:"View Vehicle Accidents",functionName:"showVehicleOffences"}],
+                	events:{onBlur:"checkIfVehicleExists"}
+                }
+        }*/
+        if($scope.functions == null){
+        	//Code for Vehicle registration
+        	$scope.functions = {
+                	init:function(){
+                		
+                	},
+                	checkIfPaymentExists:function(input,response){
+                		response.status = "LOADING";
+                		var vehicleEventModal = new iroad2.data.Modal("Vehicle",[]);
+                		vehicleEventModal.get(new iroad2.data.SearchCriteria("Vehicle Plate Number/Registration Number","=",input),function(result){
+                			if(result.length > 0){
+                				if($scope.crudOperation == 'create'){
+                					response.status = "ERROR";
+                    				response.message = "The Reciept Number is not valid.";
+                				}else if($scope.crudOperation == 'update'){
+                					response.status = "SUCCESS";
+                    				response.message = "The Recipt Number is valid.";
+                				}
+                			}else{
+                				if($scope.crudOperation == 'create'){
+                					response.status = "SUCCESS";
+                    				response.message = "The Reciept Number can be used.";
+                				}else if($scope.crudOperation == 'update'){
+                					response.status = "ERROR";
+                    				response.message = "The Reciept Number is not valid.";
+                				}
+                			}
+                			$scope.$apply();
+                		},function(error){console.log(error)})
+                	},
+                	actions:[{name:"Verify Reciept",functionName:"checkIfPaymentExists"}],
                 	events:{onBlur:"checkIfVehicleExists"}
                 }
         }

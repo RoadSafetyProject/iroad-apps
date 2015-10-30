@@ -272,8 +272,6 @@
             	<td>
             	<element-input ng-if="editOffenceTitle == 'Add New Offence'" crud-operation="'update'" ng-data-element-name="'Vehicle Plate Number/Registration Number'" ng-model="editingEvent['Vehicle Plate Number/Registration Number']"></element-input>
             		<element-input ng-if="editOffenceTitle == 'Edit Offence'" crud-operation="'update'" ng-data-element-name="'Vehicle Plate Number/Registration Number'" ng-model="editingEvent['Vehicle Plate Number/Registration Number]"></element-input>
-            		<label>Vehicle Plate Number/Registration Number</label><br />
-            		<input data-toggle="tooltip"  title="{{ setDescription('Vehicle Plate Number/Registration Number') }}" ng-model="editingEvent['Vehicle Plate Number/Registration Number']" class="form-control" />
             	</td>
             </tr>
             <tr>
@@ -303,7 +301,8 @@
             <tr>
             	<td>
             		<label>Offence Place</label><br />
-            		<input data-toggle="tooltip"  title="{{ setDescription('Offence Place') }}" ng-model="editingEvent['Offence Place']" class="form-control" />
+            		<!-- <input data-toggle="tooltip"  title="{{ setDescription('Offence Place') }}" ng-model="editingEvent['Offence Place']" class="form-control" /> -->
+            		<location-element data-toggle="tooltip"  title="{{ setDescription('Offence Place') }}" ng-model="editingEvent['Offence Place']" ng-coordinate="editingEvent['coordinate']"></location-element>
             	</td>
             </tr>
             <tr>
@@ -323,14 +322,16 @@
             </tr>
             <tr ng-if="editingEvent['Offence Paid']">
             	<td>
-            		<label>Offence Reciept Number</label><br />
-            		<input data-toggle="tooltip"  title="{{ setDescription('Offence Reciept Number') }}" ng-model="editingEvent['Offence Reciept Number']" class="form-control" />
+            		<!-- <label>Offence Reciept Number</label><br />
+            		<input data-toggle="tooltip"  title="{{ setDescription('Offence Reciept Number') }}" ng-model="editingEvent['Offence Reciept Number']" class="form-control" /> -->
+            		<element-input ng-if="editOffenceTitle == 'Add New Offence'" crud-operation="'update'" ng-data-element-name="'Offence Reciept Number'" ng-model="editingEvent['Offence Reciept Number']"></element-input>
+            		<element-input ng-if="editOffenceTitle == 'Edit Offence'" crud-operation="'update'" ng-data-element-name="'Offence Reciept Number'" ng-model="editingEvent['Offence Reciept Number']"></element-input>
             	</td>
             </tr>
             <tr ng-if="editingEvent['Offence Paid']">
             	<td>
             		<label>Offence Reciept Amount</label><br />
-            		<input data-toggle="tooltip"  title="{{ setDescription('Offence Reciept Amount') }}" ng-model="editingEvent['Offence Reciept Amount']" class="form-control" />
+            		<input data-toggle="tooltip"  disabled title="{{ setDescription('Offence Reciept Amount') }}" ng-model="editingEvent['Offence Reciept Amount']" class="form-control" />
             	</td>
             </tr>
             <tr>

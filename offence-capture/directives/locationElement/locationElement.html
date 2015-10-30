@@ -1,0 +1,41 @@
+<div class="input-group">
+	<input type="text" id="location-address" class="form-control" ng-model="ngModel" ng-blur="onBlur()" aria-label="Heyloow">
+	<div class="input-group-btn">
+		<button type="button" ng-click="toggleMadel()"class="btn btn-default dropdown-toggle" data-toggle="modal" data-target="#myModal">
+			<span>Choose Location</span>
+		</button>
+	</div>
+	<!-- /btn-group -->
+</div>
+<div class="modal fade col-sm-6" id="locationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Location Picker</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      		<div class="col-sm-6">
+      			<input id="locationName" type="text" class="form-control" ng-model="ngModel" />
+      		</div>
+      		<div class="col-sm-3">
+      			<input type="text" class="form-control" ng-model="ngCoordinate.latitude" />
+      		</div>
+      		<div class="col-sm-3">
+      			<input type="text" class="form-control" ng-model="ngCoordinate.longitude" />
+      		</div>
+      		<br /><br />
+      		<div class="col-sm-12">
+      			<div id="somecomponent" style="width: 500px; height: 400px;"></div>
+      		</div>
+      	</div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
