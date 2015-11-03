@@ -620,9 +620,9 @@ http = {
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4) {
 				if(xmlhttp.status == 200){
-					try {
+					//try {
 						onSuccess(JSON.parse(xmlhttp.responseText));
-					} catch (e) {
+					/*} catch (e) {
 						if (xmlhttp.responseText.startsWith("Event updated: ")) {
 							onSuccess({
 								"status" : "SUCCESS",
@@ -630,14 +630,13 @@ http = {
 										"Event updated: ", "").replace("\r\n", "")
 							})
 						} else {
-							console.error("Returned:" + xmlhttp.responseText);
 							if (onError == undefined) {
 								console.error(e);
 							} else {
 								onError(e);
 							}
 						}
-					}
+					}*/
 				}else if(xmlhttp.status == 404){
 					onError({});
 				}
