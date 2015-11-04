@@ -245,7 +245,7 @@
 			<div class="mws-panel-header"  style="height: 48px !important;">
                 <span>{{editOffenceTitle}}<a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></span>
             </div>
-     
+     		<form ng-submit="save(editingEvent)">
             <table  class="mws-datatable-fn mws-table">
             <!-- <tr  class="todelete"  ng-repeat="(key, value) in editingEvent">
             	<td ng-if="(key != 'id')">
@@ -283,19 +283,19 @@
             <tr>
             	<td>
             		<label>Particulars of Offence</label><br />
-            		<input data-toggle="tooltip"  title="{{ setDescription('Offence Facts') }}" ng-model="editingEvent['Offence Facts']" class="form-control" />
+            		<input required data-toggle="tooltip"  title="{{ setDescription('Offence Facts') }}" ng-model="editingEvent['Offence Facts']" class="form-control" />
             	</td>
             </tr>
             <tr>
             	<td>
             		<label>Offences</label><br />
-            		<multi-select  class="form-control" input-model="editInputModal" output-model="data.editingOutputModal" item-label="Nature" button-label="Section" tick-property="selected" />
+            		<multi-select required class="form-control" input-model="editInputModal" output-model="data.editingOutputModal" item-label="Nature" button-label="Section" tick-property="selected" />
             	</td>
             </tr>
             <tr>
             	<td>
             		<label>Offence Admission Status</label><br />
-            		<select data-toggle="tooltip"  title="{{ setDescription('Offence Admission Status') }}" ng-options="item.name as item.name for item in getOptionSets('Offence Admission Status')" ng-model="editingEvent['Offence Admission Status']" />
+            		<select required data-toggle="tooltip"  title="{{ setDescription('Offence Admission Status') }}" ng-options="item.name as item.name for item in getOptionSets('Offence Admission Status')" ng-model="editingEvent['Offence Admission Status']" />
             	</td>
             </tr>
             <tr>
@@ -308,13 +308,13 @@
             <tr>
             	<td>
             		<label>Offence Date</label><br />
-            		<input data-toggle="tooltip"  title="{{ setDescription('Offence Date') }}" ui-date="dateOptions" ui-date-format="yy-mm-dd"class="form-control"  ng-model="editingEvent['Offence Date']" />
+            		<input required data-toggle="tooltip"  title="{{ setDescription('Offence Date') }}" ui-date="dateOptions" ui-date-format="yy-mm-dd"class="form-control"  ng-model="editingEvent['Offence Date']" />
             	</td>
             </tr>
             <tr>
             	<td>
             		<label>Offence Paid</label><br />
-            		<select data-toggle="tooltip"  title="{{ setDescription('Offence Paid') }}" ng-model="editingEvent['Offence Paid']" >
+            		<select required data-toggle="tooltip"  title="{{ setDescription('Offence Paid') }}" ng-model="editingEvent['Offence Paid']" >
             			<option value="true">Yes</option>
             			<option value="false">No</option>
             		</select>
@@ -340,7 +340,8 @@
                 </td>
             </tr>
              <tr>
-                 <td><button class="btn btn-sm btn-primary" ng-click="save(editingEvent)">Done</button> </td>
+                 <td><button type="submit" class="btn btn-sm btn-primary" >Done</button> </td>
              </tr>
             </table>
+            </form>
         </div>
