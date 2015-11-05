@@ -74,6 +74,7 @@
             <div class="panel panel-default" >
                 <div class="panel-heading"><b>Update Driver</b><a ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
                 <div class="panel-body" style="padding-left: 30px">
+                <form ng-submit="updateDriver(editingEvent)">
                     <table >
                         <tr ng-if="datas.name != 'Program_Person'"  class="todelete"  ng-repeat="datas in editingEvent.dataValues | orderBy:'sortOrder'">
                             <td style="margin-right: 20px">
@@ -82,27 +83,20 @@
                                 	<!-- <img class="img-thumbnail" ng-src="getImage(datas.value)" alt="Driver Photo"/> -->
                                 	
                                 	<img class="img-thumbnail passport-size" ng-src="{{photoData}}" alt="Driver Photo"/>
-                                	<input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  type="file" file-model="data.editDriverPhoto"/>
+                                	<input  ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  type="file" file-model="data.editDriverPhoto"/>
                                 	Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot('editDriverPhoto')">Take A Snapshot</button>
                                 </div>
-                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.type != 'date' && datas.type != 'bool'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color" ></select>
-                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
+                                <input ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.type != 'date' && datas.type != 'bool'"  ng-model="datas.value" ng-style="datas.color">
+                                <input ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-style="datas.color">
+                                <select ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-style="datas.color" ></select>
+                                <select ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                             </td>
                         </tr>
-                        <!--<tr  ng-repeat="datas in editingPerson.dataValues">-->
-                            <!--<td style="margin-right: 20px">-->
-                                <!--<label>{{ datas.name }}</label><br>-->
-                                <!--<input class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type != 'date'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingPerson,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color">-->
-                                <!--<input  class="form-control" ng-focus="focusMe(datas.name)"  ng-if="!datas.optionSet && datas.type == 'date'" ui-date="dateOptions1"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color">-->
-                                <!--<select  class="form-control"  ng-focus="focusMe(datas.name)" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.selectedPerson.dataValues.events)" ng-style="datas.color" ></select>-->
-                            <!--</td>-->
-                        <!--</tr>-->
                         <tr style="margin-top: 10px">
                             <td><button class="btn btn-sm btn-primary" ng-click="updateDriver(editingEvent)">Done</button> </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
                 </div>
@@ -113,21 +107,23 @@
             <div class="panel panel-default" >
                 <div class="panel-heading"><b>Add New Driver</b><a ng-click="cancelAdd()" class="pull-right"> <i class="fa fa-times"></i>  </a></div>
                 <div class="panel-body" style="padding-left: 30px">
+                <form ng-submit="AddDriver(data.newDriverValue)">
                     <table >
                         <tr ng-if="list.dataElement.name != 'Program_Person'" ng-repeat="list in  data.programs['Driver'].programStages[0].programStageDataElements">
                         <td >
                             <label>{{ list.dataElement.name }}</label>
                             <div ng-if="list.dataElement.name == 'Driver Photo'">
                             <img class="img-thumbnail passport-size" ng-src="{{photoData}}" alt="Driver Photo"/>
-                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file" file-model="data.driverPhoto" accept="image/*" capture="camera"/>
+                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  type="file" file-model="data.driverPhoto" accept="image/*" capture="camera"/>
                             Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot('driverPhoto')">Take A Snapshot</button>
                             </div>
                             <!-- <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'"  ngf-select ng-model="driverPhoto" name="upload"    
              accept="image/*" ngf-max-size="2MB" required/> -->
-					<input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet  && list.dataElement.type != 'bool'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
-                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
-                            <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
-                            <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
+					<input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet  && list.dataElement.type == 'string'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+					<input ng-required="list.compulsory" type="number" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet  && list.dataElement.type == 'int'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                           </td>
                         </tr>
                         <!--<tr ng-repeat="list in  data.programs['Person'].programStages[0].programStageDataElements | orderBy:'sortOrder'">-->
@@ -144,11 +140,12 @@
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
                                 <!-- <button class="btn btn-sm btn-primary pull-right" ng-click="AddDriver(data.newDriverValue)">Add</button> -->
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddDriver(data.newDriverValue)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right">Add</button>
                                 <!-- <button class="btn btn-sm btn-primary pull-right" ng-click="uploadFile(driverPhoto)">Add</button> -->
                             </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
             </div>
