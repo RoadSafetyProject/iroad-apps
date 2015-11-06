@@ -79,7 +79,8 @@
         <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/dhis2/filters.js"></script>
         <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/dhis2/services.js"></script>
         <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/dhis2/controllers.js"></script>
-
+		<script type="text/javascript" src="scripts/dhis2-library.js"></script>
+		
         <script src="scripts/DataTables/media/js/jquery.dataTables.js"></script>
         <script src="scripts/angular-datatables/dist/angular-datatables.min.js"></script>
         <script src="scripts/angular-datatables/src/plugins/bootstrap/angular-datatables.bootstrap.colvis.js"></script>
@@ -93,6 +94,7 @@
         <script type="text/javascript" src="scripts/app.js"></script>
         <script type="text/javascript" src="scripts/services.js"></script>
         <script type="text/javascript" src="scripts/directives.js"></script>
+        <script type="text/javascript" src="../offence-capture/directives/dataElementInput/dataElementInput.js"></script>
         <!--<script type="text/javascript" src="scripts/controllers.js"></script>        -->
         <script type="text/javascript" src="scripts/controller.js"></script>
         <script type="text/javascript" src="scripts/notes-controller.js"></script>
@@ -111,7 +113,17 @@
            // dhis2.settings.baseUrl = '../../..';
                         dhis2.settings.baseUrl = 'demo';
         </script>
-        <script>
+	<script>
+		var dhisConfigs = {
+			baseUrl : "../../../",
+			refferencePrefix : "Program_"
+		};
+		dhisConfigs.onLoad = function() {
+
+		}
+		iroad2.Init(dhisConfigs);
+	</script>
+	<script>
             $(document).ready(function(){
                 $('input').tooltip({
                     placement: "bottom"
