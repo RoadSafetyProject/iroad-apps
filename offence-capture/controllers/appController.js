@@ -371,7 +371,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         }
 		$scope.data.editingOutputModal = [];
 		$scope.$watch("data.editingOutputModal",function(){
-			console.log(JSON.stringify($scope.data.editingOutputModal));
 			if($scope.editingEvent){
 				$scope.editingEvent['Offence Reciept Amount'] = 0;
 				angular.forEach($scope.data.editingOutputModal,function(offence){
