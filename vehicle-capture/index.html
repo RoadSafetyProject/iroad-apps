@@ -90,6 +90,7 @@
         <script type="text/javascript" src="scripts/notes-controller.js"></script>
         <script type="text/javascript" src="scripts/filters.js"></script>
         <script type="text/javascript" src="scripts/dhis2-library.js"></script>
+        <script type="text/javascript" src="../offence-capture/directives/dataElementInput/dataElementInput.js"></script>
 
         <!-- Menu scripts -->
         <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
@@ -101,12 +102,18 @@
             dhis2.settings = dhis2.settings || {};
             dhis2.settings.baseUrl = 'demo';
         </script>
-        <script>
-            var dhisConfigs = {
-                baseUrl:"../../../",
-                refferencePrefix:"Program_"
-            };
-        </script>
+        
+	<script>
+		var dhisConfigs = {
+			baseUrl : "../../../",
+			refferencePrefix : "Program_"
+		};
+		dhisConfigs.onLoad = function() {
+
+		}
+		iroad2.Init(dhisConfigs);
+	</script>
+	
         <script>
             $(document).ready(function(){
                 $('input').tooltip({
