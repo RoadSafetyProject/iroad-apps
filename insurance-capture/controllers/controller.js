@@ -25,8 +25,7 @@ eventCaptureControllers.controller('MainController',
     	                };
     	$scope.fetchCompanies = function(pageSize,page){
     		insuranceCompanyModal.getAll(function(result){
-            	console.log("Companies:" + JSON.stringify(result));
-                $scope.data.insurance = result.data;
+            	$scope.data.insurance = result.data;
                 $scope.pager = result.pager;
                 $scope.$apply();
             },pageSize,page,true);
@@ -41,6 +40,16 @@ eventCaptureControllers.controller('MainController',
                     }
                 }
             }
+        }
+        $scope.isRequired = function(key){
+        	console.log(JSON.stringify(iroad2.data.programs));
+        	var compulsory = false;
+        	angular.forEach(iroad2.data.programs,function(program){
+        		angular.forEach(program.programStages[0].programStageDataElements,function(programStageDataElement){
+        			compulsory = programStageDataElement.compulsory;
+            	});
+        	});
+            return compulsory;
         }
         $scope.isInteger = function(key){
             return $scope.is(key,"int");
@@ -114,7 +123,6 @@ eventCaptureControllers.controller('MainController',
                     event[relationship.pivot] = [];
                 }
             });
-           // console.log(JSON.stringify(event));
             $scope.registerInsurance(event);
         }
 
@@ -143,27 +151,21 @@ eventCaptureControllers.controller('MainController',
         }
 
         $scope.save = function(){
-
-            console.log('data form the form : ' + JSON.stringify($scope.editingEvent));
-
-            $scope.UpdatedSuccess = true;
+        	$scope.UpdatedSuccess = true;
             angular.forEach($scope.savableEventData, function (savableData) {
                 delete $scope.editingEvent[savableData.name];
                 $scope.editingEvent[savableData.key] = savableData.value;
             });
 
-            console.log("Saving Data:" + JSON.stringify($scope.editingEvent));
             var otherData = {orgUnit:iroad2.data.user.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:new Date()};
             var saveEvent = $scope.editingEvent;
             insuranceCompanyModal.save(saveEvent,otherData,function(result){
-            	console.log("Update Made:" + JSON.stringify(saveEvent));
             	if(result.importSummaries[0].status == "SUCCESS")
             	{
             		$scope.CurrentSaving = false;
                     $scope.UpdatedSuccess = true;
                     $scope.UpdateFailure = false;
                     saveEvent.id = result.importSummaries[0].reference;
-                    console.log("Adding to list:" + JSON.stringify(saveEvent));
                     $scope.data.insurance.push(saveEvent);
                     $scope.$apply();
                     alert("Insurance information saved successfully.");
@@ -194,7 +196,6 @@ eventCaptureControllers.controller('MainController',
             var otherData = {orgUnit:"ij7JMOFbePH",status: "COMPLETED",storedBy: "admin",eventDate:$scope.editingEventInsured['Accident Date']};
             var saveEvent = $scope.editingEventInsured;
             insuranceCompanyModal.save(saveEvent,otherData,function(result){
-                //console.log("Update Made:" + JSON.stringify(result));
                 $scope.CurrentSaving = false;
                 $scope.UpdatedSuccess = true;
                 $scope.UpdateFailure = false;
@@ -223,7 +224,6 @@ eventCaptureControllers.controller('MainController',
             $scope.normalStyleDriver= { "padding": '0px'};
             $scope.normalStyleVehicle= { "padding": '0px'};
             $scope.normalStyleMedia= { "padding": '0px'};
-            //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == insuranceEventModal.getModalName()) {
                     $scope.editingProgram = program;
@@ -231,7 +231,6 @@ eventCaptureControllers.controller('MainController',
             });
             $scope.savableEventData = [];
             $scope.editingEventInsured = event;
-            //console.log('Editing' + JSON.stringify(event));
             for (var key in event) {
                 if (typeof event[key] == "object") {
                     var program = insuranceEventModal.getProgramByName(key);
@@ -263,7 +262,6 @@ eventCaptureControllers.controller('MainController',
             $scope.normalStyleDriver= { "padding": '0px'};
             $scope.normalStyleVehicle= { "padding": '0px'};
             $scope.normalStyleMedia= { "padding": '0px'};
-            //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == insuranceCompanyModal.getModalName()) {
                     $scope.editingProgram = program;
@@ -271,7 +269,6 @@ eventCaptureControllers.controller('MainController',
             });
             $scope.savableEventData = [];
             $scope.editingEvent = event;
-            //console.log('Editing' + JSON.stringify(event));
             for (var key in event) {
                 if (typeof event[key] == "object") {
                     var program = insuranceCompanyModal.getProgramByName(key);
@@ -302,7 +299,6 @@ eventCaptureControllers.controller('MainController',
             $scope.normalStyleDriver= { "padding": '0px'};
             $scope.normalStyleVehicle= { "padding": '0px'};
             $scope.normalStyleMedia= { "padding": '0px'};
-            //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == insuranceCompanyModal.getModalName()) {
                     $scope.editingProgram = program;
@@ -310,7 +306,6 @@ eventCaptureControllers.controller('MainController',
             });
             $scope.savableEventData = [];
             $scope.editingEvent = event;
-            //console.log('Editing' + JSON.stringify(event));
             for (var key in event) {
                 if (typeof event[key] == "object") {
                     var program = insuranceCompanyModal.getProgramByName(key);
@@ -338,7 +333,6 @@ eventCaptureControllers.controller('MainController',
             $scope.normalStyleDriver= { "padding": '0px'};
             $scope.normalStyleVehicle= { "padding": '0px'};
             $scope.normalStyleMedia= { "padding": '0px'};
-            //console.log(JSON.stringify(iroad2.data.programs));
             angular.forEach(iroad2.data.programs, function (program) {
                 if (program.name == insuranceEventModal.getModalName()) {
                     $scope.editingProgram = program;
@@ -346,7 +340,6 @@ eventCaptureControllers.controller('MainController',
             });
             $scope.savableEventData = [];
             $scope.editingEventInsured = event;
-            //console.log('Editing' + JSON.stringify(event));
             for (var key in event) {
                 if (typeof event[key] == "object") {
                     var program = insuranceEventModal.getProgramByName(key);
@@ -374,7 +367,6 @@ eventCaptureControllers.controller('MainController',
 
         //function to view insurance comapany profile
         $scope.ViewInsurance = function(dhis2Event){
-            //console.log(JSON.stringify(dhis2Event));
             $scope.editing = false;
             $scope.viewinsuranceComp = true;
             $scope.normalClass= "mws-panel grid_6";
@@ -389,7 +381,6 @@ eventCaptureControllers.controller('MainController',
                 {
                     var relationModal = new  iroad2.data.Modal(program.name,[]);
                     relationModal.get(new iroad2.data.SearchCriteria(dataElement.name,"=",newValue),function(result){
-                        //console.log("Relation Modal:" + JSON.stringify(result));
                         if(result.length > 0)
                         {
                             angular.forEach($scope.savableEventData, function (savableData) {
@@ -445,8 +436,6 @@ eventCaptureControllers.controller('InsuranceController',
     function($scope,$modalInstance,dhis2Event){
 
         $scope.dhis2Event = dhis2Event;
-        //console.log('Accident' +JSON.stringify($scope.dhis2Event));
-
         $scope.close = function () {
             $modalInstance.close();
         };

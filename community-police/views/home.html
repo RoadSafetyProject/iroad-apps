@@ -1,317 +1,402 @@
 <style>
-  .angular-google-map-container { margin-top:45px;height: 100%; min-height:1000px;}
-  .button, .button2, .button3{
-  	position:fixed;
-  	top: 65px;
-  	left:100px;
-  	z-index:100;
-  }
-  .button2{
-  	left:250px;
-  }
-  .button3{
-  	left:350px;
-  }
-  .form2{
-  	position:fixed;
-  	top: 65px;
-  	left:450px;
-  	z-index:100;
-  }
-  .keys{
-  	position: fixed;
-  bottom: 0px;
-  right: 10px;
-  z-index: 100;
-  }
-  .table img{
-  	height:20px
-  }
-  .selected {
-  	color: orange !important;
-    font-weight: bold;
-}
-	.searched{
-	  	color: green !important;
-	    font-weight: bold;
-	}
-	.org-unit-control {
-	  display: block;
-	  /*width: 300px;*/
-	  height: 240px !important;
-	  padding: 6px 12px;
-	  font-size: 14px;
-	  line-height: 1.428571429;
-	  color: #555;
-	  vertical-align: middle;
-	  background-color: #fff;
-	  background-image: none;
-	  border: 1px solid #ccc;
-	  border-radius: 4px;
-	  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-	  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-	  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	  overflow-y:auto;height:100px
-	}
-	.org-unit-control:focus {
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
-}
-.form-control{
-	width:100%;
-}
-.policingPanel{
-	position: absolute;
-    z-index: 100;
-    width: 500px;
-    top: 65px;
-    right: 5px;
-}
-.searchSuggestions{
-	min-height: 10px;
-    background: white;
-    border: 1px solid;
-    position: absolute;
-    margin-top: 30px;
-    z-index: 10;
+.angular-google-map-container {
+	margin-top: 45px;
+	height: 100%;
+	min-height: 1000px;
 }
 
-  </style>
+.button, .button2, .button3 {
+	position: fixed;
+	top: 65px;
+	left: 100px;
+	z-index: 100;
+}
+
+.button2 {
+	left: 250px;
+}
+
+.button3 {
+	left: 350px;
+}
+
+.form2 {
+	position: fixed;
+	top: 65px;
+	left: 450px;
+	z-index: 100;
+}
+
+.keys {
+	position: fixed;
+	bottom: 0px;
+	right: 10px;
+	z-index: 100;
+}
+
+.table img {
+	height: 20px
+}
+
+.selected {
+	color: orange !important;
+	font-weight: bold;
+}
+
+.searched {
+	color: green !important;
+	font-weight: bold;
+}
+
+.org-unit-control {
+	display: block;
+	/*width: 300px;*/
+	height: 240px !important;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #555;
+	vertical-align: middle;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow
+		ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	overflow-y: auto;
+	height: 100px
+}
+
+.org-unit-control:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px
+		rgba(102, 175, 233, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px
+		rgba(102, 175, 233, 0.6);
+}
+
+.form-control {
+	width: 100%;
+}
+
+.policingPanel {
+	position: absolute;
+	z-index: 100;
+	width: 500px;
+	top: 65px;
+	right: 5px;
+}
+
+.searchSuggestions {
+	min-height: 10px;
+	background: white;
+	border: 1px solid;
+	position: absolute;
+	margin-top: 30px;
+	z-index: 10;
+}
+</style>
 <div class="angular-google-map-container">
 
-<button type="button" class="button btn btn-primary btn-md" data-toggle="modal" data-target="#facilityModal">View Facilities</button>
-<button type="button" class="button button2 btn btn-primary btn-md" data-toggle="modal" data-target="#reportModal">View Community Reports</button>
+	<button type="button" class="button btn btn-primary btn-md"
+		data-toggle="modal" data-target="#facilityModal">View
+		Facilities</button>
+	<button type="button" class="button button2 btn btn-primary btn-md"
+		data-toggle="modal" data-target="#reportModal">View Community
+		Reports</button>
 
-<div ng-show="!isAddingFacility" class="modal fade" id="facilityModal" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Facilities</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-	        
-			<div class="col-sm-12" style="" >
-				Organisation Unit:
-				<!-- <div ng-if="!organisationUnitsLoading" class="form-group" style="position: relative;">
+	<div ng-show="!isAddingFacility" class="modal fade" id="facilityModal"
+		role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Facilities</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+
+						<div class="col-sm-12" style="">
+							Organisation Unit:
+							<!-- <div ng-if="!organisationUnitsLoading" class="form-group" style="position: relative;">
 					<br />
 	            	<input ng-focus="" ng-keypress="searchOrgUnits()" ng-model="orgUnitSearch" class="form-control col-sm-12" placeholder="Search Organisation Unit"/>
 	            	<div class="col-sm-12 searchSuggestions">
 	            		<div ng-repeat="orgUnit in searchedOrgUnits">{orgUnit.name}</div>
 	            	</div>
 	            </div> -->
-	            <br />
-				  <div ng-if="!organisationUnitsLoading" class="org-unit-control col-sm-12" ya-treeview ya-id="myTree" ya-model="tree.modal" ya-options="options" ya-context="tree.context">
-					  <span ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{ node.$model.name }}</span>
-				  </div>
-				  <div class="col-sm-12" style="" ng-if="organisationUnitsLoading">
-	        			Organisation Units Loading....
-	        		</div>
-			</div>
-			<!--<div class="col-sm-12">
+							<br />
+							<div ng-if="!organisationUnitsLoading"
+								class="org-unit-control col-sm-12" ya-treeview ya-id="myTree"
+								ya-model="tree.modal" ya-options="options"
+								ya-context="tree.context">
+								<span
+									ng-class="{selected: context.selectedNodes.indexOf(node) > -1}">{{
+									node.$model.name }}</span>
+							</div>
+							<div class="col-sm-12" style="" ng-if="organisationUnitsLoading">
+								Organisation Units Loading....</div>
+						</div>
+						<!--<div class="col-sm-12">
 				<select ng-options="item.name as item.name for item in facilityType" ng-model="editingEvent['Offence Admission Status']" />
 			</div> -->
+					</div>
+					<div class="row"
+						ng-if="!isAddingFacility && tree.context.selectedNodes.length > 0 && tree.context.selectedNodes[0].$model.level == 3">
+						<table datatable="ng" class="mws-datatable-fn mws-table col-sm-12">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Title</th>
+									<th>Facility Type</th>
+									<th>Facility Location</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									ng-repeat="event in tree.context.selectedNodes[0].$model.children | filter:filterFacilityFn">
+									<td>{{$index + 1}}</td>
+									<td>{{event.name}}</td>
+									<td>{{getOrganisationUnitGroup("Facility
+										Location",event)}}</td>
+									<td>{{getOrganisationUnitGroup("Facility Type",event)}}</td>
+									<td>
+										<div class="btn-group dropdown">
+											<button type="button" class="btn btn-default">Action</button>
+											<button type="button" class="btn btn-default dropdown-toggle"
+												data-toggle="dropdown" aria-expanded="false">
+												<span class="caret"></span> <span class="sr-only">Toggle
+													Dropdown</span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+
+												<li><a ng-click="addFacility()">Edit</a></li>
+												<li><a data-toggle="modal" data-target="#videoModal">Delete</a>
+												</li>
+
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<button ng-click="showAddFacilityMarker()"
+							class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add
+							Facility</button>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div>
-			<div class="row" ng-if="!isAddingFacility && tree.context.selectedNodes.length > 0 && tree.context.selectedNodes[0].$model.level == 3" >
-				<table datatable="ng" class="mws-datatable-fn mws-table col-sm-12">
-                <thead>
-                <tr>
-                    <th># </th>
-                    <th>Title</th>
-                    <th>Facility Type</th>
-                    <th>Facility Location</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="event in tree.context.selectedNodes[0].$model.children | filter:filterFacilityFn">
-                	<td>{{$index + 1}}</td>
-                	<td>{{event.name}}</td>
-                	<td>{{getOrganisationUnitGroup("Facility Location",event)}}</td>
-                	<td>{{getOrganisationUnitGroup("Facility Type",event)}}</td>
-                	<td>
-                		<div class="btn-group dropdown">
-                            <button type="button" class="btn btn-default">Action</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                            	
-                            	<li><a ng-click="addFacility()">Edit</a> </li>
-                                <li><a  data-toggle="modal" data-target="#videoModal">Delete</a> </li>
-                                
-                            </ul>
-                        </div>
-                	</td>
-                </tr>
-                </tbody>
-        </table>
-			<button ng-click="showAddFacilityMarker()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Add Facility</button>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<div class="modal fade" id="reportModal" tabindex="-1" role="dialog"
+		aria-labelledby="reportLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Community Policing Reports</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<table datatable="ng" class="mws-datatable-fn mws-table col-sm-12">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Title</th>
+									<th>Type</th>
+									<th>Description</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="event in events">
+									<td>{{$index + 1}}</td>
+									<td>{{getDataValue(event,"Community Report Title")}}</td>
+									<td>{{getDataValue(event,"Community Report Type")}}</td>
+									<td>{{getDataValue(event,"Community Report Description")}}</td>
+									<td>
+										<div class="btn-group dropdown">
+											<button type="button" class="btn btn-default">Action</button>
+											<button type="button" class="btn btn-default dropdown-toggle"
+												data-toggle="dropdown" aria-expanded="false">
+												<span class="caret"></span> <span class="sr-only">Toggle
+													Dropdown</span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+
+												<li><a data-toggle="modal" data-target="#imageModal">View
+														Image</a></li>
+												<li><a data-toggle="modal" data-target="#videoModal">View
+														Video</a></li>
+
+												<li ng-if="hasCoordinate(event)"><a
+													ng-click="addMarker(event)">View Coordinate </a></li>
+
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Community Policing Reports</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-		<table datatable="ng" class="mws-datatable-fn mws-table col-sm-12">
-                <thead>
-                <tr>
-                    <th># </th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="event in events">
-                	<td>{{$index + 1}}</td>
-                	<td>{{getDataValue(event,"Community Report Title")}}</td>
-                	<td>{{getDataValue(event,"Community Report Type")}}</td>
-                	<td>{{getDataValue(event,"Community Report Description")}}</td>
-                	<td>
-                		<div class="btn-group dropdown">
-                            <button type="button" class="btn btn-default">Action</button>
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                            	
-                            	<li><a  data-toggle="modal" data-target="#imageModal">View Image</a> </li>
-                                <li><a  data-toggle="modal" data-target="#videoModal">View Video</a> </li>
-                         
-                                <li ng-if="hasCoordinate(event)"><a ng-click="addMarker(event)">View Coordinate </a> </li>
-                                
-                            </ul>
-                        </div>
-                	</td>
-                </tr>
-                </tbody>
-        </table>
+			<!-- /.modal-content -->
 		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div ng-if="isAddingFacility" class="form2 col-sm-4">
-<div class="panel panel-default">
-  <div class="panel-heading">Create New Facility
-	  <a ng-click="cancelMenu()" class="pull-right"> <i class="fa fa-times"></i>  </a>
-  </div>
-  
-  <div class="panel-body">
-		<div class="row">
-		<div class="col-sm-12" style="">
-			
-			<div class="form-group">
-				<label>Facility Name</label><br />
-            	<input ng-model="newFacility.name" class="form-control col-sm-12" />
-            </div>
-            <div class="form-group">
-				<label>Opening Date</label><br />
-            	<input ui-date ng-model="newFacility.openingDate" class="form-control col-sm-12" />
-            </div>
-            <div class="form-group">
-				<label>Latitude</label><br />
-            	<input ng-model="newFacility.coordinates.latitude" class="form-control col-sm-12" />
-            </div>
-            <div class="form-group">
-				<label>Longitude</label><br />
-            	<input ng-model="newFacility.coordinates.longitude" class="form-control col-sm-12" />
-            </div>
-            <div class="form-group" ng-repeat="organisationUnitGroupSet in organisationUnitGroupSets">
-				<label>{{organisationUnitGroupSet.name}}</label><br />
-				<select class="form-control col-sm-12" ng-options="item.id as item.name for item in organisationUnitGroupSet.organisationUnitGroups" ng-model="organisationUnitGroups[$index]" ></select>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<div ng-if="isAddingFacility" class="form2 col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Create New Facility <a ng-click="cancelMenu()" class="pull-right">
+					<i class="fa fa-times"></i>
+				</a>
 			</div>
-		</div>
-		</div>
-		<div class="row">
-		<button ng-click="addFacility()" class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Save Facility</button>
+
+			<div class="panel-body">
+			<form ng-submit="addFacility()">
+				<div class="row">
+					
+					<div class="col-sm-12" style="">
+
+						<div class="form-group">
+							<label>Facility Name</label><br /> <input
+								required="true" ng-model="newFacility.name" class="form-control col-sm-12" />
+						</div>
+						<div class="form-group">
+							<label>Opening Date</label><br /> <input ui-date
+								required="true"  ng-model="newFacility.openingDate"
+								class="form-control col-sm-12" />
+						</div>
+						<div class="form-group">
+							<label>Latitude</label><br /> <input
+								required="true" ng-model="newFacility.coordinates.latitude"
+								class="form-control col-sm-12" />
+						</div>
+						<div class="form-group">
+							<label>Longitude</label><br /> <input
+								required="true" ng-model="newFacility.coordinates.longitude"
+								class="form-control col-sm-12" />
+						</div>
+						<div class="form-group"
+							ng-repeat="organisationUnitGroupSet in organisationUnitGroupSets">
+							<label>{{organisationUnitGroupSet.name}}</label><br /> <select
+								class="form-control col-sm-12"
+								required="true" 
+								ng-options="item.id as item.name for item in organisationUnitGroupSet.organisationUnitGroups"
+								ng-model="organisationUnitGroups[$index]"></select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<button
+						class="btn btn-default col-sm-6 pull-right" style="margin: 14px;">Save
+						Facility</button>
+				</div>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
-</div>
-<div class="modal fade" id="imageModal" role="modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Community Police Report Image</h4>
-      </div>
-      <div class="modal-body">
-        <img class="img-thumbnail col-sm-12" ng-src="http://41.86.177.33/demo/api/documents/AQbHezHV5Oi/data" alt="Community Police Image"/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<div class="modal fade" id="videoModal" role="modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Community Police Report Video</h4>
-      </div>
-      <div class="modal-body">
-        <div class="col-sm-12" style="text-align:center">
-		    <video autoplay loop style="max-height:400px">
-		        <source src="http://41.86.177.33/demo/api/documents/SumH1cmkWVo/data" type="video/mp4">
-		    </video>
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<ui-gmap-google-map control='mapObject' center='map.center' zoom='map.zoom'>
-	
-	
-    <ui-gmap-marker ng-show="isAddingFacility" options="newFacility.options" coords="newFacility.coordinates" idkey="newFacility.id">
-    </ui-gmap-marker>
-    <ui-gmap-marker ng-if="isSelectedFacility" coords="selectedFacility.coordinates" idkey="selectedFacility.id">
-    </ui-gmap-marker>
-    <ui-gmap-marker ng-if="isReportMarker" options="reportMarker.options" coords="reportMarker.coordinate" idkey="reportMarker.event">
-    <ui-gmap-window options="windowOptions" closeClick="closeClick()">
-			<div>
-			Community Report Details
-			<div class="row">
-	        	<div class="form-group col-sm-6">
-			  		<label>Latitude:</label>
-					<div class="">{{reportMarker.coordinate.latitude}}</div>
+	<div class="modal fade" id="imageModal" role="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Community Police Report Image</h4>
 				</div>
-				<div class="form-group col-sm-6">
-			  		<label >Longitude:</label>
-					<div class="">{{reportMarker.coordinate.longitude}}</div>
+				<div class="modal-body">
+					<img class="img-thumbnail col-sm-12"
+						ng-src="http://41.86.177.33/demo/api/documents/AQbHezHV5Oi/data"
+						alt="Community Police Image" />
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
-			<div class="row">
-				<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#facilityModal">View Image</button>
-				<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#videoModal">View Video</button>
-				<!-- <div class="form-group col-sm-6">
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<div class="modal fade" id="videoModal" role="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Community Police Report Video</h4>
+				</div>
+				<div class="modal-body">
+					<div class="col-sm-12" style="text-align: center">
+						<video autoplay loop style="max-height: 400px">
+							<source
+								src="http://41.86.177.33/demo/api/documents/SumH1cmkWVo/data"
+								type="video/mp4">
+						</video>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<ui-gmap-google-map control='mapObject' center='map.center'
+		zoom='map.zoom'> <ui-gmap-marker
+		ng-show="isAddingFacility" options="newFacility.options"
+		coords="newFacility.coordinates" idkey="newFacility.id">
+	</ui-gmap-marker> <ui-gmap-marker ng-if="isSelectedFacility"
+		coords="selectedFacility.coordinates" idkey="selectedFacility.id">
+	</ui-gmap-marker> <ui-gmap-marker ng-if="isReportMarker" options="reportMarker.options"
+		coords="reportMarker.coordinate" idkey="reportMarker.event">
+	<ui-gmap-window options="windowOptions" closeClick="closeClick()">
+	<div>
+		Community Report Details
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label>Latitude:</label>
+				<div class="">{{reportMarker.coordinate.latitude}}</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Longitude:</label>
+				<div class="">{{reportMarker.coordinate.longitude}}</div>
+			</div>
+		</div>
+		<div class="row">
+			<button type="button" class="btn btn-primary btn-md"
+				data-toggle="modal" data-target="#facilityModal">View Image</button>
+			<button type="button" class="btn btn-primary btn-md"
+				data-toggle="modal" data-target="#videoModal">View Video</button>
+			<!-- <div class="form-group col-sm-6">
 			  		<label>Photo:</label>
 			  		<img src="/demo/api/documents/jBOnOlRRTNP/data" />
 					<div class="">{{marker.altitude}}m above sea level</div>
@@ -325,9 +410,7 @@
 		            </script>
 					<div class="">{{marker.velocity}}km/hr</div>
 				</div> -->
-			</div>
-			</div>
-        </ui-gmap-window>
-    </ui-gmap-marker>
-</ui-gmap-google-map>
+		</div>
+	</div>
+	</ui-gmap-window> </ui-gmap-marker> </ui-gmap-google-map>
 </div>
