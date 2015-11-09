@@ -14,7 +14,9 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
         $scope.functions = null;
         $scope.response = {status:"",message:"Does Not Exist"};
         angular.forEach($scope.dataElement.attributeValues,function(attributeValue){
+        	
         	if(attributeValue.attribute.name == "Function"){
+        		
         		$scope.functions = eval("(" + attributeValue.value+ ')');
         	}
         })
@@ -33,7 +35,13 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
 					onError("Error uploading file.");
 				});
         	},
+        	pattern:"^[0-9]{10}$",
         	checkIfDriverExists:function(input,response){
+        		if(input == ""){
+                	response.status = "ERROR";
+                    response.message = "The license is not valid.";
+                	return;
+                }
         		response.status = "LOADING";
         		driverEventModal = new iroad2.data.Modal("Driver",[]);
         		driverEventModal.get(new iroad2.data.SearchCriteria("Driver License Number","=",input),function(result){
@@ -183,7 +191,13 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
                 	init:function(){
                 		
                 	},
+                	pattern:"^T[0-9]{3} [A-Z]{3}$",
                 	checkIfVehicleExists:function(input,response){
+                		if(input == ""){
+                			response.status = "ERROR";
+                    		response.message = "The license is not valid.";
+                			return;
+                		}
                 		response.status = "LOADING";
                 		var vehicleEventModal = new iroad2.data.Modal("Vehicle",[]);
                 		vehicleEventModal.get(new iroad2.data.SearchCriteria("Vehicle Plate Number/Registration Number","=",input),function(result){
@@ -327,14 +341,16 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
                 	actions:[{name:"Vehicle Exists",functionName:"checkIfVehicleExists"},{name:"View Vehicle Details",functionName:"showVehicleInfo"},{name:"View Vehicle Accidents",functionName:"showVehicleAccidents"},{name:"View Vehicle Accidents",functionName:"showVehicleOffences"}],
                 	events:{onBlur:"checkIfVehicleExists"}
                 }
-        }*/
-        if($scope.functions == null){
-        	//Code for Vehicle registration
+        //}
+        /*if($scope.functions == null){
+        	//Code for Payment
         	$scope.functions = {
                 	init:function(){
                 		
                 	},
+                	
                 	checkIfPaymentExists:function(input,response){
+                		
                 		response.status = "LOADING";
                 		var vehicleEventModal = new iroad2.data.Modal("Payment Reciept",[]);
                 		vehicleEventModal.get(new iroad2.data.SearchCriteria("Reciept Number","=",input),function(result){
@@ -389,7 +405,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
                 	actions:[{name:"Verify Reciept",functionName:"checkIfPaymentExists"},{name:"Veiw Reciept",functionName:"viewPayment"}],
                 	events:{onBlur:"checkIfVehicleExists"}
                 }
-        }
+        }*/
         $scope.envoke = function(functionName){
         	$scope.functions[functionName]($scope.ngModel,$scope.response);
         }
