@@ -134,7 +134,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         }
 
 
-        $scope.programUrl = "../../../api/programs.json?filters=type:eq:3&paging=false&fields=id,name,description,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,description,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.programUrl = "../../../api/programs.json?filters=type:eq:3&paging=false&fields=id,name,description,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,type,description,code,optionSet[id,name,options[id,name],version]]]]";
         $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};

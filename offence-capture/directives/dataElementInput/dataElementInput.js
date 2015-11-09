@@ -6,6 +6,9 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
         }
 
         init();
+        $scope.data = {
+        		
+        }
         model = new iroad2.data.Modal();
         $scope.dataElement = model.getDataElementByName($scope.ngDataElementName);
         $scope.functions = null;
@@ -333,8 +336,8 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
                 	},
                 	checkIfPaymentExists:function(input,response){
                 		response.status = "LOADING";
-                		var vehicleEventModal = new iroad2.data.Modal("Vehicle",[]);
-                		vehicleEventModal.get(new iroad2.data.SearchCriteria("Vehicle Plate Number/Registration Number","=",input),function(result){
+                		var vehicleEventModal = new iroad2.data.Modal("Payment Reciept",[]);
+                		vehicleEventModal.get(new iroad2.data.SearchCriteria("Reciept Number","=",input),function(result){
                 			if(result.length > 0){
                 				if($scope.crudOperation == 'create'){
                 					response.status = "ERROR";
@@ -355,7 +358,35 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
                 			$scope.$apply();
                 		},function(error){console.log(error)})
                 	},
-                	actions:[{name:"Verify Reciept",functionName:"checkIfPaymentExists"}],
+                	viewPayment:function(input,response){
+                		response.status = "LOADING";
+                		var vehicleEventModal = new iroad2.data.Modal("Payment Reciept",[]);
+                		vehicleEventModal.get(new iroad2.data.SearchCriteria("Reciept Number","=",input),function(result){
+                			
+                			if(result.length > 0){
+                				
+                				$scope.data.payment = result[0];
+                				$scope.showModal("Payment");
+                				if($scope.crudOperation == 'create'){
+                					response.status = "ERROR";
+                    				response.message = "The Reciept Number is not valid.";
+                				}else if($scope.crudOperation == 'update'){
+                					response.status = "SUCCESS";
+                    				response.message = "The Recipt Number is valid.";
+                				}
+                			}else{
+                				if($scope.crudOperation == 'create'){
+                					response.status = "SUCCESS";
+                    				response.message = "The Reciept Number can be used.";
+                				}else if($scope.crudOperation == 'update'){
+                					response.status = "ERROR";
+                    				response.message = "The Reciept Number is not valid.";
+                				}
+                			}
+                			$scope.$apply();
+                		},function(error){console.log(error)})
+                	},
+                	actions:[{name:"Verify Reciept",functionName:"checkIfPaymentExists"},{name:"Veiw Reciept",functionName:"viewPayment"}],
                 	events:{onBlur:"checkIfVehicleExists"}
                 }
         }
@@ -368,6 +399,13 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http)
         	}
         }
         $scope.functions.init();
+        $scope.dataName = "";
+        $scope.dataTitle = "";
+        $scope.showModal = function(dataName){
+        	$('#dataInputModal').modal('show');
+        	$scope.dataName = dataName.toLowerCase();
+            $scope.dataTitle = dataName;
+        }
     }];
     return {
         restrict: 'AEC',
