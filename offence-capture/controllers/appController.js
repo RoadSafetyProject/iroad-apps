@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select"])
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select","validator","ui.bootstrap"])
 /*.directive('iroadInput', function () {
     return {
         template: 'Name:'
