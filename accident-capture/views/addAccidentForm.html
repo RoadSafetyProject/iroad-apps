@@ -1,136 +1,197 @@
 <style>
-	.md-dialog-container{
-		position: fixed;
-		height: 100%;
-	}
-	.show-details{
-		/* float: right; */
-		cursor: pointer;
-		padding: 20px;
-		color: blue;
-	}
-	.show-details:hover{
-		text-decoration: underline;
-	}
-	.expiry{
-		border: 2px solid #F44336;
-		background-color: #E57373;
-		height: 40px;
-		display: inline-block;
-		width: 100%;
-		text-align: center;
-		/* vertical-align: middle; */
-		font-size: 24px;
-	}
+.md-dialog-container {
+	position: fixed;
+	height: 100%;
+}
+
+.show-details {
+	/* float: right; */
+	cursor: pointer;
+	padding: 20px;
+	color: blue;
+}
+
+.show-details:hover {
+	text-decoration: underline;
+}
+
+.expiry {
+	border: 2px solid #F44336;
+	background-color: #E57373;
+	height: 40px;
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+	/* vertical-align: middle; */
+	font-size: 24px;
+}
 </style>
 
-<div ng-controller="AddAccidentController" style="padding:50px;padding-top:0">
-	<div ng-if="!savingNewAccident" >
-		<h3 align = "center">Accident Registering</h3>
+<div ng-controller="AddAccidentController"
+	style="padding: 50px; padding-top: 0">
+	<div ng-if="!savingNewAccident">
+		<h3 align="center">Accident Registering</h3>
 
 		<!-- basic info for adding accident-->
-		<div class = "panel panel-default" ng-if = "accidentBasicInfo" >
-			<div class = "panel-heading">Basic Information Accident</div>
-			<div class = "panel-body" >
-
-				<!-- basic information for accident -->
-				<div class = "row" style = "margin-bottom: 2%;">
-					<div  ng-repeat="(key,value) in newAccidentForm ">
-						<div class = "col-sm-4" ng-if="key == 'Cause of Accident'||key == 'Accident Type Detail' ||key == 'Accident Class'|| key == 'Accident Registration Number' || key == 'Accident Type'">
-							<label style="font-size: 0.8em">{{ key}} </label><br />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm">
-								<option value="true">Yes</option><option value="false">No</option>
-							</select>
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentForm[key]" />
-							<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"   ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
+		<div class="panel panel-default" ng-if="accidentBasicInfo">
+			<div class="panel-heading">Basic Information Accident</div>
+			<form  ng-submit="addAccidentVehicle()">
+			<div class="panel-body">
+				
+					<!-- basic information for accident -->
+					<div class="row" style="margin-bottom: 2%;">
+						<div ng-repeat="(key,value) in newAccidentForm ">
+							<div class="col-sm-4"
+								ng-if="key == 'Cause of Accident'||key == 'Accident Type Detail' ||key == 'Accident Class'|| key == 'Accident Registration Number' || key == 'Accident Type'">
+								<label style="font-size: 0.8em">{{ key}} </label><br /> <input ng-required="isRequired(key)"
+									data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isString(key) && !hasDataSets(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm" />
+								<input ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isInteger(key)" ng-model="newAccidentForm[key]"
+									class="form-control input-sm" /> <select ng-required="isRequired(key)" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isBoolean(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm">
+									<option value="true">Yes</option>
+									<option value="false">No</option>
+								</select> <select ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									class="form-control input-sm" ng-if="hasDataSets(key)"
+									ng-options="item.name as item.name for item in getOptionSets(key)"
+									ng-model="newAccidentForm[key]" /> <input ng-required="isRequired(key)"
+									ui-date-format="yy-mm-dd" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isDate(key)"
+									ui-date="dateOptions" class="form-control input-sm"
+									ng-model="newAccidentForm[key]" />
+							</div>
 						</div>
 					</div>
-				</div><br>
+					<br>
 
-				<!-- road info -->
-				<div class = "row" style = "margin-bottom: 2%;">
-					<div  ng-repeat="(key,value) in newAccidentForm ">
-						<div  class = "col-sm-4" ng-if="key == 'Weather' ||key == 'Intersection Mark'  || key == 'Time of Accident'|| key == 'Road Mark'|| key == 'Road Name'||key == 'Road Number'|| key == 'Intersection Name'||key == 'Intersection Number'">
-							<label style="font-size: 0.8em">{{ key}} </label><br />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm">
-								<option value="true">Yes</option><option value="false">No</option>
-							</select>
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentForm[key]" />
-							<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"   ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
-						</div>
-						<location-element class = "col-sm-4"  ng-if="key == 'Area of Accident'" data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-model="newAccidentForm[key]" ng-coordinate="editingEvent['coordinate']"></location-element>
-					</div>
-				</div>
-
-
-
-				<div class = "row" style = "margin-bottom: 2%;">
-					<div  ng-repeat="(key,value) in newAccidentForm ">
-						<div  class = "col-sm-4" ng-if="key != 'Signature' && key != 'Supervisor Check' && key != 'OCS Check' && key != 'Weather' && key != 'Intersection Mark' && key != 'Area of Accident' && key != 'Time of Accident' && key != 'Road Mark' && key != 'Road Name' && key != 'Road Number' && key != 'Intersection Name' && key != 'Intersection Number' && key != 'Cause of Accident' && key != 'Accident Type Detail' && key != 'Accident Class' && key != 'Accident Registration Number' && key != 'Accident Type'">
-							<label style="font-size: 0.8em">{{ key}} </label><br />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm">
-								<option value="true">Yes</option><option value="false">No</option>
-							</select>
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentForm[key]" />
-							<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"   ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
-						</div>
-					</div>
-				</div>
-
-
-
-				<div class = "row" style = "margin-bottom: 2%;">
-					<div  ng-repeat="(key,value) in newAccidentForm ">
-						<div class = "col-sm-4" ng-if="key == 'Supervisor Check' ||key == 'OCS Check' ||key == 'Signature'">
-							<label style="font-size: 0.8em">{{ key}} </label><br />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm" />
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="newAccidentForm[key]" class="form-control input-sm">
-								<option value="true">Yes</option><option value="false">No</option>
-							</select>
-							<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentForm[key]" />
-							<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"   ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentForm[key]"/>
+					<!-- road info -->
+					<div class="row" style="margin-bottom: 2%;">
+						<div ng-repeat="(key,value) in newAccidentForm ">
+							<div class="col-sm-4"
+								ng-if="key == 'Weather' ||key == 'Intersection Mark'  || key == 'Time of Accident'|| key == 'Road Mark'|| key == 'Road Name'||key == 'Road Number'|| key == 'Intersection Name'||key == 'Intersection Number'">
+								<label style="font-size: 0.8em">{{ key}} </label><br /> <input ng-required="isRequired(key)"
+									data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isString(key) && !hasDataSets(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm" />
+								<input ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isInteger(key)" ng-model="newAccidentForm[key]"
+									class="form-control input-sm" /> <select ng-required="isRequired(key)" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isBoolean(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm">
+									<option value="true">Yes</option>
+									<option value="false">No</option>
+								</select> <select ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									class="form-control input-sm" ng-if="hasDataSets(key)"
+									ng-options="item.name as item.name for item in getOptionSets(key)"
+									ng-model="newAccidentForm[key]" /> <input ng-required="isRequired(key)"
+									ui-date-format="yy-mm-dd" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isDate(key)"
+									ui-date="dateOptions" class="form-control input-sm"
+									ng-model="newAccidentForm[key]" />
+							</div>
+							<location-element class="col-sm-4"
+								ng-if="key == 'Area of Accident'" data-toggle="tooltip"
+								title="{{ setDescription(key) }}"
+								ng-model="newAccidentForm[key]"
+								ng-coordinate="editingEvent['coordinate']"></location-element>
 						</div>
 					</div>
-				</div>
 
-				<!-- attendant of accident and number of witness & vehicle -->
-				<div >
-					<div class = "row">
-						<div class = "col-sm-4">
-							<label style="font-size: 0.8em">Accident Attendant</label><br />
-							<input class="form-control input-sm" ng-model="otherDataForm['accidentAttendant']" >
-						</div>
-						<div class = "col-sm-4">
-							<label style="font-size: 0.8em">Number Of Accident Vehicles</label><br />
-							<input class="form-control input-sm" ng-model="otherDataForm['numberOfAccidentVehicles']" >
-						</div>
-						<div class = "col-sm-4">
-							<label style="font-size: 0.8em">Number of Witness</label><br />
-							<input class="form-control input-sm" ng-model="otherDataForm['numberOfAccidentWitness']" >
-						</div>
 
-						<div class = "col-sm-7" style = "padding-left: 1%;padding-top:1%;color:#ff0000;text-align: center">
-							{{ otherDataMessage }}
+
+					<div class="row" style="margin-bottom: 2%;">
+						<div ng-repeat="(key,value) in newAccidentForm ">
+							<div class="col-sm-4"
+								ng-if="key != 'Signature' && key != 'Supervisor Check' && key != 'OCS Check' && key != 'Weather' && key != 'Intersection Mark' && key != 'Area of Accident' && key != 'Time of Accident' && key != 'Road Mark' && key != 'Road Name' && key != 'Road Number' && key != 'Intersection Name' && key != 'Intersection Number' && key != 'Cause of Accident' && key != 'Accident Type Detail' && key != 'Accident Class' && key != 'Accident Registration Number' && key != 'Accident Type'">
+								<label style="font-size: 0.8em">{{ key}} </label><br /> <input ng-required="isRequired(key)"
+									data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isString(key) && !hasDataSets(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm" />
+								<input ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isInteger(key)" ng-model="newAccidentForm[key]"
+									class="form-control input-sm" /> <select ng-required="isRequired(key)" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isBoolean(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm">
+									<option value="true">Yes</option>
+									<option value="false">No</option>
+								</select> <select ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									class="form-control input-sm" ng-if="hasDataSets(key)"
+									ng-options="item.name as item.name for item in getOptionSets(key)"
+									ng-model="newAccidentForm[key]" /> <input ng-required="isRequired(key)"
+									ui-date-format="yy-mm-dd" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isDate(key)"
+									ui-date="dateOptions" class="form-control input-sm"
+									ng-model="newAccidentForm[key]" />
+							</div>
 						</div>
 					</div>
-				</div>
 
 
+
+					<div class="row" style="margin-bottom: 2%;">
+						<div ng-repeat="(key,value) in newAccidentForm ">
+							<div class="col-sm-4"
+								ng-if="key == 'Supervisor Check' ||key == 'OCS Check' ||key == 'Signature'">
+								<label style="font-size: 0.8em">{{ key}} </label><br /> <input ng-required="isRequired(key)"
+									data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isString(key) && !hasDataSets(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm" />
+								<input ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									ng-if="isInteger(key)" ng-model="newAccidentForm[key]"
+									class="form-control input-sm" /> <select ng-required="isRequired(key)" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isBoolean(key)"
+									ng-model="newAccidentForm[key]" class="form-control input-sm">
+									<option value="true">Yes</option>
+									<option value="false">No</option>
+								</select> <select ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}"
+									class="form-control input-sm" ng-if="hasDataSets(key)"
+									ng-options="item.name as item.name for item in getOptionSets(key)"
+									ng-model="newAccidentForm[key]" /> <input ng-required="isRequired(key)"
+									ui-date-format="yy-mm-dd" data-toggle="tooltip"
+									title="{{ setDescription(key) }}" ng-if="isDate(key)"
+									ui-date="dateOptions" class="form-control input-sm"
+									ng-model="newAccidentForm[key]" />
+							</div>
+						</div>
+					</div>
+
+					<!-- attendant of accident and number of witness & vehicle -->
+					<div>
+						<div class="row">
+							<div class="col-sm-4">
+								<label style="font-size: 0.8em">Accident Attendant</label><br />
+								<input class="form-control input-sm"
+									ng-model="otherDataForm['accidentAttendant']">
+							</div>
+							<div class="col-sm-4">
+								<label style="font-size: 0.8em">Number Of Accident
+									Vehicles</label><br /> <input class="form-control input-sm"
+									ng-model="otherDataForm['numberOfAccidentVehicles']">
+							</div>
+							<div class="col-sm-4">
+								<label style="font-size: 0.8em">Number of Witness</label><br />
+								<input class="form-control input-sm"
+									ng-model="otherDataForm['numberOfAccidentWitness']">
+							</div>
+
+							<div class="col-sm-7"
+								style="padding-left: 1%; padding-top: 1%; color: #ff0000; text-align: center">
+								{{ otherDataMessage }}</div>
+						</div>
+					</div>
 			</div>
 			<!-- button for providing info about accident vehicle -->
-			<div  class = "row" style="margin:4%;">
-				<div class = "pull-right">
-					<button ng-click="addAccidentVehicle()" ng-if = "!accidentBasicInfoVisibility && accidentBasicInfoVisibilityButton"  class="btn btn-primary " style="color:#fff0ff;">Next</button>
+			<div class="row" style="margin: 4%;">
+				<div class="pull-right">
+					<button
+						ng-if="!accidentBasicInfoVisibility && accidentBasicInfoVisibilityButton"
+						class="btn btn-primary " style="color: #fff0ff;">Next</button>
 				</div>
 			</div>
-
+			</form>
 		</div>
 
 		<!--<div style = "width:50%;margin:auto;margin-bottom: 1%;margin-top: 1%">
@@ -141,76 +202,125 @@
 	</div>
 
 	<!-- for for accident vehicle details -->
-	<div class = "panel panel-default" ng-if = "accidentVehicle">
-		<div class = "panel-heading">Accident Vehicle(s) Information</div>
+	<div class="panel panel-default" ng-if="accidentVehicle">
+		<div class="panel-heading">Accident Vehicle(s) Information</div>
 
-		<div class = "panel-body">
-
-			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		<div class="panel-body">
+			<div class="panel-group" id="accordion" role="tablist"
+				aria-multiselectable="true">
 
 				<div ng-repeat="vehicle in vehicles ">
 
 					<div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="heading{{ vehicle }}">
-							<h4 class="panel-title" align = "center">
-								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ vehicle }}" aria-expanded="true" aria-controls="collapse{{ vehicle }}">
-									Accident Vehicle {{ vehicle + 1 }}
-								</a>
+							<h4 class="panel-title" align="center">
+								<a role="button" data-toggle="collapse" data-parent="#accordion"
+									href="#collapse{{ vehicle }}" aria-expanded="true"
+									aria-controls="collapse{{ vehicle }}"> Accident Vehicle {{
+									vehicle + 1 }} </a>
 							</h4>
 						</div>
-						<div id="collapse{{ vehicle }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ vehicle }}">
+						<div id="collapse{{ vehicle }}" class="panel-collapse collapse in"
+							role="tabpanel" aria-labelledby="heading{{ vehicle }}">
 							<div class="panel-body">
 								<!-- form fr adding each accident vehicle -->
 
-								<div  ng-repeat="(key,value) in newAccidentVehicleForm ">
+								<div ng-repeat="(key,value) in newAccidentVehicleForm ">
 
-									<div class = "col-sm-4" ng-hide = "key >= 0" ng-if="key != 'Licence Number' && key != 'Vehicle Plate Number/Registration Number' && key != 'Expiered driving licence' &&key != 'Date of Birth' && key != 'Full Name' && key != 'Gender' && key != 'Vehicle Ownership Category' && key != 'Vehicle Owner Name' && key != 'Vehicle Class' && key != 'Make' && key != 'Model' ">
+									<div class="col-sm-4" ng-hide="key >= 0"
+										ng-if="key != 'Licence Number' && key != 'Vehicle Plate Number/Registration Number' && key != 'Expiered driving licence' &&key != 'Date of Birth' && key != 'Full Name' && key != 'Gender' && key != 'Vehicle Ownership Category' && key != 'Vehicle Owner Name' && key != 'Vehicle Class' && key != 'Make' && key != 'Model' ">
 
-										<label style="font-size: 0.8em" >{{ key}}</label><br />
-										<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentVehicleForm[vehicle][key]" class="form-control input-sm"/>
-										<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isInteger(key)"  ng-model="newAccidentVehicleForm[vehicle][key]" class="form-control input-sm" />
-										<select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="newAccidentVehicleForm[vehicle][key]" class="form-control input-sm">
-											<option value="true">Yes</option><option value="false">No</option>
-										</select>
-										<select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentVehicleForm[vehicle][key]" />
-										<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehicleForm[vehicle][key]"/>
-										
+										<label style="font-size: 0.8em">{{ key}}</label><br /> <input ng-required="isRequired(key)"
+											data-toggle="tooltip" title="{{ setDescription(key) }}"
+											ng-if="isString(key) && !hasDataSets(key)"
+											ng-model="newAccidentVehicleForm[vehicle][key]"
+											class="form-control input-sm" /> <input ng-required="isRequired(key)" data-toggle="tooltip"
+											title="{{ setDescription(key) }}" ng-if="isInteger(key)"
+											ng-model="newAccidentVehicleForm[vehicle][key]"
+											class="form-control input-sm" /> <select ng-required="isRequired(key)"
+											data-toggle="tooltip" title="{{ setDescription(key) }}"
+											ng-if="isBoolean(key)"
+											ng-model="newAccidentVehicleForm[vehicle][key]"
+											class="form-control input-sm">
+											<option value="true">Yes</option>
+											<option value="false">No</option>
+										</select> <select ng-required="isRequired(key)" data-toggle="tooltip"
+											title="{{ setDescription(key) }}"
+											class="form-control input-sm" ng-if="hasDataSets(key)"
+											ng-options="item.name as item.name for item in getOptionSets(key)"
+											ng-model="newAccidentVehicleForm[vehicle][key]" /> <input
+											ui-date-format="yy-mm-dd" data-toggle="tooltip"
+											title="{{ setDescription(key) }}" ng-if="isDate(key)"
+											ui-date="dateOptions" class="form-control input-sm"
+											ng-model="newAccidentVehicleForm[vehicle][key]" />
+
 									</div>
-									<element-input class = "col-sm-4" ng-if="key == 'Licence Number'" crud-operation="'update'" ng-data-element-name="'Driver License Number'" ng-model="newAccidentVehicleForm[vehicle][key]"></element-input>
-									<element-input class = "col-sm-4" ng-if="key == 'Vehicle Plate Number/Registration Number'" crud-operation="'update'" ng-data-element-name="'Vehicle Plate Number/Registration Number'" ng-model="newAccidentVehicleForm[vehicle][key]"></element-input>
+									<element-input class="col-sm-4" ng-if="key == 'Licence Number'"
+										crud-operation="'update'"
+										ng-data-element-name="'Driver License Number'"
+										ng-model="newAccidentVehicleForm[vehicle][key]"></element-input>
+									<element-input class="col-sm-4"
+										ng-if="key == 'Vehicle Plate Number/Registration Number'"
+										crud-operation="'update'"
+										ng-data-element-name="'Vehicle Plate Number/Registration Number'"
+										ng-model="newAccidentVehicleForm[vehicle][key]"></element-input>
 								</div>
 
 							</div>
 						</div>
 
 						<!-- form for adding new accident vehicle passengers -->
-						<div  ng-if = "newAccidentVehiclePassengers[vehicle].counter.length > 0" style = "padding:1%;">
+						<div
+							ng-if="newAccidentVehiclePassengers[vehicle].counter.length > 0"
+							style="padding: 1%;">
 							<!-- button for show or hide passenger forms -->
-							<div style = "padding-bottom: 2%;padding-top: 2%;">
-								<button class = "btn btn-default" ng-click="showHidePassengerForms(vehicle)">show/hide passenger(s) for vehicle {{ vehicle + 1}}</button>
+							<div style="padding-bottom: 2%; padding-top: 2%;">
+								<button class="btn btn-default"
+									ng-click="showHidePassengerForms(vehicle)">show/hide
+									passenger(s) for vehicle {{ vehicle + 1}}</button>
 							</div>
 
-							<div class = "panel panel-default">
-								<div class = "panel-heading">Accident Vehicle's Passenger(s) information for vehicle {{ vehicle + 1}}</div>
-								<div class = "panel-body" ng-if="passengerFormsVisibility[vehicle].visibility">
+							<div class="panel panel-default">
+								<div class="panel-heading">Accident Vehicle's Passenger(s)
+									information for vehicle {{ vehicle + 1}}</div>
+								<div class="panel-body"
+									ng-if="passengerFormsVisibility[vehicle].visibility">
 									<!-- loop through all passenger list-->
-									<div class = "col-sm-12" ng-repeat="passenger in newAccidentVehiclePassengers[vehicle].counter" style = "padding-top:1%;">
+									<div class="col-sm-12"
+										ng-repeat="passenger in newAccidentVehiclePassengers[vehicle].counter"
+										style="padding-top: 1%;">
 
-										<div class = "panel panel-default">
-											<div class = "panel-heading">
-												Passenger {{ passenger.passengerCounter + 1}}
-											</div>
-											<div class = "panel-body">
+										<div class="panel panel-default">
+											<div class="panel-heading">Passenger {{
+												passenger.passengerCounter + 1}}</div>
+											<div class="panel-body">
 												<!-- form for each passenger -->
-												<div class = "col-sm-4" ng-repeat = "(key,value) in newAccidentPassengerForm">
-													<label style="font-size: 0.8em" >{{ key}}</label><br />
-													<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" class="form-control input-sm"/>
-													<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isInteger(key)"  ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" class="form-control input-sm" />
-													<select data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isBoolean(key)"  ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" class="form-control input-sm">
-														<option value="true">Yes</option><option value="false">No</option>
-													</select>
-													<select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" />
-													<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]"/>
+												<div class="col-sm-4"
+													ng-repeat="(key,value) in newAccidentPassengerForm">
+													<label style="font-size: 0.8em">{{ key}}</label><br /> <input ng-required="isRequired(key)"
+														data-toggle="tooltip" title="{{ setDescription(key) }}"
+														ng-if="isString(key) && !hasDataSets(key)"
+														ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]"
+														class="form-control input-sm" /> <input ng-required="isRequired(key)"
+														data-toggle="tooltip" title="{{ setDescription(key) }}"
+														ng-if="isInteger(key)"
+														ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]"
+														class="form-control input-sm" /> <select ng-required="isRequired(key)"
+														data-toggle="tooltip" title="{{ setDescription(key) }}"
+														ng-if="isBoolean(key)"
+														ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]"
+														class="form-control input-sm">
+														<option value="true">Yes</option>
+														<option value="false">No</option>
+													</select> <select ng-required="isRequired(key)" data-toggle="tooltip"
+														title="{{ setDescription(key) }}"
+														class="form-control input-sm" ng-if="hasDataSets(key)"
+														ng-options="item.name as item.name for item in getOptionSets(key)"
+														ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" />
+													<input ng-required="isRequired(key)" ui-date-format="yy-mm-dd" data-toggle="tooltip"
+														title="{{ setDescription(key) }}" ng-if="isDate(key)"
+														ui-date="dateOptions" class="form-control input-sm"
+														ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" />
 												</div>
 
 											</div>
@@ -221,17 +331,20 @@
 						</div>
 
 						<!-- button for adding accident passengers -->
-						<div style = "padding: 2%;" ng-if="passengerFormsVisibility[vehicle].visibility">
-							<button class = "btn btn-default" ng-click="addPasseger(vehicle)">Add Passenger</button>
+						<div style="padding: 2%;"
+							ng-if="passengerFormsVisibility[vehicle].visibility">
+							<button class="btn btn-default" ng-click="addPasseger(vehicle)">Add
+								Passenger</button>
 						</div>
 					</div>
 				</div>
 			</div>
 
 
-			<div  class = "row" style="margin:4%;">
-				<div class = "pull-right">
-					<button ng-click="addAccidentWitness()" class="btn btn-primary " style="color:#fff0ff;">Next</button>
+			<div class="row" style="margin: 4%;">
+				<div class="pull-right">
+					<button ng-click="addAccidentWitness()" class="btn btn-primary "
+						style="color: #fff0ff;">Next</button>
 				</div>
 			</div>
 
@@ -239,38 +352,59 @@
 	</div>
 
 	<!-- form for adding accident witness -->
-	<div class = "panel panel-default" ng-if = "accidentWitness">
-		<div class = "panel-heading">Accident Vehicle's Witness Information</div>
-		<div class = "panel-body">
+	<form ng-submit="saveAccident()">
+	<div class="panel panel-default" ng-if="accidentWitness">
+		<div class="panel-heading">Accident Vehicle's Witness
+			Information</div>
+		<div class="panel-body">
 
-			<div class="panel-group" id="accordionwitness" role="tablist" aria-multiselectable="true">
+			<div class="panel-group" id="accordionwitness" role="tablist"
+				aria-multiselectable="true">
 
 				<div ng-repeat="witness in witnesses ">
 
 					<div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="heading{{ witness }}">
-							<h4 class="panel-title" align = "center">
-								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ witness }}" aria-expanded="true" aria-controls="collapse{{ witness }}">
-									Accident Witness {{ witness + 1 }}
-								</a>
+							<h4 class="panel-title" align="center">
+								<a role="button" data-toggle="collapse" data-parent="#accordion"
+									href="#collapse{{ witness }}" aria-expanded="true"
+									aria-controls="collapse{{ witness }}"> Accident Witness {{
+									witness + 1 }} </a>
 							</h4>
 						</div>
-						<div id="collapse{{ witness }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ witness }}">
+						<div id="collapse{{ witness }}" class="panel-collapse collapse in"
+							role="tabpanel" aria-labelledby="heading{{ witness }}">
 							<div class="panel-body">
 								<!-- form for adding each accident witness -->
 
-								<div  ng-repeat="(key,value) in newAccidentWitnessForm ">
+								<div ng-repeat="(key,value) in newAccidentWitnessForm ">
 
-									<div class = "col-sm-4" ng-hide = "key >= 0" >
+									<div class="col-sm-4" ng-hide="key >= 0">
 
-										<label style="font-size: 0.8em">{{ key}}</label><br />
-										<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="newAccidentWitnessForm[witness][key]" class="form-control input-sm"/>
-										<input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isInteger(key)"  ng-model="newAccidentWitnessForm[witness][key]" class="form-control input-sm" />
-										<select data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isBoolean(key)"  ng-model="newAccidentWitnessForm[witness][key]" class="form-control input-sm">
-											<option value="true">Yes</option><option value="false">No</option>
-										</select>
-										<select data-toggle="tooltip"  title="{{ setDescription(key) }}"data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="newAccidentWitnessForm[witness][key]" />
-										<input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="newAccidentWitnessForm[witness][key]"/>
+										<label style="font-size: 0.8em">{{ key}}</label><br /> <input ng-required="isRequired(key)"
+											data-toggle="tooltip" title="{{ setDescription(key) }}"
+											ng-if="isString(key) && !hasDataSets(key)"
+											ng-model="newAccidentWitnessForm[witness][key]"
+											class="form-control input-sm" /> <input data-toggle="tooltip"
+											title="{{ setDescription(key) }}" ng-if="isInteger(key)"
+											ng-model="newAccidentWitnessForm[witness][key]"
+											class="form-control input-sm" /> <select ng-required="isRequired(key)"
+											data-toggle="tooltip" title="{{ setDescription(key) }}"
+											ng-if="isBoolean(key)"
+											ng-model="newAccidentWitnessForm[witness][key]"
+											class="form-control input-sm">
+											<option value="true">Yes</option>
+											<option value="false">No</option>
+										</select> <select ng-required="isRequired(key)" data-toggle="tooltip"
+											title="{{ setDescription(key) }}" data-toggle="tooltip"
+											title="{{ setDescription(key) }}"
+											class="form-control input-sm" ng-if="hasDataSets(key)"
+											ng-options="item.name as item.name for item in getOptionSets(key)"
+											ng-model="newAccidentWitnessForm[witness][key]" /> <input ng-required="isRequired(key)"
+											ui-date-format="yy-mm-dd" data-toggle="tooltip"
+											title="{{ setDescription(key) }}" ng-if="isDate(key)"
+											ui-date="dateOptions" class="form-control input-sm"
+											ng-model="newAccidentWitnessForm[witness][key]" />
 
 									</div>
 								</div>
@@ -285,23 +419,22 @@
 		</div>
 	</div>
 
-	<div style = "text-align: center" ng-if = "accidentWitness">
-		<button ng-click = "saveAccident() " class="btn btn-primary " style="color:#fff0ff;margin-bottom:2%;">Add new Accident</button>
+	<div style="text-align: center" ng-if="accidentWitness">
+		<button class="btn btn-primary "
+			style="color: #fff0ff; margin-bottom: 2%;">Add new Accident</button>
 	</div>
-
+	</form>
 </div>
 
 <!-- progress messages during adding accident into the system -->
-<div ng-if="savingNewAccident" >
-	<div style="padding:50px;padding-top:0;margin-top: 3%;">
-		<div class = "panel panel-default">
+<div ng-if="savingNewAccident">
+	<div style="padding: 50px; padding-top: 0; margin-top: 3%;">
+		<div class="panel panel-default">
 			<div class="panel-heading">Adding new Accident progress</div>
-			<div class = "panel-body">
-				<div class = "row">
+			<div class="panel-body">
+				<div class="row">
 					<div ng-repeat="message in addingAccidentProgress ">
-						<div class = "col-sm-12">
-							{{ message }}
-						</div>
+						<div class="col-sm-12">{{ message }}</div>
 					</div>
 				</div>
 			</div>
