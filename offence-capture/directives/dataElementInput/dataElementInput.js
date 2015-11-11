@@ -16,7 +16,6 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         angular.forEach($scope.dataElement.attributeValues,function(attributeValue){
         	
         	if(attributeValue.attribute.name == "Function"){
-        		
         		$scope.functions = eval("(" + attributeValue.value+ ')');
         	}
         })
@@ -45,15 +44,12 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         		driverEventModal.getAll(function(result){
         			
         			var data = [];
-        			console.log(result.data.length);
         			angular.forEach(result.data,function(driver){
         				if(driver["Driver License Number"].indexOf(searchValue) != -1)
         				{
         					data.push({name:driver["Driver License Number"]});
         				}
         			});
-        			//console.clear()
-        			console.log(JSON.stringify(data));
         			deffered.resolve(data);
             		$scope.$apply();
         			
@@ -87,6 +83,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         		return false;
         	},
         	checkIfDriverExists:function(input,response){
+        		var dataElement = this;
         		if(input == "" || !input){
                 	response.status = "ERROR";
                     response.message = "The license is not valid.";
@@ -95,7 +92,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         		response.status = "LOADING";
         		var driverEventModal = new iroad2.data.Modal("Driver",[]);
         		driverEventModal.get(new iroad2.data.SearchCriteria("Driver License Number","=",input),function(result){
-        			this.setValidation(result.length > 0);
+        			dataElement.setValidation(result.length > 0);
         			$scope.$apply();
         		},function(error){console.log(error)})
         	},
@@ -219,9 +216,8 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         	actions:[{name:"Driver Exists",functionName:"checkIfDriverExists"},{name:"View Driver Details",functionName:"showDriverInfo"},{name:"View Driver Accidents",functionName:"showDriverAccidents"},{name:"View Driver Accidents",functionName:"showDriverOffences"}],
         	events:{onBlur:"checkIfDriverExists"}
         }*/
-        /*if($scope.functions == null){
-        	//Code for Vehicle registration
-        	$scope.functions = {
+        //Code for Vehicle registration
+        	/*$scope.functions = {
                 	init:function(){
                 		
                 	},
@@ -277,6 +273,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
 		        		return false;
 		        	},
                 	checkIfVehicleExists:function(input,response){
+                		var dataElementInput = this;
                 		if(input == "" || !input){
                 			response.status = "ERROR";
                     		response.message = "The Vehicle Registration Number is not valid.";
@@ -285,7 +282,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
                 		response.status = "LOADING";
                 		var vehicleEventModal = new iroad2.data.Modal("Vehicle",[]);
                 		vehicleEventModal.get(new iroad2.data.SearchCriteria("Vehicle Plate Number/Registration Number","=",input),function(result){
-                			setValidation(result.length > 0);
+                			dataElementInput.setValidation(result.length > 0);
                 			$scope.$apply();
                 		},function(error){console.log(error)})
                 	},
@@ -409,7 +406,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
                 	actions:[{name:"Vehicle Exists",functionName:"checkIfVehicleExists"},{name:"View Vehicle Details",functionName:"showVehicleInfo"},{name:"View Vehicle Accidents",functionName:"showVehicleAccidents"},{name:"View Vehicle Accidents",functionName:"showVehicleOffences"}],
                 	events:{onBlur:"checkIfVehicleExists"}
                 }
-        }
+        */
         /*if($scope.functions == null){
         	//Code for Payment
         	$scope.functions = {
@@ -467,11 +464,11 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
 		        		return false;
 		        	},
                 	checkIfPaymentExists:function(input,response){
-                		
+                		var dataElementInput = this;
                 		response.status = "LOADING";
                 		var vehicleEventModal = new iroad2.data.Modal("Payment Reciept",[]);
                 		vehicleEventModal.get(new iroad2.data.SearchCriteria("Reciept Number","=",input),function(result){
-                			this.setValidation(result.length > 0);
+                			dataElementInput.setValidation(result.length > 0);
                 			$scope.$apply();
                 		},function(error){console.log(error)})
                 	},

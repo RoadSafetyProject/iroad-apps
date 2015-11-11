@@ -78,12 +78,15 @@
                 </tr>
                 </tbody>
             </table>
-            <pagination class="pull-right" total-items="pager.total" page="pager.page"
+            
+        </div>
+        
+		 <div class="mws-panel-footer no-padding">
+		 	<pagination ng-modal="paginationModal" class="pull-right" total-items="pager.total" page="pager.page"
           max-size="5" boundary-links="true"
           on-select-page="pageChanged(page)" items-per-page="pager.pageSize" class="pagination-sm">
         </pagination>
-        </div>
-
+		 </div>
     </div>
 
 		
@@ -324,8 +327,8 @@
             	<td>
             		<!-- <label>Offence Reciept Number</label><br />
             		<input data-toggle="tooltip"  title="{{ setDescription('Offence Reciept Number') }}" ng-model="editingEvent['Offence Reciept Number']" class="form-control" /> -->
-            		<element-input ng-if="editOffenceTitle == 'Add New Offence'" crud-operation="'update'" ng-data-element-name="'Offence Reciept Number'" ng-model="editingEvent['Offence Reciept Number']"></element-input>
-            		<element-input ng-if="editOffenceTitle == 'Edit Offence'" crud-operation="'update'" ng-data-element-name="'Offence Reciept Number'" ng-model="editingEvent['Offence Reciept Number']"></element-input>
+            		<element-input ng-if="editOffenceTitle == 'Add New Offence'" crud-operation="'update'" ng-data-element-name="'Reciept Number'" ng-model="editingEvent['Reciept Number']"></element-input>
+            		<element-input ng-if="editOffenceTitle == 'Edit Offence'" crud-operation="'update'" ng-data-element-name="'Reciept Number'" ng-model="editingEvent['Reciept Number']"></element-input>
             	</td>
             </tr>
             <tr ng-if="editingEvent['Offence Paid']">
