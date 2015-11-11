@@ -17,7 +17,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         	
         	if(attributeValue.attribute.name == "Function"){
         		
-        		//$scope.functions = eval("(" + attributeValue.value+ ')');
+        		$scope.functions = eval("(" + attributeValue.value+ ')');
         	}
         })
         //Code for drivers license
@@ -219,7 +219,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         	actions:[{name:"Driver Exists",functionName:"checkIfDriverExists"},{name:"View Driver Details",functionName:"showDriverInfo"},{name:"View Driver Accidents",functionName:"showDriverAccidents"},{name:"View Driver Accidents",functionName:"showDriverOffences"}],
         	events:{onBlur:"checkIfDriverExists"}
         }*/
-        if($scope.functions == null){
+        /*if($scope.functions == null){
         	//Code for Vehicle registration
         	$scope.functions = {
                 	init:function(){
