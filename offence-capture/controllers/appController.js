@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select"])
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select","ui.bootstrap"])
 /*.directive('iroadInput', function () {
     return {
         template: 'Name:'
@@ -37,6 +37,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
             $scope.progresMessagess = "";
             $scope.progresMessage = false;
         }
+        $scope.boundaryLinks  = true;
+        $scope.directionLinks = true;
         //selected org unit
         $scope.today = DateUtils.getToday();
         $scope.panel = {vehicle:false,driver : false,offences:false,edit:false,payment:false};
@@ -62,11 +64,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         	$scope.showProgresMessage("Loading Offences...");
         	$scope.offenceEventModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
         	$scope.offenceEventModal.getAll(function(result){
+        		
         		$scope.hideProgresMessage();
         		$scope.pager = result.pager;
 				$scope.data.offences = result.data;
 				$scope.$apply();
-				
+				console.clear();
+				console.log(JSON.stringify($scope.pager));
 			},$scope.pageSize,page,true);
         }
         $scope.onInitialize = function(){
@@ -371,7 +375,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
         }
 		$scope.data.editingOutputModal = [];
 		$scope.$watch("data.editingOutputModal",function(){
-			console.log(JSON.stringify($scope.data.editingOutputModal));
 			if($scope.editingEvent){
 				$scope.editingEvent['Offence Reciept Amount'] = 0;
 				angular.forEach($scope.data.editingOutputModal,function(offence){

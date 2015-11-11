@@ -439,6 +439,17 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.isInteger = function(key){
 		return $scope.is(key,"int");
 	}
+	$scope.isRequired = function(key){
+    	
+    	var compulsory = false;
+    	angular.forEach(iroad2.data.programs,function(program){
+    		angular.forEach(program.programStages[0].programStageDataElements,function(programStageDataElement){
+    			
+    			compulsory = programStageDataElement.compulsory;
+        	});
+    	});
+        return compulsory;
+    }
 	$scope.isDate = function(key){
 		return $scope.is(key,"date");
 	}

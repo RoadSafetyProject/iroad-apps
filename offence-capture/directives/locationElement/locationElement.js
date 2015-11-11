@@ -9,7 +9,6 @@ angular.module('eventCapture').directive('locationElement', function ($timeout) 
         if(!$scope.ngCoordinate){
         	$scope.ngCoordinate = {latitude:-6.771339, longitude:39.239913,};
         }
-        console.log($scope.ngCoordinate);
         $scope.marker = {
         	    location: $scope.ngCoordinate,
         	    locationName: $scope.ngModel,

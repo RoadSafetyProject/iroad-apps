@@ -86,19 +86,22 @@
                     <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
                     <button ng-click="ViewInfo(editingEvent)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button>         </div>
                 <div class="panel-body" style="padding-left: 30px">
+                <form ng-submit="updateVehicle(editingEvent)">
                     <table >
                         <tr  class="todelete"  ng-repeat="datas in editingEvent.dataValues  | orderBy:'sortOrder'">
                             <td style="margin-right: 20px">
-                                <label>{{ datas.name }}</label><br>
-                                <input data-toggle="tooltip"  title="{{ setDescription(datas.name) }}" class="form-control" ng-if="!datas.optionSet && datas.type != 'bool'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
-                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
-                                <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
+                                <label ng-if="datas.name != 'Vehicle Plate Number/Registration Number'">{{ datas.name }}</label><br>
+                                <element-input ng-if="datas.name == 'Vehicle Plate Number/Registration Number'" crud-operation="'update'" ng-data-element-name="'Vehicle Plate Number/Registration Number'" ng-model="datas.value"></element-input>
+                                <input ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}" class="form-control" ng-if="!datas.optionSet && datas.type != 'bool' && datas.name != 'Vehicle Plate Number/Registration Number'"  ng-model="datas.value" ng-blur="updateData(datas.id,datas.value,editingEvent,$event,datas,data.selectedprogram.dataValues.events)" ng-style="datas.color">
+                                <select ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-change="updateData(datas.id,datas.value,events,$event,datas,data.events.programs[31].dataValues.events)" ng-style="datas.color" ></select>
+                                <select ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
-                            <td><button class="btn btn-sm btn-primary" ng-click="updateVehicle(editingEvent)">Done</button> </td>
+                            <td><button class="btn btn-sm btn-primary" type="submit">Done</button> </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
                 </div>
@@ -111,15 +114,17 @@
                     <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
                   </div>
                 <div class="panel-body" style="padding-left: 30px">
+                <form ng-submit="AddVehicle(data.newCarValue)">
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle'].programStages[0].programStageDataElements  | orderBy:'sortOrder'">
                         <td >
-                            <label>{{ list.dataElement.name }}</label>
-                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='string'" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
-                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='int'" ng-blur="validateNewCarInt(list.dataElement)" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
-                            <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control" ng-focus="focusMe(list.dataElement.name)"  ng-if="list.dataElement.type=='date'" ui-date="dateOptions1"  ng-model="data.newCarValue[list.dataElement.id]" >
-                            <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
-                            <select data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="datas.value" ng-options="item.name as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
+                            <label ng-if="list.dataElement.name != 'Vehicle Plate Number/Registration Number'">{{ list.dataElement.name }}</label>
+                            <element-input ng-if="list.dataElement.name == 'Vehicle Plate Number/Registration Number'" crud-operation="'create'" ng-data-element-name="'Vehicle Plate Number/Registration Number'" ng-model="datas.value"></element-input>
+                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='string' && list.dataElement.name != 'Vehicle Plate Number/Registration Number'" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <input  ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  ng-if="!list.dataElement.optionSet && list.dataElement.type!='date' && list.dataElement.type =='int'" ng-blur="validateNewCarInt(list.dataElement)" style="width: 100%;background: #ffffff" ng-model="data.newCarValue[list.dataElement.id]"  >
+                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control" ng-focus="focusMe(list.dataElement.name)"  ng-if="list.dataElement.type=='date'" ui-date="dateOptions1"  ng-model="data.newCarValue[list.dataElement.id]" >
+                            <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newCarValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                            <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="datas.value" ng-options="item.name as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                           </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -127,10 +132,11 @@
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddVehicle(data.newCarValue)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right" type="submit">Add</button>
                             </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
             </div>
@@ -142,13 +148,14 @@
                 <div class="panel-heading"><b>Update Vehicle Insurance</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number/Registration Number'].value }} </p>
+                    <form ng-submit="AddInsurance(data.newInsurance,vehicle.event)">
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle Insurance History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
-                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInsurance[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
+                                <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInsurance[list.dataElement.id]"  >
+                                <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInsurance[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -156,10 +163,11 @@
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddInsurance(data.newInsurance,vehicle.event)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right" type="submit">Add</button>
                             </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
             </div>
@@ -171,13 +179,14 @@
                 <div class="panel-heading"><b>Update Vehicle Business Licence</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number/Registration Number'].value }} </p>
+                    <form ng-submit="AddBussinessLicence(data.newBusLicence,vehicle.event)">
                     <table >
                         <tr ng-repeat="list in  data.programs['Bussiness License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -185,10 +194,11 @@
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddBussinessLicence(data.newBusLicence,vehicle.event)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right" type="submit" >Add</button>
                             </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
             </div>
@@ -201,13 +211,14 @@
                     <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number/Registration Number'].value }} </p>
+                    <form ng-submit="AddBussinessLicence(data.newBusLicence,vehicle.event)">
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
-                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input ng-pattern="/^T[0-9]{3} [A-Z]{3}$/" ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newBusLicence[list.dataElement.id]"  >
+                                <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newBusLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -215,10 +226,11 @@
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddBussinessLicence(data.newBusLicence,vehicle.event)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right" type="submit">Add</button>
                             </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
             </div>
@@ -229,13 +241,14 @@
                 <div class="panel-heading"><b>Update Vehicle Inspection</b> <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>                 <button href="#" ng-click="ViewInfo(vehicle)" class="pull-right" title="view vehicle information"><i class="fa fa-info-circle"></i></button> &nbsp;&nbsp;                 </div>
                 <div class="panel-body" style="padding-left: 30px">
                     <p>Registration number : {{ vehicle.dataValues['Vehicle Plate Number/Registration Number'].value }} </p>
+                    <form ng-submit="AddnewInspection(data.newInspection,vehicle.event)">
                     <table >
                         <tr ng-repeat="list in  data.programs['Vehicle Inspection'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                             <td ng-if="list.dataElement.name != 'Program_Vehicle'">
                                 <label>{{ list.dataElement.name }}</label>
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
-                                <input data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
-                                <select data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInspection[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
+                                <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
+                                <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newInspection[list.dataElement.id]"  >
+                                <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}" class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newInspection[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -243,10 +256,11 @@
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
                                 <span class="pull-left text-success" ng-if="kayaUpdatedSuccess"><i class='fa fa-check fa-2x'></i> Saved Successful </span>
                                 <span class="pull-left text-danger" ng-if="kayaUpdateFalue"><i class='fa fa-times fa-2x'></i> Saving Failed </span>
-                                <button class="btn btn-sm btn-primary pull-right" ng-click="AddnewInspection(data.newInspection,vehicle.event)">Add</button>
+                                <button class="btn btn-sm btn-primary pull-right" type="submit">Add</button>
                             </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
 
             </div>
@@ -259,25 +273,27 @@
                     <button ng-click="cancelEdit()" class="pull-right"> <i class="fa fa-times text-danger"></i>  </button>
                 </div>
                 <div class = "panel-body">
+                	<form ng-submit = "saveVehicleOwnerHistory(vehicle,editingEvent)">
                     <table class="table ">
                         <tr    ng-repeat="(key, value) in formVehicleOwnerHistroy | orderBy:'sortOrder'">
                             <td >
                                 <label>{{key}}</label><br>
-                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control"/>
-                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
-                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control">
+                                <input ng-required="true" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isString(key) && !hasDataSets(key)"  ng-model="editingEvent[key]" class="form-control"/>
+                                <input ng-required="true" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isInteger(key)"  ng-model="editingEvent[key]" class="form-control" />
+                                <select ng-required="true" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isBoolean(key)"  ng-model="editingEvent[key]" class="form-control">
                                     <option value="true">Yes</option><option value="false">No</option>
                                 </select>
-                                <select data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
-                                <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" ui-date-format="yy-mm-dd" class="form-control" ng-model="editingEvent[key]"/>
+                                <select ng-required="true" data-toggle="tooltip"  title="{{ setDescription(key) }}"  class="form-control" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editingEvent[key]" />
+                                <input ng-required="true" data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" ui-date-format="yy-mm-dd" class="form-control" ng-model="editingEvent[key]"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <buttton class = "btn btn-primary pull-right" ng-click = "saveVehicleOwnerHistory(vehicle,editingEvent)">save</buttton>
+                                <buttton class = "btn btn-primary pull-right" type="submit">save</buttton>
                             </td>
                         </tr>
                     </table>
+                    </form>
                 </div>
             </div>
 

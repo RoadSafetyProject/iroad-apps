@@ -183,6 +183,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                                 dataelement.name = dataVal.dataElement.name;
                                 dataelement.type = dataVal.dataElement.type;
                                 dataelement.sortOrder = dataVal.sortOrder;
+                                dataelement.compulsory = dataVal.compulsory;
                                 if(dataVal.dataElement.optionSet){
                                     dataelement.optionSet = dataVal.dataElement.optionSet;
                                 }
@@ -245,7 +246,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 });
             });
         }
-        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
         $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};

@@ -53,6 +53,11 @@
 				<td><b>Driving Class Name</b></td>
 				<td>{{ events.dataValues['Driving Class Name'].value | uppercase }}</td>
 			</tr>
+			<tr>
+				<td><b>Current License Expiry Date</b></td>
+				
+				<td ng-style="{'background-color': expireColor }">{{ events.dataValues['Current License Expiry Date'].value}} {{expired}}</td>
+			</tr>
 		</tbody>
 	</table>  
 </div>

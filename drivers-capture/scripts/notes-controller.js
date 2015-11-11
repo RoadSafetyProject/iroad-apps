@@ -16,6 +16,17 @@ eventCaptureControllers.controller('ShowDriverInfoController',
     function($scope,$modalInstance,events,defaultPhotoID){ 
 	//alert(defaultPhotoID);
 	$scope.defaultPhotoID = defaultPhotoID;
+	$scope.isLicenseExpiry = function(){
+			var dateString = events.dataValues['Current License Expiry Date'].value;
+			var date = new Date(parseInt(dateString.substr(0,4)),parseInt(dateString.substr(5,2)),parseInt(dateString.substr(8,2)))
+			console.log((new Date()).getTime() - date.getTime());
+			return ((new Date()).getTime() - date.getTime()) > 0;
+	}
+	$scope.expireColor = "";
+	$scope.expired = "(License has Expired)";
+	if($scope.isLicenseExpiry()){
+		$scope.expireColor = "red";
+	}
 	$scope.getImage = function(data){
 		var photo = data.dataValues["Driver Photo"];
 		//console.log(JSON.stringify(data));

@@ -239,8 +239,17 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		//Checks that all requests are made
 		this.resCount = [];
+		this.gotCount = 0;
 		this.resultsFetched = function(){
-			if (selfGetAll.resCount.length == 0) {
+			/*if (selfGetAll.resCount.length == 0) {
+				if(selfGetAll.dataResults != undefined){
+					selfGetAll.dataResults.data = selfGetAll.events;
+					onResult(selfGetAll.dataResults);
+				}else{
+					onResult(selfGetAll.events);
+				}
+			}*/
+			if(this.gotCount == selfGetAll.events.length){
 				if(selfGetAll.dataResults != undefined){
 					selfGetAll.dataResults.data = selfGetAll.events;
 					onResult(selfGetAll.dataResults);
@@ -254,6 +263,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			if(selfGetAll.dataResults != undefined){
 				selfGetAll.dataResults.pager = result.pager;
 			}
+			selfGetAll.gotCount = result.events.length;
 			for(var j = 0; j < result.events.length; j++) {//For each event render to entity column json
 				var event = result.events[j];
 				selfGetAll.resCount.push(1);
