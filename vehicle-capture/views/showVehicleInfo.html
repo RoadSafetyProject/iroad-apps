@@ -1,0 +1,22 @@
+
+<!--<div class="modal-header page">
+    
+</div>-->
+
+<div class="modal-body page"> 
+	<button type="button" class="close" data-ng-click="close()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<h3 align = "center">Vehicle Detailed Information</h3><br>
+	<table class="table">
+		<thead></thead>
+		<tbody>
+			<tr  ng-repeat="(key, value) in events.dataValues">
+				<td><b>{{key}}</b> </td>
+				<td>{{ value.value }}</td>
+			</tr>
+		</tbody>
+	</table>  
+</div>
+<!--
+<div class="modal-footer page">        
+    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
+</div>-->

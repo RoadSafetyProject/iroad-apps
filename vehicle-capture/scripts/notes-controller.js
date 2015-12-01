@@ -33,7 +33,15 @@ eventCaptureControllers.controller('', function($scope,$modalInstance,dhis2Event
         $modalInstance.close();
     };
 });
+eventCaptureControllers.controller('ShowVehicleInfoController',
+	    function($scope,$modalInstance,events){
+	        $scope.events = events;
+	        
+	        $scope.close = function(){
+	            $modalInstance.close();       
 
+	        };
+	    });
 eventCaptureControllers.controller('VehicleOwnerHistoryController',
     function($scope,
              $modalInstance,

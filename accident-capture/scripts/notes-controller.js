@@ -356,7 +356,13 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	$scope.isInteger = function(key){
 		return $scope.is(key,"int");
 	}
+
+	$scope.isFile = function(key){
+		console.log(key);
+		return $scope.is(key,"file");
+	}
 	$scope.isDate = function(key){
+		console.log(key);
 		return $scope.is(key,"date");
 	}
 	$scope.isString = function(key){
@@ -452,6 +458,12 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
     }
 	$scope.isDate = function(key){
 		return $scope.is(key,"date");
+	}
+	$scope.isFile = function(key){
+		if($scope.is(key,"file")){
+			alert(key);
+		}
+		return $scope.is(key,"file");
 	}
 	$scope.isString = function(key){
 		return $scope.is(key,"string");
