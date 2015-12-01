@@ -311,7 +311,15 @@
             <tr>
             	<td>
             		<label>Offence Date</label><br />
-            		<input required data-toggle="tooltip"  title="{{ setDescription('Offence Date') }}" ui-date="dateOptions" ui-date-format="yy-mm-dd"class="form-control"  ng-model="editingEvent['Offence Date']" />
+            		<!-- <input required data-toggle="tooltip"  title="{{ setDescription('Offence Date') }}" ui-date="dateOptions" ui-date-format="yy-mm-dd"class="form-control"  ng-model="editingEvent['Offence Date']" /> -->
+            		<input type="text" class="form-control input-sm"
+
+           datetimepicker
+           datetimepicker-options="{icons:{next:'glyphicon glyphicon-arrow-right',previous:'glyphicon glyphicon-arrow-left',up:'glyphicon glyphicon-arrow-up',down:'glyphicon glyphicon-arrow-down'}}"
+
+           placeholder="..."
+           name="time"
+             ng-model="editingEvent['Offence Date']">
             	</td>
             </tr>
             <tr>
