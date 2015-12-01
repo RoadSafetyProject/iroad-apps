@@ -5,6 +5,7 @@
 
 <div class="modal-body page"> 
 	<button type="button" class="close" data-ng-click="close()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<div id="driverPaneId">
 	<h3 align = "center">Driver Information</h3><br>
 	<table class="table">
 		<thead></thead>
@@ -60,8 +61,9 @@
 			</tr>
 		</tbody>
 	</table>  
+	</div>
 </div>
-<!--
+
 <div class="modal-footer page">        
-    <button class="btn btn-primary" data-ng-click="close()">{{'close'| translate}}</button>
-</div>-->
+    <button class="btn btn-primary" ng-click="printDiv('driverPaneId')">Print</button>
+</div>
