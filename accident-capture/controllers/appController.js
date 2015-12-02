@@ -139,7 +139,7 @@ eventCaptureControllers.controller('MainController',
 							var data = null;
 						}else{
 							eventAccidentVehicle[dataElement.dataElement.name] = "";
-
+							$scope.setDescription(dataElement.dataElement.name);
 						}
 					});
 				}
