@@ -52,6 +52,7 @@
                             </select>
                             <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccident[key]" value = "editedAccident[key]"/>
 
+                            <input type="file" ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}" ng-if="isFile(key)" class="form-control input-sm" ng-model="editedAccident[key]" />
                         </div>
                     </div>
 
@@ -96,6 +97,7 @@
                                                 </select>
                                                 <select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccidentVehicles[vehicle][key]" />
                                                 <input ui-date-format="yy-mm-dd" data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccidentVehicles[vehicle][key]"/>
+                                                <input type="file" ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}" ng-if="isFile(key)" class="form-control input-sm" ng-model="editedAccidentVehicles[vehicle][key]" />
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +131,7 @@
                                                                 </select>
                                                                 <select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedAccidentPassengers[passengerCounter][key]" />
                                                                 <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ui-date-format="yy-mm-dd" ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccidentPassengers[passengerCounter][key]"/>
-
+                                                                <input type="file" ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}" ng-if="isFile(key)" class="form-control input-sm" ng-model="editedAccidentPassengers[passengerCounter][key]" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -148,7 +150,7 @@
             </div>
 
 
-            <!--- ppanel for editing witness information -->
+            <!--- panel for editing witness information -->
             <div class = "panel panel-default" ng-if = "editedaccidentWitnesses[0]">
                 <div class = "panel-heading">Accident Vehicle's Witness Information</div>
                 <div class = "panel-body">
@@ -177,6 +179,7 @@
                                                 </select>
                                                 <select data-toggle="tooltip"  title="{{ setDescription(key) }}" class="form-control input-sm" ng-if="hasDataSets(key)"  ng-options="item.name as item.name for item in getOptionSets(key)" ng-model="editedaccidentWitnesses[witness][key]" />
                                                 <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isDate(key)" ui-date-format="yy-mm-dd" ui-date="dateOptions" class="form-control input-sm" ng-model="editedaccidentWitnesses[witness][key]"/>
+                                                <input type="file" ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}" ng-if="isFile(key)" class="form-control input-sm" ng-model="editedaccidentWitnesses[witness][key]" />
                                             </div>
                                         </div>
 

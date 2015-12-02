@@ -274,6 +274,10 @@
 											title="{{ setDescription(key) }}" ng-if="isDate(key)"
 											ui-date="dateOptions" class="form-control input-sm"
 											ng-model="newAccidentVehicleForm[vehicle][key]" />
+                                        <input type="file" ng-required="isRequired(key)" data-toggle="tooltip"
+                                               title="{{ setDescription(key) }}" ng-if="isFile(key)"
+                                               class="form-control input-sm"
+                                               ng-model="newAccidentVehicleForm[vehicle][key]" />
 
 									</div>
 									<element-input class="col-sm-4" ng-if="key == 'Licence Number'"
@@ -342,6 +346,10 @@
 														title="{{ setDescription(key) }}" ng-if="isDate(key)"
 														ui-date="dateOptions" class="form-control input-sm"
 														ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" />
+                                                    <input type="file" ng-required="isRequired(key)" data-toggle="tooltip"
+                                                           title="{{ setDescription(key) }}" ng-if="isFile(key)"
+                                                           class="form-control input-sm"
+                                                           ng-model="newAccidentVehiclePassengers[vehicle].Data[passenger.passengerCounter][key]" />
 												</div>
 
 											</div>
@@ -426,6 +434,10 @@
 											title="{{ setDescription(key) }}" ng-if="isDate(key)"
 											ui-date="dateOptions" class="form-control input-sm"
 											ng-model="newAccidentWitnessForm[witness][key]" />
+                                        <input type="file" ng-required="isRequired(key)" data-toggle="tooltip"
+                                               title="{{ setDescription(key) }}" ng-if="isFile(key)"
+                                               class="form-control input-sm"
+                                               ng-model="newAccidentWitnessForm[witness][key]" />
 
 									</div>
 								</div>
