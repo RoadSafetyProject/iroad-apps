@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select","ui.bootstrap",'datetimepicker'])
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select","ui.bootstrap",'ui.bootstrap.datetimepicker'])
 /*.directive('iroadInput', function () {
     return {
         template: 'Name:'
@@ -18,10 +18,10 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchOffences(page);
     	                };
-    	                var that = this;
-    	                this.openCalendar = function(e, date) {
-    	                    that.open[date] = true;
-    	                };
+    	                $scope.dateOptions = {
+    	                	    startingDay: 1,
+    	                	    showWeeks: false
+    	                	  };
     	$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
     	$scope.feedBack = false;
         $scope.progresMessage = false;

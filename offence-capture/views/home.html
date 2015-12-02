@@ -13,6 +13,12 @@
     .dataTables_paginate,.dataTables_info{
     	display:none !important;
     }
+    /* .datetimepicker-wrapper{
+    	width:50%;
+    } */
+    .datetimepicker-wrapper table tbody td{
+    	padding: 0px;
+    }
 </style>
 <div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="feedBack">{{ messagess }}</div>
 <div class="thumbnail" style="font-size:19px;position: absolute;bottom: 10px;right: 10px;z-index: 1000;border-radius: 5px; background-color: rgba(0,0,0,0.5);color: white" ng-if="progresMessage">{{ progresMessagess }}</div>
@@ -312,19 +318,17 @@
             	<td>
             		<label>Offence Date</label><br />
             		<!-- <input required data-toggle="tooltip"  title="{{ setDescription('Offence Date') }}" ui-date="dateOptions" ui-date-format="yy-mm-dd"class="form-control"  ng-model="editingEvent['Offence Date']" /> -->
-            		<input type="text" class="form-control input-sm"
-
-           datetimepicker
-           datetimepicker-options="{icons:{next:'glyphicon glyphicon-arrow-right',previous:'glyphicon glyphicon-arrow-left',up:'glyphicon glyphicon-arrow-up',down:'glyphicon glyphicon-arrow-down'}}"
-
-           placeholder="..."
-           name="time"
-             ng-model="editingEvent['Offence Date']">
+            		<datetimepicker ng-model="editingEvent['Offence Date']" 
+                date-format="dd-MMM-yyyy" 
+                date-options="dateOptions" 
+                show-spinners="true"
+                date-disabled="isDisabledDate(date, mode)">
+</datetimepicker>
             	</td>
             </tr>
             <tr>
             	<td>
-            		<label>Offence Paid</label><br />
+            		<label>Offence Status</label><br />
             		<select required data-toggle="tooltip"  title="{{ setDescription('Offence Paid') }}" ng-model="editingEvent['Offence Paid']" >
             			<option value="true">Yes</option>
             			<option value="false">No</option>

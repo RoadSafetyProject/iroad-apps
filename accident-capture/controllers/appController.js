@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select"]);
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.date","multi-select","ui.bootstrap",'ui.bootstrap.datetimepicker']);
 
 //Controller for settings page
 eventCaptureControllers.controller('MainController',
@@ -10,6 +10,7 @@ eventCaptureControllers.controller('MainController',
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
     	$scope.pageSize = 10;
+    	alert("");
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchAccidents(page);
     	                };

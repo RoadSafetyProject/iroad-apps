@@ -95,6 +95,12 @@
 									title="{{ setDescription(key) }}" ng-if="isDate(key)"
 									ui-date="dateOptions" class="form-control input-sm"
 									ng-model="newAccidentForm[key]" />
+									<datetimepicker ng-model="newAccidentForm[key]"  ng-if="isDate(key)"
+                date-format="dd-MMM-yyyy" 
+                date-options="dateOptions" 
+                show-spinners="true"
+                date-disabled="isDisabledDate(date, mode)">
+</datetimepicker>
 									<input type="file" ng-required="isRequired(key)" data-toggle="tooltip"
 									title="{{ setDescription(key) }}" ng-if="isFile(key)"
 									class="form-control input-sm"

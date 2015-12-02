@@ -16,7 +16,7 @@ var eventCapture = angular.module('eventCapture',
           'd2Controllers',
 		  'angularLocalStorage', 
 		  'pascalprecht.translate',
-          'd2HeaderBar',"datatables"])
+          'd2HeaderBar',"datatables",'ui.bootstrap.datetimepicker'])
               
 .value('DHIS2URL', '/')
 
