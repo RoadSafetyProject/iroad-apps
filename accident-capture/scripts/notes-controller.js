@@ -556,6 +556,18 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 		}
 	}
 
+    $scope.backAccidenInfo = function(){
+        $scope.accidentBasicInfo = true;
+        $scope.accidentVehicle = false;
+        $scope.accidentWitness = false;
+    }
+
+    $scope.backAccidenVehicle = function(){
+        $scope.accidentBasicInfo = false;
+        $scope.accidentVehicle = true;
+        $scope.accidentWitness = false;
+    }
+
 	//function to provide form for adding accident witness
 	var numberOfWitnesses = []
 	$scope.witnesses = [];

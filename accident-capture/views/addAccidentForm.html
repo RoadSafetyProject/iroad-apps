@@ -375,6 +375,10 @@
 
 
 			<div class="row" style="margin: 4%;">
+                <div class="pull-left">
+                    <button ng-click="backAccidenInfo()" class="btn btn-primary "
+                            style="color: #fff0ff;">Back</button>
+                </div>
 				<div class="pull-right">
 					<button ng-click="addAccidentWitness()" class="btn btn-primary "
 						style="color: #fff0ff;">Next</button>
@@ -457,7 +461,9 @@
 	</div>
 
 	<div style="text-align: center" ng-if="accidentWitness">
-		<button class="btn btn-primary "
+        <button ng-click="backAccidenVehicle()" class="btn btn-primary "
+                style="color: #fff0ff; margin-bottom: 2%;">Back</button>
+		<button type = "submit" class="btn btn-primary "
 			style="color: #fff0ff; margin-bottom: 2%;">Add new Accident</button>
 	</div>
 	</form>
