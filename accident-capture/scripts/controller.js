@@ -4,7 +4,7 @@
 'use strict';
 
 /* Controllers */
-var eventCaptureControllers = angular.module('eventCaptureControllers', [])
+var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.bootstrap",'ui.bootstrap.datetimepicker'])
 
 //Controller for settings page
     .controller('MainController',

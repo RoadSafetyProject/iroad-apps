@@ -10,10 +10,13 @@ eventCaptureControllers.controller('MainController',
              ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
              CustomFormService,ErrorMessageService,ModalService,DialogService) {
     	$scope.pageSize = 10;
-    	alert("");
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchAccidents(page);
     	                };
+    	                $scope.dateOptions = {
+    	                	    startingDay: 1,
+    	                	    showWeeks: false
+    	                	  };
     	//$scope.converts = {"Offence":{"name":"Section","button":"Nature"}};
     	$scope.feedBack = false;
         $scope.progresMessage = false;

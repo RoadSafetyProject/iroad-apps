@@ -405,7 +405,7 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 
 ///controller for AddAccidentController
 eventCaptureControllers.controller('AddAccidentController',function($scope,$http){
-
+	
 	//form visibility controllers
 	$scope.savingNewAccident = false;
 	$scope.accidentBasicInfo = true;
@@ -468,9 +468,6 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.is = function(key,dataType){
 		
 		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
-			if(iroad2.data.dataElements[j].type == "file"){
-				console.log(iroad2.data.dataElements[j].name +":"+key);
-			}
 			if(iroad2.data.dataElements[j].name == key){
 				
 				if(iroad2.data.dataElements[j].type == dataType){
