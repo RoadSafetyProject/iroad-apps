@@ -356,7 +356,12 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 	$scope.isInteger = function(key){
 		return $scope.is(key,"int");
 	}
+
+	$scope.isFile = function(key){
+		return $scope.is(key,"file");
+	}
 	$scope.isDate = function(key){
+		console.log(key);
 		return $scope.is(key,"date");
 	}
 	$scope.isString = function(key){
@@ -453,13 +458,21 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
 	$scope.isDate = function(key){
 		return $scope.is(key,"date");
 	}
+	$scope.isFile = function(key){
+		return $scope.is(key,"file");
+	}
 	$scope.isString = function(key){
 		return $scope.is(key,"string");
 	}
 
 	$scope.is = function(key,dataType){
+		
 		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+			if(iroad2.data.dataElements[j].type == "file"){
+				console.log(iroad2.data.dataElements[j].name +":"+key);
+			}
 			if(iroad2.data.dataElements[j].name == key){
+				
 				if(iroad2.data.dataElements[j].type == dataType){
 					return true;
 				}

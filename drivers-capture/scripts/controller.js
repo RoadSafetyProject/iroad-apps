@@ -343,7 +343,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         		return;
         	}
         	var ext = "." + file.type.replace("image/","");
-        	console.log('file is ' );
+            console.log('file : ' + JSON.stringify(file, null, 4));
             console.dir(file);
             var now = new Date();
             var month = now.getMonth() + 1;
