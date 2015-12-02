@@ -213,7 +213,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
         			$scope.$apply();
         		})
              },
-        	actions:[{name:"Driver Exists",functionName:"checkIfDriverExists"},{name:"View Driver Details",functionName:"showDriverInfo"},{name:"View Driver Accidents",functionName:"showDriverAccidents"},{name:"View Driver Accidents",functionName:"showDriverOffences"}],
+        	actions:[{name:"Driver Exists",functionName:"checkIfDriverExists"},{name:"View Driver Details",functionName:"showDriverInfo"},{name:"View Driver Accidents",functionName:"showDriverAccidents"},{name:"View Driver Offences",functionName:"showDriverOffences"}],
         	events:{onBlur:"checkIfDriverExists"}
         }*/
         //Code for Vehicle registration
@@ -291,7 +291,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
                 		var vehicleEventModal = new iroad2.data.Modal("Vehicle",[]);
                 		vehicleEventModal.get(new iroad2.data.SearchCriteria("Vehicle Plate Number/Registration Number","=",input),function(result){
                 			if(result.length > 0 && modalInstance == null){
-                				var vehicel = vehicleEventModal.convertToEvent("Vehicle",result[0],{});
+                				var vehicle = vehicleEventModal.convertToEvent("Vehicle",result[0],{});
                 				var dataValues = {};
                 				angular.forEach(vehicle.dataValues,function(dataValue){
                 					if(dataValue.dataElement){
@@ -304,17 +304,15 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
                 					}
                 				});
                 				vehicle.dataValues = dataValues;
+                				
                 				modalInstance = $modal.open({
-                                    templateUrl: '../drivers-capture/views/showDriverInfo.html',
-                                    controller: 'ShowDriverInfoController',
+                                    templateUrl: '../vehicle-capture/views/showVehicleInfo.html',
+                                    controller: 'ShowVehicleInfoController',
 
                                     resolve: {
                                         
                                         events: function () {
                                             return vehicle;
-                                        },
-                                        defaultPhotoID: function () {
-                                            return $scope.defaultPhotoID;
                                         }
                                     }
                                                     
@@ -403,7 +401,7 @@ angular.module('eventCapture').directive('elementInput', function ($modal,$http,
                 			$scope.$apply();
                 		})
                      },
-                	actions:[{name:"Vehicle Exists",functionName:"checkIfVehicleExists"},{name:"View Vehicle Details",functionName:"showVehicleInfo"},{name:"View Vehicle Accidents",functionName:"showVehicleAccidents"},{name:"View Vehicle Accidents",functionName:"showVehicleOffences"}],
+                	actions:[{name:"Vehicle Exists",functionName:"checkIfVehicleExists"},{name:"View Vehicle Details",functionName:"showVehicleInfo"},{name:"View Vehicle Accidents",functionName:"showVehicleAccidents"},{name:"View Vehicle Offences",functionName:"showVehicleOffences"}],
                 	events:{onBlur:"checkIfVehicleExists"}
                 }
         */
