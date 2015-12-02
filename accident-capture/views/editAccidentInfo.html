@@ -37,7 +37,7 @@
 
                     <div  ng-repeat="(key,value) in editAccidentForm ">
 
-                        <div class = "col-sm-4">
+                        <div class = "col-sm-4" ng-if = "key != 'Comment/Observations On accident'">
                             <label style="font-size: 0.8em">{{ key}}</label><br />
 
                             <input data-toggle="tooltip"  title="{{ setDescription(key) }}" ng-if="isString(key) && !hasDataSets(key)"  ng-model="editedAccident[key]" class="form-control input-sm"  value = "editedAccident[key]"/>
@@ -53,6 +53,11 @@
                             <input data-toggle="tooltip"  title="{{ setDescription(key) }}"  ng-if="isDate(key)" ui-date="dateOptions" class="form-control input-sm" ng-model="editedAccident[key]" value = "editedAccident[key]"/>
 
                             <input type="file" ng-required="isRequired(key)" data-toggle="tooltip" title="{{ setDescription(key) }}" ng-if="isFile(key)" class="form-control input-sm" ng-model="editedAccident[key]" />
+                        </div>
+
+                        <div class = "col-sm-4" ng-if = "key == 'Comment/Observations On accident'">
+                            <label style="font-size: 0.8em">Comment/Observations On accident</label>
+                            <textarea class = "form-control" ng-model="newAccidentForm['Comment/Observations On accident']" data-toggle="tooltip" title="{{ setDescription('Comment/Observations On accident') }}"></textarea>
                         </div>
                     </div>
 

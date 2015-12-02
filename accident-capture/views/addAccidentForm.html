@@ -118,7 +118,7 @@
 					<div class="row" style="margin-bottom: 2%;">
 						<div ng-repeat="(key,value) in newAccidentForm ">
 							<div class="col-sm-4"
-								ng-if="key != 'Signature' && key != 'Supervisor Check' && key != 'OCS Check' && key != 'Weather' && key != 'Intersection Mark' && key != 'Area of Accident' && key != 'Time of Accident' && key != 'Road Mark' && key != 'Road Name' && key != 'Road Number' && key != 'Intersection Name' && key != 'Intersection Number' && key != 'Cause of Accident' && key != 'Accident Type Detail' && key != 'Accident Class' && key != 'Accident Registration Number' && key != 'Accident Type'">
+								ng-if="key !='Comment/Observations On accident' && key != 'Signature' && key != 'Supervisor Check' && key != 'OCS Check' && key != 'Weather' && key != 'Intersection Mark' && key != 'Area of Accident' && key != 'Time of Accident' && key != 'Road Mark' && key != 'Road Name' && key != 'Road Number' && key != 'Intersection Name' && key != 'Intersection Number' && key != 'Cause of Accident' && key != 'Accident Type Detail' && key != 'Accident Class' && key != 'Accident Registration Number' && key != 'Accident Type'">
 								<label style="font-size: 0.8em">{{ key}} </label><br /> <input ng-required="isRequired(key)"
 									data-toggle="tooltip" title="{{ setDescription(key) }}"
 									ng-if="isString(key) && !hasDataSets(key)"
@@ -144,6 +144,10 @@
 									ng-model="newAccidentForm[key]" />
 							</div>
 						</div>
+                        <div class = "col-sm-4">
+                            <label style="font-size: 0.8em">Comment/Observations On accident</label>
+                            <textarea class = "form-control" ng-model="newAccidentForm['Comment/Observations On accident']" data-toggle="tooltip" title="{{ setDescription('Comment/Observations On accident') }}"></textarea>
+                        </div>
 					</div>
 
 
