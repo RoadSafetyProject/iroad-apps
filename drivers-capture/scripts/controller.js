@@ -55,7 +55,6 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
              CalendarService,
              GridColumnService,
              CustomFormService,
-             ErrorMessageService,
              ModalService,
              DialogService,fileUpload,Upload) {
         //selected org unit

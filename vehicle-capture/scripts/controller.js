@@ -22,13 +22,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
              ContextMenuSelectedItem,
              DateUtils,
              $filter,
-             $http,
-             CalendarService,
-             GridColumnService,
-             CustomFormService,
-             ErrorMessageService,
-             ModalService,
-             DialogService) {
+             $http) {
         //selected org unit
         $scope.dateOptions1 = {
             changeYear: true,
