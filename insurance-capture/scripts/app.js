@@ -3,7 +3,7 @@
 /* App Module */
 
 var eventCapture = angular.module('eventCapture',
-		 ['ui.bootstrap', 
+		 ['ui.bootstrap',
 		  'ngRoute', 
 		  'ngCookies', 
 		  'eventCaptureDirectives', 
