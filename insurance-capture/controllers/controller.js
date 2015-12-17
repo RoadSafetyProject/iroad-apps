@@ -7,8 +7,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 //Controller for settings page
 eventCaptureControllers.controller('MainController',
     function($scope,$modal,$timeout,$translate,$anchorScroll,storage,Paginator,OptionSetService,ProgramFactory,ProgramStageFactory,
-             DHIS2EventFactory,DHIS2EventService,ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
-             CustomFormService,ErrorMessageService,ModalService,DialogService)
+             DHIS2EventFactory,DHIS2EventService,ContextMenuSelectedItem,DateUtils)
     {
         var insuranceEventModal = new iroad2.data.Modal("Vehicle Insurance History",[]);
         var insuranceCompanyModal = new iroad2.data.Modal("Insurance Company",[]);
@@ -52,29 +51,28 @@ eventCaptureControllers.controller('MainController',
             return compulsory;
         }
         $scope.isInteger = function(key){
-            return $scope.is(key,"int");
+            return $scope.is(key,"NUMBER");
         }
         $scope.isDate = function(key){
-            return $scope.is(key,"date");
+            return $scope.is(key,"DATE");
         }
         $scope.isString = function(key){
-            return $scope.is(key,"string");
+            return $scope.is(key,"TEXT");
         }
-
+        $scope.isBoolean = function(key){
+            return $scope.is(key,"BOOLEAN");
+        };
         $scope.is = function(key,dataType){
             for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
-                    if(iroad2.data.dataElements[j].type == dataType){
+                    if(iroad2.data.dataElements[j].valueType == dataType){
                         return true;
                     }
                     break;
                 }
-            };
+            }
             return false;
-        }
-        $scope.isBoolean = function(key){
-            return $scope.is(key,"bool");
-        }
+        };
         $scope.hasDataSets = function(key){
             for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){

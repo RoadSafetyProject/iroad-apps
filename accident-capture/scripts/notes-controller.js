@@ -353,20 +353,18 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 		}
 	}
 
-	$scope.isInteger = function(key){
-		return $scope.is(key,"int");
-	}
-
-	$scope.isFile = function(key){
-		return $scope.is(key,"file");
-	}
-	$scope.isDate = function(key){
-		console.log(key);
-		return $scope.is(key,"date");
-	}
-	$scope.isString = function(key){
-		return $scope.is(key,"string");
-	}
+    $scope.isInteger = function(key){
+        return $scope.is(key,"NUMBER");
+    }
+    $scope.isDate = function(key){
+        return $scope.is(key,"DATE");
+    }
+    $scope.isString = function(key){
+        return $scope.is(key,"TEXT");
+    }
+    $scope.isBoolean = function(key){
+        return $scope.is(key,"BOOLEAN");
+    };
 
 	$scope.is = function(key,dataType){
 		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
@@ -378,9 +376,6 @@ eventCaptureControllers.controller('EditAccidentController',function($scope,$htt
 			}
 		};
 		return false;
-	}
-	$scope.isBoolean = function(key){
-		return $scope.is(key,"bool");
 	}
 	$scope.hasDataSets = function(key){
 		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
@@ -455,48 +450,46 @@ eventCaptureControllers.controller('AddAccidentController',function($scope,$http
     	});
         return compulsory;
     }
-	$scope.isDate = function(key){
-		return $scope.is(key,"date");
-	}
-	$scope.isFile = function(key){
-		return $scope.is(key,"file");
-	}
-	$scope.isString = function(key){
-		return $scope.is(key,"string");
-	}
+    $scope.isInteger = function(key){
+        return $scope.is(key,"NUMBER");
+    }
+    $scope.isDate = function(key){
+        return $scope.is(key,"DATE");
+    }
+    $scope.isString = function(key){
+        return $scope.is(key,"TEXT");
+    }
+    $scope.isBoolean = function(key){
+        return $scope.is(key,"BOOLEAN");
+    };
 
-	$scope.is = function(key,dataType){
-		
-		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
-			if(iroad2.data.dataElements[j].name == key){
-				
-				if(iroad2.data.dataElements[j].type == dataType){
-					return true;
-				}
-				break;
-			}
-		};
-		return false;
-	}
-	$scope.isBoolean = function(key){
-		return $scope.is(key,"bool");
-	}
-	$scope.hasDataSets = function(key){
-		for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
-			if(iroad2.data.dataElements[j].name == key){
-				return (iroad2.data.dataElements[j].optionSet != undefined);
-			}
-		};
-		return false;
-	}
-	$scope.getOptionSets = function(key){
-		for(j = 0 ;j < iroad2.data.dataElements.length;j++){
-			if(iroad2.data.dataElements[j].name == key){
-				return iroad2.data.dataElements[j].optionSet.options;
-			}
-		};
-		return false;
-	}
+    $scope.is = function(key,dataType){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+            if(iroad2.data.dataElements[j].name == key){
+                if(iroad2.data.dataElements[j].valueType == dataType){
+                    return true;
+                }
+                break;
+            }
+        }
+        return false;
+    };
+    $scope.hasDataSets = function(key){
+        for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+            if(iroad2.data.dataElements[j].name == key){
+                return (iroad2.data.dataElements[j].optionSet != undefined);
+            }
+        };
+        return false;
+    }
+    $scope.getOptionSets = function(key){
+        for(j = 0 ;j < iroad2.data.dataElements.length;j++){
+            if(iroad2.data.dataElements[j].name == key){
+                return iroad2.data.dataElements[j].optionSet.options;
+            }
+        };
+        return false;
+    }
 
 	$scope.changeAccidentBasicInfoVisibility = function () {
 

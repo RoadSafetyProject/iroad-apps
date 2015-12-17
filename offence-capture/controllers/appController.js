@@ -12,8 +12,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
     .controller('MainController',
     function($scope,$modal,$timeout,$translate,$anchorScroll,storage,Paginator,
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
-             ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
-             CustomFormService,ErrorMessageService,ModalService,DialogService) {
+             ContextMenuSelectedItem,DateUtils) {
     	$scope.pageSize = 10;
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchOffences(page);

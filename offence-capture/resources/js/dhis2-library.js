@@ -45,6 +45,7 @@ iroad2 = {
 		data : {
 			
 		}
+		
 }
 /**
  *	Function to be envoked when initializing iroad2 data
@@ -55,12 +56,12 @@ iroad2 = {
 iroad2.Init = function(config){
 	iroad2.config = config;
 	//Fetch dataElements from the dhis server
-	http.get(iroad2.config.baseUrl + "api/dataElements?paging=false&fields=id,name,description,type,code,http://localhost:8080/demo/api/dataElements.json?paging=false&fields=id,name,description,type,code,attributeValues,optionSet[id,name,code,options[id,name]],optionSet[id,name,code,options[id,name]]", function(results) {
+	http.get(iroad2.config.baseUrl + "api/dataElements.json?paging=false&fields=id,name,description,valueType,code,attributeValues,optionSet[id,name,code,options[id,name]]", function(results) {
 		//Set the dhis data elements
 		iroad2.data.dataElements = results.dataElements;
 		//Fetch programs from the dhis server
 		//http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
-		http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,description,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
+		http.get(iroad2.config.baseUrl + "api/programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,description,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
 			//Set the dhis programs
 			iroad2.data.programs = results2.programs;
 			//Load the scripts to use from user
@@ -239,17 +240,8 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		//Checks that all requests are made
 		this.resCount = [];
-		this.gotCount = 0;
 		this.resultsFetched = function(){
-			/*if (selfGetAll.resCount.length == 0) {
-				if(selfGetAll.dataResults != undefined){
-					selfGetAll.dataResults.data = selfGetAll.events;
-					onResult(selfGetAll.dataResults);
-				}else{
-					onResult(selfGetAll.events);
-				}
-			}*/
-			if(this.gotCount == selfGetAll.events.length){
+			if (selfGetAll.resCount.length == 0) {
 				if(selfGetAll.dataResults != undefined){
 					selfGetAll.dataResults.data = selfGetAll.events;
 					onResult(selfGetAll.dataResults);
@@ -263,7 +255,6 @@ iroad2.data.Modal = function (modalName,relations) {
 			if(selfGetAll.dataResults != undefined){
 				selfGetAll.dataResults.pager = result.pager;
 			}
-			selfGetAll.gotCount = result.events.length;
 			for(var j = 0; j < result.events.length; j++) {//For each event render to entity column json
 				var event = result.events[j];
 				selfGetAll.resCount.push(1);
@@ -356,13 +347,13 @@ iroad2.data.Modal = function (modalName,relations) {
 		
 		//Get events of the program from the server
 		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result2){
+
 			if(result2.events != undefined)
 			for(var j = 0; j < result2.events.length; j++) {//For each event render to entity column json
 				var event = result2.events[j];
-				if(event.dataValues)
+				if(event.dataValues != undefined)
 				for(var k = 0; k < event.dataValues.length; k++) {
 					if(event.dataValues[k].value == criteria.value){//Checks the conditions provided
-						
 						selfGet.getCount.push(1);
 						//Render events to appropriate Modal
 						self.renderToJSON(event, function(object) {
@@ -448,10 +439,6 @@ iroad2.data.Modal = function (modalName,relations) {
 			}
 		}
 		this.object["id"] = event.event;
-		if(event.coordinate){
-			this.object["coordinate"] = event.coordinate;
-		}
-		if(event.dataValues)
 		for(var k = 0; k < event.dataValues.length; k++) {
 			
 			var dataValue = event.dataValues[k];
@@ -630,9 +617,9 @@ http = {
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4) {
 				if(xmlhttp.status == 200){
-					//try {
+					try {
 						onSuccess(JSON.parse(xmlhttp.responseText));
-					/*} catch (e) {
+					} catch (e) {
 						if (xmlhttp.responseText.startsWith("Event updated: ")) {
 							onSuccess({
 								"status" : "SUCCESS",
@@ -640,13 +627,14 @@ http = {
 										"Event updated: ", "").replace("\r\n", "")
 							})
 						} else {
+							console.error("Returned:" + xmlhttp.responseText);
 							if (onError == undefined) {
 								console.error(e);
 							} else {
 								onError(e);
 							}
 						}
-					}*/
+					}
 				}else if(xmlhttp.status == 404){
 					onError({});
 				}

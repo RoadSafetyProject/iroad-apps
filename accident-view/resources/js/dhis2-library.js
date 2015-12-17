@@ -44,7 +44,7 @@ iroad2 = {
 		//Holds specific dhis data and objects related to data
 		data : {
 			
-		},
+		}
 		
 }
 /**
@@ -56,12 +56,12 @@ iroad2 = {
 iroad2.Init = function(config){
 	iroad2.config = config;
 	//Fetch dataElements from the dhis server
-	http.get(iroad2.config.baseUrl + "api/dataElements?paging=false&fields=id,name,type,code,optionSet[id,name,code,options[id,name]]", function(results) {
+	http.get(iroad2.config.baseUrl + "api/dataElements.json?paging=false&fields=id,name,description,valueType,code,attributeValues,optionSet[id,name,code,options[id,name]]", function(results) {
 		//Set the dhis data elements
 		iroad2.data.dataElements = results.dataElements;
 		//Fetch programs from the dhis server
 		//http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
-		http.get(iroad2.config.baseUrl + "api/programs?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[sortOrder,dataElement[id,name,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
+		http.get(iroad2.config.baseUrl + "api/programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,description,code,type,optionSet[id,name,options[id,name],version]]]]", function(results2) {
 			//Set the dhis programs
 			iroad2.data.programs = results2.programs;
 			//Load the scripts to use from user
@@ -226,11 +226,11 @@ iroad2.data.Modal = function (modalName,relations) {
 		//Get program by name
 		var program = self.getProgramByName(self.modalName);
 		
-		var url = "api/events?program="+program.id;
+		var url = "api/events?totalPages=true&program="+program.id;
 		
 		if(arguments.length > 1){
 			
-			url = "api/events?programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2] + arguments[3];
+			url = "api/events?totalPages=true&programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
 		}
 		// Stores the rows of an entity
 		this.events = [];
@@ -439,7 +439,6 @@ iroad2.data.Modal = function (modalName,relations) {
 			}
 		}
 		this.object["id"] = event.event;
-		this.object["coordinate"] = event.coordinate;
 		for(var k = 0; k < event.dataValues.length; k++) {
 			
 			var dataValue = event.dataValues[k];
