@@ -99,29 +99,29 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
 
         $scope.isInteger = function(key){
-            return $scope.is(key,"int");
+            return $scope.is(key,"NUMBER");
         }
         $scope.isDate = function(key){
-            return $scope.is(key,"date");
+            return $scope.is(key,"DATE");
         }
         $scope.isString = function(key){
-            return $scope.is(key,"string");
+            return $scope.is(key,"TEXT");
         }
+        $scope.isBoolean = function(key){
+            return $scope.is(key,"BOOLEAN");
+        };
 
         $scope.is = function(key,dataType){
             for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
-                    if(iroad2.data.dataElements[j].type == dataType){
+                    if(iroad2.data.dataElements[j].valueType == dataType){
                         return true;
                     }
                     break;
                 }
-            };
+            }
             return false;
-        }
-        $scope.isBoolean = function(key){
-            return $scope.is(key,"bool");
-        }
+        };
         $scope.hasDataSets = function(key){
             for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){

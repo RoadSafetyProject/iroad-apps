@@ -950,7 +950,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
          * @returns {boolean}
          */
         $scope.isInt = function(value,type){
-            if(type == 'int' && value != null){
+            if(type == 'NUMBER' && value != null){
                 if(value != ""){
                     var number = new Number( value );
                     if ( isNaN( number ))
