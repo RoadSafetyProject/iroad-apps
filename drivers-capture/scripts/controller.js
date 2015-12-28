@@ -90,7 +90,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         })
         //loadig all data elements
         $scope.allDataElements = [];
-        $http.get('../../../api/dataElements?paging=false&fields=id,name,description,type,code,optionSet[id,name,code,options[id,name]]').
+        $http.get('../../../api/dataElements.json?paging=false&fields=id,name,description,valueType,code,optionSet[id,name,code,options[id,name]]').
             success(function(data) {
                 $scope.allDataElements = data.dataElements;
             }).
@@ -133,7 +133,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
         }
 
 
-        $scope.programUrl = "../../../api/programs.json?filters=type:eq:3&paging=false&fields=id,name,description,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,type,description,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.programUrl = "../../../api/programs.json?filters=type:eq:3&paging=false&fields=id,name,description,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,valueType,description,code,optionSet[id,name,options[id,name],version]]]]";
         $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};
@@ -189,10 +189,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                             var datavalues = {};
                             angular.forEach(program.programStages[0].programStageDataElements, function (dataVal) {
                                 var dataelement = {};
+                                console.log('dataelements 1: ' + JSON.stringify(dataVal.dataElement));
                                 datavalues[dataVal.dataElement.name] = {}
                                 dataelement.id = dataVal.dataElement.id;
                                 dataelement.name = dataVal.dataElement.name;
-                                dataelement.type = dataVal.dataElement.type;
+                                dataelement.valueType = dataVal.dataElement.valueType;
                                 dataelement.sortOrder = dataVal.sortOrder;
                                 dataelement.description = dataVal.description;
                                 if(dataVal.dataElement.optionSet){
@@ -219,10 +220,11 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                                                     if(value2.id == program11){
                                                         angular.forEach(value2.programStages[0].programStageDataElements, function (dataVal1) {
                                                             var dataelement1 = {};
+                                                            console.log('dataelements 2: ' + JSON.stringify(dataVal1.dataElement));
                                                             datavalues1[dataVal1.dataElement.name] = {}
                                                             dataelement1.id = dataVal1.dataElement.id;
                                                             dataelement1.name = dataVal1.dataElement.name;
-                                                            dataelement1.type = dataVal1.dataElement.type;
+                                                            dataelement1.valueType = dataVal1.dataElement.valueType;
                                                             if(dataVal1.dataElement.optionSet){
                                                                 dataelement1.optionSet = dataVal1.dataElement.optionSet;
                                                             }
@@ -993,7 +995,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ngFile
                 datavalues[dataVal.dataElement.name] = {}
                 dataelement.id = dataVal.dataElement.id;
                 dataelement.name = dataVal.dataElement.name;
-                dataelement.type = dataVal.dataElement.type;
+                dataelement.valueType = dataVal.dataElement.valueType;
                 dataelement.description = dataVal.dataElement.description;
                 dataelement.sortOrder = dataVal.sortOrder;
                 if(dataVal.dataElement.optionSet){
