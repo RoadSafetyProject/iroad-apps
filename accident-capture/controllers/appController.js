@@ -7,7 +7,8 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', ["ui.dat
 eventCaptureControllers.controller('MainController',
     function($scope,$modal,$timeout,$translate,$anchorScroll,storage,Paginator,
              OptionSetService,ProgramFactory,ProgramStageFactory,DHIS2EventFactory,DHIS2EventService,
-             ContextMenuSelectedItem,DateUtils) {
+             ContextMenuSelectedItem,DateUtils,$filter,$http,CalendarService,GridColumnService,
+             CustomFormService,ErrorMessageService,ModalService,DialogService) {
     	$scope.pageSize = 10;
     	$scope.pageChanged = function(page) {
     	                	$scope.fetchAccidents(page);
@@ -305,18 +306,15 @@ eventCaptureControllers.controller('MainController',
 			}
 		}
 
-        $scope.isInteger = function(key){
-            return $scope.is(key,"NUMBER");
-        }
-        $scope.isDate = function(key){
-            return $scope.is(key,"DATE");
-        }
-        $scope.isString = function(key){
-            return $scope.is(key,"TEXT");
-        }
-        $scope.isBoolean = function(key){
-            return $scope.is(key,"BOOLEAN");
-        };
+		$scope.isInteger = function(key){
+			return $scope.is(key,"int");
+		}
+		$scope.isDate = function(key){
+			return $scope.is(key,"date");
+		}
+		$scope.isString = function(key){
+			return $scope.is(key,"string");
+		}
 		$scope.inputModal = {};
 		$scope.multiselectBools = {};
 		$scope.isManyRelation = function(key){
@@ -354,17 +352,20 @@ eventCaptureControllers.controller('MainController',
 			}
 			return false;
 		}
-        $scope.is = function(key,dataType){
-            for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
-                if(iroad2.data.dataElements[j].name == key){
-                    if(iroad2.data.dataElements[j].valueType == dataType){
-                        return true;
-                    }
-                    break;
-                }
-            }
-            return false;
-        };
+		$scope.is = function(key,dataType){
+			for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+				if(iroad2.data.dataElements[j].name == key){
+					if(iroad2.data.dataElements[j].type == dataType){
+						return true;
+					}
+					break;
+				}
+			};
+			return false;
+		}
+		$scope.isBoolean = function(key){
+			return $scope.is(key,"bool");
+		}
 		$scope.hasDataSets = function(key){
 			for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
 				if(iroad2.data.dataElements[j].name == key){

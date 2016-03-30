@@ -1,0 +1,34 @@
+<div ng-controller="offenceListController">
+<h2>List of Offencces Committed</h2>
+<table>
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>License</th>
+			<th>Name</th>
+			<th>Address</th>
+			<th>Place</th>
+			<th colspan="2">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="off in offenceList">
+			<td>{{$index + 1}}</td>
+			 <td>{{off.Driver["Driver License Number"]}}</td>
+			<td>{{off.Driver.Person["First Name"]}} {{off.Driver.Person["Last Name"]}}</td>
+			<td>{{off.Driver.Person["Postal Address"]}} </td>
+			<td>{{off["Offence Place"]}}</td>
+			<td>
+				<a href="#/offence/view/{{off.id}}">
+					<md-button class="md-hue-3 md-raised md-primary md-fab">
+							<md-tooltip>
+					          View Offence Details
+					        </md-tooltip>
+							<i class="fa fa-check" style="font-size: 20px;"></i> 
+					</md-button>
+				</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>

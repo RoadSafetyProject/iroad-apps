@@ -1,0 +1,77 @@
+<style>
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+</style>
+<label>{{ngDataElementName}}</label>
+<div class="input-group">
+	<input type="text" 
+		validator="functions.valid()" 
+		class="form-control" ng-model="ngModel" 
+		ng-pattern="functions.pattern" ng-blur="onBlur()" aria-label="Heyloow"
+		uib-typeahead="item.name for item in functions.search($viewValue)"
+		typeahead-loading="loadingLocations"
+		typeahead-on-select="functions.onSearchSelect($item, $model, $label)"
+		typeahead-no-results="noResults"
+		/>
+	<div class="input-group-btn">
+		<button type="button" class="btn btn-default dropdown-toggle"
+			data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span ng-if='response.status == "LOADING"' class="glyphicon glyphicon-refresh spinning"></span> 
+			<span ng-if='response.status != "LOADING"'>Actions<span class="caret"></span></span>
+		</button>
+		<ul class="dropdown-menu dropdown-menu-right">
+			<li ng-repeat="func in functions.actions" ng-click="envoke(func.functionName)"><a>{{func.name}}</a></li>
+		</ul>
+	</div>
+	<!-- /btn-group -->
+</div>
+<div ng-if='response.status == "ERROR"' class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+ 	{{response.message}}
+</div>
+<div ng-if='response.status == "SUCCESS"' class="alert alert-success" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+ 	{{response.message}}
+</div>
+<div ng-if="dataTitle !=''" class="modal fade" id="dataInputModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{dataTitle}}</h4>
+      </div>
+      <div class="modal-body">
+      	<table datatable="ng" class="mws-datatable-fn mws-table">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="(key != 'id')" ng-repeat="(key, value) in data[dataName]">
+			            	<td>
+			            		<label>{{key}}</label>
+			            	</td>
+			                <td >
+			                	<label>{{value}}</label>
+			                </td>
+		            	</tr>
+                        </tbody>
+                </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

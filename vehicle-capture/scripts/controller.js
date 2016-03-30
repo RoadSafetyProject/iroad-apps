@@ -22,7 +22,13 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
              ContextMenuSelectedItem,
              DateUtils,
              $filter,
-             $http) {
+             $http,
+             CalendarService,
+             GridColumnService,
+             CustomFormService,
+             ErrorMessageService,
+             ModalService,
+             DialogService) {
         //selected org unit
         $scope.dateOptions1 = {
             changeYear: true,
@@ -99,29 +105,29 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
         }
 
         $scope.isInteger = function(key){
-            return $scope.is(key,"NUMBER");
+            return $scope.is(key,"int");
         }
         $scope.isDate = function(key){
-            return $scope.is(key,"DATE");
+            return $scope.is(key,"date");
         }
         $scope.isString = function(key){
-            return $scope.is(key,"TEXT");
+            return $scope.is(key,"string");
         }
-        $scope.isBoolean = function(key){
-            return $scope.is(key,"BOOLEAN");
-        };
 
         $scope.is = function(key,dataType){
             for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
-                    if(iroad2.data.dataElements[j].valueType == dataType){
+                    if(iroad2.data.dataElements[j].type == dataType){
                         return true;
                     }
                     break;
                 }
-            }
+            };
             return false;
-        };
+        }
+        $scope.isBoolean = function(key){
+            return $scope.is(key,"bool");
+        }
         $scope.hasDataSets = function(key){
             for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
                 if(iroad2.data.dataElements[j].name == key){
@@ -240,7 +246,7 @@ var eventCaptureControllers = angular.module('eventCaptureControllers', [])
                 });
             });
         }
-        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,valueType,code,optionSet[id,name,options[id,name],version]]]]";
+        $scope.programUrl = "../../programs.json?filters=type:eq:3&paging=false&fields=id,name,version,programStages[id,version,programStageSections[id],programStageDataElements[compulsory,sortOrder,dataElement[id,name,type,code,optionSet[id,name,options[id,name],version]]]]";
         $scope.showProgresMessage('Loading progams Metadata.....')
         $http.get($scope.programUrl).success(function(data){
             $scope.data.programs = {};

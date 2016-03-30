@@ -87,10 +87,10 @@
                                 	Or <button class="btn btn-sm btn-primary" ng-click="takeSnapShot('editDriverPhoto')">Take A Snapshot</button>
                                 </div>
                                 <element-input ng-if="datas.name == 'Driver License Number'" crud-operation="'update'" ng-data-element-name="'Driver License Number'" ng-model="datas.value"></element-input>
-                                <input ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.valueType != 'DATE' && datas.valueType != 'BOOLEAN' && datas.name != 'Driver License Number'"  ng-model="datas.value" ng-style="datas.color" type="text">
-                                <input ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="!datas.optionSet && datas.valueType=='DATE'" ui-date="dateOptions1"  ng-model="datas.value" ng-style="datas.color">
+                                <input ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.name != 'Driver Photo' && !datas.optionSet && datas.type != 'date' && datas.type != 'bool' && datas.name != 'Driver License Number'"  ng-model="datas.value" ng-style="datas.color">
+                                <input ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="!datas.optionSet && datas.type=='date'" ui-date="dateOptions1"  ng-model="datas.value" ng-style="datas.color">
                                 <select ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(datas.name) }}"  class="form-control" ng-if="datas.optionSet" ng-model="datas.value" ng-options="item.name as item.name for item in datas.optionSet.options" ng-style="datas.color" ></select>
-                                <select ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.valueType == 'bool'" ng-model="datas.value" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
+                                <select ng-required="datas.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="datas.type == 'bool'" ng-model="datas.value" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                             </td>
                         </tr>
                         <tr style="margin-top: 10px">
@@ -111,8 +111,7 @@
                 <form ng-submit="AddDriver(data.newDriverValue)">
                     <table >
                         <tr ng-if="list.dataElement.name != 'Program_Person'" ng-repeat="list in  data.programs['Driver'].programStages[0].programStageDataElements">
-
-                            <td >
+                        <td >
                             <label ng-if="list.dataElement.name != 'Driver License Number'">{{ list.dataElement.name }}</label>
                             <div ng-if="list.dataElement.name == 'Driver Photo'">
                             <img class="img-thumbnail passport-size" ng-src="{{photoData}}" alt="Driver Photo"/>
@@ -122,13 +121,21 @@
                             <!-- <input type="file"  ng-if="list.dataElement.name == 'Driver Photo'"  ngf-select ng-model="driverPhoto" name="upload"    
              accept="image/*" ngf-max-size="2MB" required/> -->
              				<element-input ng-if="list.dataElement.name == 'Driver License Number'" crud-operation="'create'" ng-data-element-name="'Driver License Number'" ng-model="data.newDriverValue[list.dataElement.id]"></element-input>
-					<input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.valueType !='DATE' && !list.dataElement.optionSet  && list.dataElement.valueType == 'TEXT' && list.dataElement.name != 'Driver License Number'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]" type="text" >
-					<input ng-required="list.compulsory" type="number" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.valueType !='DATE' && !list.dataElement.optionSet  && list.dataElement.valueType == 'NUMBER'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
-                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.valueType=='DATE' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+					<input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet  && list.dataElement.type == 'string' && list.dataElement.name != 'Driver License Number'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+					<input ng-required="list.compulsory" type="number" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-hide="list.dataElement.name == 'Driver Photo'" ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type !='date' && !list.dataElement.optionSet  && list.dataElement.type == 'int'"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
+                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"   ng-if="list.dataElement.name != 'Program_Person' && list.dataElement.type=='date' && !list.dataElement.optionSet" ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-model="data.newDriverValue[list.dataElement.id]"  >
                             <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
-                            <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.valueType == 'BOOLEAN'" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
+                            <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  style="width: 100%;background: #ffffff" ng-if="list.dataElement.type == 'bool'" ng-model="data.newDriverValue[list.dataElement.id]" ng-options="item.value as item.name for item in [{'value':true,'name':'Yes'},{'value':false,'name':'No'}]"></select>
                           </td>
                         </tr>
+                        <!--<tr ng-repeat="list in  data.programs['Person'].programStages[0].programStageDataElements | orderBy:'sortOrder'">-->
+                        <!--<td >-->
+                            <!--<label>{{ list.dataElement.name }}</label>-->
+                            <!--<input class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type !='date'" ng-model="data.newPersonValue[list.dataElement.id]"  >-->
+                            <!--<input ui-date="dateOptions1"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type=='date'" ng-model="data.newDriverValue[list.dataElement.id]"  >-->
+                            <!--<select class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newPersonValue[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>-->
+                          <!--</td>-->
+                        <!--</tr>-->
                         <tr style="margin-top: 10px">
                             <td>
                                 <span class="pull-left" ng-if="currentUpdating"><i class='fa fa-cog fa-2x fa-spin '></i> Saving.... </span>
@@ -158,8 +165,8 @@
                         <tr ng-repeat="list in  data.programs['Driver License History'].programStages[0].programStageDataElements | orderBy:'sortOrder'">
                         <td ng-if="list.dataElement.name != 'Program_Driver'">
                             <label>{{ list.dataElement.name }}</label>
-                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.valueType != 'DATE'" ng-model="data.newLicence[list.dataElement.id]"  >
-                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.valueType == 'DATE'" ng-model="data.newLicence[list.dataElement.id]"  >
+                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  ng-focus="focusMe(list.dataElement.name)"  style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet  && list.dataElement.type != 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
+                            <input ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"  ng-focus="focusMe(list.dataElement.name)" ui-date="dateOptions1" style="width: 100%;background: #ffffff"   ng-if="!list.dataElement.optionSet && list.dataElement.type == 'date'" ng-model="data.newLicence[list.dataElement.id]"  >
                             <select ng-required="list.compulsory" data-toggle="tooltip"  title="{{ setDescription(list.dataElement.name) }}"  class="form-control"   ng-focus="focusMe(list.dataElement.name)"   style="width: 100%;background: #ffffff" ng-if="list.dataElement.optionSet" ng-model="data.newLicence[list.dataElement.id]" ng-options="item.name as item.name for item in list.dataElement.optionSet.options"></select>
                       
                           </td>
