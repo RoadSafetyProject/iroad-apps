@@ -66,7 +66,7 @@ iroad2.Init = function(config){
 			iroad2.data.programs = results2.programs;
 			//Load the scripts to use from user
 			iroad2.config.onLoad();
-			http.get(iroad2.config.baseUrl + "api/me", function(results3) {
+			http.get(iroad2.config.baseUrl + "api/me.json", function(results3) {
 				iroad2.data.user = results3;
 			});
 		});
@@ -226,11 +226,11 @@ iroad2.data.Modal = function (modalName,relations) {
 		//Get program by name
 		var program = self.getProgramByName(self.modalName);
 		
-		var url = "api/events?totalPages=true&program="+program.id;
+		var url = "api/events.json?totalPages=true&program="+program.id;
 		
 		if(arguments.length > 1){
 			
-			url = "api/events?totalPages=true&programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
+			url = "api/events.json?totalPages=true&programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
 		}
 		// Stores the rows of an entity
 		this.events = [];
@@ -346,7 +346,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		
 		//Get events of the program from the server
-		http.get(iroad2.config.baseUrl + "api/events?program="+program.id,function(result2){
+		http.get(iroad2.config.baseUrl + "api/events.json?program="+program.id,function(result2){
 
 			if(result2.events != undefined)
 			for(var j = 0; j < result2.events.length; j++) {//For each event render to entity column json
@@ -559,7 +559,7 @@ iroad2.data.Modal = function (modalName,relations) {
 			savingModal = self.getModalName();
 		}
 		var sendData = {};
-		var saveUrl = iroad2.config.baseUrl + "api/events";
+		var saveUrl = iroad2.config.baseUrl + "api/events.json";
 		if(Array.isArray(data)){
 			var events = [];
 			
